@@ -46,14 +46,19 @@ export function useReveal(key?: string) {
       }
     };
 
-    scan();
-    // Route content can hydrate/mount a tick after this effect runs.
-    const raf = requestAnimationFrame(scan);
-    const timer = window.setTimeout(scan, 250);
+    // Wait until React has finished hydrating the route subtree before
+    // touching the DOM, otherwise React reports an attribute mismatch.
+    let raf = 0;
+    const start = () => {
+      raf = requestAnimationFrame(() => requestAnimationFrame(scan));
+    };
+    const timer = window.setTimeout(start, 120);
+    window.addEventListener("scroll", scan, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
       window.clearTimeout(timer);
+      window.removeEventListener("scroll", scan);
       observer.disconnect();
     };
   }, [key]);
