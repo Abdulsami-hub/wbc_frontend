@@ -36,7 +36,7 @@ function About() {
 
       <section className="bg-surface py-16 lg:py-20">
         <div className="container-wbc">
-          <div className="mx-auto max-w-3xl rounded-card bg-background p-8 text-center shadow-card lg:p-12">
+          <div data-reveal className="mx-auto max-w-3xl rounded-card bg-background p-8 text-center shadow-card lg:p-12">
             <p className="eyebrow">Organization Overview</p>
             <h2 className="mt-3 text-[26px] font-bold text-navy lg:text-[32px]">Who We Are</h2>
             <span className="accent-rule mx-auto mt-4" />

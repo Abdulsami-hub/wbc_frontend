@@ -35,12 +35,12 @@ function Membership() {
       <section className="bg-navy-deep">
         <div className="container-wbc py-20 lg:py-28">
           <div className="max-w-2xl">
-            <span className="accent-rule" />
-            <p className="mt-5 text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">Join the Council</p>
-            <h1 className="mt-3 text-[30px] leading-tight font-bold text-white sm:text-4xl lg:text-[44px]">
+            <span className="intro-1 accent-rule" />
+            <p className="intro-2 mt-5 text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">Join the Council</p>
+            <h1 className="intro-3 mt-3 text-[30px] leading-tight font-bold text-white sm:text-4xl lg:text-[44px]">
               WBC Membership
             </h1>
-            <p className="mt-4 text-[14px] leading-relaxed text-white/85">
+            <p className="intro-4 mt-4 text-[14px] leading-relaxed text-white/85">
               Membership connects you to a global network of businesses, institutions, and professionals working together
               to create opportunity.
             </p>
@@ -51,7 +51,7 @@ function Membership() {
       <section id="join" className="py-16 lg:py-20">
         <div className="container-wbc">
           <SectionHeading eyebrow="Membership Categories" title="Types of Membership" />
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {TIERS.map((t, i) => (
               <li key={t.title} className="relative flex flex-col rounded-card border border-line bg-background p-6 shadow-card">
                 <span className="absolute top-5 right-5 text-[12px] font-bold text-line">0{i + 1}</span>
@@ -85,6 +85,7 @@ function Membership() {
             height={900}
             loading="lazy"
             decoding="async"
+            data-reveal
             className="aspect-[4/3] w-full rounded-card object-cover shadow-card"
           />
         </div>
