@@ -34,19 +34,84 @@ export const Route = createFileRoute("/wbc-team")({
 
 const TAGS = ["Leadership", "Member Support", "Global Coordination"] as const;
 
-const BOARD = [
-  { name: "Richard Bennett", role: "President, Board of Directors", image: p1 },
-  { name: "Mei Tanaka", role: "Director of Strategy and Policy", image: p2 },
-  { name: "Carlos Ibáñez", role: "Director of Finance and Audit", image: p3 },
-  { name: "Amina Okonkwo", role: "Director of Governance and Compliance", image: p4 },
-] as const;
+type Member = {
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
+  email: string;
+  phone: string;
+};
 
-const SECRETARIAT = [
-  { name: "Noor Haddad", role: "Secretary-General", image: p5 },
-  { name: "Julien Moreau", role: "Operations and Coordination Manager", image: p6 },
-  { name: "Priya Nair", role: "Communications and Outreach Manager", image: p7 },
-  { name: "Lucas Schneider", role: "Programs Delivery Manager", image: p8 },
-] as const;
+const BOARD: Member[] = [
+  {
+    name: "Richard Bennett",
+    role: "President, Board of Directors",
+    image: p1,
+    bio: "Richard chairs strategic board sessions and guides long-term positioning, institutional risk controls, and cross-region governance decisions.",
+    email: "richard.bennett@wbcouncil.org",
+    phone: "+44 20 7093 81 36",
+  },
+  {
+    name: "Mei Tanaka",
+    role: "Director of Strategy and Policy",
+    image: p2,
+    bio: "Mei leads policy research and strategic planning, translating member priorities into practical programs across regions and sectors.",
+    email: "mei.tanaka@wbcouncil.org",
+    phone: "+44 20 7093 81 42",
+  },
+  {
+    name: "Carlos Ibáñez",
+    role: "Director of Finance and Audit",
+    image: p3,
+    bio: "Carlos oversees financial planning, audit readiness, and the reporting standards that keep council operations transparent and accountable.",
+    email: "carlos.ibanez@wbcouncil.org",
+    phone: "+44 20 7093 81 55",
+  },
+  {
+    name: "Amina Okonkwo",
+    role: "Director of Governance and Compliance",
+    image: p4,
+    bio: "Amina maintains governance frameworks and compliance policies, ensuring council decisions meet international institutional standards.",
+    email: "amina.okonkwo@wbcouncil.org",
+    phone: "+44 20 7093 81 61",
+  },
+];
+
+const SECRETARIAT: Member[] = [
+  {
+    name: "Noor Haddad",
+    role: "Secretary-General",
+    image: p5,
+    bio: "Noor directs the Secretariat, coordinating member services, institutional partnerships, and the delivery of the council's annual agenda.",
+    email: "noor.haddad@wbcouncil.org",
+    phone: "+44 20 7093 82 10",
+  },
+  {
+    name: "Julien Moreau",
+    role: "Operations and Coordination Manager",
+    image: p6,
+    bio: "Julien runs day-to-day operations and cross-team coordination, keeping programs on schedule across time zones and partners.",
+    email: "julien.moreau@wbcouncil.org",
+    phone: "+44 20 7093 82 24",
+  },
+  {
+    name: "Priya Nair",
+    role: "Communications and Outreach Manager",
+    image: p7,
+    bio: "Priya leads communications and outreach, shaping how the council presents its work to members, institutions, and the wider public.",
+    email: "priya.nair@wbcouncil.org",
+    phone: "+44 20 7093 82 37",
+  },
+  {
+    name: "Lucas Schneider",
+    role: "Programs Delivery Manager",
+    image: p8,
+    bio: "Lucas manages program delivery end to end, from planning and logistics to follow-up with members and partner organizations.",
+    email: "lucas.schneider@wbcouncil.org",
+    phone: "+44 20 7093 82 49",
+  },
+];
 
 const PRACTICE = [
   {
