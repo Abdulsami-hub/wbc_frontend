@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import heroImg from "@/assets/team-hero.jpg";
 import p1 from "@/assets/team-1.jpg";
 import p2 from "@/assets/team-2.jpg";
