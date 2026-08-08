@@ -1,5 +1,3 @@
-import { SectionHeading } from "@/components/SectionHeading";
-
 const SIGNALS = [
   {
     title: "Global Reach",
@@ -23,11 +21,15 @@ export function SignalsAtGlance() {
   return (
     <section className="py-16 lg:py-20">
       <div className="container-wbc">
-        <SectionHeading
-          eyebrow="Institutional Momentum at a Glance"
-          title="Trusted signals of WBC"
-          align="left"
-        />
+        <div data-reveal>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue sm:text-xs">
+            Institutional Momentum at a Glance
+          </p>
+          <h2 className="mt-3 text-[26px] leading-tight font-bold text-navy sm:text-3xl lg:text-[34px]">
+            Trusted signals of WBC
+          </h2>
+          <span className="accent-rule mt-4" />
+        </div>
         <div
           data-reveal
           data-reveal-group
@@ -38,7 +40,7 @@ export function SignalsAtGlance() {
             const isLeftCol = i % 2 === 0;
             const borderClass = [
               isTopRow ? "border-b border-line" : "",
-              isLeftCol ? "sm:border-r border-line" : "",
+              isLeftCol ? "border-line sm:border-r" : "",
             ].join(" ");
 
             return (
