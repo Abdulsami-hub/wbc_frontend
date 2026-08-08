@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
 import { SignalsAtGlance } from "@/components/SignalsAtGlance";
 import { LatestNews } from "@/components/LatestNews";
+import { OurPartners } from "@/components/OurPartners";
 
 
 export const Route = createFileRoute("/")({
