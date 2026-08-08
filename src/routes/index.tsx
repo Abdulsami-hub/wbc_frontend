@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import heroCity from "@/assets/hero-city.jpg";
 import whoWeAre from "@/assets/who-we-are.jpg";
 import { Glance } from "@/components/Glance";
+import { HeroSlider } from "@/components/HeroSlider";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
 
