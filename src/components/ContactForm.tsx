@@ -44,13 +44,13 @@ export function ContactForm() {
   }
 
   const inputClass =
-    "mt-1.5 w-full rounded-md border border-line bg-background px-3.5 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-orange";
+    "mt-1.5 w-full rounded-md border border-line bg-background px-3.5 py-2.5 text-[15px] text-foreground outline-none transition-colors focus:border-orange";
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4">
       {FIELDS.map((f) => (
         <div key={f.name}>
-          <label htmlFor={f.name} className="text-[13px] font-medium text-navy">
+          <label htmlFor={f.name} className="text-[15px] font-medium text-navy">
             {f.label} <span className="text-orange">*</span>
           </label>
           <input
@@ -64,7 +64,7 @@ export function ContactForm() {
             className={inputClass}
           />
           {errors[f.name] && (
-            <p id={`${f.name}-error`} className="mt-1 text-[12px] text-orange">
+            <p id={`${f.name}-error`} className="mt-1 text-[14px] text-orange">
               {errors[f.name]}
             </p>
           )}
@@ -72,7 +72,7 @@ export function ContactForm() {
       ))}
 
       <div>
-        <label htmlFor="message" className="text-[13px] font-medium text-navy">
+        <label htmlFor="message" className="text-[15px] font-medium text-navy">
           Message <span className="text-orange">*</span>
         </label>
         <textarea
@@ -85,7 +85,7 @@ export function ContactForm() {
           className={inputClass}
         />
         {errors["message"] && (
-          <p id="message-error" className="mt-1 text-[12px] text-orange">
+          <p id="message-error" className="mt-1 text-[14px] text-orange">
             {errors["message"]}
           </p>
         )}
@@ -97,7 +97,7 @@ export function ContactForm() {
         {status === "loading" ? "Sending…" : "Send Message"}
       </button>
 
-      <p aria-live="polite" className="text-[13px]">
+      <p aria-live="polite" className="text-[15px]">
         {status === "success" && <span className="text-navy">Thank you — your message has been received.</span>}
         {status === "error" && Object.keys(errors).length > 0 && (
           <span className="text-orange">Please correct the highlighted fields.</span>

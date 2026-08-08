@@ -53,12 +53,12 @@ function Contact() {
           <div data-reveal>
             <h2 className="text-[22px] font-bold text-navy lg:text-2xl">Contact Information</h2>
             <span className="accent-rule mt-4" />
-            <p className="mt-5 text-[13.5px] leading-relaxed text-muted-fg">
+            <p className="mt-5 text-[16px] leading-relaxed text-muted-fg">
               Reach out to the World Business Council for membership enquiries, partnership proposals, or general
               questions.
             </p>
 
-            <dl className="mt-8 space-y-5 text-[13.5px]">
+            <dl className="mt-8 space-y-5 text-[16px]">
               <div>
                 <dt className="font-semibold text-navy">Mailing Address</dt>
                 <dd className="mt-1 text-muted-fg">World Business Council, Paris, France</dd>
@@ -73,7 +73,7 @@ function Contact() {
               </div>
             </dl>
 
-            <div className="mt-8 grid aspect-[16/9] w-full place-items-center rounded-card border border-line bg-surface text-[12px] text-muted-fg">
+            <div className="mt-8 grid aspect-[16/9] w-full place-items-center rounded-card border border-line bg-surface text-[14px] text-muted-fg">
               Map — Paris, France
             </div>
           </div>

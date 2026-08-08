@@ -40,7 +40,7 @@ function About() {
             <p className="eyebrow">Organization Overview</p>
             <h2 className="mt-3 text-[26px] font-bold text-navy lg:text-[32px]">Who We Are</h2>
             <span className="accent-rule mx-auto mt-4" />
-            <p className="mt-6 text-left text-[13.5px] leading-relaxed text-muted-fg">
+            <p className="mt-6 text-left text-[16px] leading-relaxed text-muted-fg">
               The World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping

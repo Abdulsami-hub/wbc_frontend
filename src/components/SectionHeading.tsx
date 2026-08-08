@@ -28,7 +28,7 @@ export function SectionHeading({
       </Tag>
       <span className={`accent-rule mt-4 ${centered ? "mx-auto" : ""}`} />
       {description && (
-        <p className={`mt-5 text-[14px] leading-relaxed ${light ? "text-white/80" : "text-muted-fg"}`}>{description}</p>
+        <p className={`mt-5 text-[15px] leading-relaxed ${light ? "text-white/80" : "text-muted-fg"}`}>{description}</p>
       )}
     </div>
   );
