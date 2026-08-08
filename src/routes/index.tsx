@@ -122,43 +122,43 @@ function Home() {
       <Glance />
 
 
-      <section className="bg-surface py-16 lg:py-20">
-        <div data-reveal data-reveal-group className="container-wbc grid gap-6 lg:grid-cols-2">
-          {[
-            {
-              badge: "V",
-              title: "Our Vision",
-              body: "To be the global hub of business excellence, with a local presence in every city, empowering and uniting businesses worldwide through innovation, collaboration, and sustainable development.",
-              badgeClass: "bg-orange/10 text-orange",
-              bubbleClass: "bg-orange/10",
-            },
-            {
-              badge: "M",
-              title: "Our Mission",
-              body: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
-              badgeClass: "bg-teal/15 text-teal",
-              bubbleClass: "bg-teal/12",
-            },
-          ].map((c) => (
-            <article
-              key={c.title}
-              className="group relative overflow-hidden rounded-card bg-background p-7 shadow-card transition-shadow duration-300 hover:shadow-lg"
-            >
-              <span
-                aria-hidden
-                className={`pointer-events-none absolute -top-16 -right-16 size-44 rounded-full ${c.bubbleClass} transition-transform duration-500 ease-out group-hover:scale-150`}
-              />
-              <div className="relative">
-                <span
-                  className={`inline-flex size-9 items-center justify-center rounded-md text-[15px] font-bold ${c.badgeClass}`}
-                >
-                  {c.badge}
-                </span>
-                <h3 className="mt-5 text-lg font-bold text-navy">{c.title}</h3>
-                <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{c.body}</p>
-              </div>
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={visionMissionBg}
+          alt=""
+          width={1920}
+          height={800}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 size-full object-cover"
+        />
+        <div className="absolute inset-0 bg-white/75" aria-hidden="true" />
+        <div className="container-wbc relative grid items-center gap-12 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
+          <div data-reveal>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-navy/70 sm:text-[13px]">
+              Institutional Framework
+            </p>
+            <h2 className="mt-4 text-[30px] leading-[1.1] font-bold text-navy sm:text-[38px] lg:text-[44px]">
+              The foundations behind practical global cooperation.
+            </h2>
+            <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-navy/70 sm:text-[17px]">
+              A clear institutional compass that guides every connection, service, and partnership within the WBC ecosystem.
+            </p>
+          </div>
+          <div data-reveal data-reveal-group className="grid gap-5 sm:grid-cols-2">
+            <article className="rounded-card border border-white/60 bg-white/85 p-6 shadow-card backdrop-blur-md transition-shadow duration-300 hover:shadow-lg sm:p-7">
+              <h3 className="text-lg font-bold text-navy">Our Vision</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+                To be the global hub of business excellence, with a local presence in every city, empowering and uniting businesses worldwide through innovation, collaboration, and sustainable development.
+              </p>
             </article>
-          ))}
+            <article className="rounded-card border border-white/60 bg-white/85 p-6 shadow-card backdrop-blur-md transition-shadow duration-300 hover:shadow-lg sm:p-7">
+              <h3 className="text-lg font-bold text-navy">Our Mission</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+                Building a global network that empowers businesses through collaboration, innovation, and trust.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
 
