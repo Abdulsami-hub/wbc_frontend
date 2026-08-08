@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as WhoWeAreRouteImport } from './routes/who-we-are'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const MembershipRoute = MembershipRouteImport.update({
   path: '/membership',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WhoWeAreRoute = WhoWeAreRouteImport.update({
+  id: '/who-we-are',
+  path: '/who-we-are',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/who-we-are': typeof WhoWeAreRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/who-we-are': typeof WhoWeAreRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,14 +79,27 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/who-we-are': typeof WhoWeAreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/contact' | '/events' | '/global-network' | '/membership'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/events'
+    | '/global-network'
+    | '/membership'
+    | '/who-we-are'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/about' | '/contact' | '/events' | '/global-network' | '/membership'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/events'
+    | '/global-network'
+    | '/membership'
+    | '/who-we-are'
   id:
     | '__root__'
     | '/'
@@ -87,6 +108,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/who-we-are'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,6 +118,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
   MembershipRoute: typeof MembershipRoute
+  WhoWeAreRoute: typeof WhoWeAreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -142,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembershipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/who-we-are': {
+      id: '/who-we-are'
+      path: '/who-we-are'
+      fullPath: '/who-we-are'
+      preLoaderRoute: typeof WhoWeAreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -152,7 +182,18 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
   MembershipRoute: MembershipRoute,
+  WhoWeAreRoute: WhoWeAreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -92,7 +92,7 @@ function ValuesOrbit() {
     return () => window.clearInterval(id);
   }, [paused]);
 
-  const current = VALUES[active];
+  const current = VALUES[active] ?? VALUES[0];
 
   return (
     <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
