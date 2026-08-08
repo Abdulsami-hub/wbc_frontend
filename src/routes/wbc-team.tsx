@@ -233,8 +233,12 @@ function MemberModal({
 }
 
 function WbcTeam() {
+  const [active, setActive] = useState<{ member: Member; group: string } | null>(null);
+
   return (
     <>
+      <MemberModal member={active?.member ?? null} group={active?.group ?? ""} onClose={() => setActive(null)} />
+
       {/* Split hero */}
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
         <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
