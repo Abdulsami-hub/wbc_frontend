@@ -301,7 +301,11 @@ function WbcTeam() {
           </div>
           <ul data-reveal data-reveal-group className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {BOARD.map((m) => (
-              <PersonCard key={m.name} {...m} />
+              <PersonCard
+                key={m.name}
+                member={m}
+                onOpen={() => setActive({ member: m, group: "Board of Directors" })}
+              />
             ))}
           </ul>
 
@@ -313,9 +317,10 @@ function WbcTeam() {
           </div>
           <ul data-reveal data-reveal-group className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {SECRETARIAT.map((m) => (
-              <PersonCard key={m.name} {...m} />
+              <PersonCard key={m.name} member={m} onOpen={() => setActive({ member: m, group: "Secretariat" })} />
             ))}
           </ul>
+
         </div>
       </section>
 
