@@ -1,20 +1,26 @@
 import { useEffect } from "react";
 
 /**
- * Lightweight scroll-reveal: adds `.is-revealed` to any `[data-reveal]` element
- * when it enters the viewport. No dependencies, one shared IntersectionObserver,
- * and a no-op when the user prefers reduced motion.
+ * Lightweight scroll-reveal: sets `data-revealed` on any `[data-reveal]` element
+ * when it enters the viewport. One shared IntersectionObserver, no dependencies,
+ * and an instant no-op when the user prefers reduced motion.
+ *
+ * A plain attribute (not a className) is used so React never sees a hydration
+ * mismatch on elements it owns.
  */
 export function useReveal(key?: string) {
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const reduced =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (
-      typeof IntersectionObserver === "undefined" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      for (const n of nodes) n.setAttribute("data-revealed", "");
-      return;
+    if (typeof IntersectionObserver === "undefined" || reduced) {
+      const reveal = () => {
+        for (const n of document.querySelectorAll("[data-reveal]")) n.setAttribute("data-revealed", "");
+      };
+      reveal();
+      const t = window.setTimeout(reveal, 300);
+      return () => window.clearTimeout(t);
     }
 
     const observer = new IntersectionObserver(
@@ -29,14 +35,26 @@ export function useReveal(key?: string) {
       { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
     );
 
-    for (const n of nodes) {
-      if (n.getBoundingClientRect().top < window.innerHeight * 0.9) {
-        n.setAttribute("data-revealed", "");
-      } else {
-        observer.observe(n);
+    const scan = () => {
+      for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-observed])")) {
+        n.setAttribute("data-observed", "");
+        if (n.getBoundingClientRect().top < window.innerHeight * 0.92) {
+          n.setAttribute("data-revealed", "");
+        } else {
+          observer.observe(n);
+        }
       }
-    }
+    };
 
-    return () => observer.disconnect();
+    scan();
+    // Route content can hydrate/mount a tick after this effect runs.
+    const raf = requestAnimationFrame(scan);
+    const timer = window.setTimeout(scan, 250);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [key]);
 }
