@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as OurMembersRouteImport } from './routes/our-members'
 import { Route as WbcTeamRouteImport } from './routes/wbc-team'
 import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
 import { Route as WhoWeAreRouteImport } from './routes/who-we-are'
@@ -49,6 +50,11 @@ const MembershipRoute = MembershipRouteImport.update({
   path: '/membership',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OurMembersRoute = OurMembersRouteImport.update({
+  id: '/our-members',
+  path: '/our-members',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WbcTeamRoute = WbcTeamRouteImport.update({
   id: '/wbc-team',
   path: '/wbc-team',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/our-members'
     | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/our-members'
     | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/our-members'
     | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
   MembershipRoute: typeof MembershipRoute
+  OurMembersRoute: typeof OurMembersRoute
   WbcTeamRoute: typeof WbcTeamRoute
   WhatWeDoRoute: typeof WhatWeDoRoute
   WhoWeAreRoute: typeof WhoWeAreRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembershipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/our-members': {
+      id: '/our-members'
+      path: '/our-members'
+      fullPath: '/our-members'
+      preLoaderRoute: typeof OurMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wbc-team': {
       id: '/wbc-team'
       path: '/wbc-team'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
   MembershipRoute: MembershipRoute,
+  OurMembersRoute: OurMembersRoute,
   WbcTeamRoute: WbcTeamRoute,
   WhatWeDoRoute: WhatWeDoRoute,
   WhoWeAreRoute: WhoWeAreRoute,
@@ -229,3 +250,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
