@@ -33,31 +33,14 @@ export const Route = createFileRoute("/")({
 });
 
 const VALUES = [
-  {
-    title: "Inclusivity",
-    body: "Embrace diversity and welcome individuals of all genders, nationalities, cultures, and backgrounds, recognising the strength that comes from a blend of different perspectives.",
-  },
-  {
-    title: "Collaboration",
-    body: "Foster a culture of partnership, encouraging businesses to share objectives, exchange knowledge, and collectively contribute to the growth of the international business network.",
-  },
-  {
-    title: "Innovation",
-    body: "Promote a mindset of innovation, driving businesses to explore new ideas, technologies, and approaches to adapt and thrive in the dynamic global business environment.",
-  },
-  {
-    title: "Integrity",
-    body: "Uphold the highest standards of honesty, transparency, and ethical behaviour, ensuring trust and credibility in all interactions with members, partners, and stakeholders.",
-  },
-  {
-    title: "Excellence",
-    body: "Strive for excellence in all services and activities, committed to delivering high quality support, networking opportunities, and resources to advance the success of businesses.",
-  },
-  {
-    title: "Global Citizenship",
-    body: "Advocate for practices that contribute to a prosperous and resilient global business environment, reflecting a commitment to responsible global citizenship and sustainable business practices.",
-  },
+  { title: "Inclusivity", body: "Embracing diversity and valuing different perspectives." },
+  { title: "Collaboration", body: "Connecting people and businesses to create shared success." },
+  { title: "Innovation", body: "Encouraging creativity and forward-thinking solutions." },
+  { title: "Integrity & Excellence", body: "Upholding ethics, transparency, and high standards." },
+  { title: "Sustainable Development", body: "Promoting responsible growth for a better future." },
+  { title: "Global Citizenship", body: "Supporting positive impact on communities and the world." },
 ] as const;
+
 
 const SERVICES = [
   {
