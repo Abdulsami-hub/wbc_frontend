@@ -5,6 +5,8 @@ import { Glance } from "@/components/Glance";
 import { HeroSlider } from "@/components/HeroSlider";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
+import { SignalsAtGlance } from "@/components/SignalsAtGlance";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,7 +116,10 @@ function Home() {
         </div>
       </section>
 
+      <SignalsAtGlance />
+
       <Glance />
+
 
       <section className="bg-surface py-16 lg:py-20">
         <div data-reveal data-reveal-group className="container-wbc grid gap-6 lg:grid-cols-2">
