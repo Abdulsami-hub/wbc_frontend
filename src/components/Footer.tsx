@@ -5,7 +5,7 @@ const COLUMNS = [
   {
     title: "About",
     links: [
-      { label: "Who We Are", to: "/about" },
+      { label: "Who We Are", to: "/who-we-are" },
       { label: "What We Do", to: "/global-network" },
       { label: "Governance", to: "/about" },
       { label: "WBC Team", to: "/about" },
