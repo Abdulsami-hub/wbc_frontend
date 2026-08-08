@@ -156,15 +156,17 @@
 }
 
 /* ---- Scroll reveal ---------------------------------------------------- */
-/* Only active once JS has flagged the document, so content is never
-   permanently hidden for crawlers or no-JS visitors. */
-.js [data-reveal] {
+/* Gated on `scripting: enabled` so content is never permanently hidden
+   for crawlers or no-JS visitors, and so no class is toggled on <html>
+   (which would cause a hydration mismatch). */
+@media (scripting: enabled) {
+  [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
   will-change: opacity, transform;
 }
 
-.js [data-reveal].is-revealed {
+  [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
   transition:
@@ -174,12 +176,12 @@
 }
 
 /* Staggered children inside a group (cards, stats, nav lists) */
-.js [data-reveal-group] > * {
+  [data-reveal-group] > * {
   opacity: 0;
   transform: translateY(18px);
 }
 
-.js [data-reveal-group].is-revealed > * {
+  [data-reveal-group].is-revealed > * {
   opacity: 1;
   transform: none;
   transition:
@@ -187,11 +189,13 @@
     transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.js [data-reveal-group].is-revealed > *:nth-child(2) { transition-delay: 80ms; }
-.js [data-reveal-group].is-revealed > *:nth-child(3) { transition-delay: 160ms; }
-.js [data-reveal-group].is-revealed > *:nth-child(4) { transition-delay: 240ms; }
-.js [data-reveal-group].is-revealed > *:nth-child(5) { transition-delay: 320ms; }
-.js [data-reveal-group].is-revealed > *:nth-child(6) { transition-delay: 400ms; }
+  [data-reveal-group].is-revealed > *:nth-child(2) { transition-delay: 80ms; }
+  [data-reveal-group].is-revealed > *:nth-child(3) { transition-delay: 160ms; }
+  [data-reveal-group].is-revealed > *:nth-child(4) { transition-delay: 240ms; }
+  [data-reveal-group].is-revealed > *:nth-child(5) { transition-delay: 320ms; }
+  [data-reveal-group].is-revealed > *:nth-child(6) { transition-delay: 400ms; }
+
+}
 
 /* First-load intro for above-the-fold hero content */
 @utility intro-1 { animation: fade-up 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
@@ -213,7 +217,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal],
-  .js [data-reveal-group] > * {
+    [data-reveal-group] > * {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
