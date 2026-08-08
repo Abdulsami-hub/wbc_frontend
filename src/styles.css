@@ -24,6 +24,7 @@
   --color-orange-hover: oklch(0.6 0.215 34.5);
   --color-orange-foreground: oklch(1 0 0);
 
+  --color-teal: oklch(0.745 0.128 186);
   --color-surface: oklch(0.976 0.005 240);
   --color-muted-fg: oklch(0.55 0.02 255);
   --color-line: oklch(0.918 0.008 250);

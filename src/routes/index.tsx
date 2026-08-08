@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import heroCity from "@/assets/hero-city.jpg";
 import whoWeAre from "@/assets/who-we-are.jpg";
 import { Glance } from "@/components/Glance";
+import { HeroSlider } from "@/components/HeroSlider";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
 
@@ -84,41 +85,8 @@ const SERVICES = [
 function Home() {
   return (
     <>
-      <section className="relative isolate bg-navy">
-        <div className="container-wbc grid items-center gap-8 py-14 lg:grid-cols-2 lg:gap-12 lg:py-0">
-          <div className="max-w-xl lg:py-24">
-            <p className="intro-1 text-[12px] font-semibold tracking-[0.22em] text-white/80 uppercase">World Business Council</p>
-            <h1 className="intro-2 mt-4 text-[30px] leading-[1.15] font-bold text-white sm:text-4xl lg:text-[42px]">
-              Connecting Businesses.
-              <br />
-              Creating Opportunities.
-            </h1>
-            <p className="intro-3 mt-5 text-[14px] leading-relaxed text-white/80">
-              Building a global network that empowers businesses through collaboration, innovation, and trust.
-            </p>
-            <div className="intro-4 mt-8 flex flex-wrap gap-3">
-              <Link to="/about" className="btn-orange">
-                Who We Are
-              </Link>
-              <Link to="/membership" className="btn-outline-light">
-                Join WBC
-              </Link>
-            </div>
-          </div>
+      <HeroSlider />
 
-          <div className="intro-img lg:h-[440px]">
-            <img
-              src={heroCity}
-              alt="Modern glass business centre at dusk with people in the plaza"
-              width={1600}
-              height={1000}
-              fetchPriority="high"
-              decoding="async"
-              className="h-56 w-full rounded-card object-cover sm:h-80 lg:h-full lg:rounded-none"
-            />
-          </div>
-        </div>
-      </section>
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
