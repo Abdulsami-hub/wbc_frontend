@@ -166,7 +166,7 @@
     will-change: opacity, transform;
   }
 
-  [data-reveal].is-revealed {
+  [data-reveal][data-revealed] {
     opacity: 1;
     transform: none;
     transition:
@@ -181,7 +181,7 @@
     transform: translateY(18px);
   }
 
-  [data-reveal-group].is-revealed > * {
+  [data-reveal-group][data-revealed] > * {
     opacity: 1;
     transform: none;
     transition:
@@ -189,19 +189,19 @@
       transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
-  [data-reveal-group].is-revealed > *:nth-child(2) {
+  [data-reveal-group][data-revealed] > *:nth-child(2) {
     transition-delay: 80ms;
   }
-  [data-reveal-group].is-revealed > *:nth-child(3) {
+  [data-reveal-group][data-revealed] > *:nth-child(3) {
     transition-delay: 160ms;
   }
-  [data-reveal-group].is-revealed > *:nth-child(4) {
+  [data-reveal-group][data-revealed] > *:nth-child(4) {
     transition-delay: 240ms;
   }
-  [data-reveal-group].is-revealed > *:nth-child(5) {
+  [data-reveal-group][data-revealed] > *:nth-child(5) {
     transition-delay: 320ms;
   }
-  [data-reveal-group].is-revealed > *:nth-child(6) {
+  [data-reveal-group][data-revealed] > *:nth-child(6) {
     transition-delay: 400ms;
   }
 }

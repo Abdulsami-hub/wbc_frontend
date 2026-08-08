@@ -13,7 +13,7 @@ export function useReveal(key?: string) {
       typeof IntersectionObserver === "undefined" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      for (const n of nodes) n.classList.add("is-revealed");
+      for (const n of nodes) n.setAttribute("data-revealed", "");
       return;
     }
 
@@ -21,7 +21,7 @@ export function useReveal(key?: string) {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-revealed");
+            entry.target.setAttribute("data-revealed", "");
             observer.unobserve(entry.target);
           }
         }
@@ -31,7 +31,7 @@ export function useReveal(key?: string) {
 
     for (const n of nodes) {
       if (n.getBoundingClientRect().top < window.innerHeight * 0.9) {
-        n.classList.add("is-revealed");
+        n.setAttribute("data-revealed", "");
       } else {
         observer.observe(n);
       }
