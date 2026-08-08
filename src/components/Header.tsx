@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
+import { MegaMenuAbout } from "./MegaMenuAbout";
 
 export const NAV_LINKS = [
   { label: "About Us", to: "/about" },
@@ -21,6 +22,7 @@ function GlobeIcon() {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -30,7 +32,10 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 bg-background shadow-header">
+    <header
+      className="sticky top-0 z-50 bg-background shadow-header"
+      onMouseLeave={() => setAboutOpen(false)}
+    >
       <div className="container-wbc flex h-16 items-center justify-between gap-4 lg:h-[72px]">
         <Logo />
 
@@ -39,6 +44,9 @@ export function Header() {
             <Link
               key={l.to}
               to={l.to}
+              onMouseEnter={() => setAboutOpen(l.to === "/about")}
+              onFocus={() => setAboutOpen(l.to === "/about")}
+              aria-expanded={l.to === "/about" ? aboutOpen : undefined}
               className="text-[16px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
             >
               {l.label}
@@ -72,6 +80,12 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      {aboutOpen && (
+        <div className="absolute inset-x-0 top-full hidden lg:block">
+          <MegaMenuAbout onNavigate={() => setAboutOpen(false)} />
+        </div>
+      )}
 
       {open && (
         <div id="mobile-menu" className="border-t border-line bg-background lg:hidden">

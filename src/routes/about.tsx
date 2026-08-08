@@ -27,6 +27,7 @@ function About() {
     <>
       <PageHero
         image={aboutHero}
+        breadcrumb={[{ label: "About Us" }]}
         width={1600}
         height={800}
         eyebrow="Organization Overview"
@@ -34,7 +35,7 @@ function About() {
         description="An international business support organization connecting businesses, entrepreneurs, and institutions across the world."
       />
 
-      <section className="bg-surface py-16 lg:py-20">
+      <section id="who-we-are" className="bg-surface py-16 lg:py-20">
         <div className="container-wbc">
           <div data-reveal className="mx-auto max-w-3xl rounded-card bg-background p-8 text-center shadow-card lg:p-12">
             <p className="eyebrow">Organization Overview</p>
