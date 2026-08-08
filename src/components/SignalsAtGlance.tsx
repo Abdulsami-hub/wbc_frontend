@@ -31,25 +31,30 @@ export function SignalsAtGlance() {
         <div
           data-reveal
           data-reveal-group
-          className="mt-10 grid border border-line rounded-card bg-background sm:grid-cols-2"
+          className="mt-10 grid overflow-hidden rounded-card border border-line bg-background sm:grid-cols-2"
         >
-          {SIGNALS.map((s, i) => (
-            <div
-              key={s.title}
-              className={`p-8 sm:p-10 ${
-                i === 0 ? "border-b border-line sm:border-r" : ""
-              } ${i === 1 ? "border-b border-line" : ""} ${
-                i === 2 ? "border-b border-line sm:border-b-0 sm:border-r" : ""
-              } ${i === 3 ? "" : ""}`}
-            >
-              <h3 className="text-[22px] font-bold leading-tight text-navy sm:text-2xl lg:text-[26px]">
-                {s.title}
-              </h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-                {s.body}
-              </p>
-            </div>
-          ))}
+          {SIGNALS.map((s, i) => {
+            const isTopRow = i < 2;
+            const isLeftCol = i % 2 === 0;
+            const borderClass = [
+              isTopRow ? "border-b border-line" : "",
+              isLeftCol ? "sm:border-r border-line" : "",
+            ].join(" ");
+
+            return (
+              <div
+                key={s.title}
+                className={`p-8 sm:p-10 lg:p-12 ${borderClass}`}
+              >
+                <h3 className="text-[22px] font-bold leading-tight text-navy sm:text-2xl lg:text-[26px]">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+                  {s.body}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
