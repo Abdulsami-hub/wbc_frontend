@@ -128,26 +128,107 @@ const PRACTICE = [
   },
 ] as const;
 
-function PersonCard({ name, role, image }: { name: string; role: string; image: string }) {
+function PersonCard({ member, onOpen }: { member: Member; onOpen: () => void }) {
+  const { name, role, image } = member;
   return (
     <li className="group overflow-hidden border border-line bg-background transition-shadow hover:shadow-card">
-      <img
-        src={image}
-        alt={`${name}, ${role} at the World Business Council`}
-        width={800}
-        height={1000}
-        loading="lazy"
-        decoding="async"
-        className="aspect-[4/5] w-full object-cover object-top"
-      />
-      <div className="border-t border-line p-5 sm:p-6">
-        <h4 className="text-[19px] leading-snug font-bold text-navy">{name}</h4>
-        <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-navy/70 uppercase">{role}</p>
-        <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase transition-colors group-hover:text-orange">
-          View full profile
-        </span>
-      </div>
+      <button type="button" onClick={onOpen} className="block w-full text-left">
+        <img
+          src={image}
+          alt={`${name}, ${role} at the World Business Council`}
+          width={800}
+          height={1000}
+          loading="lazy"
+          decoding="async"
+          className="aspect-[4/5] w-full object-cover object-top"
+        />
+        <div className="border-t border-line p-5 sm:p-6">
+          <h4 className="text-[19px] leading-snug font-bold text-navy">{name}</h4>
+          <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-navy/70 uppercase">{role}</p>
+          <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase transition-colors group-hover:text-orange">
+            View full profile
+          </span>
+        </div>
+      </button>
     </li>
+  );
+}
+
+function MemberModal({
+  member,
+  group,
+  onClose,
+}: {
+  member: Member | null;
+  group: string;
+  onClose: () => void;
+}) {
+  return (
+    <DialogPrimitive.Root open={!!member} onOpenChange={(o) => !o && onClose()}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-navy-dark/70 backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-50 max-h-[92vh] w-[min(1200px,94vw)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto border border-line bg-background shadow-card data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95">
+          {member && (
+            <>
+              <div className="flex items-center justify-between border-b border-line px-6 py-5 sm:px-10">
+                <DialogPrimitive.Title className="text-[13px] font-bold tracking-[0.18em] text-navy uppercase sm:text-[15px]">
+                  {group}
+                </DialogPrimitive.Title>
+                <DialogPrimitive.Close
+                  aria-label="Close profile"
+                  className="inline-flex size-11 items-center justify-center border border-line text-navy transition-colors hover:border-orange hover:text-orange"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6L6 18" />
+                  </svg>
+                </DialogPrimitive.Close>
+              </div>
+
+              <div className="grid lg:grid-cols-[0.85fr_1.15fr]">
+                <img
+                  src={member.image}
+                  alt={`${member.name}, ${member.role} at the World Business Council`}
+                  width={800}
+                  height={1000}
+                  decoding="async"
+                  className="aspect-[4/5] w-full object-cover object-top"
+                />
+                <div className="px-6 py-10 sm:px-10 lg:px-14 lg:py-16">
+                  <h3 className="text-[30px] leading-tight font-bold text-navy sm:text-[38px]">{member.name}</h3>
+                  <p className="mt-3 text-[14px] font-bold tracking-[0.16em] text-navy uppercase sm:text-[16px]">
+                    {member.role}
+                  </p>
+                  <DialogPrimitive.Description className="mt-8 max-w-2xl text-[17px] leading-relaxed text-muted-fg sm:text-[19px]">
+                    {member.bio}
+                  </DialogPrimitive.Description>
+
+                  <div className="mt-10 flex flex-wrap gap-x-12 gap-y-4 text-[16px]">
+                    <p className="text-muted-fg">
+                      Email:{" "}
+                      <a href={`mailto:${member.email}`} className="text-navy underline decoration-line hover:text-orange">
+                        {member.email}
+                      </a>
+                    </p>
+                    <p className="text-muted-fg">
+                      Phone: <span className="text-navy">{member.phone}</span>
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex items-center gap-8 text-[16px] text-muted-fg">
+                    <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="hover:text-orange">
+                      LinkedIn
+                    </a>
+                    <a href="https://x.com" target="_blank" rel="noreferrer" className="hover:text-orange">
+                      X
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 
