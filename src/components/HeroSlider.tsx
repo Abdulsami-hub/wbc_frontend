@@ -70,7 +70,8 @@ export function HeroSlider() {
       onBlur={() => setPaused(false)}
     >
       {SLIDES.map((s, i) => {
-        const active = i === index;
+        const offset = i - index;
+        const active = offset === 0;
         return (
           <div
             key={i}
@@ -78,7 +79,10 @@ export function HeroSlider() {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${SLIDES.length}`}
             aria-hidden={!active}
-            className={`${active ? "relative opacity-100" : "pointer-events-none absolute inset-0 opacity-0"} transition-opacity duration-700 ease-out`}
+            inert={!active}
+            className={`absolute inset-0 transition-transform duration-700 ease-out ${
+              offset === 0 ? "translate-x-0" : offset > 0 ? "translate-x-full" : "-translate-x-full"
+            }`}
           >
             <div className={`${s.panel} grid lg:grid-cols-[1fr_1fr]`}>
               <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
