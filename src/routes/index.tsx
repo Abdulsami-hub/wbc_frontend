@@ -204,14 +204,14 @@ function Home() {
                 </span>
                 <h3 className="mt-5 text-[17px] font-bold text-navy">{s.title}</h3>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{s.body}</p>
-                <Link to="/global-network" className="mt-4 inline-block text-[14px] font-semibold text-orange">
+                <Link to="/what-we-do" className="mt-4 inline-block text-[14px] font-semibold text-orange">
                   Learn More →
                 </Link>
               </li>
             ))}
           </ul>
           <div data-reveal className="mt-10 text-center">
-            <Link to="/global-network" className="text-[15px] font-semibold text-orange">
+            <Link to="/what-we-do" className="text-[15px] font-semibold text-orange">
               View all services →
             </Link>
           </div>
@@ -222,7 +222,7 @@ function Home() {
         title="Explore What We Do"
         description="From global networking to trade facilitation and advisory support, discover the full range of WBC activities and services."
         ctaLabel="What We Do"
-        to="/global-network"
+        to="/what-we-do"
       />
     </>
   );

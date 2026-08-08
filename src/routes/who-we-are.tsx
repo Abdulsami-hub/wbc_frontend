@@ -346,7 +346,7 @@ function WhoWeAre() {
           <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-white/85 sm:text-[17px]">
             Discover the services and activities WBC delivers worldwide.
           </p>
-          <Link to="/global-network" className="btn-orange mt-9">
+          <Link to="/what-we-do" className="btn-orange mt-9">
             What We Do
           </Link>
         </div>

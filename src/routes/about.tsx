@@ -59,7 +59,7 @@ function About() {
         title="Explore What We Do"
         description="Discover the activities and services through which WBC supports businesses and councils worldwide."
         ctaLabel="What We Do"
-        to="/global-network"
+        to="/what-we-do"
       />
     </>
   );
