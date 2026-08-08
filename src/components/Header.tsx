@@ -2,16 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { MegaMenuAbout } from "./MegaMenuAbout";
+import { MegaMenuMembership } from "./MegaMenuMembership";
 
 export const NAV_LINKS = [
   { label: "About Us", to: "/about" },
   { label: "Global Network", to: "/global-network" },
   { label: "Membership", to: "/membership" },
-  { label: "Our Members", to: "/our-members" },
-
   { label: "Events", to: "/events" },
   { label: "Contact", to: "/contact" },
 ] as const;
+
 
 function GlobeIcon() {
   return (
@@ -22,9 +22,11 @@ function GlobeIcon() {
   );
 }
 
+const MENU_ROUTES = ["/about", "/membership"] as const;
+
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const [menu, setMenu] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -34,26 +36,26 @@ export function Header() {
   }, [open]);
 
   return (
-    <header
-      className="sticky top-0 z-50 bg-background shadow-header"
-      onMouseLeave={() => setAboutOpen(false)}
-    >
+    <header className="sticky top-0 z-50 bg-background shadow-header" onMouseLeave={() => setMenu(null)}>
       <div className="container-wbc flex h-16 items-center justify-between gap-4 lg:h-[72px]">
         <Logo />
 
         <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
-          {NAV_LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              onMouseEnter={() => setAboutOpen(l.to === "/about")}
-              onFocus={() => setAboutOpen(l.to === "/about")}
-              aria-expanded={l.to === "/about" ? aboutOpen : undefined}
-              className="text-[16px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
-            >
-              {l.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((l) => {
+            const hasMenu = (MENU_ROUTES as readonly string[]).includes(l.to);
+            return (
+              <Link
+                key={l.to}
+                to={l.to}
+                onMouseEnter={() => setMenu(hasMenu ? l.to : null)}
+                onFocus={() => setMenu(hasMenu ? l.to : null)}
+                aria-expanded={hasMenu ? menu === l.to : undefined}
+                className="text-[16px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
+              >
+                {l.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2 lg:gap-3">
@@ -83,11 +85,16 @@ export function Header() {
         </div>
       </div>
 
-      {aboutOpen && (
+      {menu && (
         <div className="absolute inset-x-0 top-full hidden lg:block">
-          <MegaMenuAbout onNavigate={() => setAboutOpen(false)} />
+          {menu === "/about" ? (
+            <MegaMenuAbout onNavigate={() => setMenu(null)} />
+          ) : (
+            <MegaMenuMembership onNavigate={() => setMenu(null)} />
+          )}
         </div>
       )}
+
 
       {open && (
         <div id="mobile-menu" className="border-t border-line bg-background lg:hidden">
@@ -102,6 +109,14 @@ export function Header() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              to="/our-members"
+              onClick={() => setOpen(false)}
+              className="border-b border-line py-3.5 text-[17px] font-medium text-navy [&.active]:text-orange"
+            >
+              Our Members
+            </Link>
+
             <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange my-4">
               Join WBC
             </Link>
