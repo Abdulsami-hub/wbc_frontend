@@ -109,6 +109,14 @@ export function Header() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              to="/our-members"
+              onClick={() => setOpen(false)}
+              className="border-b border-line py-3.5 text-[17px] font-medium text-navy [&.active]:text-orange"
+            >
+              Our Members
+            </Link>
+
             <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange my-4">
               Join WBC
             </Link>
