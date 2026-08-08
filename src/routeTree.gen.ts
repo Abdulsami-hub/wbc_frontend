@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
+import { Route as GovernanceRouteImport } from './routes/governance'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as OurMembersRouteImport } from './routes/our-members'
 import { Route as WbcTeamRouteImport } from './routes/wbc-team'
@@ -43,6 +44,11 @@ const EventsRoute = EventsRouteImport.update({
 const GlobalNetworkRoute = GlobalNetworkRouteImport.update({
   id: '/global-network',
   path: '/global-network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovernanceRoute = GovernanceRouteImport.update({
+  id: '/governance',
+  path: '/governance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MembershipRoute = MembershipRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
+  '/governance': typeof GovernanceRoute
   '/membership': typeof MembershipRoute
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
+  '/governance': typeof GovernanceRoute
   '/membership': typeof MembershipRoute
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
+  '/governance': typeof GovernanceRoute
   '/membership': typeof MembershipRoute
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/global-network'
+    | '/governance'
     | '/membership'
     | '/our-members'
     | '/wbc-team'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/global-network'
+    | '/governance'
     | '/membership'
     | '/our-members'
     | '/wbc-team'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/global-network'
+    | '/governance'
     | '/membership'
     | '/our-members'
     | '/wbc-team'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
+  GovernanceRoute: typeof GovernanceRoute
   MembershipRoute: typeof MembershipRoute
   OurMembersRoute: typeof OurMembersRoute
   WbcTeamRoute: typeof WbcTeamRoute
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/global-network'
       fullPath: '/global-network'
       preLoaderRoute: typeof GlobalNetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/governance': {
+      id: '/governance'
+      path: '/governance'
+      fullPath: '/governance'
+      preLoaderRoute: typeof GovernanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/membership': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
+  GovernanceRoute: GovernanceRoute,
   MembershipRoute: MembershipRoute,
   OurMembersRoute: OurMembersRoute,
   WbcTeamRoute: WbcTeamRoute,
@@ -250,13 +271,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
