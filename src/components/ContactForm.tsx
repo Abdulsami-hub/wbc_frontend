@@ -25,9 +25,9 @@ export function ContactForm() {
       if (!v) next[f.name] = `${f.label} is required.`;
     }
     const email = String(data.get("email") ?? "").trim();
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) next.email = "Enter a valid email address.";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) next["email"] = "Enter a valid email address.";
     const message = String(data.get("message") ?? "").trim();
-    if (message.length < 10) next.message = "Message must be at least 10 characters.";
+    if (message.length < 10) next["message"] = "Message must be at least 10 characters.";
     if (String(data.get("company") ?? "")) return; // honeypot
 
     setErrors(next);
@@ -80,13 +80,13 @@ export function ContactForm() {
           name="message"
           rows={5}
           required
-          aria-invalid={Boolean(errors.message)}
-          aria-describedby={errors.message ? "message-error" : undefined}
+          aria-invalid={Boolean(errors["message"])}
+          aria-describedby={errors["message"] ? "message-error" : undefined}
           className={inputClass}
         />
-        {errors.message && (
+        {errors["message"] && (
           <p id="message-error" className="mt-1 text-[12px] text-orange">
-            {errors.message}
+            {errors["message"]}
           </p>
         )}
       </div>
