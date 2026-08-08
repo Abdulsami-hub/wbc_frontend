@@ -28,6 +28,7 @@
 
   --color-teal: oklch(0.745 0.128 186);
   --color-blue: oklch(0.55 0.15 250);
+  --color-cta-blue: oklch(0.55 0.22 250);
   --color-surface: oklch(0.976 0.005 240);
   --color-muted-fg: oklch(0.55 0.02 255);
   --color-line: oklch(0.918 0.008 250);
