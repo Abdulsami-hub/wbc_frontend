@@ -332,7 +332,7 @@ function WhoWeAre() {
       </section>
 
 
-      <section className="relative isolate mb-6 overflow-hidden bg-gradient-to-r from-navy-deep via-navy to-navy-dark py-16 lg:py-24">
+      <section className="relative isolate overflow-hidden bg-gradient-to-r from-navy-deep via-navy to-navy-dark py-16 lg:py-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--color-orange),transparent_40%)] opacity-10" aria-hidden="true" />
         <div data-reveal className="container-wbc relative text-center">
           <h2 className="text-[28px] font-bold leading-tight text-white sm:text-[36px] lg:text-[42px]">
