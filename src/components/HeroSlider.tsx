@@ -70,7 +70,7 @@ export function HeroSlider() {
       onBlur={() => setPaused(false)}
     >
       <div
-        className="flex transition-transform duration-700 ease-out"
+        className="flex items-stretch transition-transform duration-700 ease-out"
         style={{ transform: `translateX(-${index * (100 / SLIDES.length)}%)`, width: `${SLIDES.length * 100}%` }}
       >
         {SLIDES.map((s, i) => {
@@ -86,8 +86,9 @@ export function HeroSlider() {
               className="w-full shrink-0"
               style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
             >
-              <div className={`${s.panel} grid lg:grid-cols-[1fr_1fr]`}>
-                <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
+              <div className={`${s.panel} grid h-full min-h-[420px] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]`}>
+                <div className="container-wbc !mx-0 !max-w-none py-14 pb-24 lg:ml-auto lg:max-w-[640px] lg:py-28">
+
                   <div className="lg:max-w-[560px]">
                     <p
                       className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
@@ -136,21 +137,24 @@ export function HeroSlider() {
       </div>
 
       <div className="absolute bottom-4 left-0 z-10 lg:bottom-8">
-        <div className="container-wbc flex items-center gap-3">
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => go(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === index}
-              className={`size-2.5 rounded-full border border-white/70 transition-colors ${
-                i === index ? "bg-white" : "bg-transparent hover:bg-white/50"
-              }`}
-            />
-          ))}
+        <div className="container-wbc flex items-center">
+          <div className="flex items-center gap-3 rounded-full bg-navy-dark/40 px-3.5 py-2 backdrop-blur-sm">
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => go(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === index}
+                className={`size-2.5 rounded-full border border-white transition-colors ${
+                  i === index ? "bg-white" : "bg-white/20 hover:bg-white/60"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
+
     </section>
   );
 }
