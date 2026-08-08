@@ -44,11 +44,11 @@ function GlobalNetwork() {
         <div className="container-wbc relative py-20 lg:py-28">
           <div className="max-w-2xl">
             <span className="intro-1 accent-rule" />
-            <p className="intro-2 mt-5 text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">Our Reach</p>
+            <p className="intro-2 mt-5 text-[14px] font-semibold tracking-[0.18em] text-white/80 uppercase">Our Reach</p>
             <h1 className="intro-3 mt-3 text-[30px] leading-tight font-bold text-white sm:text-4xl lg:text-[44px]">
               Global Network
             </h1>
-            <p className="intro-4 mt-4 text-[14px] leading-relaxed text-white/85">
+            <p className="intro-4 mt-4 text-[15px] leading-relaxed text-white/85">
               A connected structure of headquarters, affiliates, members, and partners working together across borders.
             </p>
           </div>
@@ -65,9 +65,9 @@ function GlobalNetwork() {
           <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2">
             {PILLARS.map((p, i) => (
               <li key={p.title} className="rounded-card border border-line bg-background p-7">
-                <span className="text-[11px] font-semibold text-orange">0{i + 1}</span>
-                <h2 className="mt-2 text-[16px] font-bold text-navy">{p.title}</h2>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-fg">{p.body}</p>
+                <span className="text-[12px] font-semibold text-orange">0{i + 1}</span>
+                <h2 className="mt-2 text-[18px] font-bold text-navy">{p.title}</h2>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{p.body}</p>
               </li>
             ))}
           </ul>

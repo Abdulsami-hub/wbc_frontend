@@ -92,7 +92,7 @@ function Home() {
         <div className="container-wbc grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
             <SectionHeading align="left" title="Who We Are" />
-            <p data-reveal className="mt-6 rounded-card border border-line p-6 text-[13.5px] leading-relaxed text-muted-fg">
+            <p data-reveal className="mt-6 rounded-card border border-line p-6 text-[16px] leading-relaxed text-muted-fg">
               The World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
@@ -131,11 +131,11 @@ function Home() {
             },
           ].map((c) => (
             <article key={c.title} className="rounded-card bg-background p-7 shadow-card">
-              <span className="inline-flex size-9 items-center justify-center rounded-md bg-orange/10 text-[13px] font-bold text-orange">
+              <span className="inline-flex size-9 items-center justify-center rounded-md bg-orange/10 text-[15px] font-bold text-orange">
                 {c.badge}
               </span>
               <h3 className="mt-5 text-lg font-bold text-navy">{c.title}</h3>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-fg">{c.body}</p>
+              <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{c.body}</p>
             </article>
           ))}
         </div>
@@ -148,7 +148,7 @@ function Home() {
             title="Partnership Showcase"
             description="Developing partnerships with chambers of commerce, governments, and wider social entities to enhance global cooperation and expand impact."
           />
-          <p data-reveal className="mt-8 border-t border-line pt-8 text-center text-[12px] text-muted-fg">
+          <p data-reveal className="mt-8 border-t border-line pt-8 text-center text-[14px] text-muted-fg">
             Partnership listings are updated regularly as new collaborations are established.
           </p>
         </div>
@@ -160,9 +160,9 @@ function Home() {
           <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {VALUES.map((v, i) => (
               <li key={v.title} className="rounded-card bg-background p-6 shadow-card">
-                <span className="text-[11px] font-semibold text-orange">0{i + 1}</span>
-                <h3 className="mt-2 text-[15px] font-bold text-navy">{v.title}</h3>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-fg">{v.body}</p>
+                <span className="text-[12px] font-semibold text-orange">0{i + 1}</span>
+                <h3 className="mt-2 text-[17px] font-bold text-navy">{v.title}</h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{v.body}</p>
               </li>
             ))}
           </ul>
@@ -185,16 +185,16 @@ function Home() {
                     <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18" />
                   </svg>
                 </span>
-                <h3 className="mt-5 text-[15px] font-bold text-navy">{s.title}</h3>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-fg">{s.body}</p>
-                <Link to="/global-network" className="mt-4 inline-block text-[12px] font-semibold text-orange">
+                <h3 className="mt-5 text-[17px] font-bold text-navy">{s.title}</h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{s.body}</p>
+                <Link to="/global-network" className="mt-4 inline-block text-[14px] font-semibold text-orange">
                   Learn More →
                 </Link>
               </li>
             ))}
           </ul>
           <div data-reveal className="mt-10 text-center">
-            <Link to="/global-network" className="text-[13px] font-semibold text-orange">
+            <Link to="/global-network" className="text-[15px] font-semibold text-orange">
               View all services →
             </Link>
           </div>

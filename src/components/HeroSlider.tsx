@@ -91,7 +91,7 @@ export function HeroSlider() {
 
                   <div className="lg:max-w-[560px]">
                     <p
-                      className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
+                      className={`${active ? "intro-1" : ""} text-[15px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
                     >
                       {s.eyebrow}
                     </p>
@@ -104,7 +104,7 @@ export function HeroSlider() {
                         </span>
                       ))}
                     </h1>
-                    <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[14px] leading-relaxed text-white/85`}>
+                    <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[15px] leading-relaxed text-white/85`}>
                       {s.description}
                     </p>
                     <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>

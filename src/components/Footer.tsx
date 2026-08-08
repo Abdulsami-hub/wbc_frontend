@@ -59,7 +59,7 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)] lg:gap-8">
           <div className="max-w-xs">
             <Logo variant="light" />
-            <p className="mt-5 text-[13px] leading-relaxed">
+            <p className="mt-5 text-[15px] leading-relaxed">
               Building a global network that empowers businesses through collaboration, innovation, and trust.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
-                    className="inline-flex min-h-9 items-center gap-2 rounded bg-white/10 px-3 text-[12px] font-medium text-white transition-colors hover:bg-white/20"
+                    className="inline-flex min-h-9 items-center gap-2 rounded bg-white/10 px-3 text-[14px] font-medium text-white transition-colors hover:bg-white/20"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d={s.path} />
@@ -84,11 +84,11 @@ export function Footer() {
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h2 className="text-[11px] font-semibold tracking-[0.16em] text-white uppercase">{col.title}</h2>
+              <h2 className="text-[12px] font-semibold tracking-[0.16em] text-white uppercase">{col.title}</h2>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <Link to={l.to} className="text-[13px] transition-colors hover:text-orange">
+                    <Link to={l.to} className="text-[15px] transition-colors hover:text-orange">
                       {l.label}
                     </Link>
                   </li>
@@ -98,7 +98,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-[12px] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-[14px] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} World Business Council. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/contact" className="transition-colors hover:text-orange">

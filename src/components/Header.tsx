@@ -39,7 +39,7 @@ export function Header() {
             <Link
               key={l.to}
               to={l.to}
-              className="text-[13px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
+              className="text-[16px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
             >
               {l.label}
             </Link>
@@ -54,7 +54,7 @@ export function Header() {
           >
             <GlobeIcon />
           </button>
-          <Link to="/membership" hash="join" className="btn-orange hidden !min-h-9 !px-4 !text-[11px] lg:inline-flex">
+          <Link to="/membership" hash="join" className="btn-orange hidden !min-h-9 !px-4 !text-[12px] lg:inline-flex">
             Join WBC
           </Link>
 
@@ -81,7 +81,7 @@ export function Header() {
                 key={l.to}
                 to={l.to}
                 onClick={() => setOpen(false)}
-                className="border-b border-line py-3.5 text-[15px] font-medium text-navy [&.active]:text-orange"
+                className="border-b border-line py-3.5 text-[17px] font-medium text-navy [&.active]:text-orange"
               >
                 {l.label}
               </Link>

@@ -55,7 +55,7 @@ function Events() {
                 type="button"
                 aria-pressed={active === f}
                 onClick={() => setActive(f)}
-                className={`min-h-10 rounded-md px-5 text-[12px] font-semibold uppercase transition-colors ${
+                className={`min-h-10 rounded-md px-5 text-[14px] font-semibold uppercase transition-colors ${
                   active === f
                     ? "bg-orange text-orange-foreground"
                     : "border border-line bg-background text-navy hover:border-orange"
@@ -74,7 +74,7 @@ function Events() {
               </svg>
             </span>
             <h3 className="mt-5 text-lg font-bold text-navy">No Events Scheduled</h3>
-            <p className="mt-2 text-[13px] text-muted-fg">Upcoming WBC events will be announced here.</p>
+            <p className="mt-2 text-[15px] text-muted-fg">Upcoming WBC events will be announced here.</p>
           </div>
         </div>
       </section>
