@@ -102,8 +102,8 @@ function Home() {
             </p>
           </div>
           <img
-            src={whoWeAre}
-            alt="Modern office tower glass facade"
+            src={whoWeAre.url}
+            alt="Modern glass office building"
             width={1200}
             height={900}
             loading="lazy"
