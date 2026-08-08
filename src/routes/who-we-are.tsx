@@ -109,28 +109,25 @@ function ValuesOrbit() {
           {VALUES.map((v, i) => {
             const angle = (360 / VALUES.length) * i;
             return (
-              <button
-                key={v.title}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-label={v.title}
-                aria-current={i === active}
-                className="absolute left-1/2 top-1/2 size-0"
-                style={{ transform: `rotate(${angle}deg) translate(0, -46%) translate(0, -${0}px)` }}
-              >
-                <span
-                  className="orbit-counter absolute -translate-x-1/2 -translate-y-1/2"
-                  style={{ transform: `translate(-50%, -50%) rotate(-${angle}deg)`, animationPlayState: paused ? "paused" : "running" }}
-                >
-                  <span
-                    className={`flex size-14 items-center justify-center rounded-full border bg-background shadow-card transition-colors ${
-                      i === active ? "border-orange text-orange" : "border-line text-navy"
-                    }`}
-                  >
-                    <ValueIcon name={v.icon} />
+              <div key={v.title} className="absolute inset-0" style={{ transform: `rotate(${angle}deg)` }}>
+                <div className="absolute left-1/2 top-0 -translate-x-1/2" style={{ transform: `translate(-50%, -14%)` }}>
+                  <span className="block" style={{ transform: `rotate(${-angle}deg)` }}>
+                    <span className="orbit-counter block" style={{ animationPlayState: paused ? "paused" : "running" }}>
+                      <button
+                        type="button"
+                        onClick={() => setActive(i)}
+                        aria-label={v.title}
+                        aria-current={i === active}
+                        className={`flex size-14 items-center justify-center rounded-full border bg-background shadow-card transition-colors ${
+                          i === active ? "border-orange text-orange" : "border-line text-navy hover:border-orange/50"
+                        }`}
+                      >
+                        <ValueIcon name={v.icon} />
+                      </button>
+                    </span>
                   </span>
-                </span>
-              </button>
+                </div>
+              </div>
             );
           })}
         </div>
