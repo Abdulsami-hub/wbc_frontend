@@ -18,7 +18,7 @@ export const Route = createFileRoute("/global-network")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: GlobalNetwork;
+  component: GlobalNetwork,
 });
 
 const PILLARS = [
