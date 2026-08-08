@@ -219,38 +219,111 @@ function WhoWeAre() {
         />
       </section>
 
-      <section className="py-16 lg:py-24">
-        <div className="container-wbc grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-10">
-          <div data-reveal className="rounded-card border border-line bg-background p-7 shadow-card lg:p-12">
-            <p className="text-[14px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Who We Are</p>
-            <p className="mt-7 text-justify text-[17px] leading-[1.9] text-navy/90">
-              The World Business Council (WBC) is an international business support organization headquartered in Paris,
+      <section className="relative overflow-hidden bg-surface py-16 lg:py-24">
+        <div
+          className="pointer-events-none absolute -right-32 -top-24 size-[420px] rounded-full bg-orange/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-32 -left-24 size-[420px] rounded-full bg-navy/10 blur-3xl"
+          aria-hidden="true"
+        />
+
+        <div className="container-wbc relative grid gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-10">
+          <div
+            data-reveal
+            className="relative overflow-hidden rounded-card border border-line bg-background p-7 shadow-card sm:p-10 lg:p-14"
+          >
+            <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent" aria-hidden="true" />
+            <div className="flex items-center gap-4">
+              <span className="flex size-11 items-center justify-center rounded-xl bg-orange/10 text-orange" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-[13px] font-bold tracking-[0.2em] text-orange uppercase">Who We Are</p>
+                <p className="mt-1 text-[19px] font-bold text-navy sm:text-[22px]">Behind every business is a person.</p>
+              </div>
+            </div>
+
+            <span className="mt-8 block h-px w-full bg-line" aria-hidden="true" />
+
+            <p className="mt-8 text-[17px] leading-[1.95] text-navy/85 sm:text-[18px]">
+              <span className="float-left mr-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-orange">T</span>
+              he World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
               them find the right connections, knowledge, support, and opportunities to move forward. Through our
               international network, WBC turns connections into cooperation, ideas into action, and business
               relationships into lasting opportunities for growth.
             </p>
-            <p className="mt-7 text-justify text-[17px] leading-[1.9] text-navy/90">
-              We believe that no business should have to grow alone — and that meaningful connections are built on trust.
+
+            <blockquote className="mt-8 border-l-2 border-orange pl-5 text-[18px] leading-relaxed font-semibold text-navy sm:text-[19px]">
+              “No business should have to grow alone — and meaningful connections are always built on trust.”
+            </blockquote>
+
+            <p className="mt-8 text-[17px] leading-[1.95] text-navy/85 sm:text-[18px]">
               Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
               move forward together. WBC works to create an environment where people and businesses can connect with
               confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
               lasting cooperation, and shared progress across borders.
             </p>
+
+            <dl className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-3">
+              {[
+                { k: "Paris", v: "Global headquarters" },
+                { k: "2026", v: "Founded" },
+                { k: "Worldwide", v: "Council network" },
+              ].map((s) => (
+                <div key={s.k}>
+                  <dt className="text-[22px] font-bold text-navy">{s.k}</dt>
+                  <dd className="mt-1 text-[14px] tracking-[0.06em] text-muted-fg uppercase">{s.v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <div className="flex flex-col gap-8">
-            <article data-reveal className="rounded-card border border-line bg-background p-7 shadow-card">
-              <p className="text-[14px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Our Vision</p>
-              <p className="mt-4 text-[17px] leading-relaxed text-navy/90">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
+            <article
+              data-reveal
+              className="group relative overflow-hidden rounded-card bg-navy p-8 shadow-card sm:p-9"
+            >
+              <span
+                className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
+                aria-hidden="true"
+              />
+              <span className="relative flex size-11 items-center justify-center rounded-xl bg-white/10 text-white" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" />
+                  <circle cx="12" cy="12" r="2.6" />
+                </svg>
+              </span>
+              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-white/70 uppercase">Our Vision</p>
+              <p className="relative mt-4 text-[17px] leading-relaxed text-white sm:text-[18px]">
                 To be the global hub of business excellence, with a local presence in every city, empowering and uniting
                 businesses worldwide through innovation, collaboration, and sustainable development.
               </p>
             </article>
-            <article data-reveal className="rounded-card border border-line bg-background p-7 shadow-card">
-              <p className="text-[14px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Our Mission</p>
-              <p className="mt-4 text-[17px] leading-relaxed text-navy/90">
+
+            <article
+              data-reveal
+              className="group relative overflow-hidden rounded-card border border-line bg-background p-8 shadow-card sm:p-9"
+            >
+              <span
+                className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
+                aria-hidden="true"
+              />
+              <span className="relative flex size-11 items-center justify-center rounded-xl bg-orange/10 text-orange" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <circle cx="12" cy="12" r="8.5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
+                </svg>
+              </span>
+              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-orange uppercase">Our Mission</p>
+              <p className="relative mt-4 text-[17px] leading-relaxed text-navy/85 sm:text-[18px]">
                 We build a global network that empowers businesses through collaboration, innovation, and trust.
               </p>
             </article>
@@ -258,7 +331,8 @@ function WhoWeAre() {
         </div>
       </section>
 
-      <section className="bg-surface py-16 lg:py-24">
+
+      <section className="py-16 lg:py-24">
         <div className="container-wbc">
           <ValuesOrbit />
         </div>
