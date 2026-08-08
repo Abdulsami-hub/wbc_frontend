@@ -6,7 +6,7 @@ const GROUPS = [
     label: "About WBC",
     items: [
       { title: "Who We Are", desc: "Our mission, vision, and values", to: "/who-we-are" },
-      { title: "What We Do", desc: "Programs and global initiatives", to: "/global-network" },
+      { title: "What We Do", desc: "Programs and global initiatives", to: "/what-we-do" },
     ],
   },
   {

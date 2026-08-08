@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
     image: slide1.url,
     alt: "Modern glass business centre at dusk with people in the plaza",
     panel: "bg-navy",
-    secondary: { label: "What We Do", to: "/global-network", className: "bg-white/10 text-orange border border-white/25" },
+    secondary: { label: "What We Do", to: "/what-we-do", className: "bg-white/10 text-orange border border-white/25" },
   },
   {
     eyebrow: "World Business Council",
@@ -40,7 +40,7 @@ const SLIDES: Slide[] = [
     image: slide3.url,
     alt: "Business professionals networking in front of a city skyline at sunset",
     panel: "bg-orange",
-    secondary: { label: "What We Do", to: "/global-network", className: "bg-white/20 text-navy border border-white/30" },
+    secondary: { label: "What We Do", to: "/what-we-do", className: "bg-white/20 text-navy border border-white/30" },
   },
 ];
 
