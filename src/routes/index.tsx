@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroCity from "@/assets/hero-city.jpg";
-import whoWeAre from "@/assets/who-we-are.jpg";
+import whoWeAre from "@/assets/who-we-are-building.webp.asset.json";
 import { Glance } from "@/components/Glance";
 import { HeroSlider } from "@/components/HeroSlider";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -102,8 +102,8 @@ function Home() {
             </p>
           </div>
           <img
-            src={whoWeAre}
-            alt="Modern office tower glass facade"
+            src={whoWeAre.url}
+            alt="Modern glass office building"
             width={1200}
             height={900}
             loading="lazy"
