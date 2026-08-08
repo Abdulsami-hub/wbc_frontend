@@ -38,7 +38,7 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
                 <li key={it.title}>
                   <Link
                     to={it.to}
-                    {...("hash" in it ? { hash: it.hash } : {})}
+                    
                     onClick={onNavigate}
                     className="group block"
                   >
