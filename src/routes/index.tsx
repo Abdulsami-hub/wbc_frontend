@@ -123,19 +123,34 @@ function Home() {
               badge: "V",
               title: "Our Vision",
               body: "To be the global hub of business excellence, with a local presence in every city, empowering and uniting businesses worldwide through innovation, collaboration, and sustainable development.",
+              badgeClass: "bg-orange/10 text-orange",
+              bubbleClass: "bg-orange/10",
             },
             {
               badge: "M",
               title: "Our Mission",
               body: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+              badgeClass: "bg-teal/15 text-teal",
+              bubbleClass: "bg-teal/12",
             },
           ].map((c) => (
-            <article key={c.title} className="rounded-card bg-background p-7 shadow-card">
-              <span className="inline-flex size-9 items-center justify-center rounded-md bg-orange/10 text-[15px] font-bold text-orange">
-                {c.badge}
-              </span>
-              <h3 className="mt-5 text-lg font-bold text-navy">{c.title}</h3>
-              <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{c.body}</p>
+            <article
+              key={c.title}
+              className="group relative overflow-hidden rounded-card bg-background p-7 shadow-card transition-shadow duration-300 hover:shadow-lg"
+            >
+              <span
+                aria-hidden
+                className={`pointer-events-none absolute -top-16 -right-16 size-44 rounded-full ${c.bubbleClass} transition-transform duration-500 ease-out group-hover:scale-150`}
+              />
+              <div className="relative">
+                <span
+                  className={`inline-flex size-9 items-center justify-center rounded-md text-[15px] font-bold ${c.badgeClass}`}
+                >
+                  {c.badge}
+                </span>
+                <h3 className="mt-5 text-lg font-bold text-navy">{c.title}</h3>
+                <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{c.body}</p>
+              </div>
             </article>
           ))}
         </div>
