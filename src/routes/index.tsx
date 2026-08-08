@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
 import { SignalsAtGlance } from "@/components/SignalsAtGlance";
 import { LatestNews } from "@/components/LatestNews";
+import { OurPartners } from "@/components/OurPartners";
 
 
 export const Route = createFileRoute("/")({
@@ -148,18 +149,8 @@ function Home() {
 
       <LatestNews />
 
-      <section className="py-16 lg:py-20">
-        <div className="container-wbc">
-          <SectionHeading
-            eyebrow="Strategic Partnerships"
-            title="Partnership Showcase"
-            description="Developing partnerships with chambers of commerce, governments, and wider social entities to enhance global cooperation and expand impact."
-          />
-          <p data-reveal className="mt-8 border-t border-line pt-8 text-center text-[14px] text-muted-fg">
-            Partnership listings are updated regularly as new collaborations are established.
-          </p>
-        </div>
-      </section>
+      <OurPartners />
+
 
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="pointer-events-none absolute -left-40 -top-40 size-[520px] rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
