@@ -8,7 +8,7 @@ const COLUMNS = [
       { label: "Who We Are", to: "/who-we-are" },
       { label: "What We Do", to: "/what-we-do" },
       { label: "Governance", to: "/about" },
-      { label: "WBC Team", to: "/about" },
+      { label: "WBC Team", to: "/wbc-team" },
     ],
   },
   {

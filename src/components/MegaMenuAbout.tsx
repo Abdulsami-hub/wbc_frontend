@@ -13,7 +13,7 @@ const GROUPS = [
     label: "Leadership",
     items: [
       { title: "Governance", desc: "Leadership structure and policies", to: "/about", hash: "governance" },
-      { title: "WBC Team", desc: "Meet the WBC team", to: "/about", hash: "team" },
+      { title: "WBC Team", desc: "Meet the WBC team", to: "/wbc-team" },
     ],
   },
 ] as const;

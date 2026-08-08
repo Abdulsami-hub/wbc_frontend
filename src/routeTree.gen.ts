@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as WbcTeamRouteImport } from './routes/wbc-team'
 import { Route as WhatWeDoRouteImport } from './routes/what-we-do'
 import { Route as WhoWeAreRouteImport } from './routes/who-we-are'
 
@@ -48,6 +49,11 @@ const MembershipRoute = MembershipRouteImport.update({
   path: '/membership',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WbcTeamRoute = WbcTeamRouteImport.update({
+  id: '/wbc-team',
+  path: '/wbc-team',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WhatWeDoRoute = WhatWeDoRouteImport.update({
   id: '/what-we-do',
   path: '/what-we-do',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
   '/membership': typeof MembershipRoute
+  '/wbc-team': typeof WbcTeamRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/membership'
+    | '/wbc-team'
     | '/what-we-do'
     | '/who-we-are'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
   MembershipRoute: typeof MembershipRoute
+  WbcTeamRoute: typeof WbcTeamRoute
   WhatWeDoRoute: typeof WhatWeDoRoute
   WhoWeAreRoute: typeof WhoWeAreRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembershipRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/wbc-team': {
+      id: '/wbc-team'
+      path: '/wbc-team'
+      fullPath: '/wbc-team'
+      preLoaderRoute: typeof WbcTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/what-we-do': {
       id: '/what-we-do'
       path: '/what-we-do'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
   MembershipRoute: MembershipRoute,
+  WbcTeamRoute: WbcTeamRoute,
   WhatWeDoRoute: WhatWeDoRoute,
   WhoWeAreRoute: WhoWeAreRoute,
 }
