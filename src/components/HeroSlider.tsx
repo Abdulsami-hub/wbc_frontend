@@ -87,7 +87,7 @@ export function HeroSlider() {
               style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
             >
               <div className={`${s.panel} grid h-full lg:grid-cols-[1fr_1fr]`}>
-                <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
+                <div className="container-wbc !mx-0 !max-w-none flex flex-col justify-center py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
                   <div className="lg:max-w-[560px]">
                     <p
                       className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
