@@ -91,7 +91,7 @@ export function HeroSlider() {
 
                   <div className="lg:max-w-[560px]">
                     <p
-                      className={`${active ? "intro-1" : ""} text-[15px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
+                      className={`${active ? "intro-1" : ""} font-display text-[13px] font-normal tracking-[0.14em] text-white/90 uppercase`}
                     >
                       {s.eyebrow}
                     </p>
