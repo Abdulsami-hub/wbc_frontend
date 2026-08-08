@@ -7,6 +7,7 @@ import { HeroSlider } from "@/components/HeroSlider";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CTASection } from "@/components/CTASection";
 import { SignalsAtGlance } from "@/components/SignalsAtGlance";
+import { LatestNews } from "@/components/LatestNews";
 
 
 export const Route = createFileRoute("/")({
@@ -161,6 +162,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <LatestNews />
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc">
