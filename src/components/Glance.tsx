@@ -19,8 +19,8 @@ export function Glance() {
         className="absolute inset-0 size-full object-cover opacity-60"
       />
       <div className="container-wbc relative py-14 lg:py-16">
-        <h2 className="text-center text-xl font-bold text-white lg:text-2xl">WBC at a Glance</h2>
-        <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+        <h2 data-reveal className="text-center text-xl font-bold text-white lg:text-2xl">WBC at a Glance</h2>
+        <ul data-reveal data-reveal-group className="mt-8 grid gap-4 sm:grid-cols-3">
           {STATS.map((s) => (
             <li key={s.label} className="rounded-card bg-white/95 px-6 py-6 text-center shadow-card">
               <p className="text-2xl font-bold text-orange lg:text-[28px]">{s.value}</p>

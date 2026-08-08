@@ -47,7 +47,8 @@ function Events() {
             description="Stay informed about WBC gatherings that connect businesses, institutions, and partners across borders."
           />
 
-          <div role="group" aria-label="Filter events" className="mt-8 flex flex-wrap justify-center gap-3">
+          <div role="group" aria-label="Filter events" data-reveal
+            className="mt-8 flex flex-wrap justify-center gap-3">
             {FILTERS.map((f) => (
               <button
                 key={f}
@@ -65,7 +66,7 @@ function Events() {
             ))}
           </div>
 
-          <div className="mx-auto mt-12 max-w-lg rounded-card border border-line bg-surface px-6 py-14 text-center">
+          <div data-reveal className="mx-auto mt-12 max-w-lg rounded-card border border-line bg-surface px-6 py-14 text-center">
             <span className="inline-flex size-12 items-center justify-center rounded-full bg-background" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-orange">
                 <rect x="3" y="5" width="18" height="16" rx="2" />

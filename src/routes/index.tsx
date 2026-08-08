@@ -86,17 +86,17 @@ function Home() {
     <>
       <section className="relative isolate bg-navy">
         <div className="container-wbc grid items-center gap-8 py-14 lg:grid-cols-2 lg:gap-12 lg:py-0">
-          <div className="fade-up max-w-xl lg:py-24">
-            <p className="text-[12px] font-semibold tracking-[0.22em] text-white/80 uppercase">World Business Council</p>
-            <h1 className="mt-4 text-[30px] leading-[1.15] font-bold text-white sm:text-4xl lg:text-[42px]">
+          <div className="max-w-xl lg:py-24">
+            <p className="intro-1 text-[12px] font-semibold tracking-[0.22em] text-white/80 uppercase">World Business Council</p>
+            <h1 className="intro-2 mt-4 text-[30px] leading-[1.15] font-bold text-white sm:text-4xl lg:text-[42px]">
               Connecting Businesses.
               <br />
               Creating Opportunities.
             </h1>
-            <p className="mt-5 text-[14px] leading-relaxed text-white/80">
+            <p className="intro-3 mt-5 text-[14px] leading-relaxed text-white/80">
               Building a global network that empowers businesses through collaboration, innovation, and trust.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="intro-4 mt-8 flex flex-wrap gap-3">
               <Link to="/about" className="btn-orange">
                 Who We Are
               </Link>
@@ -106,7 +106,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="lg:h-[440px]">
+          <div className="intro-img lg:h-[440px]">
             <img
               src={heroCity}
               alt="Modern glass business centre at dusk with people in the plaza"
@@ -124,7 +124,7 @@ function Home() {
         <div className="container-wbc grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
             <SectionHeading align="left" title="Who We Are" />
-            <p className="mt-6 rounded-card border border-line p-6 text-[13.5px] leading-relaxed text-muted-fg">
+            <p data-reveal className="mt-6 rounded-card border border-line p-6 text-[13.5px] leading-relaxed text-muted-fg">
               The World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
@@ -140,6 +140,7 @@ function Home() {
             height={900}
             loading="lazy"
             decoding="async"
+            data-reveal
             className="aspect-[4/3] w-full rounded-card object-cover shadow-card"
           />
         </div>
@@ -148,7 +149,7 @@ function Home() {
       <Glance />
 
       <section className="bg-surface py-16 lg:py-20">
-        <div className="container-wbc grid gap-6 lg:grid-cols-2">
+        <div data-reveal data-reveal-group className="container-wbc grid gap-6 lg:grid-cols-2">
           {[
             {
               badge: "V",
@@ -179,7 +180,7 @@ function Home() {
             title="Partnership Showcase"
             description="Developing partnerships with chambers of commerce, governments, and wider social entities to enhance global cooperation and expand impact."
           />
-          <p className="mt-8 border-t border-line pt-8 text-center text-[12px] text-muted-fg">
+          <p data-reveal className="mt-8 border-t border-line pt-8 text-center text-[12px] text-muted-fg">
             Partnership listings are updated regularly as new collaborations are established.
           </p>
         </div>
@@ -188,7 +189,7 @@ function Home() {
       <section className="bg-surface py-16 lg:py-20">
         <div className="container-wbc">
           <SectionHeading title="Our Values" />
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {VALUES.map((v, i) => (
               <li key={v.title} className="rounded-card bg-background p-6 shadow-card">
                 <span className="text-[11px] font-semibold text-orange">0{i + 1}</span>
@@ -207,7 +208,7 @@ function Home() {
             title="What We Do"
             description="Explore how WBC connects, supports, and empowers businesses worldwide."
           />
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s) => (
               <li key={s.title} className="rounded-card border border-line bg-background p-6 transition-shadow hover:shadow-card">
                 <span className="inline-flex size-9 items-center justify-center rounded-md bg-navy/5" aria-hidden="true">
@@ -224,7 +225,7 @@ function Home() {
               </li>
             ))}
           </ul>
-          <div className="mt-10 text-center">
+          <div data-reveal className="mt-10 text-center">
             <Link to="/global-network" className="text-[13px] font-semibold text-orange">
               View all services →
             </Link>

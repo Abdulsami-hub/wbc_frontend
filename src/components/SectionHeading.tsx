@@ -17,7 +17,7 @@ export function SectionHeading({
 }) {
   const centered = align === "center";
   return (
-    <div className={centered ? "mx-auto max-w-2xl text-center" : "max-w-xl"}>
+    <div data-reveal className={centered ? "mx-auto max-w-2xl text-center" : "max-w-xl"}>
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <Tag
         className={`mt-3 text-[26px] leading-tight font-bold sm:text-3xl lg:text-[34px] ${

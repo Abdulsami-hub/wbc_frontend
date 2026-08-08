@@ -50,7 +50,7 @@ function Contact() {
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div>
+          <div data-reveal>
             <h2 className="text-[22px] font-bold text-navy lg:text-2xl">Contact Information</h2>
             <span className="accent-rule mt-4" />
             <p className="mt-5 text-[13.5px] leading-relaxed text-muted-fg">
@@ -78,7 +78,7 @@ function Contact() {
             </div>
           </div>
 
-          <div className="rounded-card border border-line bg-background p-6 shadow-card lg:p-8">
+          <div data-reveal className="rounded-card border border-line bg-background p-6 shadow-card lg:p-8">
             <h2 className="text-[22px] font-bold text-navy lg:text-2xl">Send Us a Message</h2>
             <span className="accent-rule mt-4 mb-6" />
             <ContactForm />
