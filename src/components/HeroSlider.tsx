@@ -69,64 +69,71 @@ export function HeroSlider() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {SLIDES.map((s, i) => {
-        const active = i === index;
-        return (
-          <div
-            key={i}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${SLIDES.length}`}
-            aria-hidden={!active}
-            className={`${active ? "relative opacity-100" : "pointer-events-none absolute inset-0 opacity-0"} transition-opacity duration-700 ease-out`}
-          >
-            <div className={`${s.panel} grid lg:grid-cols-[1fr_1fr]`}>
-              <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
-                <div className="lg:max-w-[560px]">
-                  <p
-                    className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
-                  >
-                    {s.eyebrow}
-                  </p>
-                  <h1
-                    className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}
-                  >
-                    {s.title.map((t, k) => (
-                      <span key={k} className="block">
-                        {t}
-                      </span>
-                    ))}
-                  </h1>
-                  <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[14px] leading-relaxed text-white/85`}>
-                    {s.description}
-                  </p>
-                  <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
-                    <Link to="/about" className="btn-outline-light">
-                      Who We Are
-                    </Link>
-                    <Link to={s.secondary.to} className={`btn-base ${s.secondary.className}`}>
-                      {s.secondary.label}
-                    </Link>
+      <div
+        className="flex transition-transform duration-700 ease-out"
+        style={{ transform: `translateX(-${index * (100 / SLIDES.length)}%)`, width: `${SLIDES.length * 100}%` }}
+      >
+        {SLIDES.map((s, i) => {
+          const active = i === index;
+          return (
+            <div
+              key={i}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${SLIDES.length}`}
+              aria-hidden={!active}
+              inert={!active}
+              className="w-full shrink-0"
+              style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
+            >
+              <div className={`${s.panel} grid lg:grid-cols-[1fr_1fr]`}>
+                <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
+                  <div className="lg:max-w-[560px]">
+                    <p
+                      className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
+                    >
+                      {s.eyebrow}
+                    </p>
+                    <h1
+                      className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}
+                    >
+                      {s.title.map((t, k) => (
+                        <span key={k} className="block">
+                          {t}
+                        </span>
+                      ))}
+                    </h1>
+                    <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[14px] leading-relaxed text-white/85`}>
+                      {s.description}
+                    </p>
+                    <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
+                      <Link to="/about" className="btn-outline-light">
+                        Who We Are
+                      </Link>
+                      <Link to={s.secondary.to} className={`btn-base ${s.secondary.className}`}>
+                        {s.secondary.label}
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className={active ? "intro-img" : ""}>
-                <img
-                  src={s.image}
-                  alt={s.alt}
-                  width={1600}
-                  height={776}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  fetchPriority={i === 0 ? "high" : "auto"}
-                  decoding="async"
-                  className="h-56 w-full object-cover sm:h-80 lg:h-full lg:min-h-[420px]"
-                />
+                <div className={active ? "intro-img" : ""}>
+                  <img
+                    src={s.image}
+                    alt={s.alt}
+                    width={1600}
+                    height={776}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchPriority={i === 0 ? "high" : "auto"}
+                    decoding="async"
+                    className="h-56 w-full object-cover sm:h-80 lg:h-full lg:min-h-[420px]"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
 
       <div className="absolute bottom-4 left-0 z-10 lg:bottom-8">
         <div className="container-wbc flex items-center gap-3">
