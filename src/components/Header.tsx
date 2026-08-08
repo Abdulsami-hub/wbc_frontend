@@ -2,16 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { MegaMenuAbout } from "./MegaMenuAbout";
+import { MegaMenuMembership } from "./MegaMenuMembership";
 
 export const NAV_LINKS = [
   { label: "About Us", to: "/about" },
   { label: "Global Network", to: "/global-network" },
   { label: "Membership", to: "/membership" },
-  { label: "Our Members", to: "/our-members" },
-
   { label: "Events", to: "/events" },
   { label: "Contact", to: "/contact" },
 ] as const;
+
 
 function GlobeIcon() {
   return (
