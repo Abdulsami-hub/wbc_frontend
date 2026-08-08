@@ -15,7 +15,7 @@ const COLUMNS = [
     title: "Network",
     links: [
       { label: "WBC Headquarters", to: "/global-network" },
-      { label: "WBC Affiliates", to: "/global-network" },
+      { label: "WBC Affiliates", to: "/affiliates" },
       { label: "Institutional Members", to: "/membership" },
       { label: "Strategic Partners", to: "/global-network" },
     ],

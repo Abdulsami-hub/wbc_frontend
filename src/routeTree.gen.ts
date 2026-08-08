@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliatesRoute = AffiliatesRouteImport.update({
+  id: '/affiliates',
+  path: '/affiliates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -80,6 +86,7 @@ const WhoWeAreRoute = WhoWeAreRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliates': typeof AffiliatesRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliates': typeof AffiliatesRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliates': typeof AffiliatesRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/affiliates'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/affiliates'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/affiliates'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AffiliatesRoute: typeof AffiliatesRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliates': {
+      id: '/affiliates'
+      path: '/affiliates'
+      fullPath: '/affiliates'
+      preLoaderRoute: typeof AffiliatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -258,6 +278,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AffiliatesRoute: AffiliatesRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
