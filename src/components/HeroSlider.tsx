@@ -70,7 +70,7 @@ export function HeroSlider() {
       onBlur={() => setPaused(false)}
     >
       <div
-        className="flex transition-transform duration-700 ease-out"
+        className="flex items-stretch transition-transform duration-700 ease-out"
         style={{ transform: `translateX(-${index * (100 / SLIDES.length)}%)`, width: `${SLIDES.length * 100}%` }}
       >
         {SLIDES.map((s, i) => {
@@ -83,11 +83,11 @@ export function HeroSlider() {
               aria-label={`${i + 1} of ${SLIDES.length}`}
               aria-hidden={!active}
               inert={!active}
-              className="w-full shrink-0"
+              className="h-full w-full shrink-0"
               style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
             >
-              <div className={`${s.panel} grid lg:grid-cols-[1fr_1fr]`}>
-                <div className="container-wbc !mx-0 !max-w-none py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
+              <div className={`${s.panel} grid h-full lg:grid-cols-[1fr_1fr]`}>
+                <div className="container-wbc !mx-0 !max-w-none flex flex-col justify-center py-14 lg:ml-auto lg:max-w-[640px] lg:py-28">
                   <div className="lg:max-w-[560px]">
                     <p
                       className={`${active ? "intro-1" : ""} text-[13px] font-semibold tracking-[0.22em] text-white/90 uppercase`}
