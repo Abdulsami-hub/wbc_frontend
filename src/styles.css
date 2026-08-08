@@ -255,3 +255,26 @@
     animation: none !important;
   }
 }
+
+/* ---- Partner marquee ---- */
+@keyframes marquee-left {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes marquee-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@utility marquee-track-left {
+  animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+}
+@utility marquee-track-right {
+  animation: marquee-right var(--marquee-duration, 40s) linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-left,
+  .marquee-track-right {
+    animation: none !important;
+  }
+}
