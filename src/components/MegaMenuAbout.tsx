@@ -12,7 +12,7 @@ const GROUPS = [
   {
     label: "Leadership",
     items: [
-      { title: "Governance", desc: "Leadership structure and policies", to: "/about", hash: "governance" },
+      { title: "Governance", desc: "Leadership structure and policies", to: "/governance" },
       { title: "WBC Team", desc: "Meet the WBC team", to: "/wbc-team" },
     ],
   },
@@ -38,7 +38,7 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
                 <li key={it.title}>
                   <Link
                     to={it.to}
-                    {...("hash" in it ? { hash: it.hash } : {})}
+                    
                     onClick={onNavigate}
                     className="group block"
                   >

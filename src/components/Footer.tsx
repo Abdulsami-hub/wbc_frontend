@@ -7,7 +7,7 @@ const COLUMNS = [
     links: [
       { label: "Who We Are", to: "/who-we-are" },
       { label: "What We Do", to: "/what-we-do" },
-      { label: "Governance", to: "/about" },
+      { label: "Governance", to: "/governance" },
       { label: "WBC Team", to: "/wbc-team" },
     ],
   },
