@@ -6,7 +6,7 @@ const GROUPS = [
     label: "About WBC",
     items: [
       { title: "Who We Are", desc: "Our mission, vision, and values", to: "/about", hash: "who-we-are" },
-      { title: "What We Do", desc: "Programs and global initiatives", to: "/global-network", hash: undefined },
+      { title: "What We Do", desc: "Programs and global initiatives", to: "/global-network" },
     ],
   },
   {
@@ -38,7 +38,7 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
                 <li key={it.title}>
                   <Link
                     to={it.to}
-                    hash={it.hash}
+                    {...("hash" in it ? { hash: it.hash } : {})}
                     onClick={onNavigate}
                     className="group block"
                   >
