@@ -332,7 +332,7 @@ function WhoWeAre() {
       </section>
 
 
-      <section className="bg-surface py-16 lg:py-24">
+      <section className="py-16 lg:py-24">
         <div className="container-wbc">
           <ValuesOrbit />
         </div>
