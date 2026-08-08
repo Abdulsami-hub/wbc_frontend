@@ -332,6 +332,12 @@ function WhoWeAre() {
       </section>
 
 
+      <section className="py-16 lg:py-24">
+        <div className="container-wbc">
+          <ValuesOrbit />
+        </div>
+      </section>
+
       <section className="relative isolate overflow-hidden bg-cta-blue py-16 lg:py-24">
         <div data-reveal className="container-wbc relative text-center">
           <h2 className="text-[28px] font-bold leading-tight text-white sm:text-[36px] lg:text-[42px]">
