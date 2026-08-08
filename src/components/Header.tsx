@@ -7,6 +7,8 @@ export const NAV_LINKS = [
   { label: "About Us", to: "/about" },
   { label: "Global Network", to: "/global-network" },
   { label: "Membership", to: "/membership" },
+  { label: "Our Members", to: "/our-members" },
+
   { label: "Events", to: "/events" },
   { label: "Contact", to: "/contact" },
 ] as const;
