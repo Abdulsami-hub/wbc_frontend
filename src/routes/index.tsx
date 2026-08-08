@@ -33,31 +33,14 @@ export const Route = createFileRoute("/")({
 });
 
 const VALUES = [
-  {
-    title: "Inclusivity",
-    body: "Embrace diversity and welcome individuals of all genders, nationalities, cultures, and backgrounds, recognising the strength that comes from a blend of different perspectives.",
-  },
-  {
-    title: "Collaboration",
-    body: "Foster a culture of partnership, encouraging businesses to share objectives, exchange knowledge, and collectively contribute to the growth of the international business network.",
-  },
-  {
-    title: "Innovation",
-    body: "Promote a mindset of innovation, driving businesses to explore new ideas, technologies, and approaches to adapt and thrive in the dynamic global business environment.",
-  },
-  {
-    title: "Integrity",
-    body: "Uphold the highest standards of honesty, transparency, and ethical behaviour, ensuring trust and credibility in all interactions with members, partners, and stakeholders.",
-  },
-  {
-    title: "Excellence",
-    body: "Strive for excellence in all services and activities, committed to delivering high quality support, networking opportunities, and resources to advance the success of businesses.",
-  },
-  {
-    title: "Global Citizenship",
-    body: "Advocate for practices that contribute to a prosperous and resilient global business environment, reflecting a commitment to responsible global citizenship and sustainable business practices.",
-  },
+  { title: "Inclusivity", body: "Embracing diversity and valuing different perspectives." },
+  { title: "Collaboration", body: "Connecting people and businesses to create shared success." },
+  { title: "Innovation", body: "Encouraging creativity and forward-thinking solutions." },
+  { title: "Integrity & Excellence", body: "Upholding ethics, transparency, and high standards." },
+  { title: "Sustainable Development", body: "Promoting responsible growth for a better future." },
+  { title: "Global Citizenship", body: "Supporting positive impact on communities and the world." },
 ] as const;
+
 
 const SERVICES = [
   {
@@ -178,20 +161,39 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-surface py-16 lg:py-20">
-        <div className="container-wbc">
-          <SectionHeading title="Our Values" />
-          <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {VALUES.map((v, i) => (
-              <li key={v.title} className="rounded-card bg-background p-6 shadow-card">
-                <span className="text-[12px] font-semibold text-orange">0{i + 1}</span>
-                <h3 className="mt-2 text-[17px] font-bold text-navy">{v.title}</h3>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{v.body}</p>
+      <section className="relative overflow-hidden py-20 lg:py-28">
+        <div className="pointer-events-none absolute -left-40 -top-40 size-[520px] rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
+        <div className="container-wbc relative">
+          <p data-reveal className="font-display text-[12px] tracking-[0.24em] text-muted-fg uppercase">
+            Our Values
+          </p>
+          <h2 data-reveal className="mt-4 max-w-3xl text-[38px] font-extrabold leading-[1.05] tracking-tight text-navy sm:text-[52px] lg:text-[64px]">
+            Six principles of WBC.
+          </h2>
+          <p data-reveal className="mt-6 max-w-2xl text-[18px] leading-relaxed text-muted-fg">
+            These values shape how we convene institutions, support members and partners, and turn
+            international connections into practical cooperation.
+          </p>
+
+          <ul data-reveal data-reveal-group className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {VALUES.map((v) => (
+              <li
+                key={v.title}
+                className="group relative border border-line bg-background p-8 transition-colors hover:border-orange/40"
+              >
+                <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
+                <span
+                  className="pointer-events-none absolute right-5 top-5 size-6 border-r border-t border-line transition-colors group-hover:border-orange/50"
+                  aria-hidden="true"
+                />
+                <h3 className="mt-8 text-[22px] font-bold tracking-tight text-navy">{v.title}</h3>
+                <p className="mt-4 text-[17px] leading-relaxed text-muted-fg">{v.body}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
+
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc">
