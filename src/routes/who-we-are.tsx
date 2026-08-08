@@ -332,13 +332,12 @@ function WhoWeAre() {
       </section>
 
 
-      <section className="relative isolate overflow-hidden bg-gradient-to-r from-navy-deep via-navy to-navy-dark py-16 lg:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--color-orange),transparent_40%)] opacity-10" aria-hidden="true" />
+      <section className="relative isolate overflow-hidden bg-cta-blue py-16 lg:py-24">
         <div data-reveal className="container-wbc relative text-center">
           <h2 className="text-[28px] font-bold leading-tight text-white sm:text-[36px] lg:text-[42px]">
             Explore What We Do
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-white/80 sm:text-[17px]">
+          <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-white/85 sm:text-[17px]">
             Discover the services and activities WBC delivers worldwide.
           </p>
           <Link to="/global-network" className="btn-orange mt-9">
