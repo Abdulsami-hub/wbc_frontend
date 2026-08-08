@@ -161,20 +161,39 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-surface py-16 lg:py-20">
-        <div className="container-wbc">
-          <SectionHeading title="Our Values" />
-          <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {VALUES.map((v, i) => (
-              <li key={v.title} className="rounded-card bg-background p-6 shadow-card">
-                <span className="text-[12px] font-semibold text-orange">0{i + 1}</span>
-                <h3 className="mt-2 text-[17px] font-bold text-navy">{v.title}</h3>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{v.body}</p>
+      <section className="relative overflow-hidden py-20 lg:py-28">
+        <div className="pointer-events-none absolute -left-40 -top-40 size-[520px] rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
+        <div className="container-wbc relative">
+          <p data-reveal className="font-display text-[12px] tracking-[0.24em] text-muted-fg uppercase">
+            Our Values
+          </p>
+          <h2 data-reveal className="mt-4 max-w-3xl text-[38px] font-extrabold leading-[1.05] tracking-tight text-navy sm:text-[52px] lg:text-[64px]">
+            Six principles of WBC.
+          </h2>
+          <p data-reveal className="mt-6 max-w-2xl text-[18px] leading-relaxed text-muted-fg">
+            These values shape how we convene institutions, support members and partners, and turn
+            international connections into practical cooperation.
+          </p>
+
+          <ul data-reveal data-reveal-group className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {VALUES.map((v) => (
+              <li
+                key={v.title}
+                className="group relative border border-line bg-background p-8 transition-colors hover:border-orange/40"
+              >
+                <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
+                <span
+                  className="pointer-events-none absolute right-5 top-5 size-6 border-r border-t border-line transition-colors group-hover:border-orange/50"
+                  aria-hidden="true"
+                />
+                <h3 className="mt-8 text-[22px] font-bold tracking-tight text-navy">{v.title}</h3>
+                <p className="mt-4 text-[17px] leading-relaxed text-muted-fg">{v.body}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
+
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc">
