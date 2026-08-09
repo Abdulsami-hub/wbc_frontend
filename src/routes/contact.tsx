@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import contactBuilding from "@/assets/contact-building.jpg";
-import { PageHero } from "@/components/PageHero";
+import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
+
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -39,14 +40,15 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   return (
     <>
-      <PageHero
-        image={contactBuilding}
-        width={1600}
-        height={800}
+      <SplitHero
         eyebrow="Get in Touch"
         title="Contact Us"
         description="Questions about membership, partnerships, or events? Our team in Paris is here to help."
+        tags={["Membership", "Partnerships", "Media"]}
+        image={contactBuilding}
+        imageAlt="WBC headquarters building in Paris"
       />
+
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-2 lg:gap-14">
