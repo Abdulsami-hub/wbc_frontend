@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import aboutHero from "@/assets/about-hero.jpg";
-import { PageHero } from "@/components/PageHero";
+import { SplitHero } from "@/components/SplitHero";
 import { Glance } from "@/components/Glance";
 import { CTASection } from "@/components/CTASection";
+
 
 export const Route = createFileRoute("/about")({
   head: () => ({
