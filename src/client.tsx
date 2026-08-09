@@ -1,19 +1,25 @@
 import { StrictMode, startTransition } from "react";
 import { createRoot } from "react-dom/client";
-import { StartClient } from "@tanstack/react-start/client";
+import { RouterProvider } from "@tanstack/react-router";
+import { getRouter } from "./router";
 
 /**
- * Static hosting entry: mount with createRoot so we don't need SSR HTML hydration.
- * Used when the site is deployed from `dist/` without a Node server.
+ * Static-hosting entry (no SSR document).
+ * Avoids StartClient/hydrate, which requires window.$_TSR bootstrap data
+ * that only exists in server-rendered HTML.
  */
-const mount = () => {
+function mount() {
+  const router = getRouter();
+  const el = document.getElementById("root");
+  if (!el) throw new Error('Missing #root element in index.html');
+
   startTransition(() => {
-    createRoot(document).render(
+    createRoot(el).render(
       <StrictMode>
-        <StartClient />
+        <RouterProvider router={router} />
       </StrictMode>,
     );
   });
-};
+}
 
 mount();

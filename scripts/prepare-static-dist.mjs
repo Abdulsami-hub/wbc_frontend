@@ -82,6 +82,7 @@ if (!existsSync(join(staging, "index.html"))) {
     <link rel="stylesheet" crossorigin href="/assets/${cssEntry}" />
   </head>
   <body>
+    <div id="root"></div>
     <script type="module" crossorigin src="/assets/${jsEntry}"></script>
   </body>
 </html>
