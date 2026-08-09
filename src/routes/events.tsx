@@ -49,15 +49,17 @@ const PROGRAMS = [
 function Events() {
   return (
     <>
-      <PageHero
-        image={eventsImg}
-        width={1600}
-        height={800}
-        breadcrumb={[{ label: "Events" }]}
+      <SplitHero
         eyebrow="Global Programme"
         title="Events"
         description="Summits, forums, conferences, exhibitions, and roundtables bringing the WBC network together."
+        tags={["Forums", "Networking", "Trade Missions"]}
+        image={eventsImg}
+        imageAlt="Delegates attending an international WBC business forum"
+        ctaLabel="Get Event Updates"
+        ctaTo="/contact"
       />
+
 
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
