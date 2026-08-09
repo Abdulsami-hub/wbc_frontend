@@ -26,15 +26,17 @@ export const Route = createFileRoute("/about")({
 function About() {
   return (
     <>
-      <PageHero
-        image={aboutHero}
-        breadcrumb={[{ label: "About Us" }]}
-        width={1600}
-        height={800}
+      <SplitHero
         eyebrow="Organization Overview"
         title="About Us"
         description="An international business support organization connecting businesses, entrepreneurs, and institutions across the world."
+        tags={["Paris Headquarters", "Global Network", "Founded 2026"]}
+        image={aboutHero}
+        imageAlt="Modern office district representing the World Business Council"
+        ctaLabel="Who We Are"
+        ctaTo="/who-we-are"
       />
+
 
       <section id="who-we-are" className="bg-surface py-16 lg:py-20">
         <div className="container-wbc">
