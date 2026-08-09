@@ -132,7 +132,7 @@ function PersonCard({ member, onOpen }: { member: Member; onOpen: () => void }) 
   const { name, role, image } = member;
   return (
     <li className="group overflow-hidden border border-line bg-background transition-shadow hover:shadow-card">
-      <button type="button" onClick={onOpen} className="block w-full text-left">
+      <button type="button" onClick={onOpen} className="block w-full text-start">
         <img
           src={image}
           alt={`${name}, ${role} at the World Business Council`}
@@ -363,7 +363,7 @@ function WbcTeam() {
           <hr data-reveal className="mt-14 border-line" />
 
           <Link to="/contact" className="btn-orange mt-10">
-            Contact WBC to Start a Conversation <span aria-hidden="true">→</span>
+            Contact WBC to Start a Conversation <span aria-hidden="true" className="rtl-mirror">→</span>
           </Link>
         </div>
       </section>

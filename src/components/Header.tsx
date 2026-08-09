@@ -54,7 +54,7 @@ export function Header() {
 
         <div className="flex items-center gap-2 lg:gap-3">
           <LanguageSwitcher className="hidden lg:block" />
-          <Link to="/membership" hash="join" className="btn-orange hidden !min-h-9 !px-4 !text-[12px] lg:inline-flex">
+          <Link to="/become-a-member" className="btn-orange hidden !min-h-9 !px-4 !text-[12px] lg:inline-flex">
             {t("cta.join")}
           </Link>
 
@@ -109,7 +109,7 @@ export function Header() {
               <LanguageSwitcher />
             </div>
 
-            <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange mb-4">
+            <Link to="/become-a-member" onClick={() => setOpen(false)} className="btn-orange mb-4">
               {t("cta.join")}
             </Link>
           </nav>

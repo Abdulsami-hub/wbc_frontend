@@ -77,9 +77,9 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
   const a = ACCENT[cat.accent];
   return (
     <li data-reveal className="group relative overflow-hidden rounded-card border border-line bg-background shadow-card">
-      <span className={`absolute inset-y-0 left-0 w-1 ${a.bar}`} aria-hidden="true" />
+      <span className={`absolute inset-y-0 start-0 w-1 ${a.bar}`} aria-hidden="true" />
       <span
-        className={`pointer-events-none absolute -right-16 -top-16 size-56 rounded-full blur-2xl transition-opacity duration-500 ${a.glow} opacity-60 group-hover:opacity-100`}
+        className={`pointer-events-none absolute -end-16 -top-16 size-56 rounded-full blur-2xl transition-opacity duration-500 ${a.glow} opacity-60 group-hover:opacity-100`}
         aria-hidden="true"
       />
       <div className="relative p-6 sm:p-8 lg:p-10">
@@ -147,7 +147,7 @@ function OurMembers() {
               href="#directory"
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
-              Go to member profiles <span aria-hidden="true">→</span>
+              Go to member profiles <span aria-hidden="true" className="rtl-mirror">→</span>
             </a>
           </div>
         </div>
@@ -192,7 +192,7 @@ function OurMembers() {
 
           <div data-reveal className="mt-12">
             <Link to="/membership" hash="join" className="btn-orange">
-              View Membership Categories <span aria-hidden="true">→</span>
+              View Membership Categories <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>
@@ -202,7 +202,7 @@ function OurMembers() {
         title="Become Part of the Network"
         description="Join WBC to appear in the members directory and connect with organizations across the globe."
         ctaLabel="Become a Member"
-        to="/contact"
+        to="/become-a-member"
       />
     </>
   );

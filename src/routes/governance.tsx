@@ -168,7 +168,7 @@ function Governance() {
               to="/contact"
               className="intro-4 mt-8 inline-flex items-center gap-3 border-b border-white pb-1 text-[16px] font-bold text-white"
             >
-              Contact the governance office <span aria-hidden="true">→</span>
+              Contact the governance office <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>
@@ -286,7 +286,7 @@ function Governance() {
                     type="button"
                     onClick={() => setOpen(open === i ? -1 : i)}
                     aria-expanded={open === i}
-                    className="flex w-full items-center justify-between gap-6 px-5 py-6 text-left transition-colors hover:bg-surface sm:px-8"
+                    className="flex w-full items-center justify-between gap-6 px-5 py-6 text-start transition-colors hover:bg-surface sm:px-8"
                   >
                     <span className="text-[18px] leading-snug font-bold text-navy sm:text-[20px]">{f.q}</span>
                     <svg

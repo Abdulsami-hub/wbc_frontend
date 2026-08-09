@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AffiliatesRouteImport } from './routes/affiliates'
+import { Route as BecomeAMemberRouteImport } from './routes/become-a-member'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
@@ -35,6 +36,11 @@ const AboutRoute = AboutRouteImport.update({
 const AffiliatesRoute = AffiliatesRouteImport.update({
   id: '/affiliates',
   path: '/affiliates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BecomeAMemberRoute = BecomeAMemberRouteImport.update({
+  id: '/become-a-member',
+  path: '/become-a-member',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliates': typeof AffiliatesRoute
+  '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliates': typeof AffiliatesRoute
+  '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliates': typeof AffiliatesRoute
+  '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/global-network': typeof GlobalNetworkRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliates'
+    | '/become-a-member'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliates'
+    | '/become-a-member'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliates'
+    | '/become-a-member'
     | '/contact'
     | '/events'
     | '/global-network'
@@ -175,6 +187,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AffiliatesRoute: typeof AffiliatesRoute
+  BecomeAMemberRoute: typeof BecomeAMemberRoute
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   GlobalNetworkRoute: typeof GlobalNetworkRoute
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/affiliates'
       fullPath: '/affiliates'
       preLoaderRoute: typeof AffiliatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/become-a-member': {
+      id: '/become-a-member'
+      path: '/become-a-member'
+      fullPath: '/become-a-member'
+      preLoaderRoute: typeof BecomeAMemberRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AffiliatesRoute: AffiliatesRoute,
+  BecomeAMemberRoute: BecomeAMemberRoute,
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   GlobalNetworkRoute: GlobalNetworkRoute,
@@ -292,3 +313,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -214,7 +214,7 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
                   type="button"
                   onClick={() => setOpen(isOpen ? null : c.name)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
+                  className="flex w-full items-center justify-between gap-3 px-5 py-4 text-start"
                 >
                   <span className="text-[16px] font-bold text-navy">{c.name}</span>
                   <span className={isOpen ? "text-orange" : "text-muted-fg"}>
@@ -265,7 +265,7 @@ function Affiliates() {
               to="/contact"
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
-              Contact WBC <span aria-hidden="true">→</span>
+              Contact WBC <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

@@ -8,15 +8,16 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useReveal } from "@/hooks/use-reveal";
 import { I18nProvider } from "@/i18n";
 
+const SITE_URL = "https://wbccme.org";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 function NotFoundComponent() {
   return (
@@ -43,9 +44,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -88,13 +86,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "description",
         content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
       },
+      { name: "application-name", content: "World Business Council" },
+      { name: "theme-color", content: "#1a3a5c" },
       { property: "og:site_name", content: "World Business Council" },
+      { property: "og:title", content: "World Business Council" },
+      {
+        property: "og:description",
+        content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:alt", content: "World Business Council logo" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "World Business Council" },
+      {
+        name: "twitter:description",
+        content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+      },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
@@ -111,12 +129,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               "@type": "Organization",
               name: "World Business Council",
               alternateName: "WBC",
-              url: "https://wbccme.org/",
+              url: SITE_URL,
+              logo: `${SITE_URL}/android-chrome-512x512.png`,
+              image: OG_IMAGE,
               email: "info@wbccme.org",
               foundingDate: "2026",
               address: { "@type": "PostalAddress", addressLocality: "Paris", addressCountry: "FR" },
             },
-            { "@type": "WebSite", name: "World Business Council", url: "https://wbccme.org/" },
+            {
+              "@type": "WebSite",
+              name: "World Business Council",
+              url: SITE_URL,
+              publisher: { "@type": "Organization", name: "World Business Council", logo: `${SITE_URL}/android-chrome-512x512.png` },
+            },
           ],
         }),
       },
@@ -153,7 +178,7 @@ function RootComponent() {
 
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-[60] focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to content
       </a>

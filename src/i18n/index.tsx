@@ -39,12 +39,20 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     let cleanup: (() => void) | undefined;
+    let raf = 0;
+
     loadMap(lang).then((map) => {
       if (cancelled) return;
-      cleanup = applyDocumentTranslation(map);
+      // Defer so the language menu can close before the full DOM walk.
+      raf = requestAnimationFrame(() => {
+        if (cancelled) return;
+        cleanup = applyDocumentTranslation(map);
+      });
     });
+
     return () => {
       cancelled = true;
+      cancelAnimationFrame(raf);
       cleanup?.();
     };
   }, [lang]);

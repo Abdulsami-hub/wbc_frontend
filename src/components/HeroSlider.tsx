@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import slide1 from "@/assets/hero-slide-1.webp.asset.json";
-import slide2 from "@/assets/hero-slide-2.webp.asset.json";
-import slide3 from "@/assets/hero-slide-3.webp.asset.json";
+import slide1 from "@/assets/hero-slide-1.png";
+import slide2 from "@/assets/hero-slide-2.png";
+import slide3 from "@/assets/hero-slide-3.png";
+import { useI18n } from "@/i18n";
 
 type Slide = {
   eyebrow: string;
@@ -19,7 +20,7 @@ const SLIDES: Slide[] = [
     eyebrow: "World Business Council",
     title: ["Connecting Businesses.", "Creating Opportunities"],
     description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
-    image: slide1.url,
+    image: slide1,
     alt: "Modern glass business centre at dusk with people in the plaza",
     panel: "bg-navy",
     secondary: { label: "What We Do", to: "/what-we-do", className: "bg-white/10 text-orange border border-white/25" },
@@ -28,16 +29,16 @@ const SLIDES: Slide[] = [
     eyebrow: "World Business Council",
     title: ["Our Mission"],
     description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
-    image: slide2.url,
+    image: slide2,
     alt: "Haussmannian Paris boulevard at dusk",
     panel: "bg-teal",
-    secondary: { label: "Join WBC", to: "/membership", className: "bg-white/15 text-white border border-white/30" },
+    secondary: { label: "Join WBC", to: "/become-a-member", className: "bg-white/15 text-white border border-white/30" },
   },
   {
     eyebrow: "World Business Council",
     title: ["Connecting Businesses.", "Creating Opportunities"],
     description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
-    image: slide3.url,
+    image: slide3,
     alt: "Business professionals networking in front of a city skyline at sunset",
     panel: "bg-orange",
     secondary: { label: "What We Do", to: "/what-we-do", className: "bg-white/20 text-navy border border-white/30" },
@@ -45,6 +46,7 @@ const SLIDES: Slide[] = [
 ];
 
 export function HeroSlider() {
+  const { dir } = useI18n();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -69,74 +71,77 @@ export function HeroSlider() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <div
-        className="flex items-stretch transition-transform duration-700 ease-out"
-        style={{ transform: `translateX(-${index * (100 / SLIDES.length)}%)`, width: `${SLIDES.length * 100}%` }}
-      >
-        {SLIDES.map((s, i) => {
-          const active = i === index;
-          return (
-            <div
-              key={i}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${i + 1} of ${SLIDES.length}`}
-              aria-hidden={!active}
-              inert={!active}
-              className="w-full shrink-0"
-              style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
-            >
-              <div className={`${s.panel} grid h-full min-h-[420px] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]`}>
-                <div className="container-wbc !mx-0 !max-w-none py-14 pb-24 lg:ml-auto lg:max-w-[640px] lg:py-28">
-
-                  <div className="lg:max-w-[560px]">
-                    <p
-                      className={`${active ? "intro-1" : ""} font-display text-[13px] font-normal tracking-[0.14em] text-white/90 uppercase`}
-                    >
-                      {s.eyebrow}
-                    </p>
-                    <h1
-                      className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}
-                    >
-                      {s.title.map((t, k) => (
-                        <span key={k} className="block">
-                          {t}
-                        </span>
-                      ))}
-                    </h1>
-                    <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[15px] leading-relaxed text-white/85`}>
-                      {s.description}
-                    </p>
-                    <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
-                      <Link to="/about" className="btn-outline-light">
-                        Who We Are
-                      </Link>
-                      <Link to={s.secondary.to} className={`btn-base ${s.secondary.className}`}>
-                        {s.secondary.label}
-                      </Link>
+      {/* Keep track mechanics LTR so translateX stays correct in Arabic/RTL. */}
+      <div dir="ltr">
+        <div
+          className="flex items-stretch transition-transform duration-700 ease-out"
+          style={{ transform: `translateX(-${index * (100 / SLIDES.length)}%)`, width: `${SLIDES.length * 100}%` }}
+        >
+          {SLIDES.map((s, i) => {
+            const active = i === index;
+            return (
+              <div
+                key={i}
+                dir={dir}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} of ${SLIDES.length}`}
+                aria-hidden={!active}
+                inert={!active}
+                className="w-full shrink-0"
+                style={{ flex: "0 0 auto", width: `${100 / SLIDES.length}%` }}
+              >
+                <div className={`${s.panel} grid h-full min-h-[420px] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]`}>
+                  <div className="container-wbc !mx-0 !max-w-none py-14 pb-24 lg:ms-auto lg:max-w-[640px] lg:py-28">
+                    <div className="lg:max-w-[560px]">
+                      <p
+                        className={`${active ? "intro-1" : ""} font-display text-[13px] font-normal tracking-[0.14em] text-white/90 uppercase`}
+                      >
+                        {s.eyebrow}
+                      </p>
+                      <h1
+                        className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}
+                      >
+                        {s.title.map((t, k) => (
+                          <span key={k} className="block">
+                            {t}
+                          </span>
+                        ))}
+                      </h1>
+                      <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[15px] leading-relaxed text-white/85`}>
+                        {s.description}
+                      </p>
+                      <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
+                        <Link to="/about" className="btn-outline-light">
+                          Who We Are
+                        </Link>
+                        <Link to={s.secondary.to} className={`btn-base ${s.secondary.className}`}>
+                          {s.secondary.label}
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className={active ? "intro-img" : ""}>
-                  <img
-                    src={s.image}
-                    alt={s.alt}
-                    width={1600}
-                    height={776}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    fetchPriority={i === 0 ? "high" : "auto"}
-                    decoding="async"
-                    className="h-56 w-full object-cover sm:h-80 lg:h-full lg:min-h-[420px]"
-                  />
+                  <div className={active ? "intro-img" : ""}>
+                    <img
+                      src={s.image}
+                      alt={s.alt}
+                      width={1600}
+                      height={776}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      fetchPriority={i === 0 ? "high" : "auto"}
+                      decoding="async"
+                      className="h-56 w-full object-cover sm:h-80 lg:h-full lg:min-h-[420px]"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      <div className="absolute bottom-4 left-0 z-10 lg:bottom-8">
+      <div className="absolute bottom-4 start-0 z-10 lg:bottom-8">
         <div className="container-wbc flex items-center">
           <div className="flex items-center gap-3 rounded-full bg-navy-dark/40 px-3.5 py-2 backdrop-blur-sm">
             {SLIDES.map((_, i) => (
@@ -154,7 +159,6 @@ export function HeroSlider() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

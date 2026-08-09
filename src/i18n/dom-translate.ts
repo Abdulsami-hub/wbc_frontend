@@ -44,7 +44,7 @@ function translateTextNode(node: Text, map: TMap | null) {
   const key = source.trim();
   if (!key) return;
   if (!map) {
-    if (stored !== undefined) node.nodeValue = stored;
+    if (stored !== undefined && node.nodeValue !== stored) node.nodeValue = stored;
     return;
   }
   const hit = map[key];
@@ -52,7 +52,10 @@ function translateTextNode(node: Text, map: TMap | null) {
   if (stored === undefined) originalText.set(node, source);
   const lead = source.slice(0, source.indexOf(key[0]!));
   const trail = source.slice(source.indexOf(key[0]!) + key.length);
-  node.nodeValue = `${lead}${hit}${trail}`;
+  const next = `${lead}${hit}${trail}`;
+  // Only write when needed — some browsers queue characterData even for no-op
+  // writes, which used to infinite-loop the MutationObserver and freeze the page.
+  if (node.nodeValue !== next) node.nodeValue = next;
 }
 
 function translateAttributes(el: Element, map: TMap | null) {
@@ -61,7 +64,9 @@ function translateAttributes(el: Element, map: TMap | null) {
     const source = stored?.[attr] ?? el.getAttribute(attr);
     if (!source) continue;
     if (!map) {
-      if (stored?.[attr] !== undefined) el.setAttribute(attr, stored[attr]!);
+      if (stored?.[attr] !== undefined && el.getAttribute(attr) !== stored[attr]) {
+        el.setAttribute(attr, stored[attr]!);
+      }
       continue;
     }
     const hit = map[source.trim()];
@@ -69,7 +74,7 @@ function translateAttributes(el: Element, map: TMap | null) {
     const next = { ...(stored ?? {}) };
     if (next[attr] === undefined) next[attr] = source;
     originalAttr.set(el, next);
-    el.setAttribute(attr, hit);
+    if (el.getAttribute(attr) !== hit) el.setAttribute(attr, hit);
   }
 }
 
@@ -103,23 +108,41 @@ export function translateTree(root: Node, map: TMap | null) {
 }
 
 let observer: MutationObserver | null = null;
+let applying = false;
 
 /** Applies the language to the whole document and keeps future DOM updates translated. */
 export function applyDocumentTranslation(map: TMap | null) {
   observer?.disconnect();
   observer = null;
-  translateTree(document.body, map);
+
+  applying = true;
+  try {
+    translateTree(document.body, map);
+  } finally {
+    applying = false;
+  }
+
   if (!map) return () => {};
 
+  // Observe structural DOM updates only. Watching characterData re-enters on every
+  // text write we make and can freeze the tab (especially in WebKit).
   observer = new MutationObserver((records) => {
+    if (applying) return;
+
+    const roots: Node[] = [];
     for (const record of records) {
-      record.addedNodes.forEach((node) => translateTree(node, map));
-      if (record.type === "characterData" && record.target.nodeType === Node.TEXT_NODE) {
-        translateTree(record.target, map);
-      }
+      record.addedNodes.forEach((node) => roots.push(node));
+    }
+    if (!roots.length) return;
+
+    applying = true;
+    try {
+      for (const node of roots) translateTree(node, map);
+    } finally {
+      applying = false;
     }
   });
-  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  observer.observe(document.body, { childList: true, subtree: true });
 
   return () => {
     observer?.disconnect();

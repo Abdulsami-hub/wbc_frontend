@@ -124,7 +124,7 @@ function Events() {
                   className="mt-8 inline-flex items-center gap-2 text-[16px] font-bold text-orange"
                 >
                   {p.cta}
-                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
+                  <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
                     →
                   </span>
                 </Link>
@@ -152,7 +152,7 @@ function Events() {
         title="Join the WBC Community"
         description="Be the first to know about upcoming conferences, forums, and global business events."
         ctaLabel="Become a Member"
-        to="/membership"
+        to="/become-a-member"
       />
     </>
   );

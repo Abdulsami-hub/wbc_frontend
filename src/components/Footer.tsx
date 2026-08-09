@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
+import { FOOTER_ICONS, FooterLinkIcon } from "./NavIcons";
 import { useI18n, type TranslationKey } from "@/i18n";
 
 const COLUMNS = [
@@ -26,7 +27,7 @@ const COLUMNS = [
     links: [
       { key: "link.wbcMembership" as TranslationKey, to: "/membership" },
       { key: "link.benefits" as TranslationKey, to: "/membership" },
-      { key: "link.become" as TranslationKey, to: "/membership" },
+      { key: "link.become" as TranslationKey, to: "/become-a-member" },
       { key: "nav.ourMembers" as TranslationKey, to: "/our-members" },
     ],
   },
@@ -88,13 +89,20 @@ export function Footer() {
             <div key={col.title}>
               <h2 className="text-[12px] font-semibold tracking-[0.16em] text-white uppercase">{t(col.title)}</h2>
               <ul className="mt-4 space-y-2.5">
-                {col.links.map((l) => (
-                  <li key={l.key}>
-                    <Link to={l.to} className="text-[15px] transition-colors hover:text-orange">
-                      {t(l.key)}
-                    </Link>
-                  </li>
-                ))}
+                {col.links.map((l) => {
+                  const Icon = FOOTER_ICONS[l.key];
+                  return (
+                    <li key={l.key}>
+                      <Link
+                        to={l.to}
+                        className="group inline-flex items-center gap-2.5 text-[15px] transition-colors hover:text-orange"
+                      >
+                        {Icon ? <FooterLinkIcon icon={Icon} /> : null}
+                        {t(l.key)}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

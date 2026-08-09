@@ -292,3 +292,12 @@
 @utility orbit-counter {
   animation: orbit-spin 28s linear infinite reverse;
 }
+
+/* Mirror directional arrows in RTL without flipping surrounding text */
+@utility rtl-mirror {
+  display: inline-block;
+
+  :dir(rtl) & {
+    transform: scaleX(-1);
+  }
+}

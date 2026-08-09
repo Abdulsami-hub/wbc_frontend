@@ -1,6 +1,6 @@
-# WBC Rebuild
+# World Business Council
 
-Lovable Prompt — Rebuild WBC Website Exactly From Reference
+Rebuild WBC Website Exactly From Reference
 
 PROJECT GOAL
 
@@ -1623,24 +1623,6 @@ Use the official website https://wbccme.org/ as an additional content and asset 
 First analyze all 5 uploaded screenshots carefully, then analyze the live website, then build the site. Do not begin by inventing a new design.
 
 The final result should be a production-ready, mobile-first, SEO-optimized, extremely lightweight WBC website that visually matches the provided references as closely as possible.
-
-One extra instruction I strongly recommend adding to Lovable
-
-At the very end, add this:
-
-IMPORTANT: Do not replace the existing design with your own interpretation after the first implementation. If something looks different from the screenshots, modify the implementation to match the screenshots. The screenshots are the visual acceptance criteria.
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://wbc-rebuild-precise.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/67a13eaa-d3cb-4806-a983-3a9f5bbf5b37).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 

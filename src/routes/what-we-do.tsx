@@ -167,7 +167,7 @@ function WhatWeDo() {
                   cooperation starts and where growth can be accelerated.
                 </p>
               </div>
-              <span aria-hidden="true" className="mt-2 hidden text-[22px] text-muted-fg sm:block">
+              <span aria-hidden="true" className="rtl-mirror mt-2 hidden text-[22px] text-muted-fg sm:block">
                 →
               </span>
             </div>
@@ -192,7 +192,7 @@ function WhatWeDo() {
                       decoding="async"
                       className="size-24 shrink-0 object-cover sm:size-32"
                     />
-                    <div className="border-l border-line pl-5 sm:pl-7">
+                    <div className="border-s border-line ps-5 sm:ps-7">
                       <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
                         {String(i + 1).padStart(2, "0")} · {p.kicker}
                       </p>
@@ -224,7 +224,7 @@ function WhatWeDo() {
                 <p className="mt-5 max-w-md text-[16px] leading-relaxed text-muted-fg">
                   WBC offers 5 distinct types of membership tailored to meet diverse needs.
                 </p>
-                <Link to="/membership" className="btn-orange mt-8">
+                <Link to="/become-a-member" className="btn-orange mt-8">
                   Become a Member
                 </Link>
               </div>

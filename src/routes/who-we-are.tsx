@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import heroBuilding from "@/assets/who-we-are-building.webp.asset.json";
+import heroBuilding from "@/assets/who-we-are-building.png";
 
 export const Route = createFileRoute("/who-we-are")({
   head: () => ({
@@ -209,8 +209,8 @@ function WhoWeAre() {
           </div>
         </div>
         <img
-          src={heroBuilding.url}
-          alt="Modern glass office building under a clear sky"
+          src={heroBuilding}
+          alt="Modern glass and concrete office building exterior against a blue sky"
           width={1600}
           height={1000}
           fetchPriority="high"
@@ -234,7 +234,7 @@ function WhoWeAre() {
             data-reveal
             className="relative overflow-hidden rounded-card border border-line bg-background p-7 shadow-card sm:p-10 lg:p-14"
           >
-            <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent" aria-hidden="true" />
+            <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent rtl:bg-gradient-to-l" aria-hidden="true" />
             <div className="flex items-center gap-4">
               <span className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-orange" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -251,7 +251,7 @@ function WhoWeAre() {
             <span className="mt-8 block h-px w-full bg-line" aria-hidden="true" />
 
             <p className="mt-8 text-[17px] leading-[1.95] text-navy/85 sm:text-[18px]">
-              <span className="float-left mr-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-orange">T</span>
+              <span className="float-start me-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-orange">T</span>
               he World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
@@ -260,7 +260,7 @@ function WhoWeAre() {
               relationships into lasting opportunities for growth.
             </p>
 
-            <blockquote className="mt-8 border-l-2 border-orange pl-5 text-[18px] leading-relaxed font-semibold text-navy sm:text-[19px]">
+            <blockquote className="mt-8 border-s-2 border-orange ps-5 text-[18px] leading-relaxed font-semibold text-navy sm:text-[19px]">
               “No business should have to grow alone — and meaningful connections are always built on trust.”
             </blockquote>
 

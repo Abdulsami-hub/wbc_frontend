@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroCity from "@/assets/hero-city.jpg";
-import whoWeAre from "@/assets/who-we-are-building.webp.asset.json";
+import whoWeAre from "@/assets/who-we-are-building.png";
 import visionMissionBg from "@/assets/vision-mission-bg.jpg";
 import { Glance } from "@/components/Glance";
 import { HeroSlider } from "@/components/HeroSlider";
@@ -90,8 +90,8 @@ function Home() {
             </p>
           </div>
           <img
-            src={whoWeAre.url}
-            alt="Modern glass office building"
+            src={whoWeAre}
+            alt="Modern glass and concrete office building exterior against a blue sky"
             width={1200}
             height={900}
             loading="lazy"
@@ -174,7 +174,7 @@ function Home() {
               >
                 <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
                 <span
-                  className="pointer-events-none absolute right-5 top-5 size-6 border-r border-t border-line transition-colors group-hover:border-orange/50"
+                  className="pointer-events-none absolute end-5 top-5 size-6 border-e border-t border-line transition-colors group-hover:border-orange/50"
                   aria-hidden="true"
                 />
                 <h3 className="mt-8 text-[22px] font-bold tracking-tight text-navy">{v.title}</h3>
@@ -205,14 +205,14 @@ function Home() {
                 <h3 className="mt-5 text-[17px] font-bold text-navy">{s.title}</h3>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-muted-fg">{s.body}</p>
                 <Link to="/what-we-do" className="mt-4 inline-block text-[14px] font-semibold text-orange">
-                  Learn More →
+                  Learn More <span aria-hidden="true" className="rtl-mirror">→</span>
                 </Link>
               </li>
             ))}
           </ul>
           <div data-reveal className="mt-10 text-center">
             <Link to="/what-we-do" className="text-[15px] font-semibold text-orange">
-              View all services →
+              View all services <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

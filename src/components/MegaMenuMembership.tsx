@@ -1,18 +1,38 @@
 import { Link } from "@tanstack/react-router";
+import { Gift } from "lucide-react";
 import menuImage from "@/assets/events.jpg";
+import { MENU_ICONS, MenuLinkIcon } from "./NavIcons";
 
 const GROUPS = [
   {
     label: "Benefits",
     items: [
-      { title: "WBC Membership", desc: "Types of membership", to: "/membership" as const },
-      { title: "Membership Benefits", desc: "Advantages of joining WBC", to: "/membership" as const, hash: "join" },
-      { title: "Become a Member", desc: "Start your membership journey", to: "/contact" as const },
+      { title: "WBC Membership", desc: "Types of membership", to: "/membership" as const, icon: MENU_ICONS["/membership"] },
+      {
+        title: "Membership Benefits",
+        desc: "Advantages of joining WBC",
+        to: "/membership" as const,
+        hash: "join" as const,
+        icon: Gift,
+      },
+      {
+        title: "Become a Member",
+        desc: "Start your membership journey",
+        to: "/become-a-member" as const,
+        icon: MENU_ICONS["/become-a-member"],
+      },
     ],
   },
   {
     label: "Community",
-    items: [{ title: "Our Members", desc: "Directory of active members", to: "/our-members" as const }],
+    items: [
+      {
+        title: "Our Members",
+        desc: "Directory of active members",
+        to: "/our-members" as const,
+        icon: MENU_ICONS["/our-members"],
+      },
+    ],
   },
 ] as const;
 
@@ -31,19 +51,22 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
         {GROUPS.map((g) => (
           <div key={g.label}>
             <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">{g.label}</p>
-            <ul className="mt-6 space-y-6">
+            <ul className="mt-6 space-y-5">
               {g.items.map((it) => (
                 <li key={it.title}>
                   <Link
                     to={it.to}
                     {...("hash" in it ? { hash: it.hash } : {})}
                     onClick={onNavigate}
-                    className="group block"
+                    className="group flex items-start gap-3.5"
                   >
-                    <span className="block text-[17px] font-bold text-navy transition-colors group-hover:text-orange">
-                      {it.title}
+                    <MenuLinkIcon icon={it.icon} />
+                    <span className="min-w-0">
+                      <span className="block text-[17px] font-bold text-navy transition-colors group-hover:text-orange">
+                        {it.title}
+                      </span>
+                      <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
                     </span>
-                    <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
                   </Link>
                 </li>
               ))}
@@ -70,7 +93,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
               onClick={onNavigate}
               className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-orange"
             >
-              View all <span aria-hidden="true">→</span>
+              View all <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

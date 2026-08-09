@@ -150,6 +150,7 @@ export function OurPartners() {
 
           <div
             data-reveal
+            dir="ltr"
             className="relative border border-line p-5 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
           >
             <div className="flex flex-col gap-5">

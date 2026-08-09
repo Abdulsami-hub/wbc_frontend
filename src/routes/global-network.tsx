@@ -93,10 +93,10 @@ function GlobalNetwork() {
             {PILLARS.map((p, i) => (
               <li
                 key={p.title}
-                className="group relative overflow-hidden rounded-card border border-line bg-background p-7 transition-all hover:-translate-y-1 hover:border-orange/50 hover:shadow-card sm:p-8"
+                className="group relative overflow-hidden rounded-card border border-line bg-background p-7 pe-14 transition-all hover:-translate-y-1 hover:border-orange/50 hover:shadow-card sm:p-8 sm:pe-14"
               >
                 <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
-                <span className="absolute top-6 right-7 text-[14px] font-bold text-line">0{i + 1}</span>
+                <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
                 <h3 className="mt-7 text-[21px] leading-snug font-bold text-navy">{p.title}</h3>
                 <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
               </li>
@@ -118,7 +118,7 @@ function GlobalNetwork() {
           </div>
           <div data-reveal className="mt-10 text-center">
             <Link to="/affiliates" className="text-[16px] font-bold text-orange">
-              See where WBC is represented →
+              See where WBC is represented <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>
@@ -128,7 +128,7 @@ function GlobalNetwork() {
         title="Ready to Join WBC?"
         description="Become part of a network built on collaboration, innovation, and trust."
         ctaLabel="Become a Member"
-        to="/membership"
+        to="/become-a-member"
       />
     </>
   );

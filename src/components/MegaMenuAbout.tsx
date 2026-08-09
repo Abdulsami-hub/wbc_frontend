@@ -1,19 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import aboutMenuImage from "@/assets/news-forum.jpg";
+import { MENU_ICONS, MenuLinkIcon } from "./NavIcons";
 
 const GROUPS = [
   {
     label: "About WBC",
     items: [
-      { title: "Who We Are", desc: "Our mission, vision, and values", to: "/who-we-are" },
-      { title: "What We Do", desc: "Programs and global initiatives", to: "/what-we-do" },
+      { title: "Who We Are", desc: "Our mission, vision, and values", to: "/who-we-are" as const },
+      { title: "What We Do", desc: "Programs and global initiatives", to: "/what-we-do" as const },
     ],
   },
   {
     label: "Leadership",
     items: [
-      { title: "Governance", desc: "Leadership structure and policies", to: "/governance" },
-      { title: "WBC Team", desc: "Meet the WBC team", to: "/wbc-team" },
+      { title: "Governance", desc: "Leadership structure and policies", to: "/governance" as const },
+      { title: "WBC Team", desc: "Meet the WBC team", to: "/wbc-team" as const },
     ],
   },
 ] as const;
@@ -33,22 +34,23 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
         {GROUPS.map((g) => (
           <div key={g.label}>
             <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">{g.label}</p>
-            <ul className="mt-6 space-y-6">
-              {g.items.map((it) => (
-                <li key={it.title}>
-                  <Link
-                    to={it.to}
-                    
-                    onClick={onNavigate}
-                    className="group block"
-                  >
-                    <span className="block text-[17px] font-bold text-navy transition-colors group-hover:text-orange">
-                      {it.title}
-                    </span>
-                    <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
-                  </Link>
-                </li>
-              ))}
+            <ul className="mt-6 space-y-5">
+              {g.items.map((it) => {
+                const Icon = MENU_ICONS[it.to];
+                return (
+                  <li key={it.title}>
+                    <Link to={it.to} onClick={onNavigate} className="group flex items-start gap-3.5">
+                      <MenuLinkIcon icon={Icon} />
+                      <span className="min-w-0">
+                        <span className="block text-[17px] font-bold text-navy transition-colors group-hover:text-orange">
+                          {it.title}
+                        </span>
+                        <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
@@ -72,7 +74,7 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
               onClick={onNavigate}
               className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-orange"
             >
-              View all <span aria-hidden="true">→</span>
+              View all <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

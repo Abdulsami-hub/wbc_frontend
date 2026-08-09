@@ -1,32 +1,32 @@
 import { Link } from "@tanstack/react-router";
-import newsParis from "@/assets/news-paris.jpg";
-import newsForum from "@/assets/news-forum.jpg";
-import newsMember from "@/assets/news-member.jpg";
+import newsCurrency from "@/assets/news-currency.png";
+import newsEuro from "@/assets/news-euro.png";
+import newsInnovation from "@/assets/news-innovation.png";
 
 const NEWS = [
   {
-    image: newsParis,
-    alt: "Business delegates meeting in Paris with international flags",
-    category: "Policy & Cooperation",
-    title: "Global Trade Dialogue in Paris",
-    body: "Senior delegates and business leaders gathered in Paris to discuss practical pathways for cross-border growth, resilient partnerships, and shared economic priorities.",
-    cta: "Read update",
-  },
-  {
-    image: newsForum,
-    alt: "Professionals networking at an international business forum",
-    category: "Network Development",
-    title: "Regional Partnership Forum Expands Network Links",
-    body: "A new forum series is strengthening collaboration between regional affiliates, member institutions, and strategic partners across key international markets.",
+    image: newsEuro,
+    alt: "Hands holding a thick stack of twenty-euro banknotes",
+    category: "Economy & Finance",
+    title: "European Markets Signal Renewed Business Confidence",
+    body: "Currency and trade indicators point to renewed momentum across European markets, opening fresh opportunities for members engaged in cross-border commerce.",
     cta: "Explore story",
   },
   {
-    image: newsMember,
-    alt: "Executives talking in a modern office atrium with a green plant wall",
-    category: "Member Insight",
-    title: "Member Spotlight on Sustainable Growth Initiatives",
-    body: "WBC highlights how member organizations are turning sustainability commitments into measurable business action through cooperation, innovation, and long-term planning.",
+    image: newsInnovation,
+    alt: "People observing humanoid robots at a technology exhibition",
+    category: "Innovation",
+    title: "Innovation Forums Spotlight Next-Generation Technology",
+    body: "WBC highlights how member organizations and partners are engaging with emerging technologies to drive collaboration, productivity, and long-term growth.",
     cta: "View feature",
+  },
+  {
+    image: newsCurrency,
+    alt: "Stacks of bundled US currency in a professional financial setting",
+    category: "Trade & Investment",
+    title: "Cross-Border Capital Flows Shape Global Markets",
+    body: "Financial institutions and business leaders track shifting capital movements as companies seek stronger international partnerships and investment pathways.",
+    cta: "Read update",
   },
 ] as const;
 
@@ -94,7 +94,7 @@ export function LatestNews() {
                   className="mt-6 inline-flex items-center gap-2 text-[16px] font-semibold text-blue underline underline-offset-4 hover:no-underline"
                 >
                   {item.cta}
-                  <span aria-hidden="true">→</span>
+                  <span aria-hidden="true" className="rtl-mirror">→</span>
                 </Link>
               </div>
             </li>

@@ -42,7 +42,7 @@ export function SplitHero({
               to={ctaTo}
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
-              {ctaLabel} <span aria-hidden="true">→</span>
+              {ctaLabel} <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           )}
         </div>

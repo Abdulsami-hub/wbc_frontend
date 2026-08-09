@@ -40,7 +40,7 @@ export function SignalsAtGlance() {
             const isLeftCol = i % 2 === 0;
             const borderClass = [
               isTopRow ? "border-b border-line" : "",
-              isLeftCol ? "border-line sm:border-r" : "",
+              isLeftCol ? "border-line sm:border-e" : "",
             ].join(" ");
 
             return (

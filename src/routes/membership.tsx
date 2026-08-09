@@ -51,8 +51,8 @@ function Membership() {
           <SectionHeading eyebrow="Membership Categories" title="Types of Membership" />
           <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {TIERS.map((t, i) => (
-              <li key={t.title} className="relative flex flex-col rounded-card border border-line bg-background p-6 shadow-card">
-                <span className="absolute top-5 right-5 text-[14px] font-bold text-line">0{i + 1}</span>
+              <li key={t.title} className="relative flex flex-col rounded-card border border-line bg-background p-6 pe-12 shadow-card">
+                <span className="absolute top-5 end-5 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
                 <span className="inline-flex size-9 items-center justify-center rounded-none bg-orange/10" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-orange">
                     <path d="M4 20a8 8 0 0116 0" />
@@ -93,7 +93,7 @@ function Membership() {
         title="Ready to Join WBC?"
         description="Start the conversation with our membership team and become part of the global WBC network."
         ctaLabel="Become a Member"
-        to="/contact"
+        to="/become-a-member"
       />
     </>
   );
