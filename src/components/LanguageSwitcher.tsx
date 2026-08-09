@@ -29,7 +29,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
     };
   }, [open]);
 
-  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+  const current = LANGUAGES.find((l) => l.code === lang);
 
   return (
     <div ref={ref} className={`relative ${className}`}>
@@ -42,7 +42,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
         className="inline-flex size-9 items-center justify-center rounded-full border border-line text-navy transition-colors hover:border-orange hover:text-orange"
       >
         <GlobeIcon />
-        <span className="sr-only">{current.name}</span>
+        <span className="sr-only">{current?.name ?? "English"}</span>
       </button>
 
       {open && (
