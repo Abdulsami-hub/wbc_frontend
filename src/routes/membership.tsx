@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import membershipImg from "@/assets/membership.jpg";
+import { SplitHero } from "@/components/SplitHero";
 import { SectionHeading } from "@/components/SectionHeading";
+
 import { CTASection } from "@/components/CTASection";
 
 export const Route = createFileRoute("/membership")({
