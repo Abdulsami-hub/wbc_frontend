@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { DEFAULT_LANG, LANGUAGES, STORAGE_KEY, type LangCode } from "./languages";
 import { DICTIONARIES, type TranslationKey } from "./dictionary";
+import { applyDocumentTranslation, loadMap } from "./dom-translate";
 
 type I18nValue = {
   lang: LangCode;
@@ -34,6 +35,19 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
+    loadMap(lang).then((map) => {
+      if (cancelled) return;
+      cleanup = applyDocumentTranslation(map);
+    });
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
+  }, [lang]);
 
   const t = useCallback(
     (key: TranslationKey) => DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key,
