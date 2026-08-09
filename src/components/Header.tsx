@@ -3,30 +3,24 @@ import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { MegaMenuAbout } from "./MegaMenuAbout";
 import { MegaMenuMembership } from "./MegaMenuMembership";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useI18n, type TranslationKey } from "@/i18n";
 
 export const NAV_LINKS = [
-  { label: "About Us", to: "/about" },
-  { label: "Global Network", to: "/global-network" },
-  { label: "Membership", to: "/membership" },
-  { label: "Events", to: "/events" },
-  { label: "Contact", to: "/contact" },
+  { key: "nav.about" as TranslationKey, label: "About Us", to: "/about" },
+  { key: "nav.network" as TranslationKey, label: "Global Network", to: "/global-network" },
+  { key: "nav.membership" as TranslationKey, label: "Membership", to: "/membership" },
+  { key: "nav.events" as TranslationKey, label: "Events", to: "/events" },
+  { key: "nav.contact" as TranslationKey, label: "Contact", to: "/contact" },
 ] as const;
 
-
-function GlobeIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
-    </svg>
-  );
-}
 
 const MENU_ROUTES = ["/about", "/membership"] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -52,22 +46,16 @@ export function Header() {
                 aria-expanded={hasMenu ? menu === l.to : undefined}
                 className="text-[16px] font-medium text-navy transition-colors hover:text-orange [&.active]:text-orange"
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             );
           })}
         </nav>
 
         <div className="flex items-center gap-2 lg:gap-3">
-          <button
-            type="button"
-            aria-label="Language"
-            className="hidden size-9 items-center justify-center rounded-full text-navy transition-colors hover:text-orange lg:inline-flex"
-          >
-            <GlobeIcon />
-          </button>
+          <LanguageSwitcher className="hidden lg:block" />
           <Link to="/membership" hash="join" className="btn-orange hidden !min-h-9 !px-4 !text-[12px] lg:inline-flex">
-            Join WBC
+            {t("cta.join")}
           </Link>
 
           <button
@@ -106,7 +94,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className="border-b border-line py-3.5 text-[17px] font-medium text-navy [&.active]:text-orange"
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
             <Link
@@ -114,11 +102,11 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="border-b border-line py-3.5 text-[17px] font-medium text-navy [&.active]:text-orange"
             >
-              Our Members
+              {t("nav.ourMembers")}
             </Link>
 
             <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange my-4">
-              Join WBC
+              {t("cta.join")}
             </Link>
           </nav>
         </div>
