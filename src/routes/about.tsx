@@ -38,13 +38,13 @@ function About() {
       />
 
 
-      <section id="who-we-are" className="bg-surface py-16 lg:py-20">
+      <section id="who-we-are" className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div data-reveal className="mx-auto max-w-3xl rounded-card bg-background p-8 text-center shadow-card lg:p-12">
-            <p className="eyebrow">Organization Overview</p>
-            <h2 className="mt-3 text-[26px] font-bold text-navy lg:text-[32px]">Who We Are</h2>
-            <span className="accent-rule mx-auto mt-4" />
-            <p className="mt-6 text-left text-[16px] leading-relaxed text-muted-fg">
+          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12">
+            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Organization Overview</p>
+            <h2 className="mt-4 text-[26px] leading-tight font-bold text-navy sm:text-[34px]">Who We Are</h2>
+            <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
+
               The World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
