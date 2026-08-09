@@ -196,7 +196,7 @@ function Home() {
           <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s) => (
               <li key={s.title} className="rounded-card border border-line bg-background p-6 transition-shadow hover:shadow-card">
-                <span className="inline-flex size-9 items-center justify-center rounded-md bg-navy/5" aria-hidden="true">
+                <span className="inline-flex size-9 items-center justify-center rounded-none bg-navy/5" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-navy">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18" />

@@ -187,7 +187,7 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
                   type="button"
                   onClick={() => setSort(s.id)}
                   aria-pressed={sort === s.id}
-                  className={`rounded-md border px-4 py-2.5 text-[15px] font-semibold transition-colors ${
+                  className={`rounded-none border px-4 py-2.5 text-[15px] font-semibold transition-colors ${
                     sort === s.id
                       ? "border-orange bg-orange text-white"
                       : "border-line bg-background text-muted-fg hover:border-orange hover:text-orange"
