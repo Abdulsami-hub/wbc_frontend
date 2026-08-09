@@ -32,21 +32,17 @@ const TIERS = [
 function Membership() {
   return (
     <>
-      <section className="bg-navy-deep">
-        <div className="container-wbc py-20 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="intro-1 accent-rule" />
-            <p className="intro-2 mt-5 text-[14px] font-semibold tracking-[0.18em] text-white/80 uppercase">Join the Council</p>
-            <h1 className="intro-3 mt-3 text-[30px] leading-tight font-bold text-white sm:text-4xl lg:text-[44px]">
-              WBC Membership
-            </h1>
-            <p className="intro-4 mt-4 text-[15px] leading-relaxed text-white/85">
-              Membership connects you to a global network of businesses, institutions, and professionals working together
-              to create opportunity.
-            </p>
-          </div>
-        </div>
-      </section>
+      <SplitHero
+        eyebrow="Join the Council"
+        title="WBC Membership"
+        description="Membership connects you to a global network of businesses, institutions, and professionals working together to create opportunity."
+        tags={["Five Categories", "Global Access", "Practical Support"]}
+        image={membershipImg}
+        imageAlt="Business professionals shaking hands during a membership meeting"
+        ctaLabel="Talk to the Membership Team"
+        ctaTo="/contact"
+      />
+
 
       <section id="join" className="py-16 lg:py-20">
         <div className="container-wbc">
