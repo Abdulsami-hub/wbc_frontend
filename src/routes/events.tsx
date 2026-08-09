@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import eventsImg from "@/assets/events.jpg";
-import { PageHero } from "@/components/PageHero";
+import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
+
 
 export const Route = createFileRoute("/events")({
   head: () => ({
