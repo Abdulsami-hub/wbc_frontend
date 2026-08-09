@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import contactBuilding from "@/assets/contact-building.jpg";
-import { PageHero } from "@/components/PageHero";
+import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
+
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
