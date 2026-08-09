@@ -1,8 +1,8 @@
 import type { LangCode } from "./languages";
 
-type Map = Record<string, string>;
+type TMap = Record<string, string>;
 
-const LOADERS: Record<Exclude<LangCode, "en">, () => Promise<{ default: Map }>> = {
+const LOADERS: Record<Exclude<LangCode, "en">, () => Promise<{ default: TMap }>> = {
   fr: () => import("./generated/fr.json"),
   es: () => import("./generated/es.json"),
   de: () => import("./generated/de.json"),
@@ -14,9 +14,9 @@ const LOADERS: Record<Exclude<LangCode, "en">, () => Promise<{ default: Map }>> 
   ru: () => import("./generated/ru.json"),
 };
 
-const cache = new Map<string, Map>();
+const cache = new Map<string, TMap>();
 
-export async function loadMap(lang: LangCode): Promise<Map | null> {
+export async function loadMap(lang: LangCode): Promise<TMap | null> {
   if (lang === "en") return null;
   const cached = cache.get(lang);
   if (cached) return cached;
@@ -24,7 +24,7 @@ export async function loadMap(lang: LangCode): Promise<Map | null> {
   if (!loader) return null;
   try {
     const mod = await loader();
-    const map = (mod.default ?? mod) as Map;
+    const map = (mod.default ?? mod) as TMap;
     cache.set(lang, map);
     return map;
   } catch {
@@ -38,7 +38,7 @@ const ATTRS = ["aria-label", "placeholder", "alt", "title"] as const;
 const originalText = new WeakMap<Text, string>();
 const originalAttr = new WeakMap<Element, Record<string, string>>();
 
-function translateTextNode(node: Text, map: Map | null) {
+function translateTextNode(node: Text, map: TMap | null) {
   const stored = originalText.get(node);
   const source = stored ?? node.nodeValue ?? "";
   const key = source.trim();
@@ -55,7 +55,7 @@ function translateTextNode(node: Text, map: Map | null) {
   node.nodeValue = `${lead}${hit}${trail}`;
 }
 
-function translateAttributes(el: Element, map: Map | null) {
+function translateAttributes(el: Element, map: TMap | null) {
   const stored = originalAttr.get(el);
   for (const attr of ATTRS) {
     const source = stored?.[attr] ?? el.getAttribute(attr);
@@ -73,7 +73,7 @@ function translateAttributes(el: Element, map: Map | null) {
   }
 }
 
-export function translateTree(root: Node, map: Map | null) {
+export function translateTree(root: Node, map: TMap | null) {
   if (root.nodeType === Node.TEXT_NODE) {
     const parent = (root as Text).parentElement;
     if (parent && !SKIP_TAGS.has(parent.tagName) && !parent.closest("svg")) {
@@ -105,7 +105,7 @@ export function translateTree(root: Node, map: Map | null) {
 let observer: MutationObserver | null = null;
 
 /** Applies the language to the whole document and keeps future DOM updates translated. */
-export function applyDocumentTranslation(map: Map | null) {
+export function applyDocumentTranslation(map: TMap | null) {
   observer?.disconnect();
   observer = null;
   translateTree(document.body, map);
