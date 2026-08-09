@@ -105,7 +105,11 @@ export function Header() {
               {t("nav.ourMembers")}
             </Link>
 
-            <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange my-4">
+            <div className="py-4">
+              <LanguageSwitcher />
+            </div>
+
+            <Link to="/membership" hash="join" onClick={() => setOpen(false)} className="btn-orange mb-4">
               {t("cta.join")}
             </Link>
           </nav>

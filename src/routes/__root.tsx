@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useReveal } from "@/hooks/use-reveal";
+import { I18nProvider } from "@/i18n";
 
 
 function NotFoundComponent() {
@@ -148,6 +149,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nProvider>
 
       <a
         href="#main"
@@ -161,6 +163,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      </I18nProvider>
     </QueryClientProvider>
   );
 }

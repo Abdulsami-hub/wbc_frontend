@@ -1,39 +1,40 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
+import { useI18n, type TranslationKey } from "@/i18n";
 
 const COLUMNS = [
   {
-    title: "About",
+    title: "footer.about" as TranslationKey,
     links: [
-      { label: "Who We Are", to: "/who-we-are" },
-      { label: "What We Do", to: "/what-we-do" },
-      { label: "Governance", to: "/governance" },
-      { label: "WBC Team", to: "/wbc-team" },
+      { key: "link.whoWeAre" as TranslationKey, to: "/who-we-are" },
+      { key: "link.whatWeDo" as TranslationKey, to: "/what-we-do" },
+      { key: "link.governance" as TranslationKey, to: "/governance" },
+      { key: "link.team" as TranslationKey, to: "/wbc-team" },
     ],
   },
   {
-    title: "Network",
+    title: "footer.network" as TranslationKey,
     links: [
-      { label: "WBC Headquarters", to: "/global-network" },
-      { label: "WBC Affiliates", to: "/affiliates" },
-      { label: "Institutional Members", to: "/membership" },
-      { label: "Strategic Partners", to: "/global-network" },
+      { key: "link.hq" as TranslationKey, to: "/global-network" },
+      { key: "link.affiliates" as TranslationKey, to: "/affiliates" },
+      { key: "link.institutional" as TranslationKey, to: "/membership" },
+      { key: "link.partners" as TranslationKey, to: "/global-network" },
     ],
   },
   {
-    title: "Membership",
+    title: "footer.membership" as TranslationKey,
     links: [
-      { label: "WBC Membership", to: "/membership" },
-      { label: "Benefits", to: "/membership" },
-      { label: "Become a Member", to: "/membership" },
-      { label: "Our Members", to: "/membership" },
+      { key: "link.wbcMembership" as TranslationKey, to: "/membership" },
+      { key: "link.benefits" as TranslationKey, to: "/membership" },
+      { key: "link.become" as TranslationKey, to: "/membership" },
+      { key: "nav.ourMembers" as TranslationKey, to: "/our-members" },
     ],
   },
   {
-    title: "Resources",
+    title: "footer.resources" as TranslationKey,
     links: [
-      { label: "Events", to: "/events" },
-      { label: "Contact", to: "/contact" },
+      { key: "nav.events" as TranslationKey, to: "/events" },
+      { key: "nav.contact" as TranslationKey, to: "/contact" },
     ],
   },
 ] as const;
@@ -53,6 +54,7 @@ const SOCIAL = [
 ] as const;
 
 export function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="bg-navy-deep text-white/75">
       <div className="container-wbc py-14 lg:py-16">
@@ -60,7 +62,7 @@ export function Footer() {
           <div className="max-w-xs">
             <Logo variant="light" />
             <p className="mt-5 text-[15px] leading-relaxed">
-              Building a global network that empowers businesses through collaboration, innovation, and trust.
+              {t("footer.tagline")}
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {SOCIAL.map((s) => (
@@ -84,12 +86,12 @@ export function Footer() {
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h2 className="text-[12px] font-semibold tracking-[0.16em] text-white uppercase">{col.title}</h2>
+              <h2 className="text-[12px] font-semibold tracking-[0.16em] text-white uppercase">{t(col.title)}</h2>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
-                  <li key={l.label}>
+                  <li key={l.key}>
                     <Link to={l.to} className="text-[15px] transition-colors hover:text-orange">
-                      {l.label}
+                      {t(l.key)}
                     </Link>
                   </li>
                 ))}
@@ -99,13 +101,13 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-[14px] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} World Business Council. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} World Business Council. {t("footer.rights")}</p>
           <div className="flex gap-6">
             <Link to="/contact" className="transition-colors hover:text-orange">
-              Privacy Policy
+              {t("footer.privacy")}
             </Link>
             <Link to="/contact" className="transition-colors hover:text-orange">
-              Terms of Service
+              {t("footer.terms")}
             </Link>
           </div>
         </div>
