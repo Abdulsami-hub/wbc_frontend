@@ -236,7 +236,7 @@ function WhoWeAre() {
           >
             <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent" aria-hidden="true" />
             <div className="flex items-center gap-4">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-orange/10 text-orange" aria-hidden="true">
+              <span className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-orange" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
@@ -294,7 +294,7 @@ function WhoWeAre() {
                 className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
-              <span className="relative flex size-11 items-center justify-center rounded-xl bg-white/10 text-white" aria-hidden="true">
+              <span className="relative flex size-11 items-center justify-center rounded-none bg-white/10 text-white" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" />
                   <circle cx="12" cy="12" r="2.6" />
@@ -315,7 +315,7 @@ function WhoWeAre() {
                 className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
-              <span className="relative flex size-11 items-center justify-center rounded-xl bg-orange/10 text-orange" aria-hidden="true">
+              <span className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-orange" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="8.5" />
                   <circle cx="12" cy="12" r="4" />

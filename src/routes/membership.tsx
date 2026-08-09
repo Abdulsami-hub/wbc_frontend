@@ -53,7 +53,7 @@ function Membership() {
             {TIERS.map((t, i) => (
               <li key={t.title} className="relative flex flex-col rounded-card border border-line bg-background p-6 shadow-card">
                 <span className="absolute top-5 right-5 text-[14px] font-bold text-line">0{i + 1}</span>
-                <span className="inline-flex size-9 items-center justify-center rounded-md bg-orange/10" aria-hidden="true">
+                <span className="inline-flex size-9 items-center justify-center rounded-none bg-orange/10" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-orange">
                     <path d="M4 20a8 8 0 0116 0" />
                     <circle cx="12" cy="8" r="4" />
