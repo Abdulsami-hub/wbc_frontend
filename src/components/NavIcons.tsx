@@ -10,6 +10,7 @@ import {
   Mail,
   MapPinned,
   Network,
+  Newspaper,
   Scale,
   UserPlus,
   Users,
@@ -40,6 +41,7 @@ export const FOOTER_ICONS: Partial<Record<TranslationKey, LucideIcon>> = {
   "link.benefits": Gift,
   "link.become": UserPlus,
   "nav.ourMembers": Users,
+  "nav.news": Newspaper,
   "nav.events": CalendarDays,
   "nav.contact": Mail,
   "footer.privacy": Scale,
@@ -49,7 +51,7 @@ export const FOOTER_ICONS: Partial<Record<TranslationKey, LucideIcon>> = {
 export function MenuLinkIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
     <span
-      className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center bg-orange/10 text-orange transition-colors group-hover:bg-orange group-hover:text-orange-foreground"
+      className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center bg-orange/10 text-foreground transition-colors group-hover:bg-orange group-hover:text-orange-foreground"
       aria-hidden="true"
     >
       <Icon className="size-4" strokeWidth={1.75} />
@@ -59,7 +61,7 @@ export function MenuLinkIcon({ icon: Icon }: { icon: LucideIcon }) {
 
 export function FooterLinkIcon({ icon: Icon }: { icon: LucideIcon }) {
   return (
-    <span className="inline-flex size-4 shrink-0 text-white/45 transition-colors group-hover:text-orange" aria-hidden="true">
+    <span className="inline-flex size-4 shrink-0 text-white/45 transition-colors group-hover:text-white" aria-hidden="true">
       <Icon className="size-4" strokeWidth={1.75} />
     </span>
   );

@@ -155,11 +155,11 @@ function WhatWeDo() {
       {/* Service portfolio */}
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div className="rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12">
+          <div className="rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <div data-reveal className="flex items-start justify-between gap-6">
               <div>
                 <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Service Portfolio</p>
-                <h2 className="mt-3 text-[28px] leading-tight font-bold text-navy sm:text-4xl lg:text-[42px]">
+                <h2 className="mt-3 text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
                   13 Strategic Pillars of Support
                 </h2>
                 <p className="mt-5 max-w-3xl text-[16px] leading-relaxed text-muted-fg">
@@ -178,7 +178,8 @@ function WhatWeDo() {
               {PILLARS.map((p, i) => (
                 <li
                   key={p.title}
-                  className={`group rounded-card border border-line bg-background p-5 transition-shadow hover:shadow-card sm:p-7 ${
+                  data-reveal
+                  className={`group rounded-card border border-line bg-background p-5 transition-shadow duration-300 hover:shadow-card sm:p-7 ${
                     i === PILLARS.length - 1 ? "lg:col-span-2" : ""
                   }`}
                 >
@@ -190,13 +191,15 @@ function WhatWeDo() {
                       height={640}
                       loading="lazy"
                       decoding="async"
-                      className="size-24 shrink-0 object-cover sm:size-32"
+                      className="size-24 shrink-0 rounded-card object-cover sm:size-32"
                     />
-                    <div className="border-s border-line ps-5 sm:ps-7">
+                    <div className="border-s border-line ps-5 transition-colors duration-300 group-hover:border-orange/30 sm:ps-7">
                       <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
                         {String(i + 1).padStart(2, "0")} · {p.kicker}
                       </p>
-                      <h3 className="mt-2 text-[19px] leading-snug font-bold text-navy sm:text-[22px]">{p.title}</h3>
+                      <h3 className="mt-2 text-[19px] leading-snug font-bold text-foreground transition-colors group-hover:text-foreground sm:text-[22px]">
+                        {p.title}
+                      </h3>
                       <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{p.body}</p>
                     </div>
                   </div>
@@ -212,13 +215,13 @@ function WhatWeDo() {
         <div className="container-wbc">
           <div
             data-reveal
-            className="relative overflow-hidden rounded-card border border-line bg-background p-8 sm:p-12 lg:p-16"
+            className="relative overflow-hidden rounded-card border border-line bg-background p-8 sm:p-12 lg:p-16 transition-shadow duration-300 hover:shadow-card"
           >
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
                 <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Membership</p>
                 <span className="accent-rule mt-3" />
-                <h2 className="mt-6 text-[30px] leading-[1.1] font-bold text-navy sm:text-4xl lg:text-[46px]">
+                <h2 className="mt-6 text-[30px] leading-[1.1] font-bold text-foreground sm:text-4xl lg:text-[46px]">
                   Join the World Business Council
                 </h2>
                 <p className="mt-5 max-w-md text-[16px] leading-relaxed text-muted-fg">

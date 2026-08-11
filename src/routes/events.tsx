@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-
+import { EVENT_CATEGORIES, EVENTS } from "@/content/events";
 
 export const Route = createFileRoute("/events")({
   head: () => ({
@@ -22,31 +23,35 @@ export const Route = createFileRoute("/events")({
   component: Events,
 });
 
-const PROGRAMS = [
-  {
-    tag: "Summit",
-    title: "High-Level Forums & Summits",
-    body: "Executive forums, summits, conferences, and exhibitions that enable knowledge exchange, strategic positioning, and visibility for organizations and sponsors.",
-    cta: "Join the next forum conversation",
-    to: "/contact" as const,
-  },
-  {
-    tag: "Meetings",
-    title: "Networking & Business Meetings",
-    body: "Curated networking events and structured B2B meetings that turn introductions into working relationships across markets and sectors.",
-    cta: "Reserve your place to connect",
-    to: "/contact" as const,
-  },
-  {
-    tag: "Mission",
-    title: "Trade Missions & Collaborative Roundtables",
-    body: "Delegations and focused roundtables that accelerate market understanding, partnership building, and practical cooperation between members and institutions.",
-    cta: "Take part in a working session",
-    to: "/contact" as const,
-  },
-] as const;
-
 function Events() {
+  const [active, setActive] = useState<string | "all">("all");
+
+  useEffect(() => {
+    const applyHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (hash && EVENT_CATEGORIES.some((c) => c.id === hash)) {
+        setActive(hash);
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
+
+  const filtered = useMemo(() => {
+    if (active === "all") return EVENTS;
+    return EVENTS.filter((e) => e.categoryId === active);
+  }, [active]);
+
+  function selectCategory(id: string | "all") {
+    setActive(id);
+    if (id === "all") {
+      window.history.replaceState(null, "", window.location.pathname);
+    } else {
+      window.history.replaceState(null, "", `${window.location.pathname}#${id}`);
+    }
+  }
+
   return (
     <>
       <SplitHero
@@ -60,91 +65,97 @@ function Events() {
         ctaTo="/contact"
       />
 
-
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-            <div data-reveal>
-              <h2 className="text-[30px] leading-[1.15] font-bold tracking-tight text-navy sm:text-[38px] lg:text-[46px]">
-                One coordinated event ecosystem for international growth and cooperation
-              </h2>
-              <p className="mt-6 max-w-xl text-[17px] leading-[1.75] text-muted-fg">
-                From international summits and business forums to conferences, exhibitions, roundtables, networking
-                events, trade missions, and targeted business meetings, WBC runs a connected program where members gain
-                insight, visibility, and practical partnership opportunities.
-              </p>
-            </div>
-
-            <div
-              data-reveal
-              className="rounded-card border border-line bg-background p-8 shadow-card lg:mt-16"
-              aria-hidden="true"
-            >
-              <svg viewBox="0 0 360 150" className="h-auto w-full text-navy/45" fill="none">
-                <polyline
-                  points="20,70 70,52 120,66 170,44 220,60 270,36 320,50"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                />
-                {[
-                  [20, 70],
-                  [70, 52],
-                  [120, 66],
-                  [170, 44],
-                  [220, 60],
-                  [270, 36],
-                  [320, 50],
-                ].map(([x, y]) => (
-                  <circle key={`${x}-${y}`} cx={x} cy={y} r="3" stroke="currentColor" strokeWidth="1.2" />
-                ))}
-                <line x1="20" y1="126" x2="340" y2="126" stroke="currentColor" strokeWidth="1.2" />
-                <rect x="34" y="106" width="66" height="20" stroke="currentColor" strokeWidth="1.2" />
-                <rect x="112" y="96" width="66" height="30" stroke="currentColor" strokeWidth="1.2" />
-                <rect x="190" y="86" width="66" height="40" stroke="currentColor" strokeWidth="1.2" />
-                <rect x="268" y="100" width="66" height="26" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </div>
+          <div data-reveal>
+            <h2 className="text-[28px] font-bold text-foreground sm:text-[36px]">Browse by category</h2>
+            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-muted-fg">
+              Filter the programme by event type. Categories match the navigation filters used across the site.
+            </p>
           </div>
 
-          <ul data-reveal data-reveal-group className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {PROGRAMS.map((p) => (
-              <li
-                key={p.title}
-                className="group flex flex-col rounded-card border border-line bg-background p-7 transition-all hover:-translate-y-1 hover:border-orange/50 hover:shadow-card"
+          <ul data-reveal className="mt-8 flex flex-wrap gap-3">
+            <li>
+              <button
+                type="button"
+                onClick={() => selectCategory("all")}
+                aria-pressed={active === "all"}
+                className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
+                  active === "all"
+                    ? "border-orange bg-orange text-white"
+                    : "border-line bg-background text-foreground hover:border-orange"
+                }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="max-w-[15ch] text-[21px] leading-snug font-bold text-navy">{p.title}</h3>
-                  <span className="shrink-0 rounded-full border border-line px-3 py-1.5 text-[12px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
-                    {p.tag}
-                  </span>
-                </div>
-                <p className="mt-5 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
-                <Link
-                  to={p.to}
-                  className="mt-8 inline-flex items-center gap-2 text-[16px] font-bold text-orange"
+                All events
+              </button>
+            </li>
+            {EVENT_CATEGORIES.map((c) => (
+              <li key={c.id} id={c.id} className="scroll-mt-28">
+                <button
+                  type="button"
+                  onClick={() => selectCategory(c.id)}
+                  aria-pressed={active === c.id}
+                  className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
+                    active === c.id
+                      ? "border-orange bg-orange text-white"
+                      : "border-line bg-background text-foreground hover:border-orange"
+                  }`}
                 >
-                  {p.cta}
-                  <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
-                    →
-                  </span>
-                </Link>
+                  {c.title}
+                </button>
               </li>
             ))}
           </ul>
 
-          <div
-            data-reveal
-            className="mx-auto mt-14 max-w-lg rounded-card border border-line bg-surface px-6 py-12 text-center"
-          >
-            <span className="inline-flex size-12 items-center justify-center rounded-full bg-background" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="text-orange">
-                <rect x="3" y="5" width="18" height="16" rx="2" />
-                <path d="M3 10h18M8 3v4M16 3v4" />
-              </svg>
-            </span>
-            <h3 className="mt-5 text-lg font-bold text-navy">No Events Scheduled</h3>
-            <p className="mt-2 text-[15px] text-muted-fg">Upcoming WBC events will be announced here.</p>
-          </div>
+          {filtered.length > 0 ? (
+            <ul data-reveal data-reveal-group className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((event) => {
+                const category = EVENT_CATEGORIES.find((c) => c.id === event.categoryId);
+                return (
+                  <li
+                    key={event.slug}
+                    className="group flex flex-col overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card"
+                  >
+                    <img
+                      src={event.image}
+                      alt=""
+                      width={800}
+                      height={500}
+                      loading="lazy"
+                      className="aspect-[16/10] w-full object-cover"
+                    />
+                    <div className="flex flex-1 flex-col p-6">
+                      {category ? (
+                        <p className="text-[12px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
+                          {category.title}
+                        </p>
+                      ) : null}
+                      <h3 className="mt-2 text-[20px] font-bold leading-snug text-foreground">{event.title}</h3>
+                      <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
+                      <p className="mt-4 text-[14px] text-foreground">
+                        {event.dateLabel} · {event.location}
+                      </p>
+                      <Link
+                        to="/events/$slug"
+                        params={{ slug: event.slug }}
+                        className="mt-6 inline-flex items-center gap-2 text-[16px] font-bold text-foreground"
+                      >
+                        View details
+                        <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">
+                          →
+                        </span>
+                      </Link>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div data-reveal className="mx-auto mt-14 max-w-lg rounded-card border border-line bg-surface px-6 py-12 text-center transition-shadow duration-300 hover:shadow-card">
+              <h3 className="text-lg font-bold text-foreground">No events in this category</h3>
+              <p className="mt-2 text-[15px] text-muted-fg">Check back soon or browse all events.</p>
+            </div>
+          )}
         </div>
       </section>
 

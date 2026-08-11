@@ -50,8 +50,8 @@ export function ContactForm() {
     <form onSubmit={onSubmit} noValidate className="space-y-4">
       {FIELDS.map((f) => (
         <div key={f.name}>
-          <label htmlFor={f.name} className="text-[15px] font-medium text-navy">
-            {f.label} <span className="text-orange">*</span>
+          <label htmlFor={f.name} className="text-[15px] font-medium text-foreground">
+            {f.label} <span className="text-foreground">*</span>
           </label>
           <input
             id={f.name}
@@ -64,7 +64,7 @@ export function ContactForm() {
             className={inputClass}
           />
           {errors[f.name] && (
-            <p id={`${f.name}-error`} className="mt-1 text-[14px] text-orange">
+            <p id={`${f.name}-error`} className="mt-1 text-[14px] text-foreground">
               {errors[f.name]}
             </p>
           )}
@@ -72,8 +72,8 @@ export function ContactForm() {
       ))}
 
       <div>
-        <label htmlFor="message" className="text-[15px] font-medium text-navy">
-          Message <span className="text-orange">*</span>
+        <label htmlFor="message" className="text-[15px] font-medium text-foreground">
+          Message <span className="text-foreground">*</span>
         </label>
         <textarea
           id="message"
@@ -85,7 +85,7 @@ export function ContactForm() {
           className={inputClass}
         />
         {errors["message"] && (
-          <p id="message-error" className="mt-1 text-[14px] text-orange">
+          <p id="message-error" className="mt-1 text-[14px] text-foreground">
             {errors["message"]}
           </p>
         )}
@@ -98,9 +98,9 @@ export function ContactForm() {
       </button>
 
       <p aria-live="polite" className="text-[15px]">
-        {status === "success" && <span className="text-navy">Thank you — your message has been received.</span>}
+        {status === "success" && <span className="text-foreground">Thank you — your message has been received.</span>}
         {status === "error" && Object.keys(errors).length > 0 && (
-          <span className="text-orange">Please correct the highlighted fields.</span>
+          <span className="text-foreground">Please correct the highlighted fields.</span>
         )}
       </p>
     </form>

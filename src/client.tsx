@@ -1,22 +1,34 @@
 import { StrictMode, startTransition } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
+import { StartClient } from "@tanstack/react-start/client";
 import { getRouter } from "./router";
 
 /**
- * Static-hosting entry (no SSR document).
- * Avoids StartClient/hydrate, which requires window.$_TSR bootstrap data
- * that only exists in server-rendered HTML.
+ * Dual entry:
+ * - Dev / SSR: hydrate the full document via StartClient (TanStack Start shell).
+ * - Static `dist/index.html`: mount into `#root` with RouterProvider (no `$_TSR` bootstrap).
  */
 function mount() {
-  const router = getRouter();
-  const el = document.getElementById("root");
-  if (!el) throw new Error('Missing #root element in index.html');
+  const rootEl = document.getElementById("root");
+
+  if (rootEl) {
+    const router = getRouter();
+    startTransition(() => {
+      createRoot(rootEl).render(
+        <StrictMode>
+          <RouterProvider router={router} />
+        </StrictMode>,
+      );
+    });
+    return;
+  }
 
   startTransition(() => {
-    createRoot(el).render(
+    hydrateRoot(
+      document,
       <StrictMode>
-        <RouterProvider router={router} />
+        <StartClient />
       </StrictMode>,
     );
   });

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import heroBuilding from "@/assets/who-we-are-building.png";
+import { Glance } from "@/components/Glance";
 
 export const Route = createFileRoute("/who-we-are")({
   head: () => ({
@@ -119,7 +120,7 @@ function ValuesOrbit() {
                         aria-label={v.title}
                         aria-current={i === active}
                         className={`flex size-14 items-center justify-center rounded-full border bg-background shadow-card transition-colors ${
-                          i === active ? "border-orange text-orange" : "border-line text-navy hover:border-orange/50"
+                          i === active ? "border-orange text-foreground" : "border-line text-foreground hover:border-orange/50"
                         }`}
                       >
                         <ValueIcon name={v.icon} />
@@ -142,12 +143,12 @@ function ValuesOrbit() {
 
       <div>
         <p data-reveal className="eyebrow">Core Values</p>
-        <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-navy lg:text-[36px]">
+        <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-foreground lg:text-[36px]">
           Six principles of WBC.
         </h2>
         <span data-reveal className="accent-rule mt-4" />
-        <div key={current.title} className="fade-up mt-8 rounded-card border border-line bg-background p-7 shadow-card">
-          <h3 className="text-[20px] font-bold text-navy">{current.title}</h3>
+        <div key={current.title} className="fade-up mt-8 rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card">
+          <h3 className="text-[20px] font-bold text-foreground">{current.title}</h3>
           <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{current.body}</p>
         </div>
         <ul className="mt-6 flex flex-wrap gap-2">
@@ -157,7 +158,7 @@ function ValuesOrbit() {
                 type="button"
                 onClick={() => setActive(i)}
                 className={`rounded-full border px-4 py-2 text-[14px] font-medium transition-colors ${
-                  i === active ? "border-orange bg-orange text-orange-foreground" : "border-line text-navy hover:border-orange/50"
+                  i === active ? "border-orange bg-orange text-orange-foreground" : "border-line text-foreground hover:border-orange/50"
                 }`}
               >
                 {v.title}
@@ -179,18 +180,14 @@ function WhoWeAre() {
             <nav aria-label="Breadcrumb" className="intro-1 mb-6 text-[14px] text-white/80">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
-                  <Link to="/" className="transition-colors hover:text-navy">Home</Link>
-                </li>
-                <li aria-hidden="true" className="text-white/60">/</li>
-                <li>
-                  <Link to="/about" className="transition-colors hover:text-navy">About Us</Link>
+                  <Link to="/" className="transition-colors hover:text-white">Home</Link>
                 </li>
                 <li aria-hidden="true" className="text-white/60">/</li>
                 <li className="font-semibold text-white">Who We Are</li>
               </ol>
             </nav>
             <h1 className="intro-2 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
-              The World Business Council
+              Who We Are
             </h1>
             <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
               An international business support organization built on trust, connection, cooperation, and long-term
@@ -232,26 +229,26 @@ function WhoWeAre() {
         <div className="container-wbc relative grid gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-10">
           <div
             data-reveal
-            className="relative overflow-hidden rounded-card border border-line bg-background p-7 shadow-card sm:p-10 lg:p-14"
+            className="relative overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-14"
           >
             <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent rtl:bg-gradient-to-l" aria-hidden="true" />
             <div className="flex items-center gap-4">
-              <span className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-orange" aria-hidden="true">
+              <span className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
                 </svg>
               </span>
               <div>
-                <p className="text-[13px] font-bold tracking-[0.2em] text-orange uppercase">Who We Are</p>
-                <p className="mt-1 text-[19px] font-bold text-navy sm:text-[22px]">Behind every business is a person.</p>
+                <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Who We Are</p>
+                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">Behind every business is a person.</p>
               </div>
             </div>
 
             <span className="mt-8 block h-px w-full bg-line" aria-hidden="true" />
 
-            <p className="mt-8 text-[17px] leading-[1.95] text-navy/85 sm:text-[18px]">
-              <span className="float-start me-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-orange">T</span>
+            <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
+              <span className="float-start me-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-foreground">T</span>
               he World Business Council (WBC) is an international business support organization headquartered in Paris,
               built on a simple belief: behind every business is a person, an idea, and the ambition to create something
               meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
@@ -260,11 +257,11 @@ function WhoWeAre() {
               relationships into lasting opportunities for growth.
             </p>
 
-            <blockquote className="mt-8 border-s-2 border-orange ps-5 text-[18px] leading-relaxed font-semibold text-navy sm:text-[19px]">
+            <blockquote className="mt-8 border-s-2 border-orange ps-5 text-[18px] leading-relaxed font-semibold text-foreground sm:text-[19px]">
               “No business should have to grow alone — and meaningful connections are always built on trust.”
             </blockquote>
 
-            <p className="mt-8 text-[17px] leading-[1.95] text-navy/85 sm:text-[18px]">
+            <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
               Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
               move forward together. WBC works to create an environment where people and businesses can connect with
               confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
@@ -278,7 +275,7 @@ function WhoWeAre() {
                 { k: "Worldwide", v: "Council network" },
               ].map((s) => (
                 <div key={s.k}>
-                  <dt className="text-[22px] font-bold text-navy">{s.k}</dt>
+                  <dt className="text-[22px] font-bold text-foreground">{s.k}</dt>
                   <dd className="mt-1 text-[14px] tracking-[0.06em] text-muted-fg uppercase">{s.v}</dd>
                 </div>
               ))}
@@ -309,21 +306,21 @@ function WhoWeAre() {
 
             <article
               data-reveal
-              className="group relative overflow-hidden rounded-card border border-line bg-background p-8 shadow-card sm:p-9"
+              className="group relative overflow-hidden rounded-card border border-line bg-background p-8 transition-shadow duration-300 hover:shadow-card sm:p-9"
             >
               <span
                 className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
-              <span className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-orange" aria-hidden="true">
+              <span className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground" aria-hidden="true">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="8.5" />
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
                 </svg>
               </span>
-              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-orange uppercase">Our Mission</p>
-              <p className="relative mt-4 text-[17px] leading-relaxed text-navy/85 sm:text-[18px]">
+              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
+              <p className="relative mt-4 text-[17px] leading-relaxed text-foreground/85 sm:text-[18px]">
                 We build a global network that empowers businesses through collaboration, innovation, and trust.
               </p>
             </article>
@@ -337,6 +334,8 @@ function WhoWeAre() {
           <ValuesOrbit />
         </div>
       </section>
+
+      <Glance />
 
       <section className="relative isolate overflow-hidden bg-cta-blue py-16 lg:py-24">
         <div data-reveal className="container-wbc relative text-center">

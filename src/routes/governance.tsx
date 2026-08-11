@@ -123,7 +123,7 @@ const FAQ = [
 
 function BodyIcon({ icon }: { icon: Body["icon"] }) {
   return (
-    <span className="inline-flex size-12 shrink-0 items-center justify-center border border-line text-navy">
+    <span className="inline-flex size-12 shrink-0 items-center justify-center border border-line text-foreground">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
         {icon === "user" && (
           <>
@@ -190,7 +190,7 @@ function Governance() {
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
             <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance Structure</p>
-            <h2 className="mt-4 text-[30px] leading-tight font-bold text-navy sm:text-4xl lg:text-[44px]">
+            <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               Institutional governance for transparent and accountable delivery
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
@@ -203,7 +203,7 @@ function Governance() {
                 <li key={b.id}>
                   <a
                     href={`#${b.id}`}
-                    className="inline-block rounded-full border border-line px-5 py-2.5 text-[15px] text-navy transition-colors hover:border-orange hover:text-orange"
+                    className="inline-block rounded-full border border-line px-5 py-2.5 text-[15px] text-foreground transition-colors hover:border-orange hover:text-foreground"
                   >
                     {b.name.replace(/\s*\(.*\)$/, "")}
                   </a>
@@ -218,7 +218,7 @@ function Governance() {
                 key={b.id}
                 id={b.id}
                 data-reveal
-                className="scroll-mt-28 border border-line bg-background p-4 transition-shadow hover:shadow-card sm:p-6"
+                className="scroll-mt-28 border border-line bg-background p-4 transition-shadow duration-300 hover:shadow-card sm:p-6"
               >
                 <img
                   src={b.image}
@@ -231,7 +231,7 @@ function Governance() {
                 />
                 <div className="mt-6 flex items-center gap-4">
                   <BodyIcon icon={b.icon} />
-                  <h3 className="flex-1 text-[22px] leading-snug font-bold text-navy sm:text-[26px]">{b.name}</h3>
+                  <h3 className="flex-1 text-[22px] leading-snug font-bold text-foreground sm:text-[26px]">{b.name}</h3>
                   <span className="hidden shrink-0 border border-line px-3 py-2 text-[14px] text-muted-fg sm:inline-block">
                     Group {String(i + 1).padStart(2, "0")}
                   </span>
@@ -242,7 +242,7 @@ function Governance() {
                       key={r.label}
                       className="grid gap-2 border-t border-line py-5 sm:grid-cols-[0.42fr_1fr] sm:gap-8"
                     >
-                      <dt className="text-[16px] font-bold text-navy">{r.label}</dt>
+                      <dt className="text-[16px] font-bold text-foreground">{r.label}</dt>
                       <dd className="text-[16px] leading-relaxed text-muted-fg">{r.value}</dd>
                     </div>
                   ))}
@@ -251,11 +251,11 @@ function Governance() {
             ))}
 
             <div data-reveal className="border border-line bg-background p-6 sm:p-8">
-              <p className="text-[14px] font-bold tracking-[0.18em] text-navy uppercase">Additional Support Layer</p>
+              <p className="text-[14px] font-bold tracking-[0.18em] text-foreground uppercase">Additional Support Layer</p>
               <dl className="mt-4">
                 {SUPPORT.map((s) => (
                   <div key={s.label} className="grid gap-2 border-t border-line py-5 sm:grid-cols-[0.42fr_1fr] sm:gap-8">
-                    <dt className="text-[16px] font-bold text-navy">{s.label}</dt>
+                    <dt className="text-[16px] font-bold text-foreground">{s.label}</dt>
                     <dd className="text-[16px] leading-relaxed text-muted-fg">{s.value}</dd>
                   </div>
                 ))}
@@ -270,7 +270,7 @@ function Governance() {
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div data-reveal>
             <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance FAQ</p>
-            <h2 className="mt-4 text-[30px] leading-tight font-bold text-navy sm:text-4xl lg:text-[42px]">
+            <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               Clear answers on how WBC governance works
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
@@ -288,7 +288,7 @@ function Governance() {
                     aria-expanded={open === i}
                     className="flex w-full items-center justify-between gap-6 px-5 py-6 text-start transition-colors hover:bg-surface sm:px-8"
                   >
-                    <span className="text-[18px] leading-snug font-bold text-navy sm:text-[20px]">{f.q}</span>
+                    <span className="text-[18px] leading-snug font-bold text-foreground sm:text-[20px]">{f.q}</span>
                     <svg
                       width="22"
                       height="22"
@@ -297,7 +297,7 @@ function Governance() {
                       stroke="currentColor"
                       strokeWidth="1.8"
                       aria-hidden="true"
-                      className={`shrink-0 text-navy transition-transform duration-300 ${open === i ? "rotate-180" : ""}`}
+                      className={`shrink-0 text-foreground transition-transform duration-300 ${open === i ? "rotate-180" : ""}`}
                     >
                       <path d="M6 9l6 6 6-6" />
                     </svg>
@@ -316,7 +316,7 @@ function Governance() {
             </ul>
             <p className="mt-8 text-[17px] leading-relaxed text-muted-fg">
               Need more detail on a governance topic?{" "}
-              <Link to="/contact" className="font-semibold text-orange hover:underline">
+              <Link to="/contact" className="font-semibold text-foreground hover:underline">
                 Contact the WBC team
               </Link>{" "}
               and we'll direct your question to the right office.

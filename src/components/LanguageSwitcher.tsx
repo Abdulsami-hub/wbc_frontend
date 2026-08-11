@@ -29,7 +29,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
     };
   }, [open]);
 
-  const current = LANGUAGES.find((l) => l.code === lang);
+  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
 
   return (
     <div ref={ref} className={`relative ${className}`}>
@@ -39,17 +39,19 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
         aria-label={t("lang.label")}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="inline-flex size-9 items-center justify-center rounded-full border border-line text-navy transition-colors hover:border-orange hover:text-orange"
+        className="inline-flex h-9 items-center gap-2 rounded-md border border-line px-2.5 text-foreground transition-colors hover:border-foreground/40"
       >
         <GlobeIcon />
-        <span className="sr-only">{current?.name ?? "English"}</span>
+        <span className="max-w-[7.5rem] truncate text-[13px] font-medium" dir={current.dir}>
+          {current.name}
+        </span>
       </button>
 
       {open && (
         <div
           role="listbox"
           aria-label={t("lang.label")}
-          className="absolute end-0 top-[calc(100%+10px)] z-[60] max-h-[70vh] w-64 overflow-y-auto border border-line bg-background py-2 shadow-[0_18px_50px_-12px_rgba(16,32,64,0.28)]"
+          className="absolute end-0 top-[calc(100%+10px)] z-[60] max-h-[70vh] w-64 overflow-y-auto rounded-md border border-line bg-background py-2 shadow-[0_18px_50px_-12px_rgba(16,32,64,0.28)]"
         >
           {LANGUAGES.map((l) => {
             const active = l.code === lang;
@@ -64,20 +66,17 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
                   setOpen(false);
                 }}
                 className={`flex w-full items-center gap-4 px-4 py-2.5 text-start transition-colors ${
-                  active ? "bg-orange/10" : "hover:bg-light-grey"
+                  active ? "bg-surface" : "hover:bg-light-grey"
                 }`}
               >
                 <span
-                  className={`inline-flex h-8 min-w-9 items-center justify-center px-1.5 text-[13px] font-bold tracking-wide ${
-                    active ? "bg-orange/15 text-orange" : "bg-light-grey text-navy"
+                  className={`inline-flex h-8 min-w-9 items-center justify-center rounded px-1.5 text-[13px] font-bold tracking-wide ${
+                    active ? "bg-navy text-white" : "bg-light-grey text-foreground"
                   }`}
                 >
                   {l.badge}
                 </span>
-                <span
-                  className={`text-[16px] font-medium ${active ? "text-orange" : "text-navy"}`}
-                  dir={l.dir}
-                >
+                <span className={`text-[16px] font-medium ${active ? "text-foreground" : "text-muted-fg"}`} dir={l.dir}>
                   {l.name}
                 </span>
               </button>

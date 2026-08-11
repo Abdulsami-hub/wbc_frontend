@@ -1,32 +1,47 @@
 import { Link } from "@tanstack/react-router";
-import aboutMenuImage from "@/assets/news-forum.jpg";
+import networkImage from "@/assets/network-bg.jpg";
 
 const GROUPS = [
   {
-    label: "About WBC",
+    label: "Network Structure",
     items: [
-      { title: "Who We Are", desc: "Our mission, vision, and values", to: "/who-we-are" as const },
-      { title: "What We Do", desc: "Programs and global initiatives", to: "/what-we-do" as const },
+      {
+        title: "WBC Headquarters",
+        desc: "Paris-based global coordination",
+        to: "/global-network/headquarters" as const,
+      },
+      {
+        title: "WBC Affiliates",
+        desc: "Country and city affiliate presence",
+        to: "/affiliates" as const,
+      },
     ],
   },
   {
-    label: "Leadership",
+    label: "Members & Partners",
     items: [
-      { title: "Governance", desc: "Leadership structure and policies", to: "/governance" as const },
-      { title: "WBC Team", desc: "Meet the WBC team", to: "/wbc-team" as const },
+      {
+        title: "Institutional Members",
+        desc: "Chambers, associations, and institutions",
+        to: "/global-network/institutional-members" as const,
+      },
+      {
+        title: "Strategic Partners",
+        desc: "Organizations delivering joint initiatives",
+        to: "/global-network/strategic-partners" as const,
+      },
     ],
   },
 ] as const;
 
-export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
+export function MegaMenuNetwork({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="border-t border-line bg-background shadow-card">
       <div className="container-wbc grid gap-10 py-10 lg:grid-cols-[1fr_1fr_1fr_1.15fr] lg:gap-12 lg:py-12">
         <div>
-          <h2 className="text-[26px] font-bold text-foreground lg:text-[30px]">Who We Are</h2>
+          <h2 className="text-[26px] font-bold text-foreground lg:text-[30px]">Global Network</h2>
           <p className="mt-4 max-w-xs text-[16px] leading-relaxed text-muted-fg">
-            Learn about the World Business Council — our mission, vision, values, and global initiatives that empower
-            businesses worldwide.
+            Headquarters, affiliates, institutional members, and strategic partners working as one coordinated network.
           </p>
         </div>
 
@@ -51,8 +66,8 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
         <div className="overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card">
           <div className="h-44 overflow-hidden">
             <img
-              src={aboutMenuImage}
-              alt="WBC speaker addressing members at a council forum"
+              src={networkImage}
+              alt="Illuminated world map representing the WBC global network"
               width={800}
               height={500}
               loading="lazy"
@@ -62,14 +77,14 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
           </div>
           <div className="p-5">
             <p className="text-[15px] leading-relaxed text-muted-fg">
-              Explore the full story of WBC and how we connect businesses across the globe.
+              Explore how WBC connects institutions and businesses across regions.
             </p>
             <Link
-              to="/who-we-are"
+              to="/global-network"
               onClick={onNavigate}
               className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-foreground"
             >
-              View all <span aria-hidden="true" className="rtl-mirror">→</span>
+              View network <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

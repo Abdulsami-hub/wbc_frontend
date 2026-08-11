@@ -2,17 +2,31 @@ import { Link } from "@tanstack/react-router";
 import logoNavy from "@/assets/wbc-logo.png";
 import logoLight from "@/assets/wbc-logo-light.png";
 
-export function Logo({ variant = "navy" }: { variant?: "navy" | "light" }) {
-  const src = variant === "light" ? logoLight : logoNavy;
+export function Logo({
+  variant = "navy",
+  size = "default",
+  framed = false,
+}: {
+  variant?: "navy" | "light";
+  size?: "default" | "lg";
+  /** White padded background — use on dark surfaces when the logo needs contrast. */
+  framed?: boolean;
+}) {
+  const src = variant === "light" && !framed ? logoLight : logoNavy;
+  const heightClass = size === "lg" ? "h-11 w-auto sm:h-12 lg:h-[52px]" : "h-10 w-auto sm:h-11";
 
   return (
-    <Link to="/" className="flex shrink-0 items-center" aria-label="World Business Council home">
+    <Link
+      to="/"
+      className={`inline-flex shrink-0 items-center ${framed ? "w-fit rounded-md bg-white px-3 py-2 shadow-sm" : ""}`}
+      aria-label="World Business Council home"
+    >
       <img
         src={src}
         alt="World Business Council"
-        width={220}
-        height={58}
-        className="h-9 w-auto object-contain object-left sm:h-10"
+        width={260}
+        height={68}
+        className={`${heightClass} object-contain object-left`}
         decoding="async"
       />
     </Link>

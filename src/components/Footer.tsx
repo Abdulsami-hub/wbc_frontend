@@ -3,42 +3,48 @@ import { Logo } from "./Logo";
 import { FOOTER_ICONS, FooterLinkIcon } from "./NavIcons";
 import { useI18n, type TranslationKey } from "@/i18n";
 
-const COLUMNS = [
+type FooterLink = {
+  key: TranslationKey;
+  to: string;
+  hash?: string;
+};
+
+const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
   {
-    title: "footer.about" as TranslationKey,
+    title: "footer.about",
     links: [
-      { key: "link.whoWeAre" as TranslationKey, to: "/who-we-are" },
-      { key: "link.whatWeDo" as TranslationKey, to: "/what-we-do" },
-      { key: "link.governance" as TranslationKey, to: "/governance" },
-      { key: "link.team" as TranslationKey, to: "/wbc-team" },
+      { key: "link.whoWeAre", to: "/who-we-are" },
+      { key: "link.whatWeDo", to: "/what-we-do" },
+      { key: "link.governance", to: "/governance" },
+      { key: "link.team", to: "/wbc-team" },
     ],
   },
   {
-    title: "footer.network" as TranslationKey,
+    title: "footer.network",
     links: [
-      { key: "link.hq" as TranslationKey, to: "/global-network" },
-      { key: "link.affiliates" as TranslationKey, to: "/affiliates" },
-      { key: "link.institutional" as TranslationKey, to: "/membership" },
-      { key: "link.partners" as TranslationKey, to: "/global-network" },
+      { key: "link.hq", to: "/global-network/headquarters" },
+      { key: "link.affiliates", to: "/affiliates" },
+      { key: "link.institutional", to: "/global-network/institutional-members" },
+      { key: "link.partners", to: "/global-network/strategic-partners" },
     ],
   },
   {
-    title: "footer.membership" as TranslationKey,
+    title: "footer.membership",
     links: [
-      { key: "link.wbcMembership" as TranslationKey, to: "/membership" },
-      { key: "link.benefits" as TranslationKey, to: "/membership" },
-      { key: "link.become" as TranslationKey, to: "/become-a-member" },
-      { key: "nav.ourMembers" as TranslationKey, to: "/our-members" },
+      { key: "link.benefits", to: "/membership", hash: "benefits" },
+      { key: "link.become", to: "/become-a-member" },
+      { key: "nav.ourMembers", to: "/our-members" },
     ],
   },
   {
-    title: "footer.resources" as TranslationKey,
+    title: "footer.resources",
     links: [
-      { key: "nav.events" as TranslationKey, to: "/events" },
-      { key: "nav.contact" as TranslationKey, to: "/contact" },
+      { key: "nav.news", to: "/news" },
+      { key: "nav.events", to: "/events" },
+      { key: "nav.contact", to: "/contact" },
     ],
   },
-] as const;
+];
 
 const SOCIAL = [
   {
@@ -61,10 +67,8 @@ export function Footer() {
       <div className="container-wbc py-14 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)] lg:gap-8">
           <div className="max-w-xs">
-            <Logo variant="light" />
-            <p className="mt-5 text-[15px] leading-relaxed">
-              {t("footer.tagline")}
-            </p>
+            <Logo framed />
+            <p className="mt-5 text-[15px] leading-relaxed">{t("footer.tagline")}</p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {SOCIAL.map((s) => (
                 <li key={s.label}>
@@ -95,7 +99,8 @@ export function Footer() {
                     <li key={l.key}>
                       <Link
                         to={l.to}
-                        className="group inline-flex items-center gap-2.5 text-[15px] transition-colors hover:text-orange"
+                        {...(l.hash ? { hash: l.hash } : {})}
+                        className="group inline-flex items-center gap-2.5 text-[15px] transition-colors hover:text-white"
                       >
                         {Icon ? <FooterLinkIcon icon={Icon} /> : null}
                         {t(l.key)}
@@ -109,12 +114,14 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-[14px] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} World Business Council. {t("footer.rights")}</p>
+          <p>
+            © {new Date().getFullYear()} World Business Council. {t("footer.rights")}
+          </p>
           <div className="flex gap-6">
-            <Link to="/contact" className="transition-colors hover:text-orange">
+            <Link to="/contact" className="transition-colors hover:text-white">
               {t("footer.privacy")}
             </Link>
-            <Link to="/contact" className="transition-colors hover:text-orange">
+            <Link to="/contact" className="transition-colors hover:text-white">
               {t("footer.terms")}
             </Link>
           </div>

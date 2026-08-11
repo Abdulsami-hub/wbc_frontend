@@ -1,12 +1,9 @@
 import { useEffect } from "react";
 
 /**
- * Lightweight scroll-reveal: sets `data-revealed` on any `[data-reveal]` element
- * when it enters the viewport. One shared IntersectionObserver, no dependencies,
- * and an instant no-op when the user prefers reduced motion.
- *
- * A plain attribute (not a className) is used so React never sees a hydration
- * mismatch on elements it owns.
+ * Scroll-reveal: sets `data-revealed` on `[data-reveal]` when in view.
+ * Rescans after navigation and when lazy route chunks mount so content
+ * is not left invisible until a hard refresh.
  */
 export function useReveal(key?: string) {
   useEffect(() => {
@@ -14,12 +11,15 @@ export function useReveal(key?: string) {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const revealAll = () => {
+      for (const n of document.querySelectorAll("[data-reveal]")) {
+        n.setAttribute("data-revealed", "");
+      }
+    };
+
     if (typeof IntersectionObserver === "undefined" || reduced) {
-      const reveal = () => {
-        for (const n of document.querySelectorAll("[data-reveal]")) n.setAttribute("data-revealed", "");
-      };
-      reveal();
-      const t = window.setTimeout(reveal, 300);
+      revealAll();
+      const t = window.setTimeout(revealAll, 300);
       return () => window.clearTimeout(t);
     }
 
@@ -32,13 +32,14 @@ export function useReveal(key?: string) {
           }
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0.04 },
     );
 
     const scan = () => {
       for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-observed])")) {
         n.setAttribute("data-observed", "");
-        if (n.getBoundingClientRect().top < window.innerHeight * 0.92) {
+        const top = n.getBoundingClientRect().top;
+        if (top < window.innerHeight * 0.96) {
           n.setAttribute("data-revealed", "");
         } else {
           observer.observe(n);
@@ -46,19 +47,29 @@ export function useReveal(key?: string) {
       }
     };
 
-    // Wait until React has finished hydrating the route subtree before
-    // touching the DOM, otherwise React reports an attribute mismatch.
     let raf = 0;
-    const start = () => {
-      raf = requestAnimationFrame(() => requestAnimationFrame(scan));
+    const scheduleScan = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        raf = requestAnimationFrame(scan);
+      });
     };
-    const timer = window.setTimeout(start, 120);
-    window.addEventListener("scroll", scan, { passive: true });
+
+    scheduleScan();
+    const retryTimers = [50, 150, 350, 800, 1600].map((ms) => window.setTimeout(scheduleScan, ms));
+
+    const mo = new MutationObserver(() => scheduleScan());
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    window.addEventListener("scroll", scheduleScan, { passive: true });
+    window.addEventListener("resize", scheduleScan, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
-      window.clearTimeout(timer);
-      window.removeEventListener("scroll", scan);
+      for (const t of retryTimers) window.clearTimeout(t);
+      mo.disconnect();
+      window.removeEventListener("scroll", scheduleScan);
+      window.removeEventListener("resize", scheduleScan);
       observer.disconnect();
     };
   }, [key]);

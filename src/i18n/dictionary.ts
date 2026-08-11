@@ -7,6 +7,7 @@ export type TranslationKey =
   | "nav.events"
   | "nav.contact"
   | "nav.ourMembers"
+  | "nav.news"
   | "cta.join"
   | "lang.label"
   | "footer.tagline"
@@ -32,12 +33,13 @@ export type TranslationKey =
 type Dict = Record<TranslationKey, string>;
 
 const en: Dict = {
-  "nav.about": "About Us",
+  "nav.about": "Who We Are",
   "nav.network": "Global Network",
   "nav.membership": "Membership",
   "nav.events": "Events",
   "nav.contact": "Contact",
   "nav.ourMembers": "Our Members",
+  "nav.news": "News",
   "cta.join": "Join WBC",
   "lang.label": "Language",
   "footer.tagline":
@@ -69,6 +71,7 @@ const fr: Dict = {
   "nav.events": "Événements",
   "nav.contact": "Contact",
   "nav.ourMembers": "Nos membres",
+  "nav.news": "Actualités",
   "cta.join": "Rejoindre le WBC",
   "lang.label": "Langue",
   "footer.tagline":
@@ -100,6 +103,7 @@ const es: Dict = {
   "nav.events": "Eventos",
   "nav.contact": "Contacto",
   "nav.ourMembers": "Nuestros miembros",
+  "nav.news": "Noticias",
   "cta.join": "Únete al WBC",
   "lang.label": "Idioma",
   "footer.tagline":
@@ -124,37 +128,6 @@ const es: Dict = {
   "link.become": "Hazte miembro",
 };
 
-const de: Dict = {
-  "nav.about": "Über uns",
-  "nav.network": "Globales Netzwerk",
-  "nav.membership": "Mitgliedschaft",
-  "nav.events": "Veranstaltungen",
-  "nav.contact": "Kontakt",
-  "nav.ourMembers": "Unsere Mitglieder",
-  "cta.join": "WBC beitreten",
-  "lang.label": "Sprache",
-  "footer.tagline":
-    "Wir bauen ein globales Netzwerk, das Unternehmen durch Zusammenarbeit, Innovation und Vertrauen stärkt.",
-  "footer.about": "Über uns",
-  "footer.network": "Netzwerk",
-  "footer.membership": "Mitgliedschaft",
-  "footer.resources": "Ressourcen",
-  "footer.rights": "Alle Rechte vorbehalten.",
-  "footer.privacy": "Datenschutz",
-  "footer.terms": "Nutzungsbedingungen",
-  "link.whoWeAre": "Wer wir sind",
-  "link.whatWeDo": "Was wir tun",
-  "link.governance": "Governance",
-  "link.team": "WBC-Team",
-  "link.hq": "WBC-Hauptsitz",
-  "link.affiliates": "WBC-Partnerbüros",
-  "link.institutional": "Institutionelle Mitglieder",
-  "link.partners": "Strategische Partner",
-  "link.wbcMembership": "WBC-Mitgliedschaft",
-  "link.benefits": "Vorteile",
-  "link.become": "Mitglied werden",
-};
-
 const ar: Dict = {
   "nav.about": "من نحن",
   "nav.network": "الشبكة العالمية",
@@ -162,6 +135,7 @@ const ar: Dict = {
   "nav.events": "الفعاليات",
   "nav.contact": "اتصل بنا",
   "nav.ourMembers": "أعضاؤنا",
+  "nav.news": "الأخبار",
   "cta.join": "انضم إلى WBC",
   "lang.label": "اللغة",
   "footer.tagline": "نبني شبكة عالمية تمكّن الشركات من خلال التعاون والابتكار والثقة.",
@@ -192,6 +166,7 @@ const zh: Dict = {
   "nav.events": "活动",
   "nav.contact": "联系我们",
   "nav.ourMembers": "我们的会员",
+  "nav.news": "新闻",
   "cta.join": "加入 WBC",
   "lang.label": "语言",
   "footer.tagline": "构建全球网络，通过合作、创新与信任赋能企业。",
@@ -215,99 +190,6 @@ const zh: Dict = {
   "link.become": "成为会员",
 };
 
-const it: Dict = {
-  "nav.about": "Chi siamo",
-  "nav.network": "Rete globale",
-  "nav.membership": "Adesione",
-  "nav.events": "Eventi",
-  "nav.contact": "Contatti",
-  "nav.ourMembers": "I nostri membri",
-  "cta.join": "Unisciti al WBC",
-  "lang.label": "Lingua",
-  "footer.tagline":
-    "Costruiamo una rete globale che rafforza le imprese attraverso collaborazione, innovazione e fiducia.",
-  "footer.about": "Chi siamo",
-  "footer.network": "Rete",
-  "footer.membership": "Adesione",
-  "footer.resources": "Risorse",
-  "footer.rights": "Tutti i diritti riservati.",
-  "footer.privacy": "Informativa sulla privacy",
-  "footer.terms": "Termini di servizio",
-  "link.whoWeAre": "Chi siamo",
-  "link.whatWeDo": "Cosa facciamo",
-  "link.governance": "Governance",
-  "link.team": "Team WBC",
-  "link.hq": "Sede WBC",
-  "link.affiliates": "Affiliati WBC",
-  "link.institutional": "Membri istituzionali",
-  "link.partners": "Partner strategici",
-  "link.wbcMembership": "Adesione WBC",
-  "link.benefits": "Vantaggi",
-  "link.become": "Diventa membro",
-};
-
-const tr: Dict = {
-  "nav.about": "Hakkımızda",
-  "nav.network": "Küresel Ağ",
-  "nav.membership": "Üyelik",
-  "nav.events": "Etkinlikler",
-  "nav.contact": "İletişim",
-  "nav.ourMembers": "Üyelerimiz",
-  "cta.join": "WBC'ye Katıl",
-  "lang.label": "Dil",
-  "footer.tagline":
-    "İş birliği, inovasyon ve güven yoluyla işletmeleri güçlendiren küresel bir ağ kuruyoruz.",
-  "footer.about": "Hakkında",
-  "footer.network": "Ağ",
-  "footer.membership": "Üyelik",
-  "footer.resources": "Kaynaklar",
-  "footer.rights": "Tüm hakları saklıdır.",
-  "footer.privacy": "Gizlilik Politikası",
-  "footer.terms": "Hizmet Koşulları",
-  "link.whoWeAre": "Biz Kimiz",
-  "link.whatWeDo": "Ne Yapıyoruz",
-  "link.governance": "Yönetişim",
-  "link.team": "WBC Ekibi",
-  "link.hq": "WBC Merkezi",
-  "link.affiliates": "WBC Temsilcilikleri",
-  "link.institutional": "Kurumsal Üyeler",
-  "link.partners": "Stratejik Ortaklar",
-  "link.wbcMembership": "WBC Üyeliği",
-  "link.benefits": "Avantajlar",
-  "link.become": "Üye Ol",
-};
-
-const pt: Dict = {
-  "nav.about": "Sobre nós",
-  "nav.network": "Rede global",
-  "nav.membership": "Adesão",
-  "nav.events": "Eventos",
-  "nav.contact": "Contato",
-  "nav.ourMembers": "Nossos membros",
-  "cta.join": "Junte-se ao WBC",
-  "lang.label": "Idioma",
-  "footer.tagline":
-    "Construímos uma rede global que fortalece empresas por meio de colaboração, inovação e confiança.",
-  "footer.about": "Sobre",
-  "footer.network": "Rede",
-  "footer.membership": "Adesão",
-  "footer.resources": "Recursos",
-  "footer.rights": "Todos os direitos reservados.",
-  "footer.privacy": "Política de Privacidade",
-  "footer.terms": "Termos de Serviço",
-  "link.whoWeAre": "Quem somos",
-  "link.whatWeDo": "O que fazemos",
-  "link.governance": "Governança",
-  "link.team": "Equipe WBC",
-  "link.hq": "Sede do WBC",
-  "link.affiliates": "Afiliados WBC",
-  "link.institutional": "Membros institucionais",
-  "link.partners": "Parceiros estratégicos",
-  "link.wbcMembership": "Adesão ao WBC",
-  "link.benefits": "Benefícios",
-  "link.become": "Torne-se membro",
-};
-
 const ru: Dict = {
   "nav.about": "О нас",
   "nav.network": "Глобальная сеть",
@@ -315,6 +197,7 @@ const ru: Dict = {
   "nav.events": "Мероприятия",
   "nav.contact": "Контакты",
   "nav.ourMembers": "Наши члены",
+  "nav.news": "Новости",
   "cta.join": "Вступить в WBC",
   "lang.label": "Язык",
   "footer.tagline":
@@ -339,4 +222,4 @@ const ru: Dict = {
   "link.become": "Стать членом",
 };
 
-export const DICTIONARIES: Record<LangCode, Dict> = { en, fr, es, de, ar, zh, it, tr, pt, ru };
+export const DICTIONARIES: Record<LangCode, Dict> = { en, fr, es, ar, zh, ru };

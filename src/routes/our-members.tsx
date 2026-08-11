@@ -24,11 +24,17 @@ export const Route = createFileRoute("/our-members")({
 
 const TAGS = ["Cross-sector Members", "International Reach", "Verified Profiles"] as const;
 
+type MemberTile = {
+  name: string;
+  logo?: string;
+  href?: string;
+};
+
 type Category = {
   name: string;
   desc: string;
   accent: "orange" | "navy" | "teal" | "blue";
-  members: string[];
+  members: MemberTile[];
 };
 
 const CATEGORIES: Category[] = [
@@ -36,31 +42,55 @@ const CATEGORIES: Category[] = [
     name: "Institutional Members",
     desc: "Business councils, chambers, associations, NGOs, foundations, universities, and other mission-driven membership organizations.",
     accent: "orange",
-    members: ["Member 01", "Member 02", "Member 03", "Member 04", "Member 05"],
+    members: [
+      { name: "Member 01", href: "https://example.com" },
+      { name: "Member 02" },
+      { name: "Member 03", href: "https://example.com" },
+      { name: "Member 04" },
+      { name: "Member 05" },
+    ],
   },
   {
     name: "Corporate Members",
     desc: "Corporations, enterprises, and large organizations pursuing strategic partnerships, international visibility, and business opportunity access.",
     accent: "navy",
-    members: ["Member 06", "Member 07", "Member 08", "Member 09", "Member 10"],
+    members: [
+      { name: "Member 06", href: "https://example.com" },
+      { name: "Member 07" },
+      { name: "Member 08" },
+      { name: "Member 09", href: "https://example.com" },
+      { name: "Member 10" },
+    ],
   },
   {
     name: "SME Members",
     desc: "Micro, small, and medium-sized businesses, startups, entrepreneurs, and freelancers focused on growth, networking, and market access.",
     accent: "teal",
-    members: ["Member 11", "Member 12", "Member 13", "Member 14", "Member 15"],
+    members: [
+      { name: "Member 11" },
+      { name: "Member 12", href: "https://example.com" },
+      { name: "Member 13" },
+      { name: "Member 14" },
+      { name: "Member 15", href: "https://example.com" },
+    ],
   },
   {
     name: "Individual & Honorary Members",
     desc: "Professionals, consultants, and recognised contributors advancing WBC's mission through expertise and international engagement.",
     accent: "blue",
-    members: ["Member 16", "Member 17", "Member 18", "Member 19", "Member 20"],
+    members: [
+      { name: "Member 16" },
+      { name: "Member 17" },
+      { name: "Member 18", href: "https://example.com" },
+      { name: "Member 19" },
+      { name: "Member 20" },
+    ],
   },
 ];
 
 const ACCENT: Record<Category["accent"], { bar: string; dot: string; text: string; glow: string }> = {
-  orange: { bar: "bg-orange", dot: "bg-orange", text: "group-hover/tile:text-orange", glow: "bg-orange/10" },
-  navy: { bar: "bg-navy", dot: "bg-navy", text: "group-hover/tile:text-navy", glow: "bg-navy/10" },
+  orange: { bar: "bg-orange", dot: "bg-orange", text: "group-hover/tile:text-foreground", glow: "bg-orange/10" },
+  navy: { bar: "bg-navy", dot: "bg-navy", text: "group-hover/tile:text-foreground", glow: "bg-navy/10" },
   teal: { bar: "bg-teal", dot: "bg-teal", text: "group-hover/tile:text-teal", glow: "bg-teal/15" },
   blue: { bar: "bg-blue", dot: "bg-blue", text: "group-hover/tile:text-blue", glow: "bg-blue/10" },
 };
@@ -73,10 +103,51 @@ function ArrowUpRight() {
   );
 }
 
+function MemberTileCard({
+  member,
+  accent,
+}: {
+  member: MemberTile;
+  accent: (typeof ACCENT)[Category["accent"]];
+}) {
+  const inner = (
+    <>
+      <span className="flex min-w-0 items-center gap-3">
+        {member.logo ? (
+          <img src={member.logo} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
+        ) : (
+          <span className={`size-1.5 shrink-0 rounded-full ${accent.dot}`} aria-hidden="true" />
+        )}
+        <span className={`truncate text-[16px] font-bold text-foreground transition-colors ${accent.text}`}>
+          {member.name}
+        </span>
+      </span>
+      {member.href ? (
+        <span className="text-foreground transition-transform duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5">
+          <ArrowUpRight />
+        </span>
+      ) : null}
+    </>
+  );
+
+  const className =
+    "group/tile flex items-center justify-between gap-3 rounded-card border border-line bg-surface/60 px-5 py-6 transition-shadow duration-300 hover:shadow-card hover:bg-background";
+
+  if (member.href) {
+    return (
+      <a href={member.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {inner}
+      </a>
+    );
+  }
+
+  return <div className={className}>{inner}</div>;
+}
+
 function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
   const a = ACCENT[cat.accent];
   return (
-    <li data-reveal className="group relative overflow-hidden rounded-card border border-line bg-background shadow-card">
+    <li data-reveal className="group relative overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card">
       <span className={`absolute inset-y-0 start-0 w-1 ${a.bar}`} aria-hidden="true" />
       <span
         className={`pointer-events-none absolute -end-16 -top-16 size-56 rounded-full blur-2xl transition-opacity duration-500 ${a.glow} opacity-60 group-hover:opacity-100`}
@@ -88,7 +159,7 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
             <p className="text-[12px] font-semibold tracking-[0.2em] text-muted-fg uppercase">
               Category {String(index + 1).padStart(2, "0")}
             </p>
-            <h3 className="mt-3 text-[24px] leading-tight font-bold text-navy sm:text-[28px]">{cat.name}</h3>
+            <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">{cat.name}</h3>
           </div>
           <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p>
         </div>
@@ -97,19 +168,8 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {cat.members.map((m) => (
-            <li key={m}>
-              <a
-                href="#"
-                className="group/tile flex items-center justify-between gap-3 rounded-card border border-line bg-surface/60 px-5 py-6 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:bg-background hover:shadow-card"
-              >
-                <span className="flex items-center gap-3">
-                  <span className={`size-1.5 rounded-full ${a.dot}`} aria-hidden="true" />
-                  <span className={`text-[16px] font-bold text-navy transition-colors ${a.text}`}>{m}</span>
-                </span>
-                <span className="text-orange transition-transform duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5">
-                  <ArrowUpRight />
-                </span>
-              </a>
+            <li key={m.name}>
+              <MemberTileCard member={m} accent={a} />
             </li>
           ))}
         </ul>
@@ -121,7 +181,6 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
 function OurMembers() {
   return (
     <>
-      {/* Split hero */}
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
         <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
           <div className="mx-auto max-w-xl">
@@ -168,19 +227,18 @@ function OurMembers() {
         </div>
       </section>
 
-      {/* Directory */}
       <section id="directory" className="py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
             <p className="flex items-center gap-2 text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
               <span className="size-2 rounded-full bg-orange" aria-hidden="true" /> Member Directory
             </p>
-            <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-navy sm:text-4xl lg:text-[44px]">
+            <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               Browse Members by Category
             </h2>
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-              Explore category groups and open each member profile from its logo tile. Every logo links directly to that
-              member's website.
+              Explore category groups and open each member profile from its tile. Linked members open their website when
+              available.
             </p>
           </div>
 

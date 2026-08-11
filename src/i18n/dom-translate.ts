@@ -5,12 +5,8 @@ type TMap = Record<string, string>;
 const LOADERS: Record<Exclude<LangCode, "en">, () => Promise<{ default: TMap }>> = {
   fr: () => import("./generated/fr.json"),
   es: () => import("./generated/es.json"),
-  de: () => import("./generated/de.json"),
   ar: () => import("./generated/ar.json"),
   zh: () => import("./generated/zh.json"),
-  it: () => import("./generated/it.json"),
-  tr: () => import("./generated/tr.json"),
-  pt: () => import("./generated/pt.json"),
   ru: () => import("./generated/ru.json"),
 };
 

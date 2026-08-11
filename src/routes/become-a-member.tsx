@@ -37,7 +37,7 @@ const STEPS = [
   {
     title: "Receive Confirmation",
     body: "Confirmation and certificate within 3 working days.",
-    tone: "text-orange",
+    tone: "text-foreground",
     highlight: true,
   },
 ] as const;
@@ -73,7 +73,7 @@ function BecomeAMember() {
 
           <ul data-reveal data-reveal-group className="mt-12 grid gap-5 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="border border-line bg-background p-7 shadow-card sm:p-8">
+              <li key={step.title} className="rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-8">
                 <span
                   className={`inline-flex size-10 items-center justify-center bg-surface text-[14px] font-bold tabular-nums ${step.tone}`}
                   aria-hidden="true"
@@ -82,7 +82,7 @@ function BecomeAMember() {
                 </span>
                 <h3
                   className={`mt-5 text-[20px] leading-snug font-bold ${
-                    step.highlight ? "text-orange" : "text-navy"
+                    step.highlight ? "text-foreground" : "text-foreground"
                   }`}
                 >
                   {step.title}
@@ -96,10 +96,10 @@ function BecomeAMember() {
 
       <section id="application" className="bg-surface py-16 lg:py-20">
         <div className="container-wbc">
-          <div data-reveal className="mx-auto max-w-4xl border border-line bg-background p-6 shadow-card sm:p-8 lg:p-10">
+          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card sm:p-8 lg:p-10">
             <div className="mb-8">
               <p className="eyebrow">Application Form</p>
-              <h2 className="mt-3 text-[26px] leading-tight font-bold text-navy sm:text-3xl">Become a Member</h2>
+              <h2 className="mt-3 text-[26px] leading-tight font-bold text-foreground sm:text-3xl">Become a Member</h2>
               <span className="accent-rule mt-4" />
               <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted-fg">
                 Select your membership category and complete the form below. Required fields are marked with an asterisk.

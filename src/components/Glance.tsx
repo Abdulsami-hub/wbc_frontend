@@ -23,7 +23,7 @@ export function Glance() {
         <ul data-reveal data-reveal-group className="mt-8 grid gap-4 sm:grid-cols-3">
           {STATS.map((s) => (
             <li key={s.label} className="rounded-card bg-white/95 px-6 py-6 text-center shadow-card">
-              <p className="text-2xl font-bold text-orange lg:text-[28px]">{s.value}</p>
+              <p className="text-2xl font-bold text-foreground lg:text-[28px]">{s.value}</p>
               <p className="mt-1 text-[14px] text-muted-fg">{s.label}</p>
             </li>
           ))}

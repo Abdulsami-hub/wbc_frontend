@@ -27,18 +27,22 @@ const PILLARS = [
   {
     title: "WBC Headquarters",
     body: "Paris-based coordination of the council's international activities, standards, and governance.",
+    to: "/global-network/headquarters" as const,
   },
   {
     title: "WBC Affiliates",
     body: "Local councils and affiliates extending WBC's presence into cities and regions worldwide.",
+    to: "/affiliates" as const,
   },
   {
     title: "Institutional Members",
     body: "Chambers of commerce, associations, and public institutions cooperating with WBC.",
+    to: "/global-network/institutional-members" as const,
   },
   {
     title: "Strategic Partners",
     body: "Organizations partnering with WBC to deliver programmes, events, and joint initiatives.",
+    to: "/global-network/strategic-partners" as const,
   },
 ] as const;
 
@@ -66,8 +70,8 @@ function GlobalNetwork() {
       {/* Intro */}
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12">
-            <h2 className="text-[26px] leading-tight font-bold text-navy sm:text-[34px]">
+          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
+            <h2 className="text-[26px] leading-tight font-bold text-foreground sm:text-[34px]">
               How the network works
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
@@ -84,21 +88,29 @@ function GlobalNetwork() {
         <div className="container-wbc">
           <div data-reveal>
             <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
-            <h2 className="mt-4 text-[30px] leading-tight font-bold text-navy sm:text-4xl lg:text-[46px]">
+            <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
               Four connected layers
             </h2>
           </div>
 
           <ul data-reveal data-reveal-group className="mt-10 grid gap-5 sm:grid-cols-2">
             {PILLARS.map((p, i) => (
-              <li
-                key={p.title}
-                className="group relative overflow-hidden rounded-card border border-line bg-background p-7 pe-14 transition-all hover:-translate-y-1 hover:border-orange/50 hover:shadow-card sm:p-8 sm:pe-14"
-              >
-                <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
-                <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
-                <h3 className="mt-7 text-[21px] leading-snug font-bold text-navy">{p.title}</h3>
-                <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
+              <li key={p.title}>
+                <Link
+                  to={p.to}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-background p-7 pe-14 transition-shadow duration-300 hover:shadow-card sm:p-8 sm:pe-14"
+                >
+                  <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
+                  <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
+                  <h3 className="mt-7 text-[21px] leading-snug font-bold text-foreground">{p.title}</h3>
+                  <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-[15px] font-bold text-foreground">
+                    Learn more
+                    <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -111,13 +123,13 @@ function GlobalNetwork() {
           <div data-reveal data-reveal-group className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {STATS.map((s) => (
               <div key={s.label} className="bg-background p-8">
-                <p className="text-[38px] leading-none font-extrabold tracking-tight text-navy">{s.value}</p>
+                <p className="text-[38px] leading-none font-extrabold tracking-tight text-foreground">{s.value}</p>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{s.label}</p>
               </div>
             ))}
           </div>
           <div data-reveal className="mt-10 text-center">
-            <Link to="/affiliates" className="text-[16px] font-bold text-orange">
+            <Link to="/affiliates" className="text-[16px] font-bold text-foreground">
               See where WBC is represented <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>

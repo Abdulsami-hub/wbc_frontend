@@ -21,7 +21,7 @@ export function SectionHeading({
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <Tag
         className={`mt-3 text-[26px] leading-tight font-bold sm:text-3xl lg:text-[34px] ${
-          light ? "text-white" : "text-navy"
+          light ? "text-white" : "text-foreground"
         }`}
       >
         {title}

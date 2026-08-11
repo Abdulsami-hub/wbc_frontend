@@ -25,7 +25,7 @@ export function SignalsAtGlance() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue sm:text-xs">
             Institutional Momentum at a Glance
           </p>
-          <h2 className="mt-3 text-[26px] leading-tight font-bold text-navy sm:text-3xl lg:text-[34px]">
+          <h2 className="mt-3 text-[26px] leading-tight font-bold text-foreground sm:text-3xl lg:text-[34px]">
             Trusted signals of WBC
           </h2>
           <span className="accent-rule mt-4" />
@@ -33,7 +33,7 @@ export function SignalsAtGlance() {
         <div
           data-reveal
           data-reveal-group
-          className="mt-10 grid overflow-hidden rounded-card border border-line bg-background sm:grid-cols-2"
+          className="mt-10 grid overflow-hidden rounded-card border border-line bg-background sm:grid-cols-2 transition-shadow duration-300 hover:shadow-card"
         >
           {SIGNALS.map((s, i) => {
             const isTopRow = i < 2;
@@ -48,7 +48,7 @@ export function SignalsAtGlance() {
                 key={s.title}
                 className={`p-8 sm:p-10 lg:p-12 ${borderClass}`}
               >
-                <h3 className="text-[22px] font-bold leading-tight text-navy sm:text-2xl lg:text-[26px]">
+                <h3 className="text-[22px] font-bold leading-tight text-foreground sm:text-2xl lg:text-[26px]">
                   {s.title}
                 </h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">

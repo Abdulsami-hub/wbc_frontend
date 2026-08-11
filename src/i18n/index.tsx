@@ -17,7 +17,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) as LangCode | null;
-    if (stored && stored in DICTIONARIES) setLangState(stored);
+    if (stored && LANGUAGES.some((l) => l.code === stored)) setLangState(stored);
   }, []);
 
   const dir = LANGUAGES.find((l) => l.code === lang)?.dir ?? "ltr";

@@ -1,6 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import heroImg from "@/assets/affiliates-hero.jpg";
+import {
+  AFFILIATE_REGIONS,
+  type AffiliateCountry,
+  type AffiliateRegion,
+  type AffiliateStatus,
+} from "@/content/affiliates";
 
 export const Route = createFileRoute("/affiliates")({
   head: () => ({
@@ -25,110 +31,6 @@ export const Route = createFileRoute("/affiliates")({
 
 const TAGS = ["Institutional Alignment", "Network Access", "Partnership Continuity"] as const;
 
-type Country = { name: string; cities: string[] };
-type Region = { name: string; countries: Country[] };
-
-const REGIONS: Region[] = [
-  {
-    name: "Africa & the Middle East",
-    countries: [
-      { name: "Egypt", cities: ["Cairo", "Alexandria"] },
-      { name: "United Arab Emirates", cities: ["Dubai", "Abu Dhabi", "Sharjah"] },
-      { name: "Morocco", cities: ["Casablanca", "Rabat"] },
-      { name: "Algeria", cities: ["Algiers"] },
-      { name: "Tunisia", cities: ["Tunis"] },
-      { name: "Kenya", cities: ["Nairobi"] },
-      { name: "Nigeria", cities: ["Lagos", "Abuja"] },
-      { name: "South Africa", cities: ["Johannesburg", "Cape Town"] },
-      { name: "Ghana", cities: ["Accra"] },
-      { name: "Ethiopia", cities: ["Addis Ababa"] },
-      { name: "Senegal", cities: ["Dakar"] },
-      { name: "Cote d'Ivoire", cities: ["Abidjan"] },
-      { name: "Saudi Arabia", cities: ["Riyadh", "Jeddah"] },
-      { name: "Qatar", cities: ["Doha"] },
-      { name: "Kuwait", cities: ["Kuwait City"] },
-      { name: "Bahrain", cities: ["Manama"] },
-      { name: "Oman", cities: ["Muscat"] },
-      { name: "Jordan", cities: ["Amman"] },
-      { name: "Lebanon", cities: ["Beirut"] },
-    ],
-  },
-  {
-    name: "Europe",
-    countries: [
-      { name: "France", cities: ["Paris", "Lyon", "Marseille"] },
-      { name: "Germany", cities: ["Berlin", "Frankfurt", "Munich"] },
-      { name: "Spain", cities: ["Madrid", "Barcelona"] },
-      { name: "Italy", cities: ["Milan", "Rome"] },
-      { name: "Netherlands", cities: ["Amsterdam", "Rotterdam"] },
-      { name: "Belgium", cities: ["Brussels"] },
-      { name: "Switzerland", cities: ["Geneva", "Zurich"] },
-      { name: "Austria", cities: ["Vienna"] },
-      { name: "Sweden", cities: ["Stockholm"] },
-      { name: "Denmark", cities: ["Copenhagen"] },
-      { name: "Norway", cities: ["Oslo"] },
-      { name: "Ireland", cities: ["Dublin"] },
-      { name: "Portugal", cities: ["Lisbon"] },
-      { name: "Poland", cities: ["Warsaw"] },
-      { name: "Greece", cities: ["Athens"] },
-    ],
-  },
-  {
-    name: "Asia & the Pacific",
-    countries: [
-      { name: "Singapore", cities: ["Singapore"] },
-      { name: "Japan", cities: ["Tokyo", "Osaka"] },
-      { name: "South Korea", cities: ["Seoul"] },
-      { name: "Australia", cities: ["Sydney", "Melbourne"] },
-      { name: "New Zealand", cities: ["Auckland"] },
-      { name: "India", cities: ["Mumbai", "New Delhi", "Bengaluru"] },
-      { name: "Pakistan", cities: ["Karachi", "Lahore"] },
-      { name: "Afghanistan", cities: ["Kabul"] },
-      { name: "Tajikistan", cities: ["Dushanbe"] },
-      { name: "Uzbekistan", cities: ["Tashkent"] },
-      { name: "Kyrgyzstan", cities: ["Bishkek"] },
-      { name: "Kazakhstan", cities: ["Almaty", "Astana"] },
-      { name: "Bangladesh", cities: ["Dhaka"] },
-      { name: "Sri Lanka", cities: ["Colombo"] },
-      { name: "Nepal", cities: ["Kathmandu"] },
-      { name: "Mongolia", cities: ["Ulaanbaatar"] },
-      { name: "Indonesia", cities: ["Jakarta"] },
-      { name: "Malaysia", cities: ["Kuala Lumpur"] },
-      { name: "Thailand", cities: ["Bangkok"] },
-    ],
-  },
-  {
-    name: "North America",
-    countries: [
-      { name: "United States", cities: ["New York", "Washington, D.C.", "Los Angeles"] },
-      { name: "Canada", cities: ["Toronto", "Montreal"] },
-      { name: "Mexico", cities: ["Mexico City"] },
-      { name: "Costa Rica", cities: ["San José"] },
-      { name: "Panama", cities: ["Panama City"] },
-      { name: "Dominican Republic", cities: ["Santo Domingo"] },
-      { name: "Jamaica", cities: ["Kingston"] },
-      { name: "Trinidad and Tobago", cities: ["Port of Spain"] },
-      { name: "Guatemala", cities: ["Guatemala City"] },
-      { name: "El Salvador", cities: ["San Salvador"] },
-    ],
-  },
-  {
-    name: "Latin America",
-    countries: [
-      { name: "Argentina", cities: ["Buenos Aires"] },
-      { name: "Bolivia", cities: ["La Paz"] },
-      { name: "Brazil", cities: ["Belo Horizonte", "Brasília", "Porto Alegre", "Rio de Janeiro", "São Paulo"] },
-      { name: "Chile", cities: ["Santiago"] },
-      { name: "Colombia", cities: ["Bogotá", "Medellín"] },
-      { name: "Ecuador", cities: ["Quito"] },
-      { name: "Paraguay", cities: ["Asunción"] },
-      { name: "Peru", cities: ["Lima"] },
-      { name: "Uruguay", cities: ["Montevideo"] },
-      { name: "Venezuela", cities: ["Caracas"] },
-    ],
-  },
-];
-
 const SORTS = [
   { id: "az", label: "Alphabetical (A–Z)" },
   { id: "za", label: "Reverse alphabetical (Z–A)" },
@@ -137,6 +39,32 @@ const SORTS = [
 ] as const;
 
 type SortId = (typeof SORTS)[number]["id"];
+
+const FAQS = [
+  {
+    q: "What is a WBC affiliate?",
+    a: "A WBC affiliate is a country or city presence that connects local businesses and institutions with the global WBC network under shared standards and coordination from headquarters.",
+  },
+  {
+    q: "How do Active and Inactive statuses differ?",
+    a: "Active locations are currently engaged or operating. Inactive locations remain in the network record but are not currently operating.",
+  },
+  {
+    q: "How can we establish an affiliate?",
+    a: "Organizations and executives can apply through the membership pathway. WBC provides a tailored package for establishing presence in a city or country.",
+  },
+] as const;
+
+function statusClasses(status: AffiliateStatus, open?: boolean) {
+  if (status === "active") {
+    return open
+      ? "border-teal bg-teal/5 shadow-card"
+      : "border-teal/55 hover:border-teal text-foreground";
+  }
+  return open
+    ? "border-line bg-surface/80 shadow-card"
+    : "border-line text-muted-fg hover:border-muted-fg/40";
+}
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -155,7 +83,7 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-function RegionSection({ region, index }: { region: Region; index: number }) {
+function RegionSection({ region, index }: { region: AffiliateRegion; index: number }) {
   const [sort, setSort] = useState<SortId>("az");
   const [open, setOpen] = useState<string | null>(null);
 
@@ -175,10 +103,10 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
           <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">
             Affiliate Footprint · {region.name}
           </p>
-          <h2 className="mt-4 text-[30px] leading-tight font-bold text-navy sm:text-4xl lg:text-[46px]">{region.name}</h2>
+          <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">{region.name}</h2>
         </div>
 
-        <div className="mt-8 rounded-card border border-line bg-background p-5 sm:flex sm:items-center sm:gap-6 sm:p-6">
+        <div className="mt-8 rounded-card border border-line bg-background p-5 sm:flex sm:items-center sm:gap-6 sm:p-6 transition-shadow duration-300 hover:shadow-card">
           <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Sort by</p>
           <ul className="mt-4 flex flex-wrap gap-3 sm:mt-0">
             {SORTS.map((s) => (
@@ -190,7 +118,7 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
                   className={`rounded-none border px-4 py-2.5 text-[15px] font-semibold transition-colors ${
                     sort === s.id
                       ? "border-orange bg-orange text-white"
-                      : "border-line bg-background text-muted-fg hover:border-orange hover:text-orange"
+                      : "border-line bg-background text-muted-fg hover:border-orange hover:text-foreground"
                   }`}
                 >
                   {s.label}
@@ -201,31 +129,46 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
         </div>
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {countries.map((c) => {
-            const isOpen = open === c.name;
+          {countries.map((c: AffiliateCountry) => {
+            const isOpen = open === c.slug;
             return (
               <li
-                key={c.name}
-                className={`self-start overflow-hidden rounded-card border bg-background transition-all ${
-                  isOpen ? "border-orange shadow-card" : "border-line hover:border-orange/50"
-                }`}
+                key={c.slug}
+                className={`self-start overflow-hidden rounded-card border bg-background transition-all ${statusClasses(c.status, isOpen)}`}
               >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : c.name)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-3 px-5 py-4 text-start"
-                >
-                  <span className="text-[16px] font-bold text-navy">{c.name}</span>
-                  <span className={isOpen ? "text-orange" : "text-muted-fg"}>
+                <div className="flex w-full items-center justify-between gap-2 px-4 py-3.5">
+                  <Link
+                    to="/affiliates/$slug"
+                    params={{ slug: c.slug }}
+                    className={`min-w-0 flex-1 text-[16px] font-bold transition-colors hover:underline ${
+                      c.status === "active" ? "text-teal" : "text-muted-fg"
+                    }`}
+                  >
+                    {c.name}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : c.slug)}
+                    aria-expanded={isOpen}
+                    aria-label={`${isOpen ? "Collapse" : "Expand"} cities in ${c.name}`}
+                    className="inline-flex size-9 shrink-0 items-center justify-center text-current"
+                  >
                     <Chevron open={isOpen} />
-                  </span>
-                </button>
+                  </button>
+                </div>
                 {isOpen && (
                   <ul className="border-t border-line px-5 py-4 space-y-2.5">
                     {c.cities.map((city) => (
-                      <li key={city} className="text-[15px] text-muted-fg">
-                        {city}
+                      <li key={city.slug}>
+                        <Link
+                          to="/affiliates/$slug"
+                          params={{ slug: city.slug }}
+                          className={`text-[15px] transition-colors hover:underline ${
+                            city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
+                          }`}
+                        >
+                          {city.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -242,7 +185,6 @@ function RegionSection({ region, index }: { region: Region; index: number }) {
 function Affiliates() {
   return (
     <>
-      {/* Split hero */}
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
         <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
           <div className="mx-auto max-w-xl">
@@ -262,10 +204,10 @@ function Affiliates() {
               ))}
             </ul>
             <Link
-              to="/contact"
+              to="/become-a-member"
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
-              Contact WBC <span aria-hidden="true" className="rtl-mirror">→</span>
+              Fill the Application Form <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>
@@ -282,40 +224,65 @@ function Affiliates() {
         </div>
       </section>
 
-      {/* Intro */}
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12">
-            <h2 className="text-[26px] leading-tight font-bold text-navy sm:text-[34px]">About WBC around the world</h2>
+          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
+            <h2 className="text-[26px] leading-tight font-bold text-foreground sm:text-[34px]">About WBC around the world</h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
               This page presents WBC presence across regions and cities, helping visitors quickly understand where the
               network is represented worldwide.
             </p>
-            <p className="mt-5 text-[16px] leading-relaxed text-muted-fg">
-              <strong className="font-bold text-navy">Active</strong> locations show affiliate presence that is currently
-              engaged or operating. <strong className="font-bold text-navy">Inactive</strong> locations remain in the
-              network record but are not currently operating.
-            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <div className="inline-flex items-center gap-2.5 rounded-card border border-teal/55 bg-teal/5 px-4 py-2.5 text-[14px] font-semibold text-teal">
+                <span className="size-2.5 rounded-full bg-teal" aria-hidden="true" />
+                Active — engaged or operating
+              </div>
+              <div className="inline-flex items-center gap-2.5 rounded-card border border-line bg-surface px-4 py-2.5 text-[14px] font-semibold text-muted-fg transition-shadow duration-300 hover:shadow-card">
+                <span className="size-2.5 rounded-full bg-muted-fg/50" aria-hidden="true" />
+                Inactive — in record, not currently operating
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {REGIONS.map((r, i) => (
+      {AFFILIATE_REGIONS.map((r, i) => (
         <RegionSection key={r.name} region={r} index={i} />
       ))}
 
-      {/* CTA */}
+      <section className="border-t border-line bg-surface/40 py-14 lg:py-20">
+        <div className="container-wbc">
+          <div data-reveal>
+            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">FAQ</p>
+            <h2 className="mt-4 text-[28px] font-bold text-foreground sm:text-[36px]">Affiliate questions</h2>
+          </div>
+          <ul data-reveal data-reveal-group className="mt-8 space-y-4">
+            {FAQS.map((f) => (
+              <li key={f.q} className="rounded-card border border-line bg-background p-6 sm:p-7 transition-shadow duration-300 hover:shadow-card">
+                <h3 className="text-[17px] font-bold text-foreground">{f.q}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{f.a}</p>
+              </li>
+            ))}
+          </ul>
+          <div data-reveal className="mt-8">
+            <Link to="/affiliate-guide" className="btn-orange">
+              Read the Affiliate Establishment Guide <span aria-hidden="true" className="rtl-mirror">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="border-t border-line py-16 lg:py-24">
         <div data-reveal className="container-wbc text-center">
-          <h2 className="text-[30px] leading-tight font-bold text-navy sm:text-4xl lg:text-[46px]">
+          <h2 className="text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
             Establish a WBC Affiliate
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
             We present a comprehensive service package tailored for organizations, businesses and executives seeking to
             establish a WBC in their respective cities or countries.
           </p>
-          <Link to="/contact" className="btn-orange mt-9">
-            Start the Conversation
+          <Link to="/become-a-member" className="btn-orange mt-9">
+            Fill the Application Form
           </Link>
         </div>
       </section>

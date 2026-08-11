@@ -1,25 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { Gift } from "lucide-react";
 import menuImage from "@/assets/events.jpg";
-import { MENU_ICONS, MenuLinkIcon } from "./NavIcons";
 
 const GROUPS = [
   {
-    label: "Benefits",
+    label: "Join",
     items: [
-      { title: "WBC Membership", desc: "Types of membership", to: "/membership" as const, icon: MENU_ICONS["/membership"] },
       {
         title: "Membership Benefits",
-        desc: "Advantages of joining WBC",
+        desc: "Types, advantages, and who can join",
         to: "/membership" as const,
-        hash: "join" as const,
-        icon: Gift,
+        hash: "benefits" as const,
       },
       {
         title: "Become a Member",
         desc: "Start your membership journey",
         to: "/become-a-member" as const,
-        icon: MENU_ICONS["/become-a-member"],
       },
     ],
   },
@@ -30,7 +25,6 @@ const GROUPS = [
         title: "Our Members",
         desc: "Directory of active members",
         to: "/our-members" as const,
-        icon: MENU_ICONS["/our-members"],
       },
     ],
   },
@@ -41,7 +35,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
     <div className="border-t border-line bg-background shadow-card">
       <div className="container-wbc grid gap-10 py-10 lg:grid-cols-[1fr_1fr_1fr_1.15fr] lg:gap-12 lg:py-12">
         <div>
-          <h2 className="text-[26px] font-bold text-navy lg:text-[30px]">Membership</h2>
+          <h2 className="text-[26px] font-bold text-foreground lg:text-[30px]">Membership</h2>
           <p className="mt-4 max-w-xs text-[16px] leading-relaxed text-muted-fg">
             Join a global community of business leaders. Explore membership benefits, application steps, and our member
             directory.
@@ -58,15 +52,12 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
                     to={it.to}
                     {...("hash" in it ? { hash: it.hash } : {})}
                     onClick={onNavigate}
-                    className="group flex items-start gap-3.5"
+                    className="group block"
                   >
-                    <MenuLinkIcon icon={it.icon} />
-                    <span className="min-w-0">
-                      <span className="block text-[17px] font-bold text-navy transition-colors group-hover:text-orange">
-                        {it.title}
-                      </span>
-                      <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
+                    <span className="block text-[17px] font-bold text-foreground transition-colors group-hover:text-navy">
+                      {it.title}
                     </span>
+                    <span className="mt-1 block text-[15px] text-muted-fg">{it.desc}</span>
                   </Link>
                 </li>
               ))}
@@ -74,16 +65,18 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
           </div>
         ))}
 
-        <div className="overflow-hidden rounded-card border border-line bg-background shadow-card">
-          <img
-            src={menuImage}
-            alt="Speaker addressing WBC members at a membership event"
-            width={800}
-            height={500}
-            loading="lazy"
-            decoding="async"
-            className="h-44 w-full object-cover"
-          />
+        <div className="overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card">
+          <div className="h-44 overflow-hidden">
+            <img
+              src={menuImage}
+              alt="Speaker addressing WBC members at a membership event"
+              width={800}
+              height={500}
+              loading="lazy"
+              decoding="async"
+              className="megamenu-img h-full w-full object-cover"
+            />
+          </div>
           <div className="p-5">
             <p className="text-[15px] leading-relaxed text-muted-fg">
               Start your journey with WBC and unlock global business opportunities.
@@ -91,7 +84,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
             <Link
               to="/membership"
               onClick={onNavigate}
-              className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-orange"
+              className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-foreground"
             >
               View all <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
