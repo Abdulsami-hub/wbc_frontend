@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import heroBuilding from "@/assets/who-we-are-building.png";
-import { Glance } from "@/components/Glance";
 
 export const Route = createFileRoute("/who-we-are")({
   head: () => ({
@@ -36,7 +34,15 @@ const VALUES = [
 ] as const;
 
 function ValueIcon({ name }: { name: string }) {
-  const common = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, "aria-hidden": true } as const;
+  const common = {
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.6,
+    "aria-hidden": true,
+  } as const;
   switch (name) {
     case "users":
       return (
@@ -83,90 +89,78 @@ function ValueIcon({ name }: { name: string }) {
   }
 }
 
-function ValuesOrbit() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (paused) return;
-    const id = window.setInterval(() => setActive((i) => (i + 1) % VALUES.length), 3000);
-    return () => window.clearInterval(id);
-  }, [paused]);
-
-  const current = VALUES[active] ?? VALUES[0];
-
+function OurValues() {
   return (
-    <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-      <div
-        data-reveal
-        className="relative mx-auto aspect-square w-full max-w-[420px]"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <span className="absolute inset-[9%] rounded-full border border-line" aria-hidden="true" />
-        <span className="absolute inset-[22%] rounded-full border border-dashed border-orange/25" aria-hidden="true" />
-
-        <div className="orbit-spin absolute inset-0" style={{ animationPlayState: paused ? "paused" : "running" }}>
-          {VALUES.map((v, i) => {
-            const angle = (360 / VALUES.length) * i;
-            return (
-              <div key={v.title} className="absolute inset-0" style={{ transform: `rotate(${angle}deg)` }}>
-                <div className="absolute left-1/2 top-0 -translate-x-1/2" style={{ transform: `translate(-50%, -14%)` }}>
-                  <span className="block" style={{ transform: `rotate(${-angle}deg)` }}>
-                    <span className="orbit-counter block" style={{ animationPlayState: paused ? "paused" : "running" }}>
-                      <button
-                        type="button"
-                        onClick={() => setActive(i)}
-                        aria-label={v.title}
-                        aria-current={i === active}
-                        className={`flex size-14 items-center justify-center rounded-full border bg-background shadow-card transition-colors ${
-                          i === active ? "border-orange text-foreground" : "border-line text-foreground hover:border-orange/50"
-                        }`}
-                      >
-                        <ValueIcon name={v.icon} />
-                      </button>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="absolute left-1/2 top-1/2 flex size-[46%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-navy text-center shadow-card">
-          <span className="px-4">
-            <span className="block text-[13px] font-semibold tracking-[0.18em] text-white/70 uppercase">Our</span>
-            <span className="block text-[22px] font-bold text-white">Values</span>
-          </span>
-        </div>
-      </div>
-
-      <div>
-        <p data-reveal className="eyebrow">Core Values</p>
-        <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-foreground lg:text-[36px]">
+    <div>
+      <div className="max-w-2xl">
+        <p data-reveal className="eyebrow">
+          Core Values
+        </p>
+        <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]">
           Six principles of WBC.
         </h2>
-        <span data-reveal className="accent-rule mt-4" />
-        <div key={current.title} className="fade-up mt-8 rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card">
-          <h3 className="text-[20px] font-bold text-foreground">{current.title}</h3>
-          <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{current.body}</p>
-        </div>
-        <ul className="mt-6 flex flex-wrap gap-2">
-          {VALUES.map((v, i) => (
+        <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
+          The standards that shape how we connect people, support businesses, and build lasting cooperation worldwide.
+        </p>
+        <span data-reveal className="accent-rule mt-6" />
+      </div>
+
+      <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        {VALUES.map((v, i) => {
+          const featured = i === 0 || i === 3;
+          return (
             <li key={v.title}>
-              <button
-                type="button"
-                onClick={() => setActive(i)}
-                className={`rounded-full border px-4 py-2 text-[14px] font-medium transition-colors ${
-                  i === active ? "border-orange bg-orange text-orange-foreground" : "border-line text-foreground hover:border-orange/50"
+              <article
+                className={`group relative flex h-full flex-col overflow-hidden rounded-card p-7 transition-all duration-300 sm:p-8 ${
+                  featured
+                    ? "bg-navy text-white shadow-card hover:-translate-y-1 hover:shadow-lg"
+                    : "border border-line bg-background hover:-translate-y-1 hover:border-orange/35 hover:shadow-card"
                 }`}
               >
-                {v.title}
-              </button>
+                <span
+                  className={`pointer-events-none absolute -end-8 -top-8 size-32 rounded-full transition-transform duration-500 group-hover:scale-150 ${
+                    featured ? "bg-orange/20" : "bg-orange/10"
+                  }`}
+                  aria-hidden="true"
+                />
+                <div className="relative flex items-start justify-between gap-4">
+                  <span
+                    className={`inline-flex size-12 items-center justify-center ${
+                      featured ? "bg-white/10 text-white" : "bg-orange/10 text-foreground"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <ValueIcon name={v.icon} />
+                  </span>
+                  <span
+                    className={`font-display text-[28px] leading-none font-bold tabular-nums ${
+                      featured ? "text-white/25" : "text-orange/30"
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className={`relative mt-7 text-[18px] font-bold sm:text-[19px] ${featured ? "text-white" : "text-foreground"}`}>
+                  {v.title}
+                </h3>
+                <p
+                  className={`relative mt-3 flex-1 text-[15px] leading-relaxed sm:text-[16px] ${
+                    featured ? "text-white/80" : "text-muted-fg"
+                  }`}
+                >
+                  {v.body}
+                </p>
+                <span
+                  className={`relative mt-6 block h-0.5 w-10 origin-left scale-x-100 transition-transform duration-300 group-hover:scale-x-150 ${
+                    featured ? "bg-orange" : "bg-navy"
+                  }`}
+                  aria-hidden="true"
+                />
+              </article>
             </li>
-          ))}
-        </ul>
-      </div>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -226,7 +220,7 @@ function WhoWeAre() {
           aria-hidden="true"
         />
 
-        <div className="container-wbc relative grid gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-10">
+        <div className="container-wbc relative grid items-start gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-10">
           <div
             data-reveal
             className="relative overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-14"
@@ -267,28 +261,15 @@ function WhoWeAre() {
               confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
               lasting cooperation, and shared progress across borders.
             </p>
-
-            <dl className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-3">
-              {[
-                { k: "Paris", v: "Global headquarters" },
-                { k: "2026", v: "Founded" },
-                { k: "Worldwide", v: "Council network" },
-              ].map((s) => (
-                <div key={s.k}>
-                  <dt className="text-[22px] font-bold text-foreground">{s.k}</dt>
-                  <dd className="mt-1 text-[14px] tracking-[0.06em] text-muted-fg uppercase">{s.v}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
-          <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
+          <div className="flex flex-col gap-6">
             <article
               data-reveal
-              className="group relative overflow-hidden rounded-card bg-navy p-8 shadow-card sm:p-9"
+              className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8"
             >
               <span
-                className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
+                className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
               <span className="relative flex size-11 items-center justify-center rounded-none bg-white/10 text-white" aria-hidden="true">
@@ -297,8 +278,8 @@ function WhoWeAre() {
                   <circle cx="12" cy="12" r="2.6" />
                 </svg>
               </span>
-              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-white/70 uppercase">Our Vision</p>
-              <p className="relative mt-4 text-[17px] leading-relaxed text-white sm:text-[18px]">
+              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-white/70 uppercase">Our Vision</p>
+              <p className="relative mt-3 text-[16px] leading-relaxed text-white sm:text-[17px]">
                 To be the global hub of business excellence, with a local presence in every city, empowering and uniting
                 businesses worldwide through innovation, collaboration, and sustainable development.
               </p>
@@ -306,10 +287,10 @@ function WhoWeAre() {
 
             <article
               data-reveal
-              className="group relative overflow-hidden rounded-card border border-line bg-background p-8 transition-shadow duration-300 hover:shadow-card sm:p-9"
+              className="group relative overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-8"
             >
               <span
-                className="pointer-events-none absolute -right-10 -top-10 size-40 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
+                className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
               <span className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground" aria-hidden="true">
@@ -319,25 +300,40 @@ function WhoWeAre() {
                   <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
                 </svg>
               </span>
-              <p className="relative mt-6 text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
-              <p className="relative mt-4 text-[17px] leading-relaxed text-foreground/85 sm:text-[18px]">
+              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
+              <p className="relative mt-3 text-[16px] leading-relaxed text-foreground/85 sm:text-[17px]">
                 We build a global network that empowers businesses through collaboration, innovation, and trust.
               </p>
             </article>
+
+            <dl
+              data-reveal
+              className="grid grid-cols-3 gap-3 rounded-card border border-line bg-background px-4 py-5 sm:gap-4 sm:px-5 sm:py-6"
+            >
+              {[
+                { k: "Paris", v: "Global headquarters" },
+                { k: "2026", v: "Founded" },
+                { k: "Worldwide", v: "Council network" },
+              ].map((s) => (
+                <div key={s.k} className="min-w-0 text-center sm:text-start">
+                  <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{s.k}</dt>
+                  <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
+                    {s.v}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
 
-
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
-          <ValuesOrbit />
+          <OurValues />
         </div>
       </section>
 
-      <Glance />
-
-      <section className="relative isolate overflow-hidden bg-cta-blue py-16 lg:py-24">
+      <section className="relative isolate overflow-hidden bg-navy py-16 lg:py-24">
         <div data-reveal className="container-wbc relative text-center">
           <h2 className="text-[28px] font-bold leading-tight text-white sm:text-[36px] lg:text-[42px]">
             Explore What We Do

@@ -9,7 +9,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useI18n, type TranslationKey } from "@/i18n";
 
 export const NAV_LINKS = [
-  { key: "nav.about" as TranslationKey, label: "Who We Are", to: "/who-we-are" },
+  { key: "nav.about" as TranslationKey, label: "About Us", to: "/who-we-are" },
   { key: "nav.network" as TranslationKey, label: "Global Network", to: "/global-network" },
   { key: "nav.membership" as TranslationKey, label: "Membership", to: "/membership" },
   { key: "nav.events" as TranslationKey, label: "Events", to: "/events" },
@@ -56,7 +56,8 @@ export function Header() {
         <div className="flex items-center gap-2 lg:gap-3">
           <LanguageSwitcher className="hidden lg:block" />
           <Link
-            to="/become-a-member"
+            to="/membership"
+            hash="application"
             className="btn-orange hidden !min-h-9 !rounded-md !px-4 !text-[12px] lg:inline-flex"
           >
             {t("cta.join")}
@@ -118,7 +119,7 @@ export function Header() {
               <LanguageSwitcher />
             </div>
 
-            <Link to="/become-a-member" onClick={() => setOpen(false)} className="btn-orange mb-4 !rounded-md">
+            <Link to="/membership" hash="application" onClick={() => setOpen(false)} className="btn-orange mb-4 !rounded-md">
               {t("cta.join")}
             </Link>
           </nav>

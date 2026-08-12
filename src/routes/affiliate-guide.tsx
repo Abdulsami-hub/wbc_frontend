@@ -64,7 +64,7 @@ function AffiliateGuide() {
         image={networkBg}
         imageAlt="Global network map representing WBC affiliate development"
         ctaLabel="Fill the Application Form"
-        ctaTo="/become-a-member"
+        ctaTo="/contact"
       />
 
       <section className="py-14 lg:py-20">
@@ -79,7 +79,7 @@ function AffiliateGuide() {
           </ul>
 
           <div data-reveal className="mt-10 flex flex-wrap gap-4">
-            <Link to="/become-a-member" className="btn-orange">
+            <Link to="/contact" className="btn-orange">
               Fill the Application Form
             </Link>
             <Link to="/affiliates" className="inline-flex items-center text-[16px] font-semibold text-foreground underline underline-offset-4">
@@ -91,9 +91,9 @@ function AffiliateGuide() {
 
       <CTASection
         title="Ready to establish presence?"
-        description="Start the application and connect with the WBC team about affiliate development."
-        ctaLabel="Become a Member"
-        to="/become-a-member"
+        description="Contact the WBC team to discuss affiliate development in your city or country."
+        ctaLabel="Contact Us"
+        to="/contact"
       />
     </>
   );

@@ -15,6 +15,8 @@ export type AffiliateCountry = {
 
 export type AffiliateRegion = {
   name: string;
+  slug: string;
+  blurb: string;
   countries: AffiliateCountry[];
 };
 
@@ -30,7 +32,7 @@ export function slugifyName(name: string): string {
 
 type RawCity = { name: string; status?: AffiliateStatus };
 type RawCountry = { name: string; status?: AffiliateStatus; cities: (string | RawCity)[] };
-type RawRegion = { name: string; countries: RawCountry[] };
+type RawRegion = { name: string; slug: string; blurb: string; countries: RawCountry[] };
 
 function buildCity(countrySlug: string, city: string | RawCity): AffiliateCity {
   const name = typeof city === "string" ? city : city.name;
@@ -55,6 +57,9 @@ function buildCountry(raw: RawCountry): AffiliateCountry {
 const RAW_REGIONS: RawRegion[] = [
   {
     name: "Africa & the Middle East",
+    slug: "africa-middle-east",
+    blurb:
+      "From North Africa to the Gulf and Sub-Saharan hubs, WBC connects institutions and businesses across dynamic growth corridors.",
     countries: [
       { name: "Egypt", status: "active", cities: [{ name: "Cairo", status: "active" }, { name: "Alexandria", status: "inactive" }] },
       {
@@ -101,6 +106,9 @@ const RAW_REGIONS: RawRegion[] = [
   },
   {
     name: "Europe",
+    slug: "europe",
+    blurb:
+      "Anchored by Paris headquarters and a dense institutional landscape, Europe remains a cornerstone of WBC cooperation and programme delivery.",
     countries: [
       {
         name: "France",
@@ -165,6 +173,9 @@ const RAW_REGIONS: RawRegion[] = [
   },
   {
     name: "Asia & the Pacific",
+    slug: "asia-pacific",
+    blurb:
+      "Trade gateways, innovation centres, and expanding markets across Asia and the Pacific shape a fast-moving affiliate footprint.",
     countries: [
       { name: "Singapore", status: "active", cities: [{ name: "Singapore", status: "active" }] },
       {
@@ -219,6 +230,9 @@ const RAW_REGIONS: RawRegion[] = [
   },
   {
     name: "North America",
+    slug: "north-america",
+    blurb:
+      "North American affiliates link corporate, institutional, and city ecosystems into WBC’s global cooperation framework.",
     countries: [
       {
         name: "United States",
@@ -249,6 +263,9 @@ const RAW_REGIONS: RawRegion[] = [
   },
   {
     name: "Latin America",
+    slug: "latin-america",
+    blurb:
+      "Across Latin America, WBC affiliates support regional dialogue, trade pathways, and institutional collaboration.",
     countries: [
       { name: "Argentina", status: "active", cities: [{ name: "Buenos Aires", status: "active" }] },
       { name: "Bolivia", status: "inactive", cities: ["La Paz"] },
@@ -283,16 +300,26 @@ const RAW_REGIONS: RawRegion[] = [
 
 export const AFFILIATE_REGIONS: AffiliateRegion[] = RAW_REGIONS.map((r) => ({
   name: r.name,
+  slug: r.slug,
+  blurb: r.blurb,
   countries: r.countries.map(buildCountry),
 }));
 
 export type AffiliateProfile =
+  | {
+      kind: "region";
+      name: string;
+      slug: string;
+      blurb: string;
+      countries: AffiliateCountry[];
+    }
   | {
       kind: "country";
       name: string;
       slug: string;
       status: AffiliateStatus;
       region: string;
+      regionSlug: string;
       cities: AffiliateCity[];
     }
   | {
@@ -301,20 +328,48 @@ export type AffiliateProfile =
       slug: string;
       status: AffiliateStatus;
       region: string;
+      regionSlug: string;
       countryName: string;
       countrySlug: string;
     };
 
+export function getRegion(slug: string): AffiliateRegion | undefined {
+  return AFFILIATE_REGIONS.find((r) => r.slug === slug);
+}
+
+export function regionStats(region: AffiliateRegion) {
+  const countries = region.countries.length;
+  const activeCountries = region.countries.filter((c) => c.status === "active").length;
+  const cities = region.countries.reduce((n, c) => n + c.cities.length, 0);
+  const activeCities = region.countries.reduce(
+    (n, c) => n + c.cities.filter((city) => city.status === "active").length,
+    0,
+  );
+  return { countries, activeCountries, cities, activeCities };
+}
+
 export function getAffiliate(slug: string): AffiliateProfile | undefined {
-  for (const region of AFFILIATE_REGIONS) {
-    for (const country of region.countries) {
+  const region = getRegion(slug);
+  if (region) {
+    return {
+      kind: "region",
+      name: region.name,
+      slug: region.slug,
+      blurb: region.blurb,
+      countries: region.countries,
+    };
+  }
+
+  for (const r of AFFILIATE_REGIONS) {
+    for (const country of r.countries) {
       if (country.slug === slug) {
         return {
           kind: "country",
           name: country.name,
           slug: country.slug,
           status: country.status,
-          region: region.name,
+          region: r.name,
+          regionSlug: r.slug,
           cities: country.cities,
         };
       }
@@ -325,7 +380,8 @@ export function getAffiliate(slug: string): AffiliateProfile | undefined {
             name: city.name,
             slug: city.slug,
             status: city.status,
-            region: region.name,
+            region: r.name,
+            regionSlug: r.slug,
             countryName: country.name,
             countrySlug: country.slug,
           };
@@ -335,3 +391,4 @@ export function getAffiliate(slug: string): AffiliateProfile | undefined {
   }
   return undefined;
 }
+

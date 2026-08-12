@@ -9,6 +9,7 @@ export function SplitHero({
   imageAlt,
   ctaLabel,
   ctaTo,
+  ctaHash,
 }: {
   eyebrow: string;
   title: string;
@@ -18,6 +19,7 @@ export function SplitHero({
   imageAlt: string;
   ctaLabel?: string;
   ctaTo?: string;
+  ctaHash?: string;
 }) {
   return (
     <section className="grid lg:grid-cols-[1.15fr_1fr]">
@@ -40,6 +42,7 @@ export function SplitHero({
           {ctaLabel && ctaTo && (
             <Link
               to={ctaTo}
+              {...(ctaHash ? { hash: ctaHash } : {})}
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
               {ctaLabel} <span aria-hidden="true" className="rtl-mirror">→</span>

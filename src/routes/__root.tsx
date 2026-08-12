@@ -13,6 +13,7 @@ import { type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { useReveal } from "@/hooks/use-reveal";
 import { I18nProvider } from "@/i18n";
 
@@ -108,9 +109,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "256x256" },
+      { rel: "icon", href: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
-      { rel: "apple-touch-icon", href: "/wbc-mark.png", sizes: "180x180" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
       { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -195,6 +198,7 @@ function RootComponent() {
         <main id="main">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
+          <AdvertisingOpportunities />
         </main>
         <Footer />
       </I18nProvider>

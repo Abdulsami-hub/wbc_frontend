@@ -22,17 +22,16 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
   {
     title: "footer.network",
     links: [
-      { key: "link.hq", to: "/global-network/headquarters" },
+      { key: "link.hq", to: "/who-we-are" },
       { key: "link.affiliates", to: "/affiliates" },
-      { key: "link.institutional", to: "/global-network/institutional-members" },
+      { key: "link.institutional", to: "/our-members" },
       { key: "link.partners", to: "/global-network/strategic-partners" },
     ],
   },
   {
     title: "footer.membership",
     links: [
-      { key: "link.benefits", to: "/membership", hash: "benefits" },
-      { key: "link.become", to: "/become-a-member" },
+      { key: "link.wbcMembership", to: "/membership" },
       { key: "nav.ourMembers", to: "/our-members" },
     ],
   },
@@ -67,7 +66,7 @@ export function Footer() {
       <div className="container-wbc py-14 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)] lg:gap-8">
           <div className="max-w-xs">
-            <Logo framed />
+            <Logo variant="footer" size="lg" />
             <p className="mt-5 text-[15px] leading-relaxed">{t("footer.tagline")}</p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {SOCIAL.map((s) => (

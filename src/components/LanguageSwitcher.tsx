@@ -32,7 +32,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
 
   return (
-    <div ref={ref} className={`relative ${className}`}>
+    <div ref={ref} className={`relative ${className}`} data-no-translate>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -42,7 +42,7 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
         className="inline-flex h-9 items-center gap-2 rounded-md border border-line px-2.5 text-foreground transition-colors hover:border-foreground/40"
       >
         <GlobeIcon />
-        <span className="max-w-[7.5rem] truncate text-[13px] font-medium" dir={current.dir}>
+        <span className="max-w-[7.5rem] truncate text-[13px] font-medium" dir={current.dir} lang={current.code}>
           {current.name}
         </span>
       </button>
@@ -76,7 +76,11 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
                 >
                   {l.badge}
                 </span>
-                <span className={`text-[16px] font-medium ${active ? "text-foreground" : "text-muted-fg"}`} dir={l.dir}>
+                <span
+                  className={`text-[16px] font-medium ${active ? "text-foreground" : "text-muted-fg"}`}
+                  dir={l.dir}
+                  lang={l.code}
+                >
                   {l.name}
                 </span>
               </button>

@@ -8,7 +8,7 @@ const GROUPS = [
       {
         title: "WBC Headquarters",
         desc: "Paris-based global coordination",
-        to: "/global-network/headquarters" as const,
+        to: "/who-we-are" as const,
       },
       {
         title: "WBC Affiliates",
@@ -23,7 +23,7 @@ const GROUPS = [
       {
         title: "Institutional Members",
         desc: "Chambers, associations, and institutions",
-        to: "/global-network/institutional-members" as const,
+        to: "/our-members" as const,
       },
       {
         title: "Strategic Partners",

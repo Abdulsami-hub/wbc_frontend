@@ -6,7 +6,6 @@ import { OurPartners } from "@/components/OurPartners";
 import { WhatIsWbcSection } from "@/components/home/WhatIsWbcSection";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { OurValuesSection } from "@/components/home/OurValuesSection";
-import { AdvertisingOpportunities } from "@/components/home/AdvertisingOpportunities";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,7 +38,6 @@ function Home() {
       <OurValuesSection />
       <LatestNews />
       <OurPartners />
-      <AdvertisingOpportunities />
     </>
   );
 }

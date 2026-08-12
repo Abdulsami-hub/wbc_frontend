@@ -33,7 +33,7 @@ export type TranslationKey =
 type Dict = Record<TranslationKey, string>;
 
 const en: Dict = {
-  "nav.about": "Who We Are",
+  "nav.about": "About Us",
   "nav.network": "Global Network",
   "nav.membership": "Membership",
   "nav.events": "Events",
@@ -65,7 +65,7 @@ const en: Dict = {
 };
 
 const fr: Dict = {
-  "nav.about": "À propos",
+  "nav.about": "À propos de nous",
   "nav.network": "Réseau mondial",
   "nav.membership": "Adhésion",
   "nav.events": "Événements",
@@ -129,7 +129,7 @@ const es: Dict = {
 };
 
 const ar: Dict = {
-  "nav.about": "من نحن",
+  "nav.about": "نبذة عنا",
   "nav.network": "الشبكة العالمية",
   "nav.membership": "العضوية",
   "nav.events": "الفعاليات",

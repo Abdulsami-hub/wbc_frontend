@@ -33,7 +33,8 @@ type MemberTile = {
 type Category = {
   name: string;
   desc: string;
-  accent: "orange" | "navy" | "teal" | "blue";
+  accent: "orange" | "navy" | "teal" | "blue" | "violet";
+  kind: "org" | "person";
   members: MemberTile[];
 };
 
@@ -42,6 +43,7 @@ const CATEGORIES: Category[] = [
     name: "Institutional Members",
     desc: "Business councils, chambers, associations, NGOs, foundations, universities, and other mission-driven membership organizations.",
     accent: "orange",
+    kind: "org",
     members: [
       { name: "Member 01", href: "https://example.com" },
       { name: "Member 02" },
@@ -54,6 +56,7 @@ const CATEGORIES: Category[] = [
     name: "Corporate Members",
     desc: "Corporations, enterprises, and large organizations pursuing strategic partnerships, international visibility, and business opportunity access.",
     accent: "navy",
+    kind: "org",
     members: [
       { name: "Member 06", href: "https://example.com" },
       { name: "Member 07" },
@@ -66,6 +69,7 @@ const CATEGORIES: Category[] = [
     name: "SME Members",
     desc: "Micro, small, and medium-sized businesses, startups, entrepreneurs, and freelancers focused on growth, networking, and market access.",
     accent: "teal",
+    kind: "org",
     members: [
       { name: "Member 11" },
       { name: "Member 12", href: "https://example.com" },
@@ -75,9 +79,10 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
-    name: "Individual & Honorary Members",
-    desc: "Professionals, consultants, and recognised contributors advancing WBC's mission through expertise and international engagement.",
+    name: "Individual Members",
+    desc: "Entrepreneurs, professionals, and independent consultants advancing cooperation through expertise and cross-border engagement.",
     accent: "blue",
+    kind: "person",
     members: [
       { name: "Member 16" },
       { name: "Member 17" },
@@ -86,52 +91,150 @@ const CATEGORIES: Category[] = [
       { name: "Member 20" },
     ],
   },
+  {
+    name: "Honorary Members",
+    desc: "Recognised contributors awarded for outstanding service to WBC’s mission and the wider international business community.",
+    accent: "violet",
+    kind: "person",
+    members: [
+      { name: "Member 21" },
+      { name: "Member 22", href: "https://example.com" },
+      { name: "Member 23" },
+      { name: "Member 24" },
+      { name: "Member 25" },
+    ],
+  },
 ];
 
-const ACCENT: Record<Category["accent"], { bar: string; dot: string; text: string; glow: string }> = {
-  orange: { bar: "bg-orange", dot: "bg-orange", text: "group-hover/tile:text-foreground", glow: "bg-orange/10" },
-  navy: { bar: "bg-navy", dot: "bg-navy", text: "group-hover/tile:text-foreground", glow: "bg-navy/10" },
-  teal: { bar: "bg-teal", dot: "bg-teal", text: "group-hover/tile:text-teal", glow: "bg-teal/15" },
-  blue: { bar: "bg-blue", dot: "bg-blue", text: "group-hover/tile:text-blue", glow: "bg-blue/10" },
+const ACCENT: Record<
+  Category["accent"],
+  { bar: string; glow: string; logoBg: string; logoText: string; ring: string }
+> = {
+  orange: {
+    bar: "bg-orange",
+    glow: "bg-orange/10",
+    logoBg: "bg-orange/10",
+    logoText: "text-orange",
+    ring: "group-hover/tile:border-orange/40",
+  },
+  navy: {
+    bar: "bg-navy",
+    glow: "bg-navy/10",
+    logoBg: "bg-navy/10",
+    logoText: "text-navy",
+    ring: "group-hover/tile:border-navy/35",
+  },
+  teal: {
+    bar: "bg-teal",
+    glow: "bg-teal/15",
+    logoBg: "bg-teal/10",
+    logoText: "text-teal",
+    ring: "group-hover/tile:border-teal/45",
+  },
+  blue: {
+    bar: "bg-blue",
+    glow: "bg-blue/10",
+    logoBg: "bg-blue/10",
+    logoText: "text-blue",
+    ring: "group-hover/tile:border-blue/40",
+  },
+  violet: {
+    bar: "bg-navy-deep",
+    glow: "bg-orange/10",
+    logoBg: "bg-navy/8",
+    logoText: "text-navy",
+    ring: "group-hover/tile:border-orange/35",
+  },
 };
+
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return `${parts[0]![0] ?? ""}${parts[1]![0] ?? ""}`.toUpperCase();
+  const compact = name.replace(/[^a-zA-Z0-9]/g, "");
+  return (compact.slice(0, 2) || "WB").toUpperCase();
+}
 
 function ArrowUpRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
       <path d="M7 17L17 7M9 7h8v8" />
     </svg>
+  );
+}
+
+function MemberLogo({
+  member,
+  accent,
+  kind,
+}: {
+  member: MemberTile;
+  accent: (typeof ACCENT)[Category["accent"]];
+  kind: Category["kind"];
+}) {
+  const shape = kind === "person" ? "rounded-full" : "rounded-card";
+
+  if (member.logo) {
+    return (
+      <span
+        className={`relative flex size-[4.5rem] items-center justify-center overflow-hidden border border-line bg-background ${shape} sm:size-20`}
+      >
+        <img
+          src={member.logo}
+          alt=""
+          width={80}
+          height={80}
+          loading="lazy"
+          decoding="async"
+          className="max-h-[70%] max-w-[70%] object-contain"
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`relative flex size-[4.5rem] items-center justify-center overflow-hidden border border-line ${shape} ${accent.logoBg} sm:size-20`}
+      aria-hidden="true"
+    >
+      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 to-transparent" />
+      <span className={`relative font-display text-[22px] font-bold tracking-tight sm:text-[24px] ${accent.logoText}`}>
+        {initials(member.name)}
+      </span>
+    </span>
   );
 }
 
 function MemberTileCard({
   member,
   accent,
+  kind,
 }: {
   member: MemberTile;
   accent: (typeof ACCENT)[Category["accent"]];
+  kind: Category["kind"];
 }) {
   const inner = (
     <>
-      <span className="flex min-w-0 items-center gap-3">
-        {member.logo ? (
-          <img src={member.logo} alt="" width={36} height={36} className="size-9 shrink-0 object-contain" />
-        ) : (
-          <span className={`size-1.5 shrink-0 rounded-full ${accent.dot}`} aria-hidden="true" />
-        )}
-        <span className={`truncate text-[16px] font-bold text-foreground transition-colors ${accent.text}`}>
-          {member.name}
+      <span
+        className={`pointer-events-none absolute -end-8 -top-8 size-24 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover/tile:opacity-100 ${accent.glow}`}
+        aria-hidden="true"
+      />
+      <MemberLogo member={member} accent={accent} kind={kind} />
+      <span className="relative mt-5 min-w-0 text-center">
+        <span className="block truncate text-[15px] font-bold text-foreground sm:text-[16px]">{member.name}</span>
+        <span className="mt-1 block text-[12px] tracking-[0.08em] text-muted-fg uppercase">
+          {kind === "person" ? "Member" : "Organisation"}
         </span>
       </span>
       {member.href ? (
-        <span className="text-foreground transition-transform duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5">
+        <span className="absolute end-3 top-3 text-muted-fg transition-all duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5 group-hover/tile:text-foreground">
           <ArrowUpRight />
         </span>
       ) : null}
     </>
   );
 
-  const className =
-    "group/tile flex items-center justify-between gap-3 rounded-card border border-line bg-surface/60 px-5 py-6 transition-shadow duration-300 hover:shadow-card hover:bg-background";
+  const className = `group/tile relative flex h-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-4 py-7 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-5 sm:py-8`;
 
   if (member.href) {
     return (
@@ -147,7 +250,10 @@ function MemberTileCard({
 function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
   const a = ACCENT[cat.accent];
   return (
-    <li data-reveal className="group relative overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card">
+    <li
+      data-reveal
+      className="group relative overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card"
+    >
       <span className={`absolute inset-y-0 start-0 w-1 ${a.bar}`} aria-hidden="true" />
       <span
         className={`pointer-events-none absolute -end-16 -top-16 size-56 rounded-full blur-2xl transition-opacity duration-500 ${a.glow} opacity-60 group-hover:opacity-100`}
@@ -160,16 +266,19 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
               Category {String(index + 1).padStart(2, "0")}
             </p>
             <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">{cat.name}</h3>
+            <p className="mt-2 text-[13px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
+              {cat.members.length} {cat.members.length === 1 ? "profile" : "profiles"}
+            </p>
           </div>
           <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p>
         </div>
 
         <hr className="mt-8 border-line" />
 
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {cat.members.map((m) => (
             <li key={m.name}>
-              <MemberTileCard member={m} accent={a} />
+              <MemberTileCard member={m} accent={a} kind={cat.kind} />
             </li>
           ))}
         </ul>
@@ -189,14 +298,14 @@ function OurMembers() {
               Discover the WBC Members Network
             </h1>
             <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              Explore member organizations across sectors, regions, and specialties to identify credible partners, new
-              introductions, and practical opportunities within the WBC ecosystem.
+              Explore member organizations and individuals across sectors, regions, and specialties to identify credible
+              partners and practical opportunities within the WBC ecosystem.
             </p>
             <ul className="intro-4 mt-10 flex flex-wrap gap-3">
               {TAGS.map((t) => (
                 <li
                   key={t}
-                  className="rounded-full border border-white/60 px-5 py-2.5 text-[14px] font-semibold text-white"
+                  className="border border-white/60 px-5 py-2.5 text-[14px] font-semibold text-white"
                 >
                   {t}
                 </li>
@@ -237,8 +346,8 @@ function OurMembers() {
               Browse Members by Category
             </h2>
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-              Explore category groups and open each member profile from its tile. Linked members open their website when
-              available.
+              Explore category groups and open each member profile from its card. Linked members open their website when
+              available. Add a logo path on any member to display their brand mark.
             </p>
           </div>
 
@@ -260,7 +369,8 @@ function OurMembers() {
         title="Become Part of the Network"
         description="Join WBC to appear in the members directory and connect with organizations across the globe."
         ctaLabel="Become a Member"
-        to="/become-a-member"
+        to="/membership"
+        hash="application"
       />
     </>
   );

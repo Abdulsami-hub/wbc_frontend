@@ -52,7 +52,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     image: slide2,
     alt: "Haussmannian Paris boulevard at dusk",
     primary: { label: "Who We Are", to: "/who-we-are", variant: "outline" },
-    secondary: { label: "Join WBC", to: "/become-a-member", variant: "ghost" },
+    secondary: { label: "Join WBC", to: "/membership", variant: "ghost" },
   },
   {
     id: "opportunities",

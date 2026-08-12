@@ -11,16 +11,10 @@ const VALUES = [
 
 export function OurValuesSection() {
   return (
-    <section className="relative isolate overflow-hidden py-20 lg:py-28">
-      <img
-        src={visionMissionBg}
-        alt=""
-        width={1920}
-        height={1080}
-        loading="lazy"
-        decoding="async"
-        className="values-bg-drift absolute inset-0 size-full object-cover"
-      />
+    <section
+      className="relative isolate bg-cover bg-center bg-no-repeat bg-fixed py-20 lg:py-28"
+      style={{ backgroundImage: `url(${visionMissionBg})` }}
+    >
       <div className="absolute inset-0 bg-navy-deep/75" aria-hidden="true" />
       <div className="container-wbc relative">
         <p data-reveal className="font-display text-[12px] tracking-[0.24em] text-white/70 uppercase">

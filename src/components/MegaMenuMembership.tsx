@@ -6,15 +6,9 @@ const GROUPS = [
     label: "Join",
     items: [
       {
-        title: "Membership Benefits",
-        desc: "Types, advantages, and who can join",
+        title: "WBC Membership",
+        desc: "Types, benefits, and online application",
         to: "/membership" as const,
-        hash: "benefits" as const,
-      },
-      {
-        title: "Become a Member",
-        desc: "Start your membership journey",
-        to: "/become-a-member" as const,
       },
     ],
   },
@@ -37,8 +31,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
         <div>
           <h2 className="text-[26px] font-bold text-foreground lg:text-[30px]">Membership</h2>
           <p className="mt-4 max-w-xs text-[16px] leading-relaxed text-muted-fg">
-            Join a global community of business leaders. Explore membership benefits, application steps, and our member
-            directory.
+            Join a global community of business leaders. Explore membership types, benefits, and apply in one place.
           </p>
         </div>
 
@@ -48,12 +41,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
             <ul className="mt-6 space-y-5">
               {g.items.map((it) => (
                 <li key={it.title}>
-                  <Link
-                    to={it.to}
-                    {...("hash" in it ? { hash: it.hash } : {})}
-                    onClick={onNavigate}
-                    className="group block"
-                  >
+                  <Link to={it.to} onClick={onNavigate} className="group block">
                     <span className="block text-[17px] font-bold text-foreground transition-colors group-hover:text-navy">
                       {it.title}
                     </span>
@@ -83,10 +71,11 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
             </p>
             <Link
               to="/membership"
+              hash="application"
               onClick={onNavigate}
               className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-foreground"
             >
-              View all <span aria-hidden="true" className="rtl-mirror">→</span>
+              Apply now <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>

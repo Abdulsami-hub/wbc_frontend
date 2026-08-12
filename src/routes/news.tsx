@@ -77,7 +77,8 @@ function NewsPage() {
         title="Stay Connected"
         description="Join WBC to receive programme updates and participate in the global network."
         ctaLabel="Become a Member"
-        to="/become-a-member"
+        to="/membership"
+        hash="application"
       />
     </>
   );

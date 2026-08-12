@@ -227,7 +227,7 @@ function WhatWeDo() {
                 <p className="mt-5 max-w-md text-[16px] leading-relaxed text-muted-fg">
                   WBC offers 5 distinct types of membership tailored to meet diverse needs.
                 </p>
-                <Link to="/become-a-member" className="btn-orange mt-8">
+                <Link to="/membership" hash="application" className="btn-orange mt-8">
                   Become a Member
                 </Link>
               </div>

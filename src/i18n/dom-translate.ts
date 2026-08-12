@@ -77,7 +77,12 @@ function translateAttributes(el: Element, map: TMap | null) {
 export function translateTree(root: Node, map: TMap | null) {
   if (root.nodeType === Node.TEXT_NODE) {
     const parent = (root as Text).parentElement;
-    if (parent && !SKIP_TAGS.has(parent.tagName) && !parent.closest("svg")) {
+    if (
+      parent &&
+      !SKIP_TAGS.has(parent.tagName) &&
+      !parent.closest("svg") &&
+      !parent.closest("[data-no-translate]")
+    ) {
       translateTextNode(root as Text, map);
     }
     return;
@@ -86,10 +91,10 @@ export function translateTree(root: Node, map: TMap | null) {
 
   const el = root as Element;
   if (el instanceof Element) {
-    if (SKIP_TAGS.has(el.tagName) || el.closest("svg")) return;
+    if (SKIP_TAGS.has(el.tagName) || el.closest("svg") || el.closest("[data-no-translate]")) return;
     translateAttributes(el, map);
     el.querySelectorAll("[aria-label],[placeholder],[alt],[title]").forEach((child) => {
-      if (!child.closest("svg")) translateAttributes(child, map);
+      if (!child.closest("svg") && !child.closest("[data-no-translate]")) translateAttributes(child, map);
     });
   }
 
@@ -98,7 +103,14 @@ export function translateTree(root: Node, map: TMap | null) {
   while (walker.nextNode()) nodes.push(walker.currentNode as Text);
   for (const node of nodes) {
     const parent = node.parentElement;
-    if (!parent || SKIP_TAGS.has(parent.tagName) || parent.closest("svg")) continue;
+    if (
+      !parent ||
+      SKIP_TAGS.has(parent.tagName) ||
+      parent.closest("svg") ||
+      parent.closest("[data-no-translate]")
+    ) {
+      continue;
+    }
     translateTextNode(node, map);
   }
 }
