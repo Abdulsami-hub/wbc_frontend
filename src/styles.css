@@ -108,6 +108,19 @@
   }
 }
 
+@utility btn-orange-outline {
+  @apply btn-base;
+  border: 1px solid var(--color-orange);
+  background-color: transparent;
+  color: var(--color-orange);
+
+  &:hover {
+    border-color: var(--color-orange-hover);
+    color: var(--color-orange-hover);
+    background-color: oklch(0.655 0.226 34.5 / 0.06);
+  }
+}
+
 @utility btn-outline-light {
   @apply btn-base;
   border: 1px solid oklch(1 0 0 / 0.65);
@@ -145,6 +158,60 @@
   &:hover {
     box-shadow: var(--shadow-card);
   }
+}
+
+/* Bold text links with trailing arrow — e.g. “View all services →” */
+@utility link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  transition: color 0.2s ease;
+
+  &:hover,
+  .group:hover & {
+    color: var(--color-navy);
+  }
+
+  .link-arrow-icon {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .link-arrow-icon,
+  .group:hover & .link-arrow-icon {
+    transform: translateX(0.25rem);
+  }
+
+  :dir(rtl) &:hover .link-arrow-icon,
+  :dir(rtl) .group:hover & .link-arrow-icon {
+    transform: translateX(-0.25rem);
+  }
+}
+
+@utility service-card {
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--color-light-grey);
+    box-shadow: var(--shadow-card);
+    border-color: oklch(0.655 0.226 34.5 / 0.22);
+  }
+}
+
+@utility card-zoom-img {
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .card-zoom-img {
+  transform: scale(1.1);
+  transition-delay: 0.15s;
 }
 
 @utility eyebrow {
@@ -336,9 +403,106 @@
   transform-origin: center;
 }
 
+@utility megamenu-promo-img {
+  transform: scale(1);
+  opacity: 1;
+  transform-origin: center;
+  transition:
+    transform 1.15s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility megamenu-promo-fade {
+  background-color: transparent;
+  transition: background-color 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group\/promo:hover .megamenu-promo-img {
+  transform: scale(1.08);
+  opacity: 0.9;
+  transition-delay: 0.18s;
+}
+
+.group\/promo:hover .megamenu-promo-fade {
+  background-color: oklch(0.263 0.076 257 / 0.18);
+  transition-delay: 0.22s;
+}
+
+@keyframes megamenu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes megamenu-col-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility megamenu-panel {
+  position: relative;
+  animation: megamenu-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility megamenu-col {
+  animation: megamenu-col-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility nav-link {
+  .nav-link-underline {
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.25rem;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    border-radius: 9999px;
+    background-color: var(--color-orange);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover .nav-link-underline,
+  &:focus-visible .nav-link-underline,
+  &.active .nav-link-underline,
+  &.is-open .nav-link-underline {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .megamenu-img {
+  .megamenu-img,
+  .megamenu-panel,
+  .megamenu-col,
+  .megamenu-promo-img,
+  .megamenu-promo-fade {
     animation: none !important;
+    transition: none !important;
+  }
+
+  .group\/promo:hover .megamenu-promo-img {
+    transform: none;
+    opacity: 1;
+  }
+
+  .group\/promo:hover .megamenu-promo-fade {
+    background-color: transparent;
+  }
+
+  .card-zoom-img,
+  .group:hover .card-zoom-img {
+    transition: none !important;
+    transform: none !important;
   }
 }
 

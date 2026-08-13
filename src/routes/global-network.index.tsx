@@ -102,9 +102,9 @@ function GlobalNetwork() {
                   <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
                   <h3 className="mt-7 text-[21px] leading-snug font-bold text-foreground">{p.title}</h3>
                   <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-[15px] font-bold text-foreground">
+                  <span className="link-arrow mt-6">
                     Learn more
-                    <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">
+                    <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
                       →
                     </span>
                   </span>

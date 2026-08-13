@@ -60,7 +60,7 @@ const en: Dict = {
   "link.institutional": "Institutional Members",
   "link.partners": "Strategic Partners",
   "link.wbcMembership": "WBC Membership",
-  "link.benefits": "Benefits",
+  "link.benefits": "Membership Benefits",
   "link.become": "Become a Member",
 };
 

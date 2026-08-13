@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
@@ -16,32 +17,23 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-function EventDateBadge({
+function EventMetaRow({
   dateLabel,
   location,
-  size = "card",
 }: {
   dateLabel: string;
   location: string;
-  size?: "card" | "modal";
 }) {
-  const sizeClasses =
-    size === "modal"
-      ? "px-3.5 py-2.5 text-[13px] sm:text-[14px]"
-      : "px-3 py-2 text-[11px] sm:text-[12px]";
-
   return (
-    <div
-      className={`relative overflow-hidden rounded-lg border border-white/50 text-end shadow-[inset_0_1px_0_0_rgba(255,255,255,0.45),0_8px_32px_rgba(15,23,42,0.12)] backdrop-blur-2xl backdrop-saturate-150 ${sizeClasses}`}
-    >
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/35 via-white/12 to-white/5"
-        aria-hidden="true"
-      />
-      <div className="relative">
-        <p className="font-semibold leading-tight whitespace-nowrap text-white drop-shadow-sm">{dateLabel}</p>
-        <p className="mt-0.5 font-medium leading-snug text-white/95 drop-shadow-sm">{location}</p>
-      </div>
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+      <span className="inline-flex items-center gap-2 text-[14px] font-medium text-muted-fg">
+        <CalendarDays className="size-4 shrink-0 text-orange" strokeWidth={2.25} aria-hidden="true" />
+        {dateLabel}
+      </span>
+      <span className="inline-flex items-center gap-2 text-[14px] font-medium text-muted-fg">
+        <MapPin className="size-4 shrink-0 text-orange" strokeWidth={2.25} aria-hidden="true" />
+        {location}
+      </span>
     </div>
   );
 }
@@ -103,39 +95,27 @@ function EventDetailModal({
                   height={900}
                   className="absolute inset-0 size-full object-cover"
                 />
-                <div
-                  className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-transparent to-transparent"
-                  aria-hidden="true"
-                />
-                <div className="absolute end-0 top-0 p-5 sm:p-6">
-                  <EventDateBadge dateLabel={event.dateLabel} location={event.location} size="modal" />
-                </div>
               </div>
 
               <div className="flex flex-col p-6 sm:p-8 lg:p-10">
                 {category ? (
                   <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
                 ) : null}
+                <div className={category ? "mt-3" : ""}>
+                  <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
+                </div>
                 <h2 className="mt-3 text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">{event.title}</h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
+                <p className="mt-4 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
                 <span className="accent-rule mt-5" />
 
-                <dl className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-card border border-line bg-surface px-4 py-3">
-                    <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Date</dt>
-                    <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.dateLabel}</dd>
-                  </div>
-                  <div className="rounded-card border border-line bg-surface px-4 py-3">
-                    <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Location</dt>
-                    <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.location}</dd>
-                  </div>
-                  {event.registrationFee ? (
-                    <div className="rounded-card border border-line bg-surface px-4 py-3 sm:col-span-2">
+                {event.registrationFee ? (
+                  <dl className="mt-6">
+                    <div className="rounded-card border border-line bg-surface px-4 py-3">
                       <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Registration</dt>
                       <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.registrationFee}</dd>
                     </div>
-                  ) : null}
-                </dl>
+                  </dl>
+                ) : null}
 
                 <div className="mt-8">
                   <h3 className="text-[17px] font-bold text-foreground">About this event</h3>
@@ -295,9 +275,7 @@ function Events() {
 
           {filtered.length > 0 ? (
             <ul data-reveal data-reveal-group className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((event) => {
-                const category = EVENT_CATEGORIES.find((c) => c.id === event.categoryId);
-                return (
+              {filtered.map((event) => (
                   <li
                     key={event.slug}
                     className="group flex flex-col overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card"
@@ -311,22 +289,13 @@ function Events() {
                         loading="lazy"
                         className="aspect-[16/10] w-full object-cover"
                       />
-                      <div
-                        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-deep/50 via-transparent to-transparent"
-                        aria-hidden="true"
-                      />
-                      <div className="absolute end-0 top-0 p-3 sm:p-4">
-                        <EventDateBadge dateLabel={event.dateLabel} location={event.location} />
-                      </div>
                     </div>
                     <div className="flex flex-1 flex-col p-6">
-                      {category ? (
-                        <p className="text-[12px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
-                          {category.title}
-                        </p>
-                      ) : null}
-                      <h3 className="mt-2 text-[20px] font-bold leading-snug text-foreground">{event.title}</h3>
-                      <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
+                      <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
+                      <h3 className="mt-3 text-[22px] font-bold leading-snug text-foreground sm:text-[24px]">
+                        {event.title}
+                      </h3>
+                      <p className="mt-4 flex-1 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
                       <button
                         type="button"
                         onClick={() => setSelected(event)}
@@ -339,8 +308,7 @@ function Events() {
                       </button>
                     </div>
                   </li>
-                );
-              })}
+              ))}
             </ul>
           ) : (
             <div data-reveal className="mx-auto mt-14 max-w-lg rounded-card border border-line bg-surface px-6 py-12 text-center transition-shadow duration-300 hover:shadow-card">

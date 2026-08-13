@@ -45,11 +45,31 @@ const CATEGORIES: Category[] = [
     accent: "orange",
     kind: "org",
     members: [
-      { name: "Member 01", href: "https://example.com" },
-      { name: "Member 02" },
-      { name: "Member 03", href: "https://example.com" },
-      { name: "Member 04" },
-      { name: "Member 05" },
+      {
+        name: "International Chamber of Commerce",
+        logo: "https://logo.clearbit.com/iccwbo.org",
+        href: "https://iccwbo.org",
+      },
+      {
+        name: "World Trade Organization",
+        logo: "https://logo.clearbit.com/wto.org",
+        href: "https://www.wto.org",
+      },
+      {
+        name: "OECD",
+        logo: "https://logo.clearbit.com/oecd.org",
+        href: "https://www.oecd.org",
+      },
+      {
+        name: "UN Global Compact",
+        logo: "https://logo.clearbit.com/unglobalcompact.org",
+        href: "https://www.unglobalcompact.org",
+      },
+      {
+        name: "World Bank Group",
+        logo: "https://logo.clearbit.com/worldbank.org",
+        href: "https://www.worldbank.org",
+      },
     ],
   },
   {
@@ -58,11 +78,31 @@ const CATEGORIES: Category[] = [
     accent: "navy",
     kind: "org",
     members: [
-      { name: "Member 06", href: "https://example.com" },
-      { name: "Member 07" },
-      { name: "Member 08" },
-      { name: "Member 09", href: "https://example.com" },
-      { name: "Member 10" },
+      {
+        name: "Microsoft",
+        logo: "https://cdn.simpleicons.org/microsoft/0078D4",
+        href: "https://www.microsoft.com",
+      },
+      {
+        name: "Siemens",
+        logo: "https://cdn.simpleicons.org/siemens/009999",
+        href: "https://www.siemens.com",
+      },
+      {
+        name: "Toyota",
+        logo: "https://cdn.simpleicons.org/toyota/EB0A1E",
+        href: "https://www.toyota-global.com",
+      },
+      {
+        name: "IBM",
+        logo: "https://cdn.simpleicons.org/ibm/054ADA",
+        href: "https://www.ibm.com",
+      },
+      {
+        name: "Accenture",
+        logo: "https://cdn.simpleicons.org/accenture/A100FF",
+        href: "https://www.accenture.com",
+      },
     ],
   },
   {
@@ -71,11 +111,31 @@ const CATEGORIES: Category[] = [
     accent: "teal",
     kind: "org",
     members: [
-      { name: "Member 11" },
-      { name: "Member 12", href: "https://example.com" },
-      { name: "Member 13" },
-      { name: "Member 14" },
-      { name: "Member 15", href: "https://example.com" },
+      {
+        name: "Shopify",
+        logo: "https://cdn.simpleicons.org/shopify/7AB55C",
+        href: "https://www.shopify.com",
+      },
+      {
+        name: "HubSpot",
+        logo: "https://cdn.simpleicons.org/hubspot/FF7A59",
+        href: "https://www.hubspot.com",
+      },
+      {
+        name: "Mailchimp",
+        logo: "https://cdn.simpleicons.org/mailchimp/FFE01B",
+        href: "https://mailchimp.com",
+      },
+      {
+        name: "Atlassian",
+        logo: "https://cdn.simpleicons.org/atlassian/0052CC",
+        href: "https://www.atlassian.com",
+      },
+      {
+        name: "Zendesk",
+        logo: "https://cdn.simpleicons.org/zendesk/03363D",
+        href: "https://www.zendesk.com",
+      },
     ],
   },
   {
@@ -84,24 +144,60 @@ const CATEGORIES: Category[] = [
     accent: "blue",
     kind: "person",
     members: [
-      { name: "Member 16" },
-      { name: "Member 17" },
-      { name: "Member 18", href: "https://example.com" },
-      { name: "Member 19" },
-      { name: "Member 20" },
+      {
+        name: "Sarah Chen",
+        logo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=face",
+      },
+      {
+        name: "James Okonkwo",
+        logo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=face",
+        href: "https://example.com",
+      },
+      {
+        name: "Elena Rodriguez",
+        logo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=face",
+      },
+      {
+        name: "David Müller",
+        logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=face",
+      },
+      {
+        name: "Amira Hassan",
+        logo: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=160&h=160&fit=crop&crop=face",
+        href: "https://example.com",
+      },
     ],
   },
   {
     name: "Honorary Members",
     desc: "Recognised contributors awarded for outstanding service to WBC’s mission and the wider international business community.",
     accent: "violet",
-    kind: "person",
+    kind: "org",
     members: [
-      { name: "Member 21" },
-      { name: "Member 22", href: "https://example.com" },
-      { name: "Member 23" },
-      { name: "Member 24" },
-      { name: "Member 25" },
+      {
+        name: "Harvard Business School",
+        logo: "https://logo.clearbit.com/hbs.edu",
+        href: "https://www.hbs.edu",
+      },
+      {
+        name: "London School of Economics",
+        logo: "https://logo.clearbit.com/lse.ac.uk",
+        href: "https://www.lse.ac.uk",
+      },
+      {
+        name: "INSEAD",
+        logo: "https://logo.clearbit.com/insead.edu",
+        href: "https://www.insead.edu",
+      },
+      {
+        name: "Wharton School",
+        logo: "https://logo.clearbit.com/wharton.upenn.edu",
+      },
+      {
+        name: "IE Business School",
+        logo: "https://logo.clearbit.com/ie.edu",
+        href: "https://www.ie.edu",
+      },
     ],
   },
 ];
@@ -174,6 +270,8 @@ function MemberLogo({
   const shape = kind === "person" ? "rounded-full" : "rounded-card";
 
   if (member.logo) {
+    const isPortrait = kind === "person" && member.logo.includes("unsplash.com");
+
     return (
       <span
         className={`relative flex size-[4.5rem] items-center justify-center overflow-hidden border border-line bg-background ${shape} sm:size-20`}
@@ -185,7 +283,11 @@ function MemberLogo({
           height={80}
           loading="lazy"
           decoding="async"
-          className="max-h-[70%] max-w-[70%] object-contain"
+          className={
+            isPortrait
+              ? "size-full object-cover"
+              : "max-h-[70%] max-w-[70%] object-contain"
+          }
         />
       </span>
     );
@@ -347,7 +449,7 @@ function OurMembers() {
             </h2>
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
               Explore category groups and open each member profile from its card. Linked members open their website when
-              available. Add a logo path on any member to display their brand mark.
+              available.
             </p>
           </div>
 

@@ -32,6 +32,8 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
     title: "footer.membership",
     links: [
       { key: "link.wbcMembership", to: "/membership" },
+      { key: "link.benefits", to: "/membership", hash: "benefits" },
+      { key: "link.become", to: "/membership", hash: "application" },
       { key: "nav.ourMembers", to: "/our-members" },
     ],
   },
@@ -76,12 +78,11 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
-                    className="inline-flex min-h-9 items-center gap-2 rounded bg-white/10 px-3 text-[14px] font-medium text-white transition-colors hover:bg-white/20"
+                    className="inline-flex size-9 items-center justify-center rounded bg-white/10 text-white transition-colors hover:bg-white/20"
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d={s.path} />
                     </svg>
-                    {s.label}
                   </a>
                 </li>
               ))}

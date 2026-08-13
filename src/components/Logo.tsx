@@ -7,11 +7,13 @@ export function Logo({
   variant = "navy",
   size = "default",
   framed = false,
+  onClick,
 }: {
   variant?: "navy" | "light" | "footer";
   size?: "default" | "lg";
   /** White padded background — use on dark surfaces when the logo needs contrast. */
   framed?: boolean;
+  onClick?: () => void;
 }) {
   const src =
     variant === "footer" ? logoFooter : variant === "light" && !framed ? logoLight : logoNavy;
@@ -27,6 +29,7 @@ export function Logo({
   return (
     <Link
       to="/"
+      onClick={onClick}
       className={`inline-flex shrink-0 items-center ${framed ? "w-fit rounded-md bg-white px-3 py-2 shadow-sm" : ""}`}
       aria-label="World Business Council home"
     >

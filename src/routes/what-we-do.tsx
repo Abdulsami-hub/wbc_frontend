@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ServiceCard } from "@/components/ServiceCard";
 import heroImg from "@/assets/wwd-hero.jpg";
 import networkImg from "@/assets/wwd-network.jpg";
 import councilImg from "@/assets/wwd-council.jpg";
@@ -176,34 +177,15 @@ function WhatWeDo() {
 
             <ul data-reveal data-reveal-group className="mt-10 grid gap-6 lg:grid-cols-2">
               {PILLARS.map((p, i) => (
-                <li
+                <ServiceCard
                   key={p.title}
-                  data-reveal
-                  className={`group rounded-card border border-line bg-background p-5 transition-shadow duration-300 hover:shadow-card sm:p-7 ${
-                    i === PILLARS.length - 1 ? "lg:col-span-2" : ""
-                  }`}
-                >
-                  <div className="flex gap-5 sm:gap-7">
-                    <img
-                      src={p.image}
-                      alt=""
-                      width={640}
-                      height={640}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-24 shrink-0 rounded-card object-cover sm:size-32"
-                    />
-                    <div className="border-s border-line ps-5 transition-colors duration-300 group-hover:border-orange/30 sm:ps-7">
-                      <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
-                        {String(i + 1).padStart(2, "0")} · {p.kicker}
-                      </p>
-                      <h3 className="mt-2 text-[19px] leading-snug font-bold text-foreground transition-colors group-hover:text-foreground sm:text-[22px]">
-                        {p.title}
-                      </h3>
-                      <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{p.body}</p>
-                    </div>
-                  </div>
-                </li>
+                  kicker={p.kicker}
+                  title={p.title}
+                  body={p.body}
+                  image={p.image}
+                  index={i}
+                  className={i === PILLARS.length - 1 ? "lg:col-span-2" : ""}
+                />
               ))}
             </ul>
           </div>

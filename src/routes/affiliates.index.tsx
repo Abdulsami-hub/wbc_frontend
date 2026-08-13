@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import heroImg from "@/assets/affiliates-hero.jpg";
-import { AFFILIATE_REGIONS, regionStats } from "@/content/affiliates";
-import { CTASection } from "@/components/CTASection";
+import {
+  AFFILIATE_REGIONS,
+  type AffiliateCountry,
+  type AffiliateRegion,
+  type AffiliateStatus,
+} from "@/content/affiliates";
 
 export const Route = createFileRoute("/affiliates/")({
   head: () => ({
@@ -10,21 +15,30 @@ export const Route = createFileRoute("/affiliates/")({
       {
         name: "description",
         content:
-          "Explore WBC affiliate presence across Africa & the Middle East, Europe, Asia & the Pacific, North America, and Latin America.",
+          "Explore WBC affiliate presence across Africa & the Middle East, Europe, Asia & the Pacific, North America, and Latin America, country by country.",
       },
       { property: "og:title", content: "WBC Affiliates — Around the World" },
       {
         property: "og:description",
-        content: "Affiliate presence by continent, country, and city across the global WBC network.",
+        content: "Affiliate presence by region, country, and city across the global WBC network.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: AffiliatesHub,
+  component: Affiliates,
 });
 
-const TAGS = ["Five Continents", "Country Presence", "City Networks"] as const;
+const TAGS = ["Institutional Alignment", "Network Access", "Partnership Continuity"] as const;
+
+const SORTS = [
+  { id: "az", label: "Alphabetical (A–Z)" },
+  { id: "za", label: "Reverse alphabetical (Z–A)" },
+  { id: "most", label: "Country with most cities first" },
+  { id: "fewest", label: "Country with fewest cities first" },
+] as const;
+
+type SortId = (typeof SORTS)[number]["id"];
 
 const FAQS = [
   {
@@ -41,7 +55,134 @@ const FAQS = [
   },
 ] as const;
 
-function AffiliatesHub() {
+function statusClasses(status: AffiliateStatus, open?: boolean) {
+  if (status === "active") {
+    return open
+      ? "border-teal bg-teal/5 shadow-card"
+      : "border-teal/55 hover:border-teal text-foreground";
+  }
+  return open
+    ? "border-line bg-surface/80 shadow-card"
+    : "border-line text-muted-fg hover:border-muted-fg/40";
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+      className={`shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
+function RegionSection({ region, index }: { region: AffiliateRegion; index: number }) {
+  const [sort, setSort] = useState<SortId>("az");
+  const [open, setOpen] = useState<string | null>(null);
+
+  const countries = useMemo(() => {
+    const list = [...region.countries];
+    if (sort === "az") list.sort((a, b) => a.name.localeCompare(b.name));
+    if (sort === "za") list.sort((a, b) => b.name.localeCompare(a.name));
+    if (sort === "most") list.sort((a, b) => b.cities.length - a.cities.length);
+    if (sort === "fewest") list.sort((a, b) => a.cities.length - b.cities.length);
+    return list;
+  }, [region.countries, sort]);
+
+  return (
+    <section className={index % 2 === 1 ? "border-t border-line bg-surface/50 py-14 lg:py-20" : "border-t border-line py-14 lg:py-20"}>
+      <div className="container-wbc">
+        <div data-reveal>
+          <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">
+            Affiliate Footprint · {region.name}
+          </p>
+          <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">{region.name}</h2>
+        </div>
+
+        <div className="mt-8 rounded-card border border-line bg-background p-5 sm:flex sm:items-center sm:gap-6 sm:p-6">
+          <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Sort by</p>
+          <ul className="mt-4 flex flex-wrap gap-3 sm:mt-0">
+            {SORTS.map((s) => (
+              <li key={s.id}>
+                <button
+                  type="button"
+                  onClick={() => setSort(s.id)}
+                  aria-pressed={sort === s.id}
+                  className={`rounded-none border px-4 py-2.5 text-[15px] font-semibold transition-colors ${
+                    sort === s.id
+                      ? "border-orange bg-orange text-white"
+                      : "border-line bg-background text-muted-fg hover:border-orange hover:text-foreground"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {countries.map((c: AffiliateCountry) => {
+            const isOpen = open === c.slug;
+            return (
+              <li
+                key={c.slug}
+                className={`self-start overflow-hidden rounded-card border bg-background transition-all ${statusClasses(c.status, isOpen)}`}
+              >
+                <div className="flex w-full items-center justify-between gap-2 px-4 py-3.5">
+                  <Link
+                    to="/affiliates/$slug"
+                    params={{ slug: c.slug }}
+                    className={`min-w-0 flex-1 text-[16px] font-bold transition-colors hover:underline ${
+                      c.status === "active" ? "text-teal" : "text-muted-fg"
+                    }`}
+                  >
+                    {c.name}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : c.slug)}
+                    aria-expanded={isOpen}
+                    aria-label={`${isOpen ? "Collapse" : "Expand"} cities in ${c.name}`}
+                    className="inline-flex size-9 shrink-0 items-center justify-center text-current"
+                  >
+                    <Chevron open={isOpen} />
+                  </button>
+                </div>
+                {isOpen && (
+                  <ul className="border-t border-line px-5 py-4 space-y-2.5">
+                    {c.cities.map((city) => (
+                      <li key={city.slug}>
+                        <Link
+                          to="/affiliates/$slug"
+                          params={{ slug: city.slug }}
+                          className={`text-[15px] transition-colors hover:underline ${
+                            city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
+                          }`}
+                        >
+                          {city.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function Affiliates() {
   return (
     <>
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
@@ -52,8 +193,8 @@ function AffiliatesHub() {
               WBC Affiliates
             </h1>
             <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              Explore the WBC footprint continent by continent — then open any country or city for a clear view of
-              local presence and engagement status.
+              WBC affiliates play a key role in connecting entrepreneurs, institutions, and the wider business community
+              with the global WBC network.
             </p>
             <ul className="intro-4 mt-9 flex flex-wrap gap-3">
               {TAGS.map((t) => (
@@ -66,7 +207,7 @@ function AffiliatesHub() {
               to="/contact"
               className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
             >
-              Establish an Affiliate <span aria-hidden="true" className="rtl-mirror">→</span>
+              Fill the Application Form <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
         </div>
@@ -85,94 +226,29 @@ function AffiliatesHub() {
 
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div data-reveal className="max-w-3xl">
-            <p className="eyebrow">Explore by continent</p>
-            <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]">
-              Choose a region to begin.
-            </h2>
-            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              Each continent page lists every country presence, with city-level detail one click away.
+          <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-12">
+            <h2 className="text-[26px] leading-tight font-bold text-foreground sm:text-[34px]">About WBC around the world</h2>
+            <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
+              This page presents WBC presence across regions and cities, helping visitors quickly understand where the
+              network is represented worldwide.
             </p>
-            <span className="accent-rule mt-6" />
-          </div>
-
-          <ul data-reveal data-reveal-group className="mt-12 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-            {AFFILIATE_REGIONS.map((region, i) => {
-              const stats = regionStats(region);
-              const featured = i === 0;
-              return (
-                <li key={region.slug} className={featured ? "lg:col-span-2 xl:col-span-1" : undefined}>
-                  <Link
-                    to="/affiliates/$slug"
-                    params={{ slug: region.slug }}
-                    className={`group relative flex h-full flex-col overflow-hidden rounded-card p-7 transition-all duration-300 sm:p-8 ${
-                      featured
-                        ? "bg-navy text-white shadow-card hover:-translate-y-1 hover:shadow-lg"
-                        : "border border-line bg-background hover:-translate-y-1 hover:border-orange/35 hover:shadow-card"
-                    }`}
-                  >
-                    <span
-                      className={`pointer-events-none absolute -end-10 -top-10 size-40 rounded-full transition-transform duration-500 group-hover:scale-150 ${
-                        featured ? "bg-orange/25" : "bg-orange/10"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <p
-                      className={`relative text-[12px] font-bold tracking-[0.18em] uppercase ${
-                        featured ? "text-white/65" : "text-muted-fg"
-                      }`}
-                    >
-                      Continent {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className={`relative mt-4 text-[24px] font-bold leading-tight sm:text-[26px] ${featured ? "text-white" : "text-foreground"}`}>
-                      {region.name}
-                    </h3>
-                    <p className={`relative mt-3 flex-1 text-[15px] leading-relaxed ${featured ? "text-white/80" : "text-muted-fg"}`}>
-                      {region.blurb}
-                    </p>
-                    <dl className="relative mt-8 grid grid-cols-3 gap-3 border-t border-white/15 pt-6">
-                      {[
-                        { k: String(stats.countries), v: "Countries" },
-                        { k: String(stats.activeCountries), v: "Active" },
-                        { k: String(stats.cities), v: "Cities" },
-                      ].map((s) => (
-                        <div key={s.v}>
-                          <dt className={`text-[22px] font-bold tabular-nums ${featured ? "text-white" : "text-foreground"}`}>
-                            {s.k}
-                          </dt>
-                          <dd className={`mt-1 text-[11px] tracking-[0.08em] uppercase ${featured ? "text-white/60" : "text-muted-fg"}`}>
-                            {s.v}
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
-                    <span
-                      className={`relative mt-7 inline-flex items-center gap-2 text-[15px] font-bold ${
-                        featured ? "text-white" : "text-foreground"
-                      }`}
-                    >
-                      Explore continent
-                      <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">
-                        →
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div data-reveal className="mt-10 flex flex-wrap items-center gap-6 rounded-card border border-line bg-surface px-6 py-5">
-            <p className="text-[14px] font-semibold tracking-[0.08em] text-muted-fg uppercase">Status legend</p>
-            <span className="inline-flex items-center gap-2 text-[14px] text-foreground">
-              <span className="size-2.5 rounded-full bg-teal" aria-hidden="true" /> Active presence
-            </span>
-            <span className="inline-flex items-center gap-2 text-[14px] text-muted-fg">
-              <span className="size-2.5 rounded-full bg-line" aria-hidden="true" /> Inactive / recorded
-            </span>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <div className="inline-flex items-center gap-2.5 rounded-card border border-teal/55 bg-teal/5 px-4 py-2.5 text-[14px] font-semibold text-teal">
+                <span className="size-2.5 rounded-full bg-teal" aria-hidden="true" />
+                Active — engaged or operating
+              </div>
+              <div className="inline-flex items-center gap-2.5 rounded-card border border-line bg-surface px-4 py-2.5 text-[14px] font-semibold text-muted-fg">
+                <span className="size-2.5 rounded-full bg-muted-fg/50" aria-hidden="true" />
+                Inactive — in record, not currently operating
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {AFFILIATE_REGIONS.map((r, i) => (
+        <RegionSection key={r.name} region={r} index={i} />
+      ))}
 
       <section className="border-t border-line bg-surface/40 py-14 lg:py-20">
         <div className="container-wbc">
@@ -182,10 +258,7 @@ function AffiliatesHub() {
           </div>
           <ul data-reveal data-reveal-group className="mt-8 space-y-4">
             {FAQS.map((f) => (
-              <li
-                key={f.q}
-                className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card sm:p-7"
-              >
+              <li key={f.q} className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card sm:p-7">
                 <h3 className="text-[17px] font-bold text-foreground">{f.q}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{f.a}</p>
               </li>
@@ -199,12 +272,20 @@ function AffiliatesHub() {
         </div>
       </section>
 
-      <CTASection
-        title="Establish a WBC Affiliate"
-        description="Contact WBC about establishing presence in your city or country."
-        ctaLabel="Contact Us"
-        to="/contact"
-      />
+      <section className="border-t border-line py-16 lg:py-24">
+        <div data-reveal className="container-wbc text-center">
+          <h2 className="text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
+            Establish a WBC Affiliate
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
+            We present a comprehensive service package tailored for organizations, businesses and executives seeking to
+            establish a WBC in their respective cities or countries.
+          </p>
+          <Link to="/contact" className="btn-orange mt-9">
+            Fill the Application Form
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

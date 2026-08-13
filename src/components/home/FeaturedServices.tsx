@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/SectionHeading";
+import { ServiceCard } from "@/components/ServiceCard";
 import networkImg from "@/assets/wwd-network.jpg";
 import councilImg from "@/assets/wwd-council.jpg";
 import tradeImg from "@/assets/wwd-trade.jpg";
@@ -59,35 +60,21 @@ export function FeaturedServices() {
 
         <ul data-reveal data-reveal-group className="mt-10 grid gap-6 lg:grid-cols-2">
           {SERVICES.map((s, i) => (
-            <li
+            <ServiceCard
               key={s.title}
-              className="group rounded-card border border-line bg-background p-5 transition-shadow duration-300 hover:shadow-card sm:p-7"
-            >
-              <div className="flex gap-5 sm:gap-7">
-                <img
-                  src={s.image}
-                  alt=""
-                  width={640}
-                  height={640}
-                  loading="lazy"
-                  decoding="async"
-                  className="size-24 shrink-0 rounded-card object-cover sm:size-32"
-                />
-                <div className="min-w-0 border-s border-line ps-5 transition-colors duration-300 group-hover:border-orange/30 sm:ps-7">
-                  <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
-                    {String(i + 1).padStart(2, "0")} · {s.kicker}
-                  </p>
-                  <h3 className="mt-2 text-[19px] leading-snug font-bold text-foreground sm:text-[22px]">{s.title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{s.body}</p>
-                </div>
-              </div>
-            </li>
+              kicker={s.kicker}
+              title={s.title}
+              body={s.body}
+              image={s.image}
+              index={i}
+            />
           ))}
         </ul>
 
         <div data-reveal className="mt-10 text-start">
-          <Link to="/what-we-do" className="text-[15px] font-semibold text-foreground">
-            View all services <span aria-hidden="true" className="rtl-mirror">
+          <Link to="/what-we-do" className="link-arrow">
+            View all services
+            <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
               →
             </span>
           </Link>

@@ -4,6 +4,18 @@ import useEmblaCarousel from "embla-carousel-react";
 import eventsImg from "@/assets/events.jpg";
 import forumImg from "@/assets/news-forum.jpg";
 import membershipImg from "@/assets/membership.jpg";
+import {
+  ADVERTISING_ESSENTIALS,
+  ADVERTISING_PACKAGES,
+  ADVERTISING_PROCESS,
+} from "@/content/advertising";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const OPPORTUNITIES = [
   {
@@ -31,7 +43,134 @@ const OPPORTUNITIES = [
 
 const AUTO_MS = 5000;
 
+function AdvertisingDetailsModal({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90vh] w-[min(960px,calc(100vw-1.5rem))] max-w-none overflow-y-auto rounded-card border-line p-0 sm:rounded-card">
+        <div className="border-b border-line bg-surface px-6 py-6 sm:px-8 sm:py-8">
+          <DialogHeader className="text-start">
+            <DialogTitle className="text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">
+              Advertising & Sponsorship Details
+            </DialogTitle>
+            <DialogDescription className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+              Explore pricing, inclusions, and booking information for WBC advertising opportunities. All rates are
+              indicative — our team will tailor a proposal to your goals and timeline.
+            </DialogDescription>
+          </DialogHeader>
+        </div>
+
+        <div className="space-y-10 px-6 py-8 sm:px-8">
+          {ADVERTISING_PACKAGES.map((pkg) => (
+            <section key={pkg.id}>
+              <h3 className="text-[20px] font-bold text-foreground sm:text-[22px]">{pkg.title}</h3>
+              <p className="mt-2 max-w-3xl text-[15px] leading-relaxed text-muted-fg">{pkg.summary}</p>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                {pkg.tiers.map((tier) => (
+                  <article
+                    key={tier.name}
+                    className="rounded-card border border-line bg-background p-5 shadow-card sm:p-6"
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <h4 className="text-[17px] font-bold text-foreground">{tier.name}</h4>
+                      <p className="text-end">
+                        <span className="block text-[20px] font-bold text-orange">{tier.price}</span>
+                        <span className="text-[12px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
+                          {tier.period}
+                        </span>
+                      </p>
+                    </div>
+                    <ul className="mt-4 space-y-2">
+                      {tier.includes.map((item) => (
+                        <li key={item} className="flex gap-2.5 text-[14px] leading-snug text-muted-fg">
+                          <svg
+                            className="mt-0.5 size-4 shrink-0 text-teal"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+
+              {pkg.notes?.map((note) => (
+                <p key={note} className="mt-4 text-[13px] leading-relaxed text-muted-fg">
+                  {note}
+                </p>
+              ))}
+            </section>
+          ))}
+
+          <section className="rounded-card border border-line bg-surface p-6 sm:p-8">
+            <h3 className="text-[20px] font-bold text-foreground">Good to know</h3>
+            <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+              {ADVERTISING_ESSENTIALS.map((item) => (
+                <div key={item.label} className="rounded-card border border-line bg-background px-4 py-3.5">
+                  <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">{item.label}</dt>
+                  <dd className="mt-1.5 text-[14px] leading-relaxed text-foreground">{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section>
+            <h3 className="text-[20px] font-bold text-foreground">How booking works</h3>
+            <ol className="mt-6 grid gap-4 md:grid-cols-3">
+              {ADVERTISING_PROCESS.map((step) => (
+                <li key={step.step}>
+                  <article className="h-full rounded-card border border-line bg-background p-5">
+                    <span className="font-display text-[13px] font-bold tabular-nums text-orange">{step.step}</span>
+                    <h4 className="mt-3 text-[16px] font-bold text-foreground">{step.title}</h4>
+                    <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">{step.body}</p>
+                  </article>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+
+        <div className="sticky bottom-0 flex flex-wrap gap-3 border-t border-line bg-background px-6 py-5 sm:px-8">
+          <Link to="/contact" className="btn-navy !rounded-md uppercase tracking-[0.06em]" onClick={() => onOpenChange(false)}>
+            Request a proposal
+          </Link>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            className="btn-base border border-line bg-background text-foreground hover:border-navy"
+          >
+            Close
+          </button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function AdvertisingOpportunities() {
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -196,13 +335,19 @@ export function AdvertisingOpportunities() {
             </div>
 
             <div className="mt-10">
-              <Link to="/contact" className="btn-navy !rounded-md">
+              <button
+                type="button"
+                onClick={() => setDetailsOpen(true)}
+                className="btn-navy !rounded-md uppercase tracking-[0.06em]"
+              >
                 Enquire about advertising
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <AdvertisingDetailsModal open={detailsOpen} onOpenChange={setDetailsOpen} />
     </section>
   );
 }
