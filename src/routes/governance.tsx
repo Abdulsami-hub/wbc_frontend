@@ -218,17 +218,19 @@ function Governance() {
                 key={b.id}
                 id={b.id}
                 data-reveal
-                className="scroll-mt-28 border border-line bg-background p-4 transition-shadow duration-300 hover:shadow-card sm:p-6"
+                className="group scroll-mt-28 border border-line bg-background p-4 sm:p-6"
               >
-                <img
-                  src={b.image}
-                  alt={`${b.name} setting at the World Business Council`}
-                  width={1200}
-                  height={560}
-                  loading="lazy"
-                  decoding="async"
-                  className="aspect-[15/7] w-full object-cover"
-                />
+                <div className="relative overflow-hidden">
+                  <img
+                    src={b.image}
+                    alt={`${b.name} setting at the World Business Council`}
+                    width={1200}
+                    height={560}
+                    loading="lazy"
+                    decoding="async"
+                    className="card-zoom-img aspect-[15/7] w-full object-cover"
+                  />
+                </div>
                 <div className="mt-6 flex items-center gap-4">
                   <BodyIcon icon={b.icon} />
                   <h3 className="flex-1 text-[22px] leading-snug font-bold text-foreground sm:text-[26px]">{b.name}</h3>

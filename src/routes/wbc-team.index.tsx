@@ -50,21 +50,23 @@ const PRACTICE = [
 
 function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMember) => void }) {
   return (
-    <li className="group overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card">
+    <li className="group overflow-hidden rounded-card border border-line bg-background">
       <button type="button" onClick={() => onOpen(member)} className="block w-full cursor-pointer text-start">
-        <img
-          src={member.image}
-          alt={`${member.name}, ${member.role} at the World Business Council`}
-          width={800}
-          height={1000}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[4/5] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-        />
+        <div className="relative overflow-hidden">
+          <img
+            src={member.image}
+            alt={`${member.name}, ${member.role} at the World Business Council`}
+            width={800}
+            height={1000}
+            loading="lazy"
+            decoding="async"
+            className="card-zoom-img aspect-[4/5] w-full object-cover object-top"
+          />
+        </div>
         <div className="border-t border-line p-5 sm:p-6">
           <h4 className="text-[19px] leading-snug font-bold text-foreground">{member.name}</h4>
           <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-foreground/70 uppercase">{member.role}</p>
-          <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase transition-colors group-hover:text-foreground">
+          <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
             View full profile
           </span>
         </div>

@@ -155,8 +155,14 @@ function EventDetailModal({
                     <h3 className="text-[17px] font-bold text-foreground">Media</h3>
                     <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                       {event.media.map((m) => (
-                        <li key={m.url} className="overflow-hidden rounded-card border border-line">
-                          <img src={m.url} alt={m.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                        <li key={m.url} className="group overflow-hidden rounded-card border border-line">
+                          <div className="relative overflow-hidden">
+                            <img
+                              src={m.url}
+                              alt={m.caption ?? ""}
+                              className="card-zoom-img aspect-[4/3] w-full object-cover"
+                            />
+                          </div>
                           {m.caption ? <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p> : null}
                         </li>
                       ))}
@@ -278,16 +284,16 @@ function Events() {
               {filtered.map((event) => (
                   <li
                     key={event.slug}
-                    className="group flex flex-col overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card"
+                    className="group flex flex-col overflow-hidden rounded-card border border-line bg-background"
                   >
-                    <div className="relative">
+                    <div className="relative overflow-hidden">
                       <img
                         src={event.image}
                         alt=""
                         width={800}
                         height={500}
                         loading="lazy"
-                        className="aspect-[16/10] w-full object-cover"
+                        className="card-zoom-img aspect-[16/10] w-full object-cover"
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6">

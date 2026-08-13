@@ -34,17 +34,19 @@ export function LatestNews() {
           {NEWS.map((item) => (
             <li
               key={item.slug}
-              className="flex flex-col overflow-hidden rounded-card border border-line bg-background transition-shadow duration-300 hover:shadow-card"
+              className="group flex flex-col overflow-hidden rounded-card border border-line bg-background"
             >
-              <img
-                src={item.image}
-                alt={item.alt}
-                width={1200}
-                height={800}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[3/2] w-full object-cover"
-              />
+              <div className="relative overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  width={1200}
+                  height={800}
+                  loading="lazy"
+                  decoding="async"
+                  className="card-zoom-img aspect-[3/2] w-full object-cover"
+                />
+              </div>
               <div className="flex flex-1 flex-col p-6 sm:p-7">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-muted-fg sm:text-[13px]">
                   {item.category}
