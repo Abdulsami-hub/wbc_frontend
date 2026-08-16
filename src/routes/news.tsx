@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { NEWS } from "@/content/news";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-import newsForum from "@/assets/news-forum.jpg";
+import newsForum from "@/assets/news-paris.jpg";
 
 export const Route = createFileRoute("/news")({
   head: () => ({
@@ -54,17 +54,14 @@ function NewsPage() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <p className="text-[12px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
+                  <p className="text-[12px] font-semibold tracking-[0.14em] text-blue uppercase">
                     {item.category} · {item.dateLabel}
                   </p>
                   <h2 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h2>
                   <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{item.body}</p>
-                  <Link
-                    to="/contact"
-                    className="mt-6 inline-flex items-center gap-2 text-[16px] font-semibold text-foreground underline underline-offset-4 hover:no-underline"
-                  >
+                  <Link to="/contact" className="link-arrow mt-6">
                     {item.cta}
-                    <span aria-hidden="true" className="rtl-mirror">
+                    <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
                       →
                     </span>
                   </Link>

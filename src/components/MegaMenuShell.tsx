@@ -89,7 +89,7 @@ export function MegaMenuGroup({
 }) {
   return (
     <div className="megamenu-col" style={{ animationDelay: `${delayMs}ms` }}>
-      <p className="text-[11px] font-bold tracking-[0.18em] text-muted-fg uppercase">{label}</p>
+      <p className="text-[11px] font-bold tracking-[0.18em] text-blue uppercase">{label}</p>
       <ul className="mt-4 space-y-1.5">
         {items.map((it) => (
           <li key={`${it.to}-${it.hash ?? it.title}`}>

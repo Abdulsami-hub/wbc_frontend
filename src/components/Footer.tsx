@@ -31,7 +31,6 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
   {
     title: "footer.membership",
     links: [
-      { key: "link.wbcMembership", to: "/membership" },
       { key: "link.benefits", to: "/membership", hash: "benefits" },
       { key: "link.become", to: "/membership", hash: "application" },
       { key: "nav.ourMembers", to: "/our-members" },
@@ -50,13 +49,22 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
 const SOCIAL = [
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/",
+    href: "https://www.linkedin.com/company/wbccme",
     path: "M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7c.6-1 1.8-2 3.7-2 2.7 0 4.5 1.7 4.5 5.4V21h-4v-6c0-1.6-.6-2.6-2-2.6-1.2 0-1.9.8-2.2 1.6-.1.3-.1.7-.1 1V21h-4z",
   },
-  { label: "X", href: "https://x.com/", path: "M3 3h5.2l4.3 5.9L17.7 3H21l-6.6 8L21 21h-5.2l-4.5-6.2L6.3 21H3l6.9-8.3z" },
+  {
+    label: "X",
+    href: "https://x.com/WBCCME",
+    path: "M3 3h5.2l4.3 5.9L17.7 3H21l-6.6 8L21 21h-5.2l-4.5-6.2L6.3 21H3l6.9-8.3z",
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/WBCCME",
+    path: "M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H8v3h3v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1z",
+  },
   {
     label: "YouTube",
-    href: "https://www.youtube.com/",
+    href: "https://www.youtube.com/@WBCCME",
     path: "M21.6 7.2c-.2-1-1-1.8-2-2C17.7 4.8 12 4.8 12 4.8s-5.7 0-7.6.4c-1 .2-1.8 1-2 2C2 9.1 2 12 2 12s0 2.9.4 4.8c.2 1 1 1.8 2 2 1.9.4 7.6.4 7.6.4s5.7 0 7.6-.4c1-.2 1.8-1 2-2 .4-1.9.4-4.8.4-4.8s0-2.9-.4-4.8zM10 15.5v-7l6 3.5z",
   },
 ] as const;

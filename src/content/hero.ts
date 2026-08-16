@@ -1,5 +1,5 @@
 import slide1 from "@/assets/hero-slide-1.png";
-import slide2 from "@/assets/hero-slide-2.png";
+import slide2 from "@/assets/commercial-towers.png";
 import slide3 from "@/assets/hero-slide-3.png";
 
 /**
@@ -34,7 +34,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     id: "connect",
     layout: "half-color",
     eyebrow: "World Business Council",
-    title: ["Connecting Businesses.", "Creating Opportunities"],
+    title: ["Connecting Businesses,", "Creating Opportunities"],
     description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
     panelClass: "bg-navy",
     image: slide1,
@@ -47,10 +47,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     layout: "half-color",
     eyebrow: "World Business Council",
     title: ["Our Mission"],
-    description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+    description: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
     panelClass: "bg-teal",
     image: slide2,
-    alt: "Haussmannian Paris boulevard at dusk",
+    alt: "Modern commercial boulevard lined with glass towers leading to the waterfront",
     primary: { label: "Who We Are", to: "/who-we-are", variant: "outline" },
     secondary: { label: "Join WBC", to: "/membership", variant: "ghost" },
   },
@@ -58,7 +58,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     id: "opportunities",
     layout: "half-color",
     eyebrow: "World Business Council",
-    title: ["Connecting Businesses.", "Creating Opportunities"],
+    title: ["Connecting Businesses,", "Creating Opportunities"],
     description: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
     panelClass: "bg-navy-deep",
     image: slide3,

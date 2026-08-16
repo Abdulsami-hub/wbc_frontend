@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import eventsImg from "@/assets/events.jpg";
+import eventsImg from "@/assets/news-paris.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 import {
@@ -16,6 +16,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
+function categoryFromHash(hash: string): string | "all" {
+  const id = hash.replace(/^#/, "");
+  if (id && EVENT_CATEGORIES.some((c) => c.id === id)) return id;
+  return "all";
+}
 
 function EventMetaRow({
   dateLabel,
@@ -99,7 +105,7 @@ function EventDetailModal({
 
               <div className="flex flex-col p-6 sm:p-8 lg:p-10">
                 {category ? (
-                  <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
+                  <p className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">{category.title}</p>
                 ) : null}
                 <div className={category ? "mt-3" : ""}>
                   <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
@@ -111,7 +117,7 @@ function EventDetailModal({
                 {event.registrationFee ? (
                   <dl className="mt-6">
                     <div className="rounded-card border border-line bg-surface px-4 py-3">
-                      <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Registration</dt>
+                      <dt className="text-[11px] font-bold tracking-[0.14em] text-blue uppercase">Registration</dt>
                       <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.registrationFee}</dd>
                     </div>
                   </dl>
@@ -195,20 +201,14 @@ function EventDetailModal({
 }
 
 function Events() {
-  const [active, setActive] = useState<string | "all">("all");
+  const navigate = useNavigate();
+  const locationHash = useRouterState({ select: (s) => s.location.hash });
+  const [active, setActive] = useState<string | "all">(() => categoryFromHash(locationHash));
   const [selected, setSelected] = useState<EventRecord | null>(null);
 
   useEffect(() => {
-    const applyHash = () => {
-      const hash = window.location.hash.replace(/^#/, "");
-      if (hash && EVENT_CATEGORIES.some((c) => c.id === hash)) {
-        setActive(hash);
-      }
-    };
-    applyHash();
-    window.addEventListener("hashchange", applyHash);
-    return () => window.removeEventListener("hashchange", applyHash);
-  }, []);
+    setActive(categoryFromHash(locationHash));
+  }, [locationHash]);
 
   const filtered = useMemo(() => {
     if (active === "all") return EVENTS;
@@ -217,11 +217,11 @@ function Events() {
 
   function selectCategory(id: string | "all") {
     setActive(id);
-    if (id === "all") {
-      window.history.replaceState(null, "", window.location.pathname);
-    } else {
-      window.history.replaceState(null, "", `${window.location.pathname}#${id}`);
-    }
+    void navigate({
+      to: "/events",
+      hash: id === "all" ? undefined : id,
+      replace: true,
+    });
   }
 
   return (

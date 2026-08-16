@@ -1,4 +1,4 @@
-import menuImage from "@/assets/events.jpg";
+import menuImage from "@/assets/membership-club.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 
@@ -6,11 +6,6 @@ const GROUPS = [
   {
     label: "Join",
     items: [
-      {
-        titleKey: "link.wbcMembership" as const,
-        desc: "Types of membership and how to join",
-        to: "/membership" as const,
-      },
       {
         titleKey: "link.benefits" as const,
         desc: "Advantages of joining WBC",
@@ -43,7 +38,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
   return (
     <MegaMenuShell
       title="Membership"
-      description="Join a global community of business leaders. Explore membership types, benefits, and apply in one place."
+      description="Join a global community of business leaders. Explore membership benefits and apply in one place."
       promo={{
         image: menuImage,
         alt: "Speaker addressing WBC members at a membership event",

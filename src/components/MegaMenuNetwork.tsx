@@ -1,4 +1,4 @@
-import networkImage from "@/assets/network-bg.jpg";
+import networkImage from "@/assets/network-bg.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 
 const GROUPS = [
@@ -26,8 +26,8 @@ const GROUPS = [
         to: "/our-members" as const,
       },
       {
-        title: "Strategic Partners",
-        desc: "Organizations delivering joint initiatives",
+        title: "Partners",
+        desc: "Partnerships, joint initiatives & cooperation",
         to: "/global-network/strategic-partners" as const,
       },
     ],

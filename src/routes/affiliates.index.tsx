@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import heroImg from "@/assets/affiliates-hero.jpg";
+import heroImg from "@/assets/affiliates-hero.png";
 import {
   AFFILIATE_REGIONS,
   type AffiliateCountry,
@@ -100,14 +100,14 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
     <section className={index % 2 === 1 ? "border-t border-line bg-surface/50 py-14 lg:py-20" : "border-t border-line py-14 lg:py-20"}>
       <div className="container-wbc">
         <div data-reveal>
-          <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">
+          <p className="font-display text-[12px] tracking-[0.22em] text-blue uppercase">
             Affiliate Footprint · {region.name}
           </p>
           <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">{region.name}</h2>
         </div>
 
         <div className="mt-8 rounded-card border border-line bg-background p-5 sm:flex sm:items-center sm:gap-6 sm:p-6">
-          <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Sort by</p>
+          <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Sort by</p>
           <ul className="mt-4 flex flex-wrap gap-3 sm:mt-0">
             {SORTS.map((s) => (
               <li key={s.id}>
@@ -253,7 +253,7 @@ function Affiliates() {
       <section className="border-t border-line bg-surface/40 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">FAQ</p>
+            <p className="font-display text-[12px] tracking-[0.22em] text-blue uppercase">FAQ</p>
             <h2 className="mt-4 text-[28px] font-bold text-foreground sm:text-[36px]">Affiliate questions</h2>
           </div>
           <ul data-reveal data-reveal-group className="mt-8 space-y-4">

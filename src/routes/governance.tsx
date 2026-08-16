@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/gov-hero.jpg";
-import assemblyImg from "@/assets/gov-assembly.jpg";
-import boardImg from "@/assets/gov-board.jpg";
-import secretariatImg from "@/assets/gov-secretariat.jpg";
+import assemblyImg from "@/assets/gov-assembly.png";
+import boardImg from "@/assets/gov-board.png";
+import secretariatImg from "@/assets/gov-secretariat.png";
 
 export const Route = createFileRoute("/governance")({
   head: () => ({
@@ -44,11 +44,10 @@ const BODIES: Body[] = [
     image: assemblyImg,
     icon: "user",
     rows: [
-      { label: "Institutional Role", value: "Highest governing body of WBC, bringing together members in formal assembly." },
-      { label: "Core Authority", value: "Approves major decisions, organizational policies, and strategic directions." },
       {
-        label: "Governance Impact",
-        value: "Sets the institutional mandate that guides WBC priorities and collective accountability.",
+        label: "Role",
+        value:
+          "The General Assembly is the highest governing body of WBC, bringing together its members to approve major decisions, policies, and strategic directions.",
       },
     ],
   },
@@ -58,14 +57,10 @@ const BODIES: Body[] = [
     image: boardImg,
     icon: "lines",
     rows: [
-      { label: "Strategic Leadership", value: "Provides direction for WBC's vision and long-term institutional positioning." },
       {
-        label: "Governance Oversight",
-        value: "Supervises governance quality, decision discipline, and organizational coherence.",
-      },
-      {
-        label: "Development Guidance",
-        value: "Guides institutional development in line with approved priorities and member expectations.",
+        label: "Role",
+        value:
+          "The Board of Directors provides strategic leadership and oversight, guiding the organization's vision, governance, and development.",
       },
     ],
   },
@@ -75,12 +70,10 @@ const BODIES: Body[] = [
     image: secretariatImg,
     icon: "shield",
     rows: [
-      { label: "Executive Lead", value: "Led by the Director General, with staff members supporting institutional continuity." },
-      { label: "Daily Management", value: "Handles day-to-day management and administration across core functions." },
       {
-        label: "Implementation Scope",
+        label: "Role",
         value:
-          "Supports execution of policies, programs, and decisions adopted by the General Assembly and Board of Directors.",
+          "The secretariat, led by the Director General, is responsible for the day-to-day management and administration of WBC. It supports the implementation of policies, programs, and decisions adopted by the General Assembly and the Board of Directors.",
       },
     ],
   },
@@ -88,13 +81,9 @@ const BODIES: Body[] = [
 
 const SUPPORT = [
   {
-    label: "Advisory contributors",
-    value: "Board of Advisors and Honorary Members contribute perspective that strengthens informed decision-making.",
-  },
-  {
-    label: "Global engagement network",
+    label: "Board of Advisors, Honorary Members, Committees & Representatives",
     value:
-      "Committees and representatives worldwide reinforce effective governance and sustained international engagement.",
+      "WBC also benefits from the expertise and guidance of its Board of Advisors, Honorary Members, committees, and representatives worldwide, supporting informed decision-making, effective governance, and global engagement.",
   },
 ] as const;
 
@@ -189,14 +178,19 @@ function Governance() {
       <section className="py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance Structure</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Governance Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               Institutional governance for transparent and accountable delivery
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
-              The World Business Council is governed by its General Assembly, supported by a Board of Directors and staff
-              members, and operates under its Statutes, Rules of Procedure, and internal policies to ensure transparency,
-              accountability, and effective governance in support of its international mission.
+              The World Business Council (WBC) is governed by its General Assembly, with the support of a Board of
+              Directors and the staff members. It operates in accordance with its Statutes, Rules of Procedure, and
+              internal policies, ensuring transparency, accountability, and effective governance in support of its
+              international mission.
+            </p>
+            <p className="mt-4 text-[17px] leading-relaxed text-muted-fg">
+              WBC is governed through a transparent and accountable governance structure designed to support its
+              international mission and long-term development.
             </p>
             <ul className="mt-8 flex flex-wrap gap-3">
               {BODIES.map((b) => (
@@ -271,7 +265,7 @@ function Governance() {
       <section className="bg-surface py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance FAQ</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Governance FAQ</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               Clear answers on how WBC governance works
             </h2>

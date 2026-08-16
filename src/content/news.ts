@@ -1,6 +1,6 @@
 import newsCurrency from "@/assets/news-currency.png";
 import newsEuro from "@/assets/news-euro.png";
-import newsInnovation from "@/assets/news-innovation.png";
+import newsMember from "@/assets/news-member.jpg";
 
 export type NewsItem = {
   slug: string;
@@ -16,8 +16,8 @@ export type NewsItem = {
 export const NEWS: NewsItem[] = [
   {
     slug: "european-markets-business-confidence",
-    image: newsEuro,
-    alt: "Hands holding a thick stack of twenty-euro banknotes",
+    image: newsCurrency,
+    alt: "Currency and market indicators on a trading desk",
     category: "Economy & Finance",
     title: "European Markets Signal Renewed Business Confidence",
     body: "Currency and trade indicators point to renewed momentum across European markets, opening fresh opportunities for members engaged in cross-border commerce.",
@@ -26,8 +26,8 @@ export const NEWS: NewsItem[] = [
   },
   {
     slug: "innovation-forums-next-gen-tech",
-    image: newsInnovation,
-    alt: "People observing humanoid robots at a technology exhibition",
+    image: newsMember,
+    alt: "Business leaders networking at a WBC forum",
     category: "Innovation",
     title: "Innovation Forums Spotlight Next-Generation Technology",
     body: "WBC highlights how member organizations and partners are engaging with emerging technologies to drive collaboration, productivity, and long-term growth.",
@@ -36,8 +36,8 @@ export const NEWS: NewsItem[] = [
   },
   {
     slug: "cross-border-capital-flows",
-    image: newsCurrency,
-    alt: "Stacks of bundled US currency in a professional financial setting",
+    image: newsEuro,
+    alt: "Euro and international finance symbols",
     category: "Trade & Investment",
     title: "Cross-Border Capital Flows Shape Global Markets",
     body: "Financial institutions and business leaders track shifting capital movements as companies seek stronger international partnerships and investment pathways.",

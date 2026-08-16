@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import contactBuilding from "@/assets/contact-building.jpg";
+import contactBuilding from "@/assets/contact-building.png";
 import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
 
 const ADDRESS_LINE = "36, rue Scheffer, 75016 Paris";
 const EMAIL = "contact@wbccme.org";
+const WEBSITE = "www.wbccme.org";
+const WEBSITE_URL = "https://www.wbccme.org";
 const MAPS_QUERY = encodeURIComponent(`${ADDRESS_LINE}, France`);
 const MAP_EMBED = `https://maps.google.com/maps?q=${MAPS_QUERY}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${MAPS_QUERY}`;
@@ -84,7 +86,7 @@ function Contact() {
 
             <dl className="mt-10 space-y-8">
               <div>
-                <dt className="flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
+                <dt className="flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] text-blue uppercase">
                   <span className="text-navy">
                     <PinIcon />
                   </span>
@@ -95,13 +97,26 @@ function Contact() {
                 </dd>
               </div>
               <div>
-                <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Email</dt>
+                <dt className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">Email</dt>
                 <dd className="mt-2">
                   <a
                     href={`mailto:${EMAIL}`}
                     className="text-[22px] font-bold text-foreground underline-offset-4 hover:underline sm:text-[24px]"
                   >
                     {EMAIL}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">Website</dt>
+                <dd className="mt-2">
+                  <a
+                    href={WEBSITE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[22px] font-bold text-foreground underline-offset-4 hover:underline sm:text-[24px]"
+                  >
+                    {WEBSITE}
                   </a>
                 </dd>
               </div>

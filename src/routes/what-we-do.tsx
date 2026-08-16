@@ -1,13 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ServiceCard } from "@/components/ServiceCard";
-import heroImg from "@/assets/wwd-hero.jpg";
-import networkImg from "@/assets/wwd-network.jpg";
-import councilImg from "@/assets/wwd-council.jpg";
-import tradeImg from "@/assets/wwd-trade.jpg";
-import eventsImg from "@/assets/wwd-events.jpg";
-import innovationImg from "@/assets/wwd-innovation.jpg";
-import trainingImg from "@/assets/wwd-training.jpg";
-import membersImg from "@/assets/wwd-members.jpg";
+import heroImg from "@/assets/wwd-hero.png";
+import networkImg from "@/assets/networking.png";
+import councilImg from "@/assets/contact-building-alt.png";
+import tradeImg from "@/assets/who-we-are-building.png";
+import eventsImg from "@/assets/hero-slide-2.png";
+import innovationImg from "@/assets/news-innovation.png";
+import trainingImg from "@/assets/news-euro.png";
+import membersImg from "@/assets/news-member.jpg";
+import partnershipsImg from "@/assets/hero-city.jpg";
+import lobbyingImg from "@/assets/membership-alt.jpg";
+import researchImg from "@/assets/news-currency.png";
+import digitalImg from "@/assets/website-promo.png";
+import sustainabilityImg from "@/assets/mega-menu-promo.webp";
+import advisoryImg from "@/assets/membership.jpg";
 
 export const Route = createFileRoute("/what-we-do")({
   head: () => ({
@@ -36,80 +42,80 @@ const PILLARS = [
   {
     kicker: "Network",
     title: "Global Business Networking",
-    body: "Connects companies, institutions, and professionals across regions and sectors to build trusted relationships, practical collaboration, and long-term business opportunities.",
+    body: "Facilitating high-level networking opportunities that connect entrepreneurs, executives, investors, and organizations across industries and regions. WBC creates platforms where meaningful business relationships and long-term partnerships are developed.",
     image: networkImg,
   },
   {
     kicker: "Frameworks",
     title: "Business Council Development & Support",
-    body: "Supports the establishment and strengthening of Business Councils and associations through governance guidance, operational frameworks, and member-focused development.",
+    body: "Providing strategic guidance and operational support for the creation, development, and strengthening of Business Councils brand worldwide. This includes structure setup, governance models, and long-term operational assistance.",
     image: councilImg,
   },
   {
     kicker: "Trade",
     title: "International Trade & Investment Facilitation",
-    body: "Facilitates cross-border trade and investment through introductions, delegation support, market-entry pathways, and coordination between relevant stakeholders.",
+    body: "Supporting cross-border trade and investment opportunities by connecting businesses with international partners, markets, and investors, and promoting global commercial cooperation.",
     image: tradeImg,
   },
   {
     kicker: "Events",
     title: "Conferences, Forums & Global Events",
-    body: "Organizes international conferences, forums, and executive events that advance dialogue, share expertise, and catalyze new partnerships.",
+    body: "Organizing international summits, business forums, conferences, exhibitions, and roundtables that bring together global leaders to exchange knowledge, explore opportunities, and address key economic challenges.",
     image: eventsImg,
   },
   {
     kicker: "Innovation",
-    title: "Innovation & Ideas Development Platform — Ideas Place (IP)",
-    body: "Provides a structured platform for generating, refining, and piloting ideas by connecting innovators, enterprises, and institutions around shared challenges.",
+    title: "Innovation & Ideas Development Platform - Ideas Place(IP)",
+    body: "Operating an innovation-driven platform where members can share ideas, develop projects, and collaborate on forward-thinking solutions that contribute to business transformation and economic progress.",
     image: innovationImg,
   },
   {
     kicker: "Advisory",
     title: "Business Advisory & Consultancy Support",
-    body: "Delivers advisory and consultancy support in strategy, market expansion, institutional positioning, and practical implementation planning.",
-    image: heroImg,
+    body: "Offering advisory services to businesses, startups, and Business Councils in areas such as international expansion, strategic planning, market entry, organizational development, and partnerships.",
+    image: advisoryImg,
   },
   {
     kicker: "Learning",
     title: "Training, Education & Capacity Building",
-    body: "Builds institutional and professional capability through workshops, expert sessions, learning programs, and practical skills development.",
+    body: "Providing workshops, executive training programs, mentorship, and educational resources aimed at strengthening leadership, entrepreneurship, and professional skills across global markets.",
     image: trainingImg,
   },
   {
     kicker: "Members",
     title: "Membership Services & Community Engagement",
-    body: "Strengthens member experience through onboarding, tailored services, active communication, and community programs that sustain meaningful engagement.",
+    body: "Managing a global membership ecosystem that offers access to networking, business opportunities, resources, events, and exclusive platforms for collaboration and engagement.",
     image: membersImg,
   },
   {
     kicker: "Partnerships",
     title: "Strategic Partnerships & Institutional Relations",
-    body: "Develops strategic partnerships with public and private institutions, chambers, and international organizations to expand impact and cooperation.",
-    image: tradeImg,
+    body: "Developing partnerships with chambers of commerce, NGO’s, international organizations, governments, and private sector entities to enhance global cooperation and expand impact.",
+    image: partnershipsImg,
   },
   {
     kicker: "Policy",
     title: "Lobbying & Advocacy",
-    body: "Represents member interests in policy and regulatory dialogue, advocating for transparent frameworks and a stronger environment for business growth.",
-    image: councilImg,
+    body: "Developing representation, lobbying, and advocacy actions towards public and private stakeholders in order to support and promote the interests of businesses and Business Councils at the international level.",
+    image: lobbyingImg,
   },
   {
     kicker: "Insights",
     title: "Research, Publications & Market Insights",
-    body: "Produces research, reports, and market intelligence that help members make informed decisions and anticipate international business trends.",
-    image: heroImg,
+    body: "Producing reports, studies, and publications on global business trends, economic developments, and industry insights to support informed decision-making for members.",
+    image: researchImg,
   },
   {
     kicker: "Digital",
     title: "Digital Business Platform",
-    body: "Provides a digital ecosystem for networking, resources, event access, and cross-border collaboration, extending engagement beyond physical meetings.",
-    image: innovationImg,
+    body: "Building and maintaining a digital ecosystem that enables global connectivity, communication, opportunity sharing, and access to WBC services and resources.",
+    image: digitalImg,
   },
   {
     kicker: "Sustainability",
     title: "Sustainability & Responsible Business Initiatives",
-    body: "Promotes responsible business practices, sustainability alignment, and inclusive long-term development across member organizations and partner networks.",
-    image: trainingImg,
+    body: "Promoting responsible and sustainable business practices in alignment with the United Nations Sustainable Development Goals (SDGs) through programs, partnerships, and initiatives.",
+    image: sustainabilityImg,
   },
 ] as const;
 
@@ -125,8 +131,9 @@ function WhatWeDo() {
               Core Activities &amp; Services
             </h1>
             <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              WBC brings members, institutions, and partners together through practical international cooperation across
-              networking, advisory support, events, and strategic growth initiatives.
+              The World Business Council (WBC) delivers a wide range of services and activities designed to connect,
+              support, and empower businesses, Business Councils and business associations worldwide. Our work focuses on
+              building a strong global ecosystem that promotes collaboration, innovation, and sustainable development.
             </p>
             <ul className="intro-4 mt-9 flex flex-wrap gap-3">
               {TAGS.map((t) => (
@@ -159,7 +166,7 @@ function WhatWeDo() {
           <div className="rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <div data-reveal className="flex items-start justify-between gap-6">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Service Portfolio</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-blue uppercase">Service Portfolio</p>
                 <h2 className="mt-3 text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
                   13 Strategic Pillars of Support
                 </h2>
@@ -201,7 +208,7 @@ function WhatWeDo() {
           >
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Membership</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-blue uppercase">Membership</p>
                 <span className="accent-rule mt-3" />
                 <h2 className="mt-6 text-[30px] leading-[1.1] font-bold text-foreground sm:text-4xl lg:text-[46px]">
                   Join the World Business Council
@@ -227,7 +234,7 @@ function WhatWeDo() {
                 <span className="absolute top-[12%] right-[12%] size-32 rounded-full bg-orange/15" />
                 <span className="absolute bottom-[22%] left-[16%] size-28 border border-navy/25" />
                 <span className="absolute bottom-[28%] left-[26%] size-28 border border-orange/45" />
-                <span className="absolute right-[10%] bottom-[12%] text-[12px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
+                <span className="absolute right-[10%] bottom-[12%] text-[12px] font-semibold tracking-[0.18em] text-blue uppercase">
                   International Network
                 </span>
               </div>

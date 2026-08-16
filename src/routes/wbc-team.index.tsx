@@ -66,7 +66,7 @@ function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMe
         <div className="border-t border-line p-5 sm:p-6">
           <h4 className="text-[19px] leading-snug font-bold text-foreground">{member.name}</h4>
           <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-foreground/70 uppercase">{member.role}</p>
-          <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
+          <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-blue uppercase">
             View full profile
           </span>
         </div>
@@ -119,7 +119,7 @@ function TeamProfileModal({
               </div>
 
               <div className="flex flex-col p-6 sm:p-8 lg:p-10">
-                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">{member.group}</p>
+                <p className="text-[12px] font-bold tracking-[0.18em] text-blue uppercase">{member.group}</p>
                 <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[34px]">{member.name}</h2>
                 <p className="mt-2 text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
                 <span className="accent-rule mt-5" />
@@ -256,7 +256,7 @@ function WbcTeam() {
         />
         <div className="container-wbc relative">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Collaboration in Practice</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Collaboration in Practice</p>
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               How the WBC team works as one coordinated network
             </h2>

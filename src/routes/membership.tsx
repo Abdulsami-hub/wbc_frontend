@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
-import membershipImg from "@/assets/membership.jpg";
+import membershipImg from "@/assets/membership-club.png";
+import membershipEligibilityImg from "@/assets/membership-eligibility.png";
 import { SplitHero } from "@/components/SplitHero";
 import { MembershipApplicationForm } from "@/components/MembershipApplicationForm";
 
@@ -29,31 +30,31 @@ const TIERS = [
   {
     title: "Institutional",
     subtitle: "Membership",
-    body: "For chambers of commerce, associations, and public institutions.",
+    body: "Business Councils, chambers of commerce, associations, NGOs, foundations, universities, and other non-profit or membership-based organizations.",
     icon: "building",
   },
   {
-    title: "Corporate",
-    subtitle: "Enterprise",
-    body: "For established companies operating in national or international markets.",
+    title: "Corporate/Enterprise",
+    subtitle: "Membership",
+    body: "Corporations, enterprises, and large business organizations seeking strategic partnerships, international visibility, and business opportunities.",
     icon: "brief",
   },
   {
     title: "SME",
     subtitle: "Membership",
-    body: "For small and medium-sized enterprises seeking growth and connections.",
+    body: "Micro, small, and medium-sized enterprises (SMEs), startups, entrepreneurs, and freelancers seeking growth, networking, and market access opportunities.",
     icon: "growth",
   },
   {
     title: "Individual",
     subtitle: "Membership",
-    body: "For entrepreneurs, professionals, and independent consultants.",
+    body: "Professionals, executives, investors, consultants, researchers, academics, students, and other individuals interested in business and international networking.",
     icon: "user",
   },
   {
     title: "Honorary",
     subtitle: "Membership",
-    body: "Awarded for outstanding contribution to WBC's mission.",
+    body: "Individuals or organizations recognized for their outstanding contribution to business development, international cooperation, or the objectives of WBC.",
     icon: "star",
   },
 ] as const;
@@ -102,10 +103,10 @@ const WHY_JOIN = [
 ] as const;
 
 const PLAN_TIERS = [
-  { id: "institutional", label: "Institutional", price: "€1000 / Yr" },
-  { id: "enterprise", label: "Enterprise", price: "€1000 / Yr" },
-  { id: "sme", label: "SME", price: "€200 / Yr" },
-  { id: "individual", label: "Individual", price: "€50 / Yr" },
+  { id: "institutional", label: "Institutional", price: "1000 € / Year" },
+  { id: "enterprise", label: "Enterprise", price: "1000 € / Year" },
+  { id: "sme", label: "SME", price: "200 € / Year" },
+  { id: "individual", label: "Individual", price: "50 € / Year" },
 ] as const;
 
 type PlanId = (typeof PLAN_TIERS)[number]["id"];
@@ -194,25 +195,25 @@ const ALL_PLAN_BENEFITS: { label: string; plans: Record<PlanId, boolean> }[] = [
 ];
 
 const AUDIENCES = [
-  "Chambers & associations",
-  "Corporates & enterprises",
-  "SMEs & scale-ups",
-  "Entrepreneurs & professionals",
-  "Public institutions",
+  "Nonprofit organizations",
+  "Corporations",
+  "Entrepreneurs",
+  "Professionals",
+  "Individuals, students & academics",
 ] as const;
 
 const STEPS = [
   {
-    title: "Complete the Application",
-    body: "Choose your category and submit your details through the online form.",
+    title: "Fill the Application Form",
+    body: "Complete the online application form with your membership category and details.",
   },
   {
-    title: "Process Payment",
-    body: "Complete membership payment to activate your application.",
+    title: "Process the Payment",
+    body: "Process your membership payment to activate your application.",
   },
   {
     title: "Receive Confirmation",
-    body: "Get confirmation and your certificate within 3 working days.",
+    body: "You will receive the membership confirmation and certificate within 3 working days.",
   },
 ] as const;
 
@@ -367,7 +368,7 @@ function Membership() {
             </h2>
             <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
               Choose the pathway that matches your organisation or professional profile — each opens access to the same
-              global network.
+              global network. Membership fees are payable annually.
             </p>
             <span data-reveal className="accent-rule mt-6" />
           </div>
@@ -426,6 +427,10 @@ function Membership() {
               );
             })}
           </ul>
+          <p data-reveal className="mx-auto mt-10 max-w-3xl text-center text-[15px] leading-relaxed text-muted-fg">
+            No matter your size or industry, WBC membership opens doors to unparalleled opportunities for growth,
+            collaboration, and success of your businesses.
+          </p>
         </div>
       </section>
 
@@ -462,7 +467,7 @@ function Membership() {
       <section id="plans" className="scroll-mt-28 border-t border-line bg-surface py-16 lg:py-24">
         <div className="container-wbc">
           <div className="mx-auto max-w-2xl text-center">
-            <p data-reveal className="text-[12px] font-bold tracking-[0.2em] text-orange uppercase">
+            <p data-reveal className="text-[12px] font-bold tracking-[0.2em] text-blue uppercase">
               Annual Payment
             </p>
             <h2
@@ -502,8 +507,8 @@ function Membership() {
             </h2>
             <span className="accent-rule mt-5" />
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              WBC membership is open to businesses of every size, institutions, and individual professionals who share
-              our commitment to collaboration, innovation, and trust.
+              All types of nonprofit organizations, corporations, entrepreneurs, professionals, individuals, students and
+              academics.
             </p>
             <ul className="mt-8 flex flex-wrap gap-2.5">
               {AUDIENCES.map((a) => (
@@ -524,8 +529,8 @@ function Membership() {
 
           <div data-reveal className="relative min-h-[320px] overflow-hidden rounded-card lg:min-h-full">
             <img
-              src={membershipImg}
-              alt="Business professionals shaking hands during a membership meeting"
+              src={membershipEligibilityImg}
+              alt="Professionals representing who can become a WBC member"
               width={1200}
               height={900}
               loading="lazy"

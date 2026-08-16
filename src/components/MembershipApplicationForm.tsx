@@ -4,7 +4,7 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export const MEMBERSHIP_TYPES = [
   { id: "institutional", label: "Institutional Membership" },
-  { id: "business", label: "Business Membership" },
+  { id: "business", label: "Corporate/Enterprise Membership" },
   { id: "sme", label: "SME Membership" },
   { id: "individual", label: "Individual Membership" },
 ] as const;

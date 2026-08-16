@@ -1,48 +1,48 @@
 import { Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceCard } from "@/components/ServiceCard";
-import networkImg from "@/assets/wwd-network.jpg";
-import councilImg from "@/assets/wwd-council.jpg";
-import tradeImg from "@/assets/wwd-trade.jpg";
-import eventsImg from "@/assets/wwd-events.jpg";
-import innovationImg from "@/assets/wwd-innovation.jpg";
-import advisoryImg from "@/assets/wwd-hero.jpg";
+import networkImg from "@/assets/networking.png";
+import councilImg from "@/assets/contact-building-alt.png";
+import tradeImg from "@/assets/who-we-are-building.png";
+import eventsImg from "@/assets/hero-slide-2.png";
+import innovationImg from "@/assets/news-innovation.png";
+import advisoryImg from "@/assets/membership.jpg";
 
 const SERVICES = [
   {
     kicker: "Network",
     title: "Global Business Networking",
-    body: "Connects companies, institutions, and professionals across regions and sectors to build trusted relationships, practical collaboration, and long-term business opportunities.",
+    body: "Facilitating high-level networking opportunities that connect entrepreneurs, executives, investors, and organizations across industries and regions. WBC creates platforms where meaningful business relationships and long-term partnerships are developed.",
     image: networkImg,
   },
   {
     kicker: "Frameworks",
     title: "Business Council Development & Support",
-    body: "Supports the establishment and strengthening of Business Councils and associations through governance guidance, operational frameworks, and member-focused development.",
+    body: "Providing strategic guidance and operational support for the creation, development, and strengthening of Business Councils brand worldwide. This includes structure setup, governance models, and long-term operational assistance.",
     image: councilImg,
   },
   {
     kicker: "Trade",
     title: "International Trade & Investment Facilitation",
-    body: "Facilitates cross-border trade and investment through introductions, delegation support, market-entry pathways, and coordination between relevant stakeholders.",
+    body: "Supporting cross-border trade and investment opportunities by connecting businesses with international partners, markets, and investors, and promoting global commercial cooperation.",
     image: tradeImg,
   },
   {
     kicker: "Events",
     title: "Conferences, Forums & Global Events",
-    body: "Organizes international conferences, forums, and executive events that advance dialogue, share expertise, and catalyze new partnerships.",
+    body: "Organizing international summits, business forums, conferences, exhibitions, and roundtables that bring together global leaders to exchange knowledge, explore opportunities, and address key economic challenges.",
     image: eventsImg,
   },
   {
     kicker: "Innovation",
-    title: "Innovation & Ideas Development Platform",
-    body: "Provides a structured platform for generating, refining, and piloting ideas by connecting innovators, enterprises, and institutions around shared challenges.",
+    title: "Innovation & Ideas Development Platform - Ideas Place(IP)",
+    body: "Operating an innovation-driven platform where members can share ideas, develop projects, and collaborate on forward-thinking solutions that contribute to business transformation and economic progress.",
     image: innovationImg,
   },
   {
     kicker: "Advisory",
     title: "Business Advisory & Consultancy Support",
-    body: "Delivers advisory and consultancy support in strategy, market expansion, institutional positioning, and practical implementation planning.",
+    body: "Offering advisory services to businesses, startups, and Business Councils in areas such as international expansion, strategic planning, market entry, organizational development, and partnerships.",
     image: advisoryImg,
   },
 ] as const;

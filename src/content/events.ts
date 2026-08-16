@@ -32,9 +32,11 @@ export type EventRecord = {
   media?: { type: "photo" | "video" | "poster"; url: string; caption?: string }[];
 };
 
-import eventsImg from "@/assets/events.jpg";
-import newsForum from "@/assets/news-forum.jpg";
-import membershipImg from "@/assets/membership.jpg";
+import summitImg from "@/assets/events.jpg";
+import missionImg from "@/assets/gov-assembly.jpg";
+import networkingEveningImg from "@/assets/gov-secretariat.jpg";
+import mediaPhoto from "@/assets/wwd-events-alt.png";
+import mediaPoster from "@/assets/news-paris.jpg";
 
 export const EVENTS: EventRecord[] = [
   {
@@ -46,7 +48,7 @@ export const EVENTS: EventRecord[] = [
       "The WBC Global Business Summit convenes institutional leaders, corporate executives, and partners for two days of dialogue, partnership building, and programme announcements across trade, investment, and innovation.",
     dateLabel: "12–13 November 2026",
     location: "Paris, France",
-    image: eventsImg,
+    image: summitImg,
     registrationUrl: "/contact",
     registrationFee: "Complimentary for members · Partner rates on request",
     agenda: [
@@ -60,8 +62,8 @@ export const EVENTS: EventRecord[] = [
       { name: "WBC Board representatives", role: "Council leadership" },
     ],
     media: [
-      { type: "photo", url: newsForum, caption: "Previous summit plenary" },
-      { type: "poster", url: membershipImg, caption: "Event poster" },
+      { type: "photo", url: mediaPhoto, caption: "Previous summit plenary" },
+      { type: "poster", url: mediaPoster, caption: "Event poster" },
     ],
   },
   {
@@ -73,7 +75,7 @@ export const EVENTS: EventRecord[] = [
       "This mission combines institutional briefings, B2B matchmaking, and site visits designed to accelerate market understanding and partnership formation.",
     dateLabel: "March 2027",
     location: "Multiple European cities",
-    image: newsForum,
+    image: missionImg,
     registrationUrl: "/contact",
     agenda: [
       { time: "Day 1", title: "Institutional briefings" },
@@ -91,7 +93,7 @@ export const EVENTS: EventRecord[] = [
       "Small-group facilitation and structured introductions help members turn conversations into practical next steps.",
     dateLabel: "Quarterly",
     location: "Paris & rotating hubs",
-    image: membershipImg,
+    image: networkingEveningImg,
     registrationUrl: "/contact",
     registrationFee: "Member benefit",
   },

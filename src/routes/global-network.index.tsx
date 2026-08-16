@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import networkBg from "@/assets/network-bg.jpg";
+import networkBg from "@/assets/network-bg.png";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 
@@ -25,23 +25,23 @@ const TAGS = ["Global Coordination", "Local Presence", "Institutional Trust"] as
 
 const PILLARS = [
   {
-    title: "WBC Headquarters",
-    body: "Paris-based coordination of the council's international activities, standards, and governance.",
+    title: "WBC Headquarters (Paris)",
+    body: "The global headquarters responsible for the leadership, governance, and coordination of WBC.",
     to: "/who-we-are" as const,
   },
   {
     title: "WBC Affiliates",
-    body: "Local councils and affiliates extending WBC's presence into cities and regions worldwide.",
+    body: "Official WBC representatives established in countries and cities to promote and implement WBC's mission and activities.",
     to: "/affiliates" as const,
   },
   {
-    title: "Institutional Members",
-    body: "Chambers of commerce, associations, and public institutions cooperating with WBC.",
+    title: "WBC Members",
+    body: "Institutional, corporate, SME, and individual members forming the core of the WBC community.",
     to: "/our-members" as const,
   },
   {
-    title: "Strategic Partners",
-    body: "Organizations partnering with WBC to deliver programmes, events, and joint initiatives.",
+    title: "WBC Strategic Partners",
+    body: "Organizations and institutions collaborating with WBC through partnerships, joint initiatives, and international cooperation.",
     to: "/global-network/strategic-partners" as const,
   },
 ] as const;
@@ -59,7 +59,7 @@ function GlobalNetwork() {
       <SplitHero
         eyebrow="Our Reach"
         title="Global Network"
-        description="A connected structure of headquarters, affiliates, members, and partners working together across borders."
+        description="The World Business Council (WBC) is built on a collaborative global network that connects businesses, business support organizations, and strategic partners across countries and regions."
         tags={TAGS}
         image={networkBg}
         imageAlt="Illuminated world map representing the WBC global network"
@@ -74,9 +74,15 @@ function GlobalNetwork() {
               How the network works
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
-              WBC operates through a layered network that keeps global coordination close to local business realities.
-              Each layer has a defined role, so cooperation between institutions, companies, and professionals stays
-              practical and accountable.
+              Together, this network strengthens international cooperation, creates new opportunities, and supports
+              sustainable business growth worldwide. Become part of the WBC Global Network by joining as a member or
+              strategic partner, and connect with a growing international community committed to collaboration,
+              innovation, and shared success.
+            </p>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+              Lead WBC&apos;s mission in your country or city by establishing a WBC Affiliate and become the official
+              local representative, connecting businesses with global opportunities while strengthening your local
+              business community.
             </p>
           </div>
         </div>
@@ -85,7 +91,7 @@ function GlobalNetwork() {
       <section className="border-t border-line bg-surface/50 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
+            <p className="font-display text-[12px] tracking-[0.22em] text-blue uppercase">Network Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
               Four connected layers
             </h2>

@@ -26,14 +26,18 @@ export function WhatIsWbcSection() {
                 The World Business Council (WBC) is an international business support organization headquartered in Paris,
                 built on a simple belief: behind every business is a person, an idea, and the ambition to create something
                 meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
-                them find the right connections, knowledge, support, and opportunities to move forward.
+                them find the right connections, knowledge, support, and opportunities to move forward. Through our
+                international network, WBC turns connections into cooperation, ideas into action, and business
+                relationships into lasting opportunities for growth.
               </p>
               <blockquote className="mt-6 border-s-2 border-orange/80 ps-5 text-[17px] font-semibold leading-relaxed text-foreground sm:text-[18px]">
-                “No business should have to grow alone — meaningful connections are always built on trust.”
+                “We believe that no business should have to grow alone—and that meaningful connections are built on trust.”
               </blockquote>
               <p className="mt-6 text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-                Through our international network, WBC turns connections into cooperation, ideas into action, and business
-                relationships into lasting opportunities for growth.
+                Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
+                move forward together. WBC works to create an environment where people and businesses can connect with
+                confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
+                lasting cooperation, and shared progress.
               </p>
             </div>
           </div>
@@ -77,7 +81,7 @@ export function WhatIsWbcSection() {
               </span>
               <p className="relative mt-6 text-[12px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
               <p className="relative mt-4 flex-1 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-                Building a global network that empowers businesses through collaboration, innovation, and trust.
+                We build a global network that empowers businesses through collaboration, innovation, and trust.
               </p>
             </article>
           </div>
@@ -90,7 +94,7 @@ export function WhatIsWbcSection() {
           {STATS.map((s) => (
             <div key={s.label} className="min-w-0">
               <dt className="text-[20px] font-bold text-foreground sm:text-[22px]">{s.value}</dt>
-              <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
+              <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-blue uppercase sm:text-[12px]">
                 {s.label}
               </dd>
             </div>
