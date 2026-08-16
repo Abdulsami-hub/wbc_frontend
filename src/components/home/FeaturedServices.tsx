@@ -1,12 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceCard } from "@/components/ServiceCard";
-import networkImg from "@/assets/networking.png";
-import councilImg from "@/assets/contact-building-alt.png";
-import tradeImg from "@/assets/who-we-are-building.png";
-import eventsImg from "@/assets/hero-slide-2.png";
-import innovationImg from "@/assets/news-innovation.png";
-import advisoryImg from "@/assets/membership.jpg";
+import networkImg from "@/assets/wwd-network.jpg";
+import councilImg from "@/assets/wwd-council.jpg";
+import tradeImg from "@/assets/wwd-trade.jpg";
+import eventsImg from "@/assets/wwd-events.jpg";
+import innovationImg from "@/assets/wwd-innovation.jpg";
+import advisoryImg from "@/assets/wwd-hero.jpg";
 
 const SERVICES = [
   {
@@ -72,9 +72,9 @@ export function FeaturedServices() {
         </ul>
 
         <div data-reveal className="mt-10 text-start">
-          <Link to="/what-we-do" className="link-arrow">
+          <Link to="/what-we-do" className="card-link">
             View all services
-            <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
+            <span aria-hidden="true" className="card-link-arrow rtl-mirror">
               →
             </span>
           </Link>

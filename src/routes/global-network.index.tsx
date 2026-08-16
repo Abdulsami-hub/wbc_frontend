@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import networkBg from "@/assets/network-bg.png";
+import networkBg from "@/assets/network-bg.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 
@@ -40,7 +40,7 @@ const PILLARS = [
     to: "/our-members" as const,
   },
   {
-    title: "WBC Strategic Partners",
+    title: "Partners",
     body: "Organizations and institutions collaborating with WBC through partnerships, joint initiatives, and international cooperation.",
     to: "/global-network/strategic-partners" as const,
   },
@@ -59,7 +59,7 @@ function GlobalNetwork() {
       <SplitHero
         eyebrow="Our Reach"
         title="Global Network"
-        description="The World Business Council (WBC) is built on a collaborative global network that connects businesses, business support organizations, and strategic partners across countries and regions."
+        description="The World Business Council (WBC) is built on a collaborative global network that connects businesses, business support organizations, and strategic partners across countries and regions. Together, this network strengthens international cooperation, creates new opportunities, and supports sustainable business growth worldwide."
         tags={TAGS}
         image={networkBg}
         imageAlt="Illuminated world map representing the WBC global network"
@@ -71,19 +71,25 @@ function GlobalNetwork() {
         <div className="container-wbc">
           <div data-reveal className="mx-auto max-w-4xl rounded-card border border-line bg-background p-7 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <h2 className="text-[26px] leading-tight font-bold text-foreground sm:text-[34px]">
-              How the network works
+              Become part of the WBC Global Network
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
-              Together, this network strengthens international cooperation, creates new opportunities, and supports
-              sustainable business growth worldwide. Become part of the WBC Global Network by joining as a member or
-              strategic partner, and connect with a growing international community committed to collaboration,
-              innovation, and shared success.
+              Become part of the WBC Global Network by joining as a member or strategic partner, and connect with a
+              growing international community committed to collaboration, innovation, and shared success.
             </p>
             <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
               Lead WBC&apos;s mission in your country or city by establishing a WBC Affiliate and become the official
               local representative, connecting businesses with global opportunities while strengthening your local
               business community.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link to="/become-a-member" className="btn-orange">
+                Become a Member
+              </Link>
+              <Link to="/affiliate-guide" className="btn-navy !rounded-md">
+                Establish an Affiliate
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -91,7 +97,7 @@ function GlobalNetwork() {
       <section className="border-t border-line bg-surface/50 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="font-display text-[12px] tracking-[0.22em] text-blue uppercase">Network Structure</p>
+            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
               Four connected layers
             </h2>
@@ -143,8 +149,7 @@ function GlobalNetwork() {
         title="Ready to Join WBC?"
         description="Become part of a network built on collaboration, innovation, and trust."
         ctaLabel="Become a Member"
-        to="/membership"
-        hash="application"
+        to="/become-a-member"
       />
     </>
   );

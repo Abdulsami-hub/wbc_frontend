@@ -28,7 +28,7 @@ export function ServiceCard({
           />
         </div>
         <div className="min-w-0 border-s border-line ps-5 sm:ps-7">
-          <p className="text-[13px] font-semibold tracking-[0.14em] text-blue uppercase">
+          <p className="text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
             {String(index + 1).padStart(2, "0")} · {kicker}
           </p>
           <h3 className="mt-2 text-[19px] leading-snug font-bold text-foreground sm:text-[22px]">

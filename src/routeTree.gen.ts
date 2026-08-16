@@ -32,6 +32,8 @@ import { Route as GlobalNetworkIndexRouteImport } from './routes/global-network.
 import { Route as GlobalNetworkHeadquartersRouteImport } from './routes/global-network.headquarters'
 import { Route as GlobalNetworkInstitutionalMembersRouteImport } from './routes/global-network.institutional-members'
 import { Route as GlobalNetworkStrategicPartnersRouteImport } from './routes/global-network.strategic-partners'
+import { Route as MembershipIndexRouteImport } from './routes/membership.index'
+import { Route as MembershipBenefitsRouteImport } from './routes/membership.benefits'
 import { Route as WbcTeamIndexRouteImport } from './routes/wbc-team.index'
 import { Route as WbcTeamSlugRouteImport } from './routes/wbc-team.$slug'
 
@@ -153,6 +155,16 @@ const GlobalNetworkStrategicPartnersRoute =
     path: '/strategic-partners',
     getParentRoute: () => GlobalNetworkRoute,
   } as any)
+const MembershipIndexRoute = MembershipIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MembershipRoute,
+} as any)
+const MembershipBenefitsRoute = MembershipBenefitsRouteImport.update({
+  id: '/benefits',
+  path: '/benefits',
+  getParentRoute: () => MembershipRoute,
+} as any)
 const WbcTeamIndexRoute = WbcTeamIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -174,7 +186,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/global-network': typeof GlobalNetworkRouteWithChildren
   '/governance': typeof GovernanceRoute
-  '/membership': typeof MembershipRoute
+  '/membership': typeof MembershipRouteWithChildren
   '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRouteWithChildren
@@ -185,10 +197,12 @@ export interface FileRoutesByFullPath {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
+  '/membership/': typeof MembershipIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
 export interface FileRoutesByTo {
@@ -198,7 +212,6 @@ export interface FileRoutesByTo {
   '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
   '/governance': typeof GovernanceRoute
-  '/membership': typeof MembershipRoute
   '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
   '/what-we-do': typeof WhatWeDoRoute
@@ -208,10 +221,12 @@ export interface FileRoutesByTo {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates': typeof AffiliatesIndexRoute
   '/events': typeof EventsIndexRoute
   '/global-network': typeof GlobalNetworkIndexRoute
+  '/membership': typeof MembershipIndexRoute
   '/wbc-team': typeof WbcTeamIndexRoute
 }
 export interface FileRoutesById {
@@ -225,7 +240,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/global-network': typeof GlobalNetworkRouteWithChildren
   '/governance': typeof GovernanceRoute
-  '/membership': typeof MembershipRoute
+  '/membership': typeof MembershipRouteWithChildren
   '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRouteWithChildren
@@ -236,10 +251,12 @@ export interface FileRoutesById {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
+  '/membership/': typeof MembershipIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
 export interface FileRouteTypes {
@@ -265,10 +282,12 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
+    | '/membership/'
     | '/wbc-team/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -278,7 +297,6 @@ export interface FileRouteTypes {
     | '/become-a-member'
     | '/contact'
     | '/governance'
-    | '/membership'
     | '/news'
     | '/our-members'
     | '/what-we-do'
@@ -288,10 +306,12 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates'
     | '/events'
     | '/global-network'
+    | '/membership'
     | '/wbc-team'
   id:
     | '__root__'
@@ -315,10 +335,12 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
+    | '/membership/'
     | '/wbc-team/'
   fileRoutesById: FileRoutesById
 }
@@ -332,7 +354,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   GlobalNetworkRoute: typeof GlobalNetworkRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
-  MembershipRoute: typeof MembershipRoute
+  MembershipRoute: typeof MembershipRouteWithChildren
   NewsRoute: typeof NewsRoute
   OurMembersRoute: typeof OurMembersRoute
   WbcTeamRoute: typeof WbcTeamRouteWithChildren
@@ -503,6 +525,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalNetworkStrategicPartnersRouteImport
       parentRoute: typeof GlobalNetworkRoute
     }
+    '/membership/': {
+      id: '/membership/'
+      path: '/'
+      fullPath: '/membership/'
+      preLoaderRoute: typeof MembershipIndexRouteImport
+      parentRoute: typeof MembershipRoute
+    }
+    '/membership/benefits': {
+      id: '/membership/benefits'
+      path: '/benefits'
+      fullPath: '/membership/benefits'
+      preLoaderRoute: typeof MembershipBenefitsRouteImport
+      parentRoute: typeof MembershipRoute
+    }
     '/wbc-team/': {
       id: '/wbc-team/'
       path: '/'
@@ -566,6 +602,20 @@ const GlobalNetworkRouteWithChildren = GlobalNetworkRoute._addFileChildren(
   GlobalNetworkRouteChildren,
 )
 
+interface MembershipRouteChildren {
+  MembershipBenefitsRoute: typeof MembershipBenefitsRoute
+  MembershipIndexRoute: typeof MembershipIndexRoute
+}
+
+const MembershipRouteChildren: MembershipRouteChildren = {
+  MembershipBenefitsRoute: MembershipBenefitsRoute,
+  MembershipIndexRoute: MembershipIndexRoute,
+}
+
+const MembershipRouteWithChildren = MembershipRoute._addFileChildren(
+  MembershipRouteChildren,
+)
+
 interface WbcTeamRouteChildren {
   WbcTeamSlugRoute: typeof WbcTeamSlugRoute
   WbcTeamIndexRoute: typeof WbcTeamIndexRoute
@@ -589,7 +639,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   GlobalNetworkRoute: GlobalNetworkRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
-  MembershipRoute: MembershipRoute,
+  MembershipRoute: MembershipRouteWithChildren,
   NewsRoute: NewsRoute,
   OurMembersRoute: OurMembersRoute,
   WbcTeamRoute: WbcTeamRouteWithChildren,

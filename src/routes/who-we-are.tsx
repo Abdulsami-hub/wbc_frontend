@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import whoWeAreBuilding from "@/assets/who-we-are-building.jpg";
+import heroBuilding from "@/assets/who-we-are-building.png";
 
 export const Route = createFileRoute("/who-we-are")({
   head: () => ({
@@ -200,7 +200,7 @@ function WhoWeAre() {
           </div>
         </div>
         <img
-          src={whoWeAreBuilding}
+          src={heroBuilding}
           alt="Modern glass and concrete office building exterior against a blue sky"
           width={1600}
           height={1000}
@@ -235,7 +235,7 @@ function WhoWeAre() {
               </span>
               <div>
                 <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Who We Are</p>
-                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">Connecting people, ideas, and ambition.</p>
+                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">Behind every business is a person.</p>
               </div>
             </div>
 
@@ -251,11 +251,8 @@ function WhoWeAre() {
               relationships into lasting opportunities for growth.
             </p>
 
-            <blockquote className="mt-8 border-s-2 border-orange ps-5 text-[18px] leading-relaxed font-semibold text-foreground sm:text-[19px]">
-              “We believe that no business should have to grow alone—and that meaningful connections are built on trust.”
-            </blockquote>
-
             <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
+              We believe that no business should have to grow alone—and that meaningful connections are built on trust.
               Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
               move forward together. WBC works to create an environment where people and businesses can connect with
               confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
@@ -317,7 +314,7 @@ function WhoWeAre() {
               ].map((s) => (
                 <div key={s.k} className="min-w-0 text-center sm:text-start">
                   <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{s.k}</dt>
-                  <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-blue uppercase sm:text-[12px]">
+                  <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
                     {s.v}
                   </dd>
                 </div>

@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/gov-hero.jpg";
-import assemblyImg from "@/assets/gov-assembly.png";
-import boardImg from "@/assets/gov-board.png";
-import secretariatImg from "@/assets/gov-secretariat.png";
+import assemblyImg from "@/assets/gov-assembly.jpg";
+import boardImg from "@/assets/gov-board.jpg";
+import secretariatImg from "@/assets/gov-secretariat.jpg";
 
 export const Route = createFileRoute("/governance")({
   head: () => ({
@@ -178,7 +178,7 @@ function Governance() {
       <section className="py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Governance Structure</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               Institutional governance for transparent and accountable delivery
             </h2>
@@ -265,7 +265,7 @@ function Governance() {
       <section className="bg-surface py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">Governance FAQ</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance FAQ</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               Clear answers on how WBC governance works
             </h2>

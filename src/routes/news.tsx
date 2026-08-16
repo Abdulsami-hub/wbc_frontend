@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { NEWS } from "@/content/news";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-import newsForum from "@/assets/news-paris.jpg";
+import newsForum from "@/assets/news-forum.jpg";
 
 export const Route = createFileRoute("/news")({
   head: () => ({
@@ -54,14 +54,14 @@ function NewsPage() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <p className="text-[12px] font-semibold tracking-[0.14em] text-blue uppercase">
+                  <p className="card-kicker">
                     {item.category} · {item.dateLabel}
                   </p>
                   <h2 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h2>
                   <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{item.body}</p>
-                  <Link to="/contact" className="link-arrow mt-6">
+                  <Link to="/contact" className="card-link mt-6">
                     {item.cta}
-                    <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
                       →
                     </span>
                   </Link>
@@ -76,8 +76,7 @@ function NewsPage() {
         title="Stay Connected"
         description="Join WBC to receive programme updates and participate in the global network."
         ctaLabel="Become a Member"
-        to="/membership"
-        hash="application"
+        to="/become-a-member"
       />
     </>
   );

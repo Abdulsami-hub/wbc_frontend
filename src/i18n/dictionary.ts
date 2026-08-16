@@ -42,7 +42,8 @@ const en: Dict = {
   "nav.news": "News",
   "cta.join": "Join WBC",
   "lang.label": "Language",
-  "footer.tagline": "Connecting Businesses, Creating Opportunities",
+  "footer.tagline":
+    "We build a global network that empowers businesses through collaboration, innovation, and trust.",
   "footer.about": "About",
   "footer.network": "Network",
   "footer.membership": "Membership",
@@ -74,7 +75,7 @@ const fr: Dict = {
   "cta.join": "Rejoindre le WBC",
   "lang.label": "Langue",
   "footer.tagline":
-    "Construire un réseau mondial qui renforce les entreprises par la collaboration, l'innovation et la confiance.",
+    "Nous construisons un réseau mondial qui renforce les entreprises par la collaboration, l'innovation et la confiance.",
   "footer.about": "À propos",
   "footer.network": "Réseau",
   "footer.membership": "Adhésion",
@@ -91,7 +92,7 @@ const fr: Dict = {
   "link.institutional": "Membres institutionnels",
   "link.partners": "Partenaires",
   "link.wbcMembership": "Adhésion WBC",
-  "link.benefits": "Avantages",
+  "link.benefits": "Avantages de l'adhésion",
   "link.become": "Devenir membre",
 };
 
@@ -123,7 +124,7 @@ const es: Dict = {
   "link.institutional": "Miembros institucionales",
   "link.partners": "Socios",
   "link.wbcMembership": "Membresía WBC",
-  "link.benefits": "Beneficios",
+  "link.benefits": "Beneficios de membresía",
   "link.become": "Hazte miembro",
 };
 
@@ -154,7 +155,7 @@ const ar: Dict = {
   "link.institutional": "الأعضاء المؤسسيون",
   "link.partners": "الشركاء",
   "link.wbcMembership": "عضوية WBC",
-  "link.benefits": "المزايا",
+  "link.benefits": "مزايا العضوية",
   "link.become": "كن عضواً",
 };
 
@@ -168,7 +169,7 @@ const zh: Dict = {
   "nav.news": "新闻",
   "cta.join": "加入 WBC",
   "lang.label": "语言",
-  "footer.tagline": "构建全球网络，通过合作、创新与信任赋能企业。",
+  "footer.tagline": "我们构建全球网络，通过合作、创新与信任赋能企业。",
   "footer.about": "关于",
   "footer.network": "网络",
   "footer.membership": "会员",
@@ -217,7 +218,7 @@ const ru: Dict = {
   "link.institutional": "Институциональные члены",
   "link.partners": "Партнёры",
   "link.wbcMembership": "Членство в WBC",
-  "link.benefits": "Преимущества",
+  "link.benefits": "Преимущества членства",
   "link.become": "Стать членом",
 };
 

@@ -94,7 +94,7 @@ function AffiliateProfilePage() {
 
             {affiliate.kind === "region" && affiliate.countries.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-blue uppercase">Countries</h3>
+                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-muted-fg uppercase">Countries</h3>
                 <ul className="mt-4 flex flex-wrap gap-3">
                   {affiliate.countries.map((country) => (
                     <li key={country.slug}>
@@ -120,7 +120,7 @@ function AffiliateProfilePage() {
 
             {affiliate.kind === "country" && affiliate.cities.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-blue uppercase">Cities</h3>
+                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-muted-fg uppercase">Cities</h3>
                 <ul className="mt-4 flex flex-wrap gap-3">
                   {affiliate.cities.map((city) => (
                     <li key={city.slug}>
@@ -171,11 +171,8 @@ function AffiliateProfilePage() {
               <Link to="/contact" className="btn-orange">
                 Fill the Application Form
               </Link>
-              <Link to="/affiliate-guide" className="link-arrow text-[15px]">
-                Affiliate establishment guide
-                <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
-                  →
-                </span>
+              <Link to="/affiliate-guide" className="text-[15px] font-semibold text-foreground underline underline-offset-4">
+                Affiliate Establishment Guide
               </Link>
             </div>
           </aside>
@@ -186,8 +183,7 @@ function AffiliateProfilePage() {
         title="Join the WBC Network"
         description="Become a member and connect with affiliates, institutions, and partners worldwide."
         ctaLabel="Become a Member"
-        to="/membership"
-        hash="application"
+        to="/become-a-member"
       />
     </>
   );

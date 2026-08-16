@@ -1,4 +1,4 @@
-import eventsImage from "@/assets/news-paris.jpg";
+import eventsImage from "@/assets/events.jpg";
 import { EVENT_CATEGORIES } from "@/content/events";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 

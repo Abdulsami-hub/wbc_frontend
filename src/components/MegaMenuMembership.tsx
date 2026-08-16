@@ -1,27 +1,25 @@
-import menuImage from "@/assets/membership-club.png";
+import menuImage from "@/assets/events.jpg";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 
 const GROUPS = [
   {
-    label: "Join",
+    label: "Membership",
     items: [
       {
         titleKey: "link.benefits" as const,
         desc: "Advantages of joining WBC",
-        to: "/membership" as const,
-        hash: "benefits" as const,
+        to: "/membership/benefits" as const,
       },
       {
         titleKey: "link.become" as const,
         desc: "Start your membership application",
-        to: "/membership" as const,
-        hash: "application" as const,
+        to: "/become-a-member" as const,
       },
     ],
   },
   {
-    label: "Community",
+    label: "Directory",
     items: [
       {
         titleKey: "nav.ourMembers" as const,
@@ -38,14 +36,13 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
   return (
     <MegaMenuShell
       title="Membership"
-      description="Join a global community of business leaders. Explore membership benefits and apply in one place."
+      description="Explore membership benefits, apply to become a member, and browse our members directory."
       promo={{
         image: menuImage,
         alt: "Speaker addressing WBC members at a membership event",
         text: "Start your journey with WBC and unlock global business opportunities.",
-        cta: "Apply now",
-        to: "/membership",
-        hash: "application",
+        cta: "Become a Member",
+        to: "/become-a-member",
         ...(onNavigate ? { onNavigate } : {}),
       }}
     >
@@ -59,7 +56,6 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
             title: t(it.titleKey),
             desc: it.desc,
             to: it.to,
-            ...("hash" in it ? { hash: it.hash } : {}),
           }))}
         />
       ))}

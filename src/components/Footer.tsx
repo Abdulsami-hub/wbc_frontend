@@ -31,8 +31,8 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
   {
     title: "footer.membership",
     links: [
-      { key: "link.benefits", to: "/membership", hash: "benefits" },
-      { key: "link.become", to: "/membership", hash: "application" },
+      { key: "link.benefits", to: "/membership/benefits" },
+      { key: "link.become", to: "/become-a-member" },
       { key: "nav.ourMembers", to: "/our-members" },
     ],
   },
@@ -60,7 +60,7 @@ const SOCIAL = [
   {
     label: "Facebook",
     href: "https://www.facebook.com/WBCCME",
-    path: "M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H8v3h3v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1z",
+    path: "M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-1.5c0-.8.4-1.5 1-1.5z",
   },
   {
     label: "YouTube",
@@ -78,7 +78,8 @@ export function Footer() {
           <div className="max-w-xs">
             <Logo variant="footer" size="lg" />
             <p className="mt-5 text-[15px] leading-relaxed">{t("footer.tagline")}</p>
-            <ul className="mt-6 flex flex-wrap gap-2">
+            <p className="mt-3 text-[13px] font-semibold tracking-[0.08em] text-white/55 uppercase">@WBCCME</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
               {SOCIAL.map((s) => (
                 <li key={s.label}>
                   <a

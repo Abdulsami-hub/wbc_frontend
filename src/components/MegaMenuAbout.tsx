@@ -1,4 +1,4 @@
-import aboutMenuImage from "@/assets/who-we-are-building.jpg";
+import aboutMenuImage from "@/assets/news-forum.jpg";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 

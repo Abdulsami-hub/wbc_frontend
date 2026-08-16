@@ -13,10 +13,12 @@ export function MegaMenuShell({
   description,
   children,
   promo,
+  linkColumns = 2,
 }: {
   title: string;
   description: string;
   children: ReactNode;
+  linkColumns?: 2 | 3;
   promo: {
     image: string;
     alt: string;
@@ -27,9 +29,14 @@ export function MegaMenuShell({
     onNavigate?: () => void;
   };
 }) {
+  const gridClass =
+    linkColumns === 3
+      ? "lg:grid-cols-[1fr_1fr_1fr_1fr_1.15fr]"
+      : "lg:grid-cols-[1fr_1fr_1fr_1.15fr]";
+
   return (
     <div className="megamenu-panel border-t border-line bg-background shadow-card">
-      <div className="container-wbc grid gap-10 py-10 lg:grid-cols-[1fr_1fr_1fr_1.15fr] lg:gap-12 lg:py-12">
+      <div className={`container-wbc grid gap-10 py-10 lg:gap-12 lg:py-12 ${gridClass}`}>
         <div className="megamenu-col" style={{ animationDelay: "40ms" }}>
           <h2 className="text-[26px] font-bold text-foreground lg:text-[30px]">{title}</h2>
           <p className="mt-4 max-w-xs text-[16px] leading-relaxed text-muted-fg">{description}</p>
@@ -89,7 +96,7 @@ export function MegaMenuGroup({
 }) {
   return (
     <div className="megamenu-col" style={{ animationDelay: `${delayMs}ms` }}>
-      <p className="text-[11px] font-bold tracking-[0.18em] text-blue uppercase">{label}</p>
+      <p className="text-[11px] font-bold tracking-[0.18em] text-muted-fg uppercase">{label}</p>
       <ul className="mt-4 space-y-1.5">
         {items.map((it) => (
           <li key={`${it.to}-${it.hash ?? it.title}`}>

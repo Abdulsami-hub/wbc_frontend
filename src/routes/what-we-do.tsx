@@ -1,19 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ServiceCard } from "@/components/ServiceCard";
-import heroImg from "@/assets/wwd-hero.png";
-import networkImg from "@/assets/networking.png";
-import councilImg from "@/assets/contact-building-alt.png";
-import tradeImg from "@/assets/who-we-are-building.png";
-import eventsImg from "@/assets/hero-slide-2.png";
-import innovationImg from "@/assets/news-innovation.png";
-import trainingImg from "@/assets/news-euro.png";
-import membersImg from "@/assets/news-member.jpg";
-import partnershipsImg from "@/assets/hero-city.jpg";
-import lobbyingImg from "@/assets/membership-alt.jpg";
-import researchImg from "@/assets/news-currency.png";
-import digitalImg from "@/assets/website-promo.png";
-import sustainabilityImg from "@/assets/mega-menu-promo.webp";
-import advisoryImg from "@/assets/membership.jpg";
+import heroImg from "@/assets/wwd-hero.jpg";
+import networkImg from "@/assets/wwd-network.jpg";
+import councilImg from "@/assets/wwd-council.jpg";
+import tradeImg from "@/assets/wwd-trade.jpg";
+import eventsImg from "@/assets/wwd-events.jpg";
+import innovationImg from "@/assets/wwd-innovation.jpg";
+import trainingImg from "@/assets/wwd-training.jpg";
+import membersImg from "@/assets/wwd-members.jpg";
 
 export const Route = createFileRoute("/what-we-do")({
   head: () => ({
@@ -73,7 +67,7 @@ const PILLARS = [
     kicker: "Advisory",
     title: "Business Advisory & Consultancy Support",
     body: "Offering advisory services to businesses, startups, and Business Councils in areas such as international expansion, strategic planning, market entry, organizational development, and partnerships.",
-    image: advisoryImg,
+    image: heroImg,
   },
   {
     kicker: "Learning",
@@ -91,31 +85,31 @@ const PILLARS = [
     kicker: "Partnerships",
     title: "Strategic Partnerships & Institutional Relations",
     body: "Developing partnerships with chambers of commerce, NGO’s, international organizations, governments, and private sector entities to enhance global cooperation and expand impact.",
-    image: partnershipsImg,
+    image: tradeImg,
   },
   {
     kicker: "Policy",
     title: "Lobbying & Advocacy",
     body: "Developing representation, lobbying, and advocacy actions towards public and private stakeholders in order to support and promote the interests of businesses and Business Councils at the international level.",
-    image: lobbyingImg,
+    image: councilImg,
   },
   {
     kicker: "Insights",
     title: "Research, Publications & Market Insights",
     body: "Producing reports, studies, and publications on global business trends, economic developments, and industry insights to support informed decision-making for members.",
-    image: researchImg,
+    image: heroImg,
   },
   {
     kicker: "Digital",
     title: "Digital Business Platform",
     body: "Building and maintaining a digital ecosystem that enables global connectivity, communication, opportunity sharing, and access to WBC services and resources.",
-    image: digitalImg,
+    image: innovationImg,
   },
   {
     kicker: "Sustainability",
     title: "Sustainability & Responsible Business Initiatives",
     body: "Promoting responsible and sustainable business practices in alignment with the United Nations Sustainable Development Goals (SDGs) through programs, partnerships, and initiatives.",
-    image: sustainabilityImg,
+    image: trainingImg,
   },
 ] as const;
 
@@ -132,8 +126,8 @@ function WhatWeDo() {
             </h1>
             <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
               The World Business Council (WBC) delivers a wide range of services and activities designed to connect,
-              support, and empower businesses, Business Councils and business associations worldwide. Our work focuses on
-              building a strong global ecosystem that promotes collaboration, innovation, and sustainable development.
+              support, and empower businesses, Business Councils and business associations worldwide. Our work focuses
+              on building a strong global ecosystem that promotes collaboration, innovation, and sustainable development.
             </p>
             <ul className="intro-4 mt-9 flex flex-wrap gap-3">
               {TAGS.map((t) => (
@@ -166,7 +160,7 @@ function WhatWeDo() {
           <div className="rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <div data-reveal className="flex items-start justify-between gap-6">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-blue uppercase">Service Portfolio</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Service Portfolio</p>
                 <h2 className="mt-3 text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
                   13 Strategic Pillars of Support
                 </h2>
@@ -208,7 +202,7 @@ function WhatWeDo() {
           >
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-blue uppercase">Membership</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Membership</p>
                 <span className="accent-rule mt-3" />
                 <h2 className="mt-6 text-[30px] leading-[1.1] font-bold text-foreground sm:text-4xl lg:text-[46px]">
                   Join the World Business Council
@@ -216,7 +210,7 @@ function WhatWeDo() {
                 <p className="mt-5 max-w-md text-[16px] leading-relaxed text-muted-fg">
                   WBC offers 5 distinct types of membership tailored to meet diverse needs.
                 </p>
-                <Link to="/membership" hash="application" className="btn-orange mt-8">
+                <Link to="/become-a-member" className="btn-orange mt-8">
                   Become a Member
                 </Link>
               </div>
@@ -234,7 +228,7 @@ function WhatWeDo() {
                 <span className="absolute top-[12%] right-[12%] size-32 rounded-full bg-orange/15" />
                 <span className="absolute bottom-[22%] left-[16%] size-28 border border-navy/25" />
                 <span className="absolute bottom-[28%] left-[26%] size-28 border border-orange/45" />
-                <span className="absolute right-[10%] bottom-[12%] text-[12px] font-semibold tracking-[0.18em] text-blue uppercase">
+                <span className="absolute right-[10%] bottom-[12%] text-[12px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
                   International Network
                 </span>
               </div>

@@ -33,7 +33,7 @@ type MemberTile = {
 type Category = {
   name: string;
   desc: string;
-  accent: "orange" | "navy" | "teal" | "coral";
+  accent: "orange" | "navy" | "teal" | "blue" | "violet";
   kind: "org" | "person";
   members: MemberTile[];
 };
@@ -141,7 +141,7 @@ const CATEGORIES: Category[] = [
   {
     name: "Individual Members",
     desc: "Entrepreneurs, professionals, and independent consultants advancing cooperation through expertise and cross-border engagement.",
-    accent: "coral",
+    accent: "blue",
     kind: "person",
     members: [
       {
@@ -171,7 +171,7 @@ const CATEGORIES: Category[] = [
   {
     name: "Honorary Members",
     desc: "Recognised contributors awarded for outstanding service to WBC’s mission and the wider international business community.",
-    accent: "navy",
+    accent: "violet",
     kind: "org",
     members: [
       {
@@ -227,12 +227,19 @@ const ACCENT: Record<
     logoText: "text-teal",
     ring: "group-hover/tile:border-teal/45",
   },
-  coral: {
-    bar: "bg-coral",
-    glow: "bg-coral/10",
-    logoBg: "bg-coral/10",
-    logoText: "text-coral",
-    ring: "group-hover/tile:border-coral/40",
+  blue: {
+    bar: "bg-blue",
+    glow: "bg-blue/10",
+    logoBg: "bg-blue/10",
+    logoText: "text-blue",
+    ring: "group-hover/tile:border-blue/40",
+  },
+  violet: {
+    bar: "bg-navy-deep",
+    glow: "bg-orange/10",
+    logoBg: "bg-navy/8",
+    logoText: "text-navy",
+    ring: "group-hover/tile:border-orange/35",
   },
 };
 
@@ -317,7 +324,7 @@ function MemberTileCard({
       <MemberLogo member={member} accent={accent} kind={kind} />
       <span className="relative mt-5 min-w-0 text-center">
         <span className="block truncate text-[15px] font-bold text-foreground sm:text-[16px]">{member.name}</span>
-        <span className="mt-1 block text-[12px] tracking-[0.08em] text-blue uppercase">
+        <span className="mt-1 block text-[12px] tracking-[0.08em] text-muted-fg uppercase">
           {kind === "person" ? "Member" : "Organisation"}
         </span>
       </span>
@@ -357,11 +364,11 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
       <div className="relative p-6 sm:p-8 lg:p-10">
         <div className="flex flex-wrap items-start gap-x-10 gap-y-4 lg:flex-nowrap">
           <div className="min-w-[240px] lg:w-[300px] lg:shrink-0">
-            <p className="text-[12px] font-semibold tracking-[0.2em] text-blue uppercase">
+            <p className="text-[12px] font-semibold tracking-[0.2em] text-muted-fg uppercase">
               Category {String(index + 1).padStart(2, "0")}
             </p>
             <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">{cat.name}</h3>
-            <p className="mt-2 text-[13px] font-semibold tracking-[0.06em] text-blue uppercase">
+            <p className="mt-2 text-[13px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
               {cat.members.length} {cat.members.length === 1 ? "profile" : "profiles"}
             </p>
           </div>
@@ -434,7 +441,7 @@ function OurMembers() {
       <section id="directory" className="py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="flex items-center gap-2 text-[13px] font-semibold tracking-[0.18em] text-blue uppercase">
+            <p className="flex items-center gap-2 text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
               <span className="size-2 rounded-full bg-orange" aria-hidden="true" /> Member Directory
             </p>
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
@@ -453,7 +460,7 @@ function OurMembers() {
           </ul>
 
           <div data-reveal className="mt-12">
-            <Link to="/membership" hash="join" className="btn-orange">
+            <Link to="/membership" className="btn-orange">
               View Membership Categories <span aria-hidden="true" className="rtl-mirror">→</span>
             </Link>
           </div>
@@ -464,8 +471,7 @@ function OurMembers() {
         title="Become Part of the Network"
         description="Join WBC to appear in the members directory and connect with organizations across the globe."
         ctaLabel="Become a Member"
-        to="/membership"
-        hash="application"
+        to="/become-a-member"
       />
     </>
   );

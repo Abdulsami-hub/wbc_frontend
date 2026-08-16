@@ -90,9 +90,8 @@ export function Header() {
         <div className="flex items-center gap-2 lg:gap-3">
           <LanguageSwitcher className="hidden lg:block" />
           <Link
-            to="/membership"
-            hash="application"
-            className="btn-orange-outline hidden !min-h-9 !rounded-md !px-4 !text-[12px] lg:inline-flex"
+            to="/become-a-member"
+            className="btn-orange-to-outline hidden !min-h-9 !rounded-md !px-4 !text-[12px] lg:inline-flex"
           >
             {t("cta.join")}
           </Link>
@@ -151,26 +150,11 @@ export function Header() {
                 </div>
               );
             })}
-            <Link
-              to="/our-members"
-              onClick={closeMobile}
-              className="border-b border-line py-3.5 text-[17px] font-medium text-foreground transition-colors hover:text-navy [&.active]:text-navy"
-            >
-              {t("nav.ourMembers")}
-            </Link>
-            <Link
-              to="/news"
-              onClick={closeMobile}
-              className="border-b border-line py-3.5 text-[17px] font-medium text-foreground transition-colors hover:text-navy [&.active]:text-navy"
-            >
-              News & Blogs
-            </Link>
-
             <div className="py-4">
               <LanguageSwitcher />
             </div>
 
-            <Link to="/membership" hash="application" onClick={closeMobile} className="btn-orange-outline mb-4 !rounded-md">
+            <Link to="/become-a-member" onClick={closeMobile} className="btn-orange-to-outline mb-4 !rounded-md">
               {t("cta.join")}
             </Link>
           </nav>

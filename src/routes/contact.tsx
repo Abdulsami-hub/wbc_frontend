@@ -1,12 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import contactBuilding from "@/assets/contact-building.png";
+import contactBuilding from "@/assets/contact-building.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
 
 const ADDRESS_LINE = "36, rue Scheffer, 75016 Paris";
 const EMAIL = "contact@wbccme.org";
-const WEBSITE = "www.wbccme.org";
-const WEBSITE_URL = "https://www.wbccme.org";
 const MAPS_QUERY = encodeURIComponent(`${ADDRESS_LINE}, France`);
 const MAP_EMBED = `https://maps.google.com/maps?q=${MAPS_QUERY}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${MAPS_QUERY}`;
@@ -86,7 +84,7 @@ function Contact() {
 
             <dl className="mt-10 space-y-8">
               <div>
-                <dt className="flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] text-blue uppercase">
+                <dt className="flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
                   <span className="text-navy">
                     <PinIcon />
                   </span>
@@ -97,7 +95,7 @@ function Contact() {
                 </dd>
               </div>
               <div>
-                <dt className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">Email</dt>
+                <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Email</dt>
                 <dd className="mt-2">
                   <a
                     href={`mailto:${EMAIL}`}
@@ -108,17 +106,39 @@ function Contact() {
                 </dd>
               </div>
               <div>
-                <dt className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">Website</dt>
+                <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Website</dt>
                 <dd className="mt-2">
                   <a
-                    href={WEBSITE_URL}
+                    href="https://www.wbccme.org"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[22px] font-bold text-foreground underline-offset-4 hover:underline sm:text-[24px]"
                   >
-                    {WEBSITE}
+                    www.wbccme.org
                   </a>
                 </dd>
+              </div>
+              <div>
+                <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Follow us</dt>
+                <dd className="mt-3 flex flex-wrap gap-2">
+                  {[
+                    { label: "LinkedIn", href: "https://www.linkedin.com/company/wbccme" },
+                    { label: "X", href: "https://x.com/WBCCME" },
+                    { label: "Facebook", href: "https://www.facebook.com/WBCCME" },
+                    { label: "YouTube", href: "https://www.youtube.com/@WBCCME" },
+                  ].map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border border-line px-3 py-1.5 text-[13px] font-semibold text-foreground transition-colors hover:border-navy hover:text-navy"
+                    >
+                      {s.label}
+                    </a>
+                  ))}
+                </dd>
+                <p className="mt-3 text-[14px] font-semibold tracking-[0.08em] text-muted-fg uppercase">@WBCCME</p>
               </div>
             </dl>
 

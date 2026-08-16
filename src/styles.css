@@ -2,10 +2,8 @@
 @source "../src";
 
 /*
- * WBC brand system — only these colors:
- * Navy #0c3163 · Blue #0057bc (small titles & links) · Teal #00b9b4
- * Orange #fe4812 · Coral #ff603b · White #ffffff · Beige #ddd3ca · Gray #aaaaaa
- * Gradient: navy → teal
+ * WBC design system.
+ * Navy dominates, orange is used only for CTAs, accent lines and highlights.
  */
 
 @theme {
@@ -16,31 +14,29 @@
 
   --radius-card: 0.5rem;
 
-  --color-background: #ffffff;
-  --color-foreground: #0c3163;
-  --color-light-grey: #ddd3ca;
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.18 0.01 255);
+  --color-light-grey: oklch(0.965 0.004 250);
 
-  --color-navy: #0c3163;
-  --color-navy-dark: #0c3163;
-  --color-navy-deep: #0c3163;
-  --color-navy-foreground: #ffffff;
+  --color-navy: oklch(0.354 0.089 254.6);
+  --color-navy-dark: oklch(0.319 0.087 256.5);
+  --color-navy-deep: oklch(0.263 0.076 257);
+  --color-navy-foreground: oklch(1 0 0);
 
-  --color-orange: #fe4812;
-  --color-orange-hover: #ff603b;
-  --color-orange-foreground: #ffffff;
-  --color-coral: #ff603b;
+  --color-orange: oklch(0.655 0.226 34.5);
+  --color-orange-hover: oklch(0.6 0.215 34.5);
+  --color-orange-foreground: oklch(1 0 0);
 
-  --color-teal: #00b9b4;
-  --color-blue: #0057bc;
-  --color-cta-blue: #0057bc;
-  --color-surface: #ffffff;
-  --color-muted-fg: #aaaaaa;
-  --color-line: #ddd3ca;
-  --color-beige: #ddd3ca;
-  --color-gray: #aaaaaa;
+  --color-teal: oklch(0.745 0.128 186);
+  --color-blue: oklch(0.55 0.15 250);
+  --color-cta-blue: oklch(0.55 0.22 250);
+  --color-surface: oklch(0.976 0.005 240);
+  --color-muted-fg: oklch(0.55 0.02 255);
+  --color-line: oklch(0.918 0.008 250);
 
-  --shadow-card: 0 1px 2px rgb(12 49 99 / 0.04), 0 8px 24px rgb(12 49 99 / 0.06);
-  --shadow-header: 0 1px 0 rgb(12 49 99 / 0.08);
+
+  --shadow-card: 0 1px 2px oklch(0.28 0.02 255 / 0.04), 0 8px 24px oklch(0.28 0.02 255 / 0.06);
+  --shadow-header: 0 1px 0 oklch(0.28 0.02 255 / 0.08);
 }
 
 @layer base {
@@ -112,6 +108,19 @@
   }
 }
 
+@utility btn-orange-to-outline {
+  @apply btn-base;
+  border: 1px solid var(--color-orange);
+  background-color: var(--color-orange);
+  color: var(--color-orange-foreground);
+
+  &:hover {
+    background-color: transparent;
+    color: var(--color-orange);
+    border-color: var(--color-orange);
+  }
+}
+
 @utility btn-orange-outline {
   @apply btn-base;
   border: 1px solid var(--color-orange);
@@ -121,17 +130,17 @@
   &:hover {
     border-color: var(--color-orange-hover);
     color: var(--color-orange-hover);
-    background-color: rgb(254 72 18 / 0.06);
+    background-color: oklch(0.655 0.226 34.5 / 0.06);
   }
 }
 
 @utility btn-outline-light {
   @apply btn-base;
-  border: 1px solid rgb(255 255 255 / 0.65);
-  color: #ffffff;
+  border: 1px solid oklch(1 0 0 / 0.65);
+  color: oklch(1 0 0);
 
   &:hover {
-    background-color: rgb(255 255 255 / 0.12);
+    background-color: oklch(1 0 0 / 0.12);
   }
 }
 
@@ -171,7 +180,7 @@
   gap: 0.5rem;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--color-blue);
+  color: var(--color-foreground);
   transition: color 0.2s ease;
 
   &:hover,
@@ -194,6 +203,44 @@
   }
 }
 
+/* Card category label — muted, as before */
+@utility card-kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted-fg);
+}
+
+@utility card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0077c8;
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-navy);
+  }
+
+  .card-link-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .card-link-arrow {
+    transform: translateX(0.2rem);
+  }
+
+  :dir(rtl) &:hover .card-link-arrow {
+    transform: translateX(-0.2rem);
+  }
+}
+
 @utility card-zoom-img {
   transform: scale(1);
   transform-origin: center;
@@ -206,12 +253,97 @@
   transition-delay: 0.15s;
 }
 
+/* Affiliate guide interactive cards */
+@utility guide-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card);
+    border-color: oklch(0.655 0.226 34.5 / 0.35);
+  }
+}
+
+@utility guide-glow {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  opacity: 0;
+  filter: blur(40px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .guide-glow {
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+@utility guide-accent {
+  display: block;
+  height: 2px;
+  width: 2rem;
+  transform-origin: left;
+  background-color: var(--color-orange);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .guide-accent {
+  transform: scaleX(2.2);
+}
+
+@utility guide-num {
+  transition:
+    color 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .guide-num {
+  color: var(--color-orange);
+  transform: translateY(-2px);
+}
+
+@keyframes guide-line-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@utility guide-process-line {
+  animation: guide-line-pulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-card:hover {
+    transform: none;
+  }
+
+  .guide-process-line {
+    animation: none;
+  }
+
+  .group:hover .guide-glow {
+    opacity: 0;
+    transform: none;
+  }
+}
+
 @utility eyebrow {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-blue);
+  color: var(--color-muted-fg);
 }
 
 @utility fade-up {
@@ -416,7 +548,7 @@
 }
 
 .group\/promo:hover .megamenu-promo-fade {
-  background-color: rgb(12 49 99 / 0.18);
+  background-color: oklch(0.263 0.076 257 / 0.18);
   transition-delay: 0.22s;
 }
 

@@ -1,4 +1,4 @@
-import networkImage from "@/assets/network-bg.png";
+import networkImage from "@/assets/network-bg.jpg";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 
 const GROUPS = [
@@ -7,12 +7,12 @@ const GROUPS = [
     items: [
       {
         title: "WBC Headquarters",
-        desc: "Paris-based global coordination",
+        desc: "Leadership, governance, and coordination in Paris",
         to: "/who-we-are" as const,
       },
       {
         title: "WBC Affiliates",
-        desc: "Country and city affiliate presence",
+        desc: "Official representatives in countries and cities",
         to: "/affiliates" as const,
       },
     ],
@@ -22,12 +22,12 @@ const GROUPS = [
     items: [
       {
         title: "Institutional Members",
-        desc: "Chambers, associations, and institutions",
+        desc: "Institutional, corporate, SME, and individual members",
         to: "/our-members" as const,
       },
       {
         title: "Partners",
-        desc: "Partnerships, joint initiatives & cooperation",
+        desc: "Partnerships, joint initiatives, and cooperation",
         to: "/global-network/strategic-partners" as const,
       },
     ],
@@ -38,7 +38,7 @@ export function MegaMenuNetwork({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <MegaMenuShell
       title="Global Network"
-      description="Headquarters, affiliates, institutional members, and strategic partners working as one coordinated network."
+      description="Headquarters, affiliates, members, and partners working as one collaborative global network."
       promo={{
         image: networkImage,
         alt: "Illuminated world map representing the WBC global network",

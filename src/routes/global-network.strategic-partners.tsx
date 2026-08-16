@@ -2,28 +2,22 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 import { OurPartners } from "@/components/OurPartners";
-import networkBg from "@/assets/affiliates-hero.jpg";
-import {
-  PARTNER_TYPES,
-  PARTNERSHIP_APPROACH,
-  PARTNERSHIP_OUTCOMES,
-  PARTNERSHIPS_INTRO,
-} from "@/content/partners";
+import networkBg from "@/assets/network-bg.jpg";
 
 export const Route = createFileRoute("/global-network/strategic-partners")({
   head: () => ({
     meta: [
-      { title: "Strategic Partners — World Business Council" },
+      { title: "Strategic Partnerships & Institutional Relations — World Business Council" },
       {
         name: "description",
         content:
           "WBC develops partnerships with chambers of commerce, NGOs, international organizations, governments, and private sector entities to enhance global cooperation and expand impact.",
       },
-      { property: "og:title", content: "Strategic Partnerships & Institutional Relations — WBC" },
+      { property: "og:title", content: "Strategic Partnerships — WBC" },
       {
         property: "og:description",
         content:
-          "Developing partnerships that strengthen global cooperation across institutions, governments, and the private sector.",
+          "Partner with WBC to strengthen international cooperation, trade, investment, and shared institutional impact.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,259 +26,162 @@ export const Route = createFileRoute("/global-network/strategic-partners")({
   component: StrategicPartners,
 });
 
-function PartnerIcon({ name }: { name: (typeof PARTNER_TYPES)[number]["icon"] }) {
-  const common = {
-    width: 22,
-    height: 22,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.6,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    "aria-hidden": true,
-  };
+const PARTNER_TYPES = [
+  {
+    title: "Chambers of Commerce",
+    body: "Collaborate with national and local chambers to connect member businesses with WBC programmes, trade initiatives, and cross-border opportunities.",
+  },
+  {
+    title: "NGOs",
+    body: "Work with non-governmental organizations on shared development goals, inclusive growth, and community-focused business cooperation.",
+  },
+  {
+    title: "International Organizations",
+    body: "Align with multilateral institutions to amplify dialogue on trade, investment, innovation, and sustainable economic cooperation.",
+  },
+  {
+    title: "Governments",
+    body: "Engage public-sector partners to support institutional dialogue, market access pathways, and policy-relevant business programmes.",
+  },
+  {
+    title: "Private Sector Entities",
+    body: "Partner with companies and enterprise groups to deliver joint initiatives, sponsorships, and practical commercial collaboration.",
+  },
+] as const;
 
-  switch (name) {
-    case "chamber":
-      return (
-        <svg {...common}>
-          <path d="M4 20V8l8-4 8 4v12" />
-          <path d="M9 20v-5h6v5M9 11h.01M15 11h.01M9 15h.01M15 15h.01" />
-        </svg>
-      );
-    case "ngo":
-      return (
-        <svg {...common}>
-          <path d="M12 21s-7-4.5-7-10a7 7 0 0114 0c0 5.5-7 10-7 10z" />
-          <circle cx="12" cy="11" r="2.5" />
-        </svg>
-      );
-    case "intl":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" />
-        </svg>
-      );
-    case "gov":
-      return (
-        <svg {...common}>
-          <path d="M4 20h16M6 20V10l6-4 6 4v10M9 14h6M9 17h6" />
-        </svg>
-      );
-    default:
-      return (
-        <svg {...common}>
-          <rect x="3" y="7" width="18" height="13" rx="1.5" />
-          <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M3 12h18" />
-        </svg>
-      );
-  }
-}
+const IMPACT = [
+  {
+    title: "Enhance global cooperation",
+    body: "Build trusted bridges between institutions, markets, and business communities across regions.",
+  },
+  {
+    title: "Expand shared impact",
+    body: "Combine networks, expertise, and programmes to deliver stronger outcomes than any partner could alone.",
+  },
+  {
+    title: "Advance institutional relations",
+    body: "Strengthen long-term relationships with public and private stakeholders through structured engagement.",
+  },
+  {
+    title: "Unlock practical opportunities",
+    body: "Translate partnerships into events, introductions, joint projects, and visible collaboration.",
+  },
+] as const;
+
+const FOCUS_AREAS = [
+  "Joint forums, conferences, and institutional dialogues",
+  "Trade, investment, and market-access programmes",
+  "Capacity building and professional development",
+  "Research, publications, and policy-relevant insights",
+  "Regional initiatives with affiliates and members",
+  "Co-branded campaigns and network visibility",
+] as const;
+
+const PROCESS = [
+  {
+    step: "01",
+    title: "Share priorities",
+    body: "Tell us your institutional goals, regions of focus, and the type of partnership you want to build.",
+  },
+  {
+    step: "02",
+    title: "Shape the collaboration",
+    body: "WBC aligns scope, roles, and deliverables so the partnership is practical, accountable, and mission-aligned.",
+  },
+  {
+    step: "03",
+    title: "Launch & grow",
+    body: "Activate joint activities, track outcomes, and expand cooperation across the WBC global network.",
+  },
+] as const;
 
 function StrategicPartners() {
   return (
     <>
       <SplitHero
-        eyebrow="Global Network"
-        title="Strategic Partners"
+        eyebrow="Strategic Partnerships & Institutional Relations"
+        title="Partner with WBC"
         description="Developing partnerships with chambers of commerce, NGOs, international organizations, governments, and private sector entities to enhance global cooperation and expand impact."
-        tags={["Institutional Relations", "Global Cooperation", "Shared Impact"]}
+        tags={["Chambers", "Institutions", "Private Sector"]}
         image={networkBg}
         imageAlt="Global cooperation network representing WBC strategic partnerships"
         ctaLabel="Partner with WBC"
         ctaTo="/contact"
       />
 
-      {/* Intro — split with ambient motion */}
-      <section className="relative overflow-hidden py-16 lg:py-24">
+      {/* Overview */}
+      <section className="relative overflow-hidden py-14 lg:py-20">
         <div
           className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
           aria-hidden="true"
         />
-        <div
-          className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-navy/10 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="container-wbc relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          <div>
-            <p data-reveal className="eyebrow">
-              {PARTNERSHIPS_INTRO.eyebrow}
-            </p>
-            <h2
-              data-reveal
-              className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]"
-            >
-              {PARTNERSHIPS_INTRO.title}
+        <div className="container-wbc relative grid items-start gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
+          <div data-reveal>
+            <p className="eyebrow">Our approach</p>
+            <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
+              Building institutional partnerships that create lasting cooperation
             </h2>
-            <span data-reveal className="accent-rule mt-5" />
-            <p data-reveal className="mt-6 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              {PARTNERSHIPS_INTRO.body}
+            <span className="accent-rule mt-6" />
+            <p className="mt-8 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+              Strategic Partnerships & Institutional Relations is how WBC connects with chambers of commerce, NGOs,
+              international organizations, governments, and private sector entities. Together, we enhance global
+              cooperation and expand shared impact across markets and communities.
             </p>
-            <div data-reveal className="mt-8">
-              <Link to="/contact" className="link-arrow">
-                Discuss a partnership
-                <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
-                  →
-                </span>
-              </Link>
-            </div>
+            <p className="mt-5 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+              Partnerships are designed to be practical and accountable — from joint programmes and institutional
+              dialogues to long-term collaboration that strengthens the WBC network worldwide.
+            </p>
           </div>
 
-          <div
-            data-reveal
-            className="group relative min-h-[280px] overflow-hidden rounded-card border border-line lg:min-h-[360px]"
-          >
-            <img
-              src={networkBg}
-              alt=""
-              width={1200}
-              height={900}
-              loading="lazy"
-              decoding="async"
-              className="card-zoom-img absolute inset-0 size-full object-cover"
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/35 to-transparent"
-              aria-hidden="true"
-            />
-            <div className="absolute inset-x-0 bottom-0 p-7 sm:p-9">
-              <p className="text-[12px] font-bold tracking-[0.18em] text-white/70 uppercase">Institutional reach</p>
-              <p className="mt-2 max-w-sm text-[20px] font-bold leading-snug text-white sm:text-[22px]">
-                Chambers, NGOs, governments, and enterprises — cooperating as one network.
-              </p>
-            </div>
-          </div>
+          <aside data-reveal className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8">
+            <span className="guide-glow -end-10 -top-10 size-36 bg-orange/20" aria-hidden="true" />
+            <p className="relative text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Why partner</p>
+            <ul className="relative mt-5 space-y-4">
+              {IMPACT.slice(0, 3).map((item) => (
+                <li key={item.title} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                  <p className="text-[16px] font-bold text-foreground">{item.title}</p>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-muted-fg">{item.body}</p>
+                </li>
+              ))}
+            </ul>
+            <Link to="/contact" className="btn-orange mt-7 relative inline-flex">
+              Start a partnership conversation
+            </Link>
+          </aside>
         </div>
       </section>
 
-      {/* Five pathways — interactive cards */}
-      <section className="relative overflow-hidden border-t border-line bg-surface/50 py-16 lg:py-24">
+      {/* Partner types */}
+      <section className="relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20">
         <div
-          className="pointer-events-none absolute end-[-10%] top-[-20%] size-[420px] rounded-full bg-orange/10 blur-3xl"
+          className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-navy/8 blur-3xl"
           aria-hidden="true"
         />
         <div className="container-wbc relative">
-          <div className="max-w-2xl">
-            <p data-reveal className="eyebrow">
-              Who we partner with
-            </p>
-            <h2
-              data-reveal
-              className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]"
-            >
-              Five partnership pathways
+          <div data-reveal className="max-w-2xl">
+            <p className="eyebrow">Who we partner with</p>
+            <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+              Five pillars of institutional partnership
             </h2>
-            <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-              Each pathway strengthens institutional relations and opens practical routes for international cooperation.
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+              WBC develops strategic relationships across public, private, and civil-society ecosystems.
             </p>
-            <span data-reveal className="accent-rule mt-6" />
+            <span className="accent-rule mt-6" />
           </div>
 
           <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {PARTNER_TYPES.map((p, i) => {
-              const featured = i === 0 || i === 3;
-              return (
-                <li key={p.title} className={i === 4 ? "sm:col-span-2 lg:col-span-1" : ""}>
-                  <article
-                    className={`group relative flex h-full flex-col overflow-hidden rounded-card p-6 transition-all duration-300 sm:p-7 ${
-                      featured
-                        ? "bg-navy text-white shadow-card hover:-translate-y-1 hover:shadow-lg"
-                        : "border border-line bg-background hover:-translate-y-1 hover:border-orange/35 hover:shadow-card"
-                    }`}
-                  >
-                    <span
-                      className={`pointer-events-none absolute -end-8 -top-8 size-28 rounded-full transition-transform duration-500 group-hover:scale-150 ${
-                        featured ? "bg-orange/25" : "bg-orange/10"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <div className="relative flex items-start justify-between gap-3">
-                      <span
-                        className={`inline-flex size-11 items-center justify-center transition-colors duration-300 ${
-                          featured
-                            ? "bg-white/10 text-white"
-                            : "bg-orange/10 text-foreground group-hover:bg-orange/15"
-                        }`}
-                      >
-                        <PartnerIcon name={p.icon} />
-                      </span>
-                      <span
-                        className={`font-display text-[24px] leading-none font-bold tabular-nums ${
-                          featured ? "text-white/25" : "text-orange/30"
-                        }`}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h3
-                      className={`relative mt-6 text-[18px] font-bold leading-snug sm:text-[19px] ${
-                        featured ? "text-white" : "text-foreground"
-                      }`}
-                    >
-                      {p.title}
-                    </h3>
-                    <p
-                      className={`relative mt-3 flex-1 text-[14px] leading-relaxed sm:text-[15px] ${
-                        featured ? "text-white/80" : "text-muted-fg"
-                      }`}
-                    >
-                      {p.body}
-                    </p>
-                    <span
-                      className={`relative mt-6 block h-0.5 w-8 origin-left transition-transform duration-300 group-hover:scale-x-150 ${
-                        featured ? "bg-orange" : "bg-navy"
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      {/* Outcomes */}
-      <section className="relative overflow-hidden border-t border-line py-16 lg:py-24">
-        <div
-          className="pointer-events-none absolute -start-16 bottom-0 size-[300px] rounded-full bg-teal/10 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="container-wbc relative">
-          <div className="mx-auto max-w-2xl text-center">
-            <p data-reveal className="eyebrow">
-              Why it matters
-            </p>
-            <h2
-              data-reveal
-              className="mt-3 text-[28px] font-bold leading-tight text-navy sm:text-[36px]"
-            >
-              What strategic partnerships deliver
-            </h2>
-            <span data-reveal className="accent-rule mx-auto mt-5" />
-          </div>
-
-          <ul data-reveal data-reveal-group className="mt-12 grid gap-5 md:grid-cols-3">
-            {PARTNERSHIP_OUTCOMES.map((o, i) => (
-              <li key={o.title}>
-                <article className="group relative h-full overflow-hidden rounded-card border border-line bg-background p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-lg sm:p-8">
-                  <span
-                    className="pointer-events-none absolute -end-10 -top-10 size-32 rounded-full bg-orange/10 transition-transform duration-500 group-hover:scale-150"
-                    aria-hidden="true"
-                  />
-                  <span className="relative inline-flex size-11 items-center justify-center bg-navy text-[13px] font-bold tabular-nums text-white transition-colors duration-300 group-hover:bg-orange">
+            {PARTNER_TYPES.map((p, i) => (
+              <li key={p.title} className={i === 3 || i === 4 ? "lg:col-span-1" : ""}>
+                <article className="group guide-card flex h-full flex-col border border-line bg-background p-6 sm:p-7">
+                  <span className="guide-glow -end-10 -top-10 size-28 bg-orange/20" aria-hidden="true" />
+                  <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="relative mt-5 text-[18px] font-bold text-navy transition-colors duration-300 group-hover:text-teal">
-                    {o.title}
+                  <h3 className="relative mt-4 text-[19px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
+                    {p.title}
                   </h3>
-                  <p className="relative mt-3 text-[15px] leading-relaxed text-muted-fg">{o.body}</p>
-                  <span
-                    className="relative mt-6 block h-0.5 w-8 origin-left bg-navy transition-transform duration-300 group-hover:scale-x-150"
-                    aria-hidden="true"
-                  />
+                  <p className="relative mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">{p.body}</p>
+                  <span className="guide-accent relative mt-6" aria-hidden="true" />
                 </article>
               </li>
             ))}
@@ -292,80 +189,175 @@ function StrategicPartners() {
         </div>
       </section>
 
-      {/* Approach — cinematic navy */}
-      <section className="relative isolate overflow-hidden bg-navy py-16 lg:py-24">
-        <div
-          className="pointer-events-none absolute -end-16 top-0 size-[360px] rounded-full bg-orange/20 blur-3xl"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -start-20 bottom-0 size-[300px] rounded-full bg-teal/15 blur-3xl"
-          aria-hidden="true"
-        />
-        {/* Soft orbit rings */}
-        <div
-          className="pointer-events-none absolute start-1/2 top-1/2 hidden size-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 lg:block"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute start-1/2 top-1/2 hidden size-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/5 lg:block"
-          aria-hidden="true"
-        />
-
-        <div className="container-wbc relative">
-          <div className="mx-auto max-w-2xl text-center">
-            <p data-reveal className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
-              How we work
-            </p>
-            <h2
-              data-reveal
-              className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px] lg:text-[42px]"
-            >
-              Partnership approach
+      {/* Impact + focus */}
+      <section className="border-t border-line py-14 lg:py-20">
+        <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
+          <div data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
+            <span className="guide-glow -end-10 -top-10 size-36 bg-navy/15" aria-hidden="true" />
+            <p className="relative eyebrow">Outcomes</p>
+            <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
+              Enhance cooperation. Expand impact.
             </h2>
-            <p data-reveal className="mt-4 text-[16px] leading-relaxed text-white/80">
-              From first conversation to shared delivery — a clear process that keeps institutional relations practical
-              and accountable.
+            <ul className="relative mt-8 space-y-5">
+              {IMPACT.map((item, i) => (
+                <li key={item.title} className="flex gap-4">
+                  <span className="font-display text-[13px] font-bold tabular-nums text-orange/55">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-[16px] font-bold text-foreground">{item.title}</p>
+                    <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">{item.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div data-reveal className="group relative overflow-hidden rounded-card bg-navy p-7 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-9">
+            <span
+              className="pointer-events-none absolute -end-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
+              aria-hidden="true"
+            />
+            <p className="relative text-[12px] font-bold tracking-[0.16em] text-white/60 uppercase">Focus areas</p>
+            <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">
+              Where partnerships create value
+            </h2>
+            <ul className="relative mt-8 space-y-3.5">
+              {FOCUS_AREAS.map((item) => (
+                <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-white/80">
+                  <svg
+                    className="mt-1 size-4 shrink-0 text-orange"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="relative isolate overflow-hidden border-t border-line bg-navy py-14 lg:py-20">
+        <div
+          className="pointer-events-none absolute -end-20 top-0 size-[360px] rounded-full bg-orange/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -start-16 bottom-0 size-[280px] rounded-full bg-teal/15 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="container-wbc relative">
+          <div data-reveal className="max-w-2xl">
+            <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">How it works</p>
+            <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">
+              From conversation to collaboration
+            </h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-white/75">
+              A clear pathway to build strategic partnerships and institutional relations with WBC.
             </p>
           </div>
 
-          <ol data-reveal data-reveal-group className="relative mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
+          <ol data-reveal data-reveal-group className="relative mt-12 grid gap-6 lg:grid-cols-3">
             <span
-              className="pointer-events-none absolute top-[2.75rem] start-[16%] end-[16%] hidden h-px bg-gradient-to-r from-transparent via-white/30 to-transparent md:block"
+              className="guide-process-line pointer-events-none absolute top-8 start-[16%] end-[16%] hidden h-px bg-gradient-to-r from-transparent via-orange/70 to-transparent lg:block"
               aria-hidden="true"
             />
-            {PARTNERSHIP_APPROACH.map((step) => (
+            {PROCESS.map((step) => (
               <li key={step.step}>
-                <article className="group relative h-full overflow-hidden rounded-card border border-white/15 bg-white/5 p-7 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:bg-white/10 sm:p-8">
+                <article className="group relative h-full overflow-hidden rounded-card border border-white/15 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-orange/40 hover:bg-white/10 sm:p-7">
                   <span
-                    className="pointer-events-none absolute -end-8 -top-8 size-28 rounded-full bg-orange/15 transition-transform duration-500 group-hover:scale-150"
+                    className="pointer-events-none absolute -end-8 -top-8 size-28 rounded-full bg-orange/0 transition-all duration-500 group-hover:scale-150 group-hover:bg-orange/25"
                     aria-hidden="true"
                   />
-                  <span className="relative inline-flex size-12 items-center justify-center bg-orange text-[15px] font-bold tabular-nums text-white shadow-[0_0_24px_rgba(255,106,0,0.35)] transition-transform duration-300 group-hover:scale-105">
+                  <span className="relative inline-flex size-12 items-center justify-center bg-orange text-[14px] font-bold tabular-nums text-white transition-transform duration-300 group-hover:scale-110">
                     {step.step}
                   </span>
-                  <h3 className="relative mt-6 text-[20px] font-bold text-white">{step.title}</h3>
+                  <h3 className="relative mt-5 text-[20px] font-bold text-white">{step.title}</h3>
                   <p className="relative mt-3 text-[15px] leading-relaxed text-white/75">{step.body}</p>
                 </article>
               </li>
             ))}
           </ol>
+        </div>
+      </section>
 
-          <div data-reveal className="mt-12 text-center">
-            <Link to="/contact" className="btn-orange">
-              Start a partnership conversation
-            </Link>
+      {/* Partner logos / network strip */}
+      <OurPartners />
+
+      {/* Closing CTA */}
+      <section className="border-t border-line py-14 lg:py-20">
+        <div className="container-wbc">
+          <div
+            data-reveal
+            className="group relative grid items-center gap-8 overflow-hidden rounded-card border border-line bg-background p-8 transition-shadow duration-500 hover:shadow-card sm:p-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12 lg:p-14"
+          >
+            <span
+              className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-50 bg-gradient-to-r from-orange via-orange/60 to-transparent transition-transform duration-700 group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+            <div>
+              <p className="eyebrow">Next step</p>
+              <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+                Ready to build a strategic partnership?
+              </h2>
+              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
+                If your chamber, NGO, international organization, government body, or private-sector entity wants to
+                expand cooperation with WBC, we invite you to start a conversation.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/contact" className="btn-orange">
+                  Partner with WBC
+                </Link>
+                <Link to="/global-network" className="btn-navy !rounded-md">
+                  Explore the network
+                </Link>
+              </div>
+            </div>
+            <div className="hidden border border-line bg-surface p-7 transition-colors duration-300 group-hover:border-orange/30 lg:block">
+              <p className="text-[12px] font-bold tracking-[0.14em] text-muted-fg uppercase">Related</p>
+              <ul className="mt-5 space-y-4">
+                <li>
+                  <Link to="/affiliates" className="card-link text-[15px]">
+                    WBC Affiliates
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/our-members" className="card-link text-[15px]">
+                    Institutional Members
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/what-we-do" className="card-link text-[15px]">
+                    What We Do
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      <OurPartners />
-
       <CTASection
-        title="Explore the wider network"
-        description="See how headquarters, affiliates, members, and partners work together."
-        ctaLabel="Global Network"
-        to="/global-network"
+        title="Strengthen global cooperation with WBC"
+        description="Connect with the WBC team to discuss strategic partnerships and institutional relations."
+        ctaLabel="Contact Us"
+        to="/contact"
       />
     </>
   );

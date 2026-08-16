@@ -1,7 +1,7 @@
-import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import eventsImg from "@/assets/news-paris.jpg";
+import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 import {
@@ -16,12 +16,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-function categoryFromHash(hash: string): string | "all" {
-  const id = hash.replace(/^#/, "");
-  if (id && EVENT_CATEGORIES.some((c) => c.id === id)) return id;
-  return "all";
-}
 
 function EventMetaRow({
   dateLabel,
@@ -105,7 +99,7 @@ function EventDetailModal({
 
               <div className="flex flex-col p-6 sm:p-8 lg:p-10">
                 {category ? (
-                  <p className="text-[12px] font-bold tracking-[0.16em] text-blue uppercase">{category.title}</p>
+                  <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
                 ) : null}
                 <div className={category ? "mt-3" : ""}>
                   <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
@@ -117,7 +111,7 @@ function EventDetailModal({
                 {event.registrationFee ? (
                   <dl className="mt-6">
                     <div className="rounded-card border border-line bg-surface px-4 py-3">
-                      <dt className="text-[11px] font-bold tracking-[0.14em] text-blue uppercase">Registration</dt>
+                      <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Registration</dt>
                       <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.registrationFee}</dd>
                     </div>
                   </dl>
@@ -183,8 +177,7 @@ function EventDetailModal({
                     </Link>
                   ) : null}
                   <Link
-                    to="/membership"
-                    hash="application"
+                    to="/become-a-member"
                     className="btn-base border border-line bg-background text-foreground hover:border-navy"
                     onClick={() => onOpenChange(false)}
                   >
@@ -201,14 +194,20 @@ function EventDetailModal({
 }
 
 function Events() {
-  const navigate = useNavigate();
-  const locationHash = useRouterState({ select: (s) => s.location.hash });
-  const [active, setActive] = useState<string | "all">(() => categoryFromHash(locationHash));
+  const [active, setActive] = useState<string | "all">("all");
   const [selected, setSelected] = useState<EventRecord | null>(null);
 
   useEffect(() => {
-    setActive(categoryFromHash(locationHash));
-  }, [locationHash]);
+    const applyHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (hash && EVENT_CATEGORIES.some((c) => c.id === hash)) {
+        setActive(hash);
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
 
   const filtered = useMemo(() => {
     if (active === "all") return EVENTS;
@@ -217,11 +216,11 @@ function Events() {
 
   function selectCategory(id: string | "all") {
     setActive(id);
-    void navigate({
-      to: "/events",
-      hash: id === "all" ? undefined : id,
-      replace: true,
-    });
+    if (id === "all") {
+      window.history.replaceState(null, "", window.location.pathname);
+    } else {
+      window.history.replaceState(null, "", `${window.location.pathname}#${id}`);
+    }
   }
 
   return (
@@ -329,8 +328,7 @@ function Events() {
         title="Join the WBC Community"
         description="Be the first to know about upcoming conferences, forums, and global business events."
         ctaLabel="Become a Member"
-        to="/membership"
-        hash="application"
+        to="/become-a-member"
       />
 
       <EventDetailModal

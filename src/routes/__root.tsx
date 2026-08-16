@@ -85,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "World Business Council" },
       {
         name: "description",
-        content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
       },
       { name: "application-name", content: "World Business Council" },
       { name: "theme-color", content: "#1a3a5c" },
@@ -93,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "World Business Council" },
       {
         property: "og:description",
-        content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: SITE_URL },
@@ -103,7 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "World Business Council" },
       {
         name: "twitter:description",
-        content: "Building a global network that empowers businesses through collaboration, innovation, and trust.",
+        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
       },
       { name: "twitter:image", content: OG_IMAGE },
     ],

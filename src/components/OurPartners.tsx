@@ -73,18 +73,18 @@ function Card({ partner }: { partner: Partner }) {
       {partner.logo ? (
         <img src={partner.logo} alt="" className="h-7 w-auto max-w-full object-contain sm:h-8" />
       ) : (
-        <span className="text-muted-fg/70 transition-colors duration-300 group-hover/partner:text-navy">
+        <span className="text-muted-fg/70">
           <Icon variant={partner.icon} />
         </span>
       )}
-      <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.1em] text-blue transition-colors duration-300 group-hover/partner:text-foreground sm:mt-8 sm:text-[13px] sm:tracking-[0.12em]">
+      <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.1em] text-muted-fg sm:mt-8 sm:text-[13px] sm:tracking-[0.12em]">
         {partner.label}
       </p>
     </>
   );
 
   const className =
-    "group/partner flex w-[148px] shrink-0 flex-col justify-between rounded-card border border-line bg-background px-3.5 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-orange/30 hover:shadow-card sm:w-[200px] sm:px-5 sm:py-5 lg:w-[220px] lg:px-6 lg:py-6";
+    "flex w-[148px] shrink-0 flex-col justify-between rounded-card border border-line bg-background px-3.5 py-4 transition-shadow duration-300 hover:shadow-card sm:w-[200px] sm:px-5 sm:py-5 lg:w-[220px] lg:px-6 lg:py-6";
 
   if (partner.href) {
     return (
@@ -122,8 +122,8 @@ function Row({
 
 function CopyCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="group rounded-card border border-line bg-surface/60 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-orange/30 hover:shadow-card sm:p-5">
-      <h3 className="text-[15px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy sm:text-[16px]">{title}</h3>
+    <div className="rounded-card border border-line bg-surface/60 p-4 sm:p-5 transition-shadow duration-300 hover:shadow-card">
+      <h3 className="text-[15px] font-bold text-foreground sm:text-[16px]">{title}</h3>
       <p className="mt-2 text-[14px] leading-relaxed text-muted-fg sm:text-[15px] sm:text-justify">{body}</p>
     </div>
   );
@@ -137,7 +137,7 @@ export function OurPartners() {
     <section className="overflow-x-clip border-t border-line py-12 sm:py-16 lg:py-24">
       <div className="container-wbc">
         <div className="min-w-0">
-          <p data-reveal className="text-[12px] font-bold uppercase tracking-[0.18em] text-blue sm:text-[13px]">
+          <p data-reveal className="text-[12px] font-bold uppercase tracking-[0.18em] text-muted-fg sm:text-[13px]">
             Growing Institutional Network
           </p>
           <h2

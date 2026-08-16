@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import eventsImg from "@/assets/events.jpg";
-import websitePromo from "@/assets/gov-assembly.jpg";
-import membershipImg from "@/assets/gov-secretariat.jpg";
+import forumImg from "@/assets/news-forum.jpg";
+import membershipImg from "@/assets/membership.jpg";
 import {
   ADVERTISING_ESSENTIALS,
   ADVERTISING_PACKAGES,
@@ -29,8 +29,8 @@ const OPPORTUNITIES = [
     title: "Digital & print features",
     body: "Reach members and partners through newsletters, web features, and campaign placements across the WBC network.",
     kicker: "Reach",
-    image: websitePromo,
-    alt: "WBC website and digital visibility placements",
+    image: forumImg,
+    alt: "International business forum stage and audience",
   },
   {
     title: "Partnership packages",
@@ -90,7 +90,7 @@ function AdvertisingDetailsModal({
                       <h4 className="text-[17px] font-bold text-foreground">{tier.name}</h4>
                       <p className="text-end">
                         <span className="block text-[20px] font-bold text-orange">{tier.price}</span>
-                        <span className="text-[12px] font-semibold tracking-[0.06em] text-blue uppercase">
+                        <span className="text-[12px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
                           {tier.period}
                         </span>
                       </p>
@@ -129,7 +129,7 @@ function AdvertisingDetailsModal({
             <dl className="mt-6 grid gap-4 sm:grid-cols-2">
               {ADVERTISING_ESSENTIALS.map((item) => (
                 <div key={item.label} className="rounded-card border border-line bg-background px-4 py-3.5">
-                  <dt className="text-[11px] font-bold tracking-[0.14em] text-blue uppercase">{item.label}</dt>
+                  <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">{item.label}</dt>
                   <dd className="mt-1.5 text-[14px] leading-relaxed text-foreground">{item.value}</dd>
                 </div>
               ))}
@@ -266,7 +266,7 @@ export function AdvertisingOpportunities() {
           <div className="relative flex flex-col justify-center border-line px-6 py-10 sm:px-10 lg:border-s lg:px-12 lg:py-14">
             <div className="mb-8 flex items-end justify-between gap-4">
               <div>
-                <p className="text-[12px] font-bold tracking-[0.18em] text-blue uppercase">Ways to partner</p>
+                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">Ways to partner</p>
                 <p className="mt-2 text-[15px] text-muted-fg">
                   <span className="font-bold text-foreground tabular-nums">
                     {String(index + 1).padStart(2, "0")}
@@ -313,7 +313,7 @@ export function AdvertisingOpportunities() {
                       <span className="font-display text-[56px] leading-none font-bold text-orange/25 tabular-nums sm:text-[72px]">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <p className="mt-4 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">{o.kicker}</p>
+                      <p className="mt-4 text-[12px] font-bold tracking-[0.18em] text-orange uppercase">{o.kicker}</p>
                       <h3 className="mt-2 text-[24px] font-bold tracking-tight text-foreground sm:text-[28px]">{o.title}</h3>
                       <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">{o.body}</p>
                     </article>

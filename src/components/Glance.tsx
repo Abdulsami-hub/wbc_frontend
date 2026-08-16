@@ -1,4 +1,4 @@
-import networkBg from "@/assets/hero-city.jpg";
+import networkBg from "@/assets/network-bg.jpg";
 
 const STATS = [
   { value: "2026", label: "Founded" },

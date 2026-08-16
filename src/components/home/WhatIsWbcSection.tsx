@@ -30,10 +30,8 @@ export function WhatIsWbcSection() {
                 international network, WBC turns connections into cooperation, ideas into action, and business
                 relationships into lasting opportunities for growth.
               </p>
-              <blockquote className="mt-6 border-s-2 border-orange/80 ps-5 text-[17px] font-semibold leading-relaxed text-foreground sm:text-[18px]">
-                “We believe that no business should have to grow alone—and that meaningful connections are built on trust.”
-              </blockquote>
               <p className="mt-6 text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+                We believe that no business should have to grow alone—and that meaningful connections are built on trust.
                 Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
                 move forward together. WBC works to create an environment where people and businesses can connect with
                 confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
@@ -94,7 +92,7 @@ export function WhatIsWbcSection() {
           {STATS.map((s) => (
             <div key={s.label} className="min-w-0">
               <dt className="text-[20px] font-bold text-foreground sm:text-[22px]">{s.value}</dt>
-              <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-blue uppercase sm:text-[12px]">
+              <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
                 {s.label}
               </dd>
             </div>
@@ -102,9 +100,9 @@ export function WhatIsWbcSection() {
         </dl>
 
         <div data-reveal className="mt-8">
-          <Link to="/who-we-are" className="link-arrow">
+          <Link to="/who-we-are" className="card-link">
             Learn more about WBC
-            <span aria-hidden="true" className="link-arrow-icon rtl-mirror">
+            <span aria-hidden="true" className="card-link-arrow rtl-mirror">
               →
             </span>
           </Link>
