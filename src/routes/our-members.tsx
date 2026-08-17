@@ -478,46 +478,48 @@ function OurMembers() {
     <>
       <section className="relative">
         <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
-        <div className="bg-orange lg:bg-transparent">
-          <div className="container-wbc py-16 lg:py-24">
-            <div className="max-w-xl">
-            <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Our Members</p>
-            <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
-              Discover the WBC Members Network
-            </h1>
-            <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              Explore member organizations and individuals across sectors, regions, and specialties to identify credible
-              partners and practical opportunities within the WBC ecosystem.
-            </p>
-            <ul className="intro-4 mt-10 flex flex-wrap gap-3">
-              {TAGS.map((t) => (
-                <li
-                  key={t}
-                  className="border border-white/60 px-5 py-2.5 text-[14px] font-semibold text-white"
+        <div className="lg:grid lg:grid-cols-2">
+          <div className="relative z-[1] flex items-center bg-orange lg:absolute lg:inset-y-0 lg:start-0 lg:w-1/2 lg:bg-transparent">
+            <div className="w-full px-5 py-12 sm:px-6 lg:py-8 lg:ps-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pe-10">
+              <div className="max-w-xl">
+                <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Our Members</p>
+                <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
+                  Discover the WBC Members Network
+                </h1>
+                <p className="intro-3 mt-5 max-w-lg text-[16px] leading-relaxed text-white/90">
+                  Explore member organizations and individuals across sectors, regions, and specialties to identify credible
+                  partners and practical opportunities within the WBC ecosystem.
+                </p>
+                <ul className="intro-4 mt-7 flex flex-wrap gap-3">
+                  {TAGS.map((t) => (
+                    <li
+                      key={t}
+                      className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href="#directory"
+                  className="intro-4 mt-6 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
                 >
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <a
-              href="#directory"
-              className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
-            >
-              Go to member profiles <span aria-hidden="true" className="rtl-mirror">→</span>
-            </a>
+                  Go to member profiles <span aria-hidden="true" className="rtl-mirror">→</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="hero-media-right bg-navy-deep">
-          <img
-            src={heroImg}
-            alt="WBC members networking at a global innovation summit"
-            width={1600}
-            height={974}
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover"
-          />
+          <div className="bg-white lg:col-start-2">
+            <img
+              src={heroImg}
+              alt="WBC members networking at a global innovation summit"
+              width={1600}
+              height={974}
+              fetchPriority="high"
+              decoding="async"
+              className="block h-auto w-full"
+            />
+          </div>
         </div>
       </section>
 
