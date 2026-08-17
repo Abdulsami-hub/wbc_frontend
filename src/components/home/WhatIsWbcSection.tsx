@@ -1,12 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { SectionHeading } from "@/components/SectionHeading";
 
-const STATS = [
-  { value: "Paris", label: "Global headquarters" },
-  { value: "2026", label: "Founded" },
-  { value: "Worldwide", label: "Council network" },
-] as const;
-
 export function WhatIsWbcSection() {
   return (
     <section className="border-t border-line bg-surface/30 py-16 lg:py-24">
@@ -84,20 +78,6 @@ export function WhatIsWbcSection() {
             </article>
           </div>
         </div>
-
-        <dl
-          data-reveal
-          className="mt-10 grid grid-cols-3 gap-4 rounded-card border border-line bg-background px-5 py-6 sm:gap-6 sm:px-8 sm:py-7 lg:max-w-xl"
-        >
-          {STATS.map((s) => (
-            <div key={s.label} className="min-w-0">
-              <dt className="text-[20px] font-bold text-foreground sm:text-[22px]">{s.value}</dt>
-              <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
-                {s.label}
-              </dd>
-            </div>
-          ))}
-        </dl>
 
         <div data-reveal className="mt-8">
           <Link to="/who-we-are" className="card-link">

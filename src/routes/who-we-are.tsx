@@ -169,7 +169,7 @@ function WhoWeAre() {
   return (
     <>
       <section className="grid items-stretch lg:grid-cols-2">
-        <div className="flex items-center bg-orange px-6 py-16 sm:px-10 lg:py-24">
+        <div className="flex items-center bg-navy px-6 py-16 sm:px-10 lg:py-24">
           <div className="mx-auto w-full max-w-xl">
             <nav aria-label="Breadcrumb" className="intro-1 mb-6 text-[14px] text-white/80">
               <ol className="flex flex-wrap items-center gap-2">

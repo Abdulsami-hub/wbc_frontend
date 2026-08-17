@@ -35,6 +35,7 @@ function BecomeAMember() {
         tags={["Online Application", "Annual Fees", "3 Working Days"]}
         image={membershipImg}
         imageAlt="Business professionals shaking hands during a membership meeting"
+        tone="orange"
         ctaLabel="View Benefits"
         ctaTo="/membership/benefits"
       />

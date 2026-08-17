@@ -35,6 +35,7 @@ function MembershipBenefits() {
         tags={["Annual Payment", "Global Network", "Member Access"]}
         image={membershipImg}
         imageAlt="Business professionals networking at a WBC membership event"
+        tone="blue"
         ctaLabel="Become a Member"
         ctaTo="/become-a-member"
       />

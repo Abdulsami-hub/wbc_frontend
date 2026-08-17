@@ -164,6 +164,7 @@ function AffiliateGuide() {
         tags={["Country Affiliates", "City Affiliates", "Accreditation"]}
         image={networkBg}
         imageAlt="Global network map representing WBC affiliate development"
+        tone="blue"
         ctaLabel="Fill the Application Form"
         ctaTo="/contact"
       />
@@ -206,10 +207,10 @@ function AffiliateGuide() {
                   <li key={item.id}>
                     <a
                       href={`#${item.id}`}
-                      className="group flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-medium text-foreground transition-all duration-300 hover:bg-background hover:text-[#0077c8] hover:ps-3"
+                      className="group flex items-center gap-2 rounded-md px-2 py-2 text-[14px] font-medium text-foreground transition-all duration-300 hover:bg-background hover:text-[#0d67c2] hover:ps-3"
                     >
                       <span
-                        className="h-px w-0 bg-[#0077c8] transition-all duration-300 group-hover:w-3"
+                        className="h-px w-0 bg-[#0d67c2] transition-all duration-300 group-hover:w-3"
                         aria-hidden="true"
                       />
                       {item.label}
@@ -525,7 +526,7 @@ function AffiliateGuide() {
               <ul className="mt-5 space-y-4">
                 <li>
                   <Link to="/affiliates" className="card-link text-[15px]">
-                    View affiliate footprint
+              View affiliate footprint
                     <span aria-hidden="true" className="card-link-arrow rtl-mirror">
                       →
                     </span>
@@ -545,7 +546,7 @@ function AffiliateGuide() {
                     <span aria-hidden="true" className="card-link-arrow rtl-mirror">
                       →
                     </span>
-                  </Link>
+            </Link>
                 </li>
               </ul>
             </div>

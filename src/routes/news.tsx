@@ -30,6 +30,7 @@ function NewsPage() {
         tags={["Network", "Markets", "Programmes"]}
         image={newsForum}
         imageAlt="Delegates at a WBC forum"
+        tone="navy"
         ctaLabel="Contact the Team"
         ctaTo="/contact"
       />

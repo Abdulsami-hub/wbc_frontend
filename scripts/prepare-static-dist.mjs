@@ -54,11 +54,7 @@ if (!existsSync(join(staging, "index.html"))) {
       content="Building a global network that empowers businesses through collaboration, innovation, and trust."
     />
     <meta name="theme-color" content="#1a3a5c" />
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="256x256" />
-    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:site_name" content="World Business Council" />
     <meta property="og:title" content="World Business Council" />
@@ -93,7 +89,19 @@ if (!existsSync(join(staging, "index.html"))) {
 
 writeFileSync(
   join(staging, "vercel.json"),
-  `${JSON.stringify({ rewrites: [{ source: "/(.*)", destination: "/index.html" }] }, null, 2)}\n`,
+  `${JSON.stringify(
+    {
+      headers: [
+        {
+          source: "/assets/(.*)",
+          headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+        },
+      ],
+      rewrites: [{ source: "/((?!assets/).*)", destination: "/index.html" }],
+    },
+    null,
+    2,
+  )}\n`,
 );
 
 rmSync(dist, { recursive: true, force: true });

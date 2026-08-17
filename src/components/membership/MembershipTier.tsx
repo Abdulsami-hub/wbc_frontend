@@ -49,21 +49,27 @@ function TierIcon({ name }: { name: string }) {
   }
 }
 
-export function MembershipTier() {
+export function MembershipTier({ showClosing = true, className = "" }: { showClosing?: boolean; className?: string }) {
   return (
     <>
-      <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+      <ul data-reveal data-reveal-group className={`grid gap-5 sm:grid-cols-2 xl:grid-cols-5 xl:gap-4 ${className}`}>
         {MEMBERSHIP_TIERS.map((t, i) => {
           const featured = i === 0 || i === 2;
           return (
             <li key={t.title}>
               <article
-                className={`group relative flex h-full flex-col overflow-hidden rounded-card p-6 transition-all duration-300 sm:p-7 ${
+                className={`group relative flex h-full flex-col overflow-hidden rounded-card p-6 transition-all duration-500 ease-out sm:p-7 ${
                   featured
-                    ? "bg-navy text-white shadow-card hover:-translate-y-1 hover:shadow-lg"
-                    : "border border-line bg-background hover:-translate-y-1 hover:border-orange/35 hover:shadow-card"
+                    ? "bg-navy text-white shadow-card hover:-translate-y-1.5 hover:shadow-lg"
+                    : "border border-line bg-background hover:-translate-y-1.5 hover:border-orange/35 hover:shadow-card"
                 }`}
               >
+                <span
+                  className={`absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100 ${
+                    featured ? "bg-orange" : "bg-navy"
+                  }`}
+                  aria-hidden="true"
+                />
                 <span
                   className={`pointer-events-none absolute -end-8 -top-8 size-28 rounded-full transition-transform duration-500 group-hover:scale-150 ${
                     featured ? "bg-orange/25" : "bg-orange/10"
@@ -114,10 +120,12 @@ export function MembershipTier() {
           );
         })}
       </ul>
-      <p data-reveal className="mx-auto mt-10 max-w-3xl text-center text-[15px] leading-relaxed text-muted-fg">
-        No matter your size or industry, WBC membership opens doors to unparalleled opportunities for growth,
-        collaboration, and success of your businesses.
-      </p>
+      {showClosing ? (
+        <p data-reveal className="mx-auto mt-10 max-w-3xl text-center text-[15px] leading-relaxed text-muted-fg">
+          No matter your size or industry, WBC membership opens doors to unparalleled opportunities for growth,
+          collaboration, and success of your businesses.
+        </p>
+      ) : null}
     </>
   );
 }

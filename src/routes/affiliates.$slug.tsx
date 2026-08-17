@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getAffiliate } from "@/content/affiliates";
+import { getAffiliate, type AffiliateProfile } from "@/content/affiliates";
 import { CTASection } from "@/components/CTASection";
+import { AffiliateLocationProfile } from "@/components/affiliates/AffiliateLocationProfile";
+import { AffiliateSkyline } from "@/components/affiliates/AffiliateSkyline";
 
 export const Route = createFileRoute("/affiliates/$slug")({
   loader: ({ params }) => {
@@ -9,15 +11,16 @@ export const Route = createFileRoute("/affiliates/$slug")({
     return { affiliate };
   },
   head: ({ loaderData }) => {
-    const name = loaderData?.affiliate.name ?? "Affiliate";
+    const a = loaderData?.affiliate;
+    const titleName = a?.kind === "city" ? `${a.name}, ${a.countryName}` : (a?.name ?? "Affiliate");
     return {
       meta: [
-        { title: `${name} — WBC Affiliates` },
+        { title: `${titleName} — WBC Affiliates` },
         {
           name: "description",
-          content: `WBC affiliate profile for ${name}: status, region, and how to connect with the World Business Council network.`,
+          content: `WBC affiliate profile for ${titleName}: location briefing, services, officers, media, and contact details.`,
         },
-        { property: "og:title", content: `${name} — WBC Affiliates` },
+        { property: "og:title", content: `${titleName} — WBC Affiliates` },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary_large_image" },
       ],
@@ -28,154 +31,25 @@ export const Route = createFileRoute("/affiliates/$slug")({
 
 function AffiliateProfilePage() {
   const { affiliate } = Route.useLoaderData();
-  const isActive = affiliate.kind !== "region" && affiliate.status === "active";
 
   return (
     <>
-      <section className="border-b border-line bg-surface py-14 lg:py-20">
-        <div className="container-wbc">
-          <nav aria-label="Breadcrumb" className="text-[14px] text-muted-fg">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link to="/" className="hover:text-foreground">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li>
-                <Link to="/affiliates" className="hover:text-foreground">
-                  Affiliates
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li className="font-semibold text-foreground">{affiliate.name}</li>
-            </ol>
-          </nav>
+      {affiliate.kind === "region" ? <RegionProfile affiliate={affiliate} /> : <AffiliateLocationProfile affiliate={affiliate} />}
 
-          {affiliate.kind !== "region" ? (
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <span
-                className={`rounded-card border px-3 py-1.5 text-[13px] font-semibold tracking-[0.12em] uppercase ${
-                  isActive ? "border-teal/55 bg-teal/10 text-teal" : "border-line bg-background text-muted-fg"
-                }`}
-              >
-                {isActive ? "Active" : "Inactive"}
-              </span>
-              <span className="text-[14px] text-muted-fg">{affiliate.region}</span>
-            </div>
-          ) : null}
-
-          <h1 className="mt-5 text-[34px] font-bold leading-tight text-foreground sm:text-5xl">
-            {affiliate.kind === "city" ? `${affiliate.name}, ${affiliate.countryName}` : affiliate.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-            {affiliate.kind === "region"
-              ? `Explore WBC affiliate presence across ${affiliate.name}: countries, cities, and engagement status.`
-              : affiliate.kind === "country"
-                ? `WBC country affiliate presence in ${affiliate.name}, connecting local institutions and businesses with the global network.`
-                : `WBC city affiliate presence in ${affiliate.name}, supporting local engagement within ${affiliate.countryName}.`}
+      <section className="border-t border-line bg-surface py-12 lg:py-16">
+        <div className="container-wbc flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-xl text-[15px] leading-relaxed text-muted-fg">
+            Interested in establishing or updating this affiliate profile? Contact headquarters or review the
+            establishment guide.
           </p>
-        </div>
-      </section>
-
-      <section className="py-14 lg:py-20">
-        <div className="container-wbc grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <div data-reveal className="rounded-card border border-line bg-background p-7 shadow-card sm:p-10">
-            <h2 className="text-[22px] font-bold text-foreground">About this affiliate</h2>
-            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-              Affiliates help WBC maintain local presence while coordinating with Paris headquarters on membership
-              pathways, events, and institutional cooperation.{" "}
-              {affiliate.kind === "region"
-                ? `Browse countries and cities across ${affiliate.name} using the links below, or return to the main affiliates page to explore all regions.`
-                : isActive
-                  ? "This location is currently marked as active within the network footprint."
-                  : "This location is currently marked as inactive and remains listed for network continuity."}
-            </p>
-
-            {affiliate.kind === "region" && affiliate.countries.length > 0 && (
-              <div className="mt-8">
-                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-muted-fg uppercase">Countries</h3>
-                <ul className="mt-4 flex flex-wrap gap-3">
-                  {affiliate.countries.map((country) => (
-                    <li key={country.slug}>
-                      <Link
-                        to="/affiliates/$slug"
-                        params={{ slug: country.slug }}
-                        className={`inline-flex rounded-card border px-4 py-2 text-[15px] font-semibold transition-colors ${
-                          country.status === "active"
-                            ? "border-teal/55 text-teal hover:bg-teal/5"
-                            : "border-line text-muted-fg hover:border-muted-fg/40"
-                        }`}
-                      >
-                        {country.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/affiliates" className="link-arrow mt-8">
-                  ← Back to all regions
-                </Link>
-              </div>
-            )}
-
-            {affiliate.kind === "country" && affiliate.cities.length > 0 && (
-              <div className="mt-8">
-                <h3 className="text-[15px] font-semibold tracking-[0.14em] text-muted-fg uppercase">Cities</h3>
-                <ul className="mt-4 flex flex-wrap gap-3">
-                  {affiliate.cities.map((city) => (
-                    <li key={city.slug}>
-                      <Link
-                        to="/affiliates/$slug"
-                        params={{ slug: city.slug }}
-                        className={`inline-flex rounded-card border px-4 py-2 text-[15px] font-semibold transition-colors ${
-                          city.status === "active"
-                            ? "border-teal/55 text-teal hover:bg-teal/5"
-                            : "border-line text-muted-fg hover:border-muted-fg/40"
-                        }`}
-                      >
-                        {city.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {affiliate.kind === "city" && (
-              <p className="mt-6 text-[15px] text-muted-fg">
-                Country profile:{" "}
-                <Link
-                  to="/affiliates/$slug"
-                  params={{ slug: affiliate.countrySlug }}
-                  className="font-semibold text-foreground underline underline-offset-4"
-                >
-                  {affiliate.countryName}
-                </Link>
-              </p>
-            )}
-
-            {affiliate.kind !== "region" ? (
-              <Link to="/affiliates" className="link-arrow mt-8">
-                ← Back to affiliates
-              </Link>
-            ) : null}
+          <div className="flex flex-wrap gap-3">
+            <Link to="/contact" className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]">
+              Fill the Application Form
+            </Link>
+            <Link to="/affiliate-guide" className="btn-base border border-line bg-background text-foreground hover:border-navy">
+              Establishment Guide
+            </Link>
           </div>
-
-          <aside data-reveal className="rounded-card border border-line bg-surface p-7 sm:p-8">
-            <h2 className="text-[18px] font-bold text-foreground">Connect with WBC</h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">
-              Interested in establishing or reactivating affiliate presence? Contact the team or review the establishment
-              guide.
-            </p>
-            <div className="mt-6 flex flex-col gap-3">
-              <Link to="/contact" className="btn-orange">
-                Fill the Application Form
-              </Link>
-              <Link to="/affiliate-guide" className="text-[15px] font-semibold text-foreground underline underline-offset-4">
-                Affiliate Establishment Guide
-              </Link>
-            </div>
-          </aside>
         </div>
       </section>
 
@@ -185,6 +59,83 @@ function AffiliateProfilePage() {
         ctaLabel="Become a Member"
         to="/become-a-member"
       />
+    </>
+  );
+}
+
+function RegionProfile({
+  affiliate,
+}: {
+  affiliate: Extract<AffiliateProfile, { kind: "region" }>;
+}) {
+  return (
+    <>
+      <section className="relative isolate overflow-hidden min-h-[70vh]">
+        <div className="absolute inset-0" aria-hidden="true">
+          <AffiliateSkyline label={affiliate.name} />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-navy/20" />
+        </div>
+        <div className="container-wbc relative flex min-h-[70vh] flex-col justify-end py-16 lg:py-20">
+          <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/70">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link to="/" className="hover:text-white">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>
+                <Link to="/affiliates" className="hover:text-white">
+                  Affiliates
+                </Link>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li className="font-semibold text-white">{affiliate.name}</li>
+            </ol>
+          </nav>
+          <p className="intro-2 mt-8 text-[12px] font-semibold tracking-[0.22em] text-white/70 uppercase">Region</p>
+          <h1 className="intro-2 mt-3 text-[42px] font-extrabold leading-[0.95] text-white sm:text-[58px] lg:text-[68px]">
+            {affiliate.name}
+          </h1>
+          <p className="intro-3 mt-5 max-w-2xl text-[17px] leading-relaxed text-white/85">{affiliate.blurb}</p>
+        </div>
+      </section>
+
+      <section className="py-14 lg:py-20">
+        <div className="container-wbc">
+          <div data-reveal className="max-w-2xl">
+            <p className="eyebrow">Countries</p>
+            <h2 className="mt-3 text-[28px] font-bold text-foreground sm:text-[36px]">Affiliate presence</h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+              Open a country or city profile for location briefing, services, officers, media, and contact details.
+            </p>
+          </div>
+          <ul data-reveal data-reveal-group className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {affiliate.countries.map((country) => (
+              <li key={country.slug}>
+                <Link
+                  to="/affiliates/$slug"
+                  params={{ slug: country.slug }}
+                  className="group flex h-full items-center justify-between rounded-card border border-line bg-background px-5 py-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:shadow-lg"
+                >
+                  <span>
+                    <span className="block text-[17px] font-bold text-foreground">{country.name}</span>
+                    <span className="mt-1 block text-[12px] font-semibold tracking-[0.12em] text-muted-fg uppercase">
+                      {country.status === "active" ? "Active" : "Inactive"} · {country.cities.length} cities
+                    </span>
+                  </span>
+                  <span className="text-orange transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link to="/affiliates" className="link-arrow mt-10">
+            ← Back to all regions
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

@@ -39,6 +39,7 @@ function EventMetaRow({
 }
 
 export const Route = createFileRoute("/events/")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Events — World Business Council" },
@@ -86,18 +87,7 @@ function EventDetailModal({
               <DialogDescription>{event.summary}</DialogDescription>
             </DialogHeader>
 
-            <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
-              <div className="relative min-h-[240px] bg-navy-deep lg:min-h-full">
-                <img
-                  src={event.image}
-                  alt=""
-                  width={1200}
-                  height={900}
-                  className="absolute inset-0 size-full object-cover"
-                />
-              </div>
-
-              <div className="flex flex-col p-6 sm:p-8 lg:p-10">
+            <div className="p-6 sm:p-8 lg:p-10">
                 {category ? (
                   <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
                 ) : null}
@@ -184,7 +174,6 @@ function EventDetailModal({
                     Become a Member
                   </Link>
                 </div>
-              </div>
             </div>
           </>
         ) : null}
@@ -232,6 +221,7 @@ function Events() {
         tags={["Forums", "Networking", "Trade Missions"]}
         image={eventsImg}
         imageAlt="Delegates attending an international WBC business forum"
+        tone="orange"
         ctaLabel="Get Event Updates"
         ctaTo="/contact"
       />
@@ -304,7 +294,7 @@ function Events() {
                       <button
                         type="button"
                         onClick={() => setSelected(event)}
-                        className="mt-6 inline-flex cursor-pointer items-center gap-2 text-[16px] font-bold text-foreground"
+                        className="mt-6 inline-flex cursor-pointer items-center gap-2 text-[16px] font-bold text-blue transition-colors hover:text-blue/80"
                       >
                         View details
                         <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">

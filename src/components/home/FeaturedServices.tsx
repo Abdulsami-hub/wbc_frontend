@@ -58,7 +58,11 @@ export function FeaturedServices() {
           description="Six selected services from our full programme of activities supporting businesses worldwide."
         />
 
-        <ul data-reveal data-reveal-group className="mt-10 grid gap-6 lg:grid-cols-2">
+        <ul
+          data-reveal
+          data-reveal-group
+          className="service-card-grid mt-10 grid items-stretch gap-6 overflow-visible lg:grid-cols-2"
+        >
           {SERVICES.map((s, i) => (
             <ServiceCard
               key={s.title}

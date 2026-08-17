@@ -105,6 +105,7 @@ function StrategicPartners() {
         tags={["Chambers", "Institutions", "Private Sector"]}
         image={networkBg}
         imageAlt="Global cooperation network representing WBC strategic partnerships"
+        tone="blue"
         ctaLabel="Partner with WBC"
         ctaTo="/contact"
       />

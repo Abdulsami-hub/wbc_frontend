@@ -118,7 +118,7 @@ function WhatWeDo() {
     <>
       {/* Split hero */}
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
+        <div className="bg-teal px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
           <div className="mx-auto max-w-xl">
             <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">What We Do</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
@@ -157,7 +157,7 @@ function WhatWeDo() {
       {/* Service portfolio */}
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
-          <div className="rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
+          <div className="overflow-visible rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <div data-reveal className="flex items-start justify-between gap-6">
               <div>
                 <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Service Portfolio</p>
@@ -176,7 +176,11 @@ function WhatWeDo() {
 
             <hr className="mt-10 border-line" />
 
-            <ul data-reveal data-reveal-group className="mt-10 grid gap-6 lg:grid-cols-2">
+            <ul
+              data-reveal
+              data-reveal-group
+              className="service-card-grid mt-10 grid items-stretch gap-6 overflow-visible lg:grid-cols-2"
+            >
               {PILLARS.map((p, i) => (
                 <ServiceCard
                   key={p.title}

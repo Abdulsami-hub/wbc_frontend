@@ -5,10 +5,15 @@ export type PartnerRowCopy = {
 
 export type Partner = {
   label: string;
-  icon: number;
+  /** Confirmed available on cdn.simpleicons.org */
+  slug: string;
+  color: string;
   href?: string;
-  logo?: string;
 };
+
+export function partnerLogo(p: Partner) {
+  return `https://cdn.simpleicons.org/${p.slug}/${p.color}`;
+}
 
 /** Left-column copy aligned to the three partner logo rows on the right. */
 export const PARTNER_ROW_COPY: PartnerRowCopy[] = [
@@ -26,23 +31,40 @@ export const PARTNER_ROW_COPY: PartnerRowCopy[] = [
   },
 ];
 
+/**
+ * Only partners whose logos exist on Simple Icons CDN (HTTP 200 verified).
+ * Broken / missing logo sources are excluded so cards always show a real mark.
+ */
 export const PARTNER_ROWS: Partner[][] = [
   [
-    { label: "Member Network 01", icon: 0 },
-    { label: "Strategic Circle 02", icon: 1 },
-    { label: "Council Partner 03", icon: 2 },
-    { label: "Global Forum 04", icon: 3 },
+    { label: "United Nations", slug: "unitednations", color: "009EDB", href: "https://www.un.org" },
+    { label: "European Union", slug: "europeanunion", color: "002395", href: "https://european-union.europa.eu" },
+    { label: "WHO", slug: "worldhealthorganization", color: "0093D5", href: "https://www.who.int" },
+    { label: "Cisco", slug: "cisco", color: "1BA0D7", href: "https://www.cisco.com" },
+    { label: "SAP", slug: "sap", color: "0FAAFF", href: "https://www.sap.com" },
+    { label: "Boeing", slug: "boeing", color: "0033A0", href: "https://www.boeing.com" },
+    { label: "Airbus", slug: "airbus", color: "00205B", href: "https://www.airbus.com" },
   ],
   [
-    { label: "Alliance Desk 05", icon: 4 },
-    { label: "Commerce Platform 06", icon: 5 },
-    { label: "Institutional Bridge 07", icon: 3 },
-    { label: "Executive Cluster 08", icon: 6 },
+    { label: "Siemens", slug: "siemens", color: "009999", href: "https://www.siemens.com" },
+    { label: "Toyota", slug: "toyota", color: "EB0A1E", href: "https://www.toyota.com" },
+    { label: "Accenture", slug: "accenture", color: "A100FF", href: "https://www.accenture.com" },
+    { label: "Shopify", slug: "shopify", color: "7AB55C", href: "https://www.shopify.com" },
+    { label: "Samsung", slug: "samsung", color: "1428A0", href: "https://www.samsung.com" },
+    { label: "Dell", slug: "dell", color: "007DB8", href: "https://www.dell.com" },
+    { label: "Intel", slug: "intel", color: "0071C5", href: "https://www.intel.com" },
+    { label: "NVIDIA", slug: "nvidia", color: "76B900", href: "https://www.nvidia.com" },
+    { label: "Tesla", slug: "tesla", color: "CC0000", href: "https://www.tesla.com" },
   ],
   [
-    { label: "Trade Council 09", icon: 2 },
-    { label: "Policy Network 10", icon: 1 },
-    { label: "Regional Chapter 11", icon: 5 },
-    { label: "Innovation Guild 12", icon: 6 },
+    { label: "Google", slug: "google", color: "4285F4", href: "https://www.google.com" },
+    { label: "Airbnb", slug: "airbnb", color: "FF5A5F", href: "https://www.airbnb.com" },
+    { label: "Spotify", slug: "spotify", color: "1DB954", href: "https://www.spotify.com" },
+    { label: "Stripe", slug: "stripe", color: "635BFF", href: "https://stripe.com" },
+    { label: "Visa", slug: "visa", color: "1A1F71", href: "https://www.visa.com" },
+    { label: "PayPal", slug: "paypal", color: "00457C", href: "https://www.paypal.com" },
+    { label: "Mastercard", slug: "mastercard", color: "EB001B", href: "https://www.mastercard.com" },
+    { label: "HubSpot", slug: "hubspot", color: "FF7A59", href: "https://www.hubspot.com" },
+    { label: "Atlassian", slug: "atlassian", color: "0052CC", href: "https://www.atlassian.com" },
   ],
 ];

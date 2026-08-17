@@ -134,7 +134,7 @@ function Governance() {
     <>
       {/* Split hero */}
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
+        <div className="bg-navy px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
           <div className="mx-auto max-w-xl">
             <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Governance</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">

@@ -66,7 +66,7 @@ export function MegaMenuShell({
               to={promo.to}
               {...(promo.hash ? { hash: promo.hash } : {})}
               {...(promo.onNavigate ? { onClick: promo.onNavigate } : {})}
-              className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-foreground transition-[color,transform] duration-500 ease-out delay-0 group-hover/promo:text-navy group-hover/promo:delay-300"
+              className="mt-4 inline-flex items-center gap-2 text-[15px] font-semibold text-blue transition-[color,transform] duration-500 ease-out delay-0 hover:text-navy group-hover/promo:text-blue group-hover/promo:delay-300"
             >
               {promo.cta}
               <span
@@ -96,7 +96,7 @@ export function MegaMenuGroup({
 }) {
   return (
     <div className="megamenu-col" style={{ animationDelay: `${delayMs}ms` }}>
-      <p className="text-[11px] font-bold tracking-[0.18em] text-muted-fg uppercase">{label}</p>
+      <p className="px-3 text-[11px] font-bold tracking-[0.18em] text-muted-fg uppercase">{label}</p>
       <ul className="mt-4 space-y-1.5">
         {items.map((it) => (
           <li key={`${it.to}-${it.hash ?? it.title}`}>

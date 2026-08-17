@@ -14,6 +14,7 @@ export default defineConfig({
   // Static `dist/` hosting — skip Nitro SSR package layout (.output/public + server)
   nitro: false,
   vite: {
+    base: "/",
     build: {
       outDir: "dist",
       emptyOutDir: true,

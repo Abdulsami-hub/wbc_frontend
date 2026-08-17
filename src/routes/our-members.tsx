@@ -1,5 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { CTASection } from "@/components/CTASection";
+import { MembershipTypesSection } from "@/components/membership/MembershipTypesSection";
+
+const MEMBERS_GRID_LIMIT = 20;
+
+function memberLogo(slug: string, color: string) {
+  return `https://cdn.simpleicons.org/${slug}/${color}`;
+}
 
 export const Route = createFileRoute("/our-members")({
   head: () => ({
@@ -46,29 +55,29 @@ const CATEGORIES: Category[] = [
     kind: "org",
     members: [
       {
-        name: "International Chamber of Commerce",
-        logo: "https://logo.clearbit.com/iccwbo.org",
-        href: "https://iccwbo.org",
+        name: "United Nations",
+        logo: memberLogo("unitednations", "009EDB"),
+        href: "https://www.un.org",
       },
       {
-        name: "World Trade Organization",
-        logo: "https://logo.clearbit.com/wto.org",
-        href: "https://www.wto.org",
+        name: "European Union",
+        logo: memberLogo("europeanunion", "002395"),
+        href: "https://european-union.europa.eu",
       },
       {
-        name: "OECD",
-        logo: "https://logo.clearbit.com/oecd.org",
-        href: "https://www.oecd.org",
+        name: "World Health Organization",
+        logo: memberLogo("worldhealthorganization", "0093D5"),
+        href: "https://www.who.int",
       },
       {
-        name: "UN Global Compact",
-        logo: "https://logo.clearbit.com/unglobalcompact.org",
-        href: "https://www.unglobalcompact.org",
+        name: "UNICEF",
+        logo: memberLogo("unicef", "1CABE2"),
+        href: "https://www.unicef.org",
       },
       {
-        name: "World Bank Group",
-        logo: "https://logo.clearbit.com/worldbank.org",
-        href: "https://www.worldbank.org",
+        name: "International Red Cross",
+        logo: memberLogo("redcross", "ED1B2E"),
+        href: "https://www.icrc.org",
       },
     ],
   },
@@ -78,31 +87,33 @@ const CATEGORIES: Category[] = [
     accent: "navy",
     kind: "org",
     members: [
-      {
-        name: "Microsoft",
-        logo: "https://cdn.simpleicons.org/microsoft/0078D4",
-        href: "https://www.microsoft.com",
-      },
-      {
-        name: "Siemens",
-        logo: "https://cdn.simpleicons.org/siemens/009999",
-        href: "https://www.siemens.com",
-      },
-      {
-        name: "Toyota",
-        logo: "https://cdn.simpleicons.org/toyota/EB0A1E",
-        href: "https://www.toyota-global.com",
-      },
-      {
-        name: "IBM",
-        logo: "https://cdn.simpleicons.org/ibm/054ADA",
-        href: "https://www.ibm.com",
-      },
-      {
-        name: "Accenture",
-        logo: "https://cdn.simpleicons.org/accenture/A100FF",
-        href: "https://www.accenture.com",
-      },
+      { name: "Microsoft", logo: memberLogo("microsoft", "0078D4"), href: "https://www.microsoft.com" },
+      { name: "Google", logo: memberLogo("google", "4285F4"), href: "https://www.google.com" },
+      { name: "Amazon", logo: memberLogo("amazon", "FF9900"), href: "https://www.amazon.com" },
+      { name: "Apple", logo: memberLogo("apple", "000000"), href: "https://www.apple.com" },
+      { name: "Meta", logo: memberLogo("meta", "0081FB"), href: "https://about.meta.com" },
+      { name: "Siemens", logo: memberLogo("siemens", "009999"), href: "https://www.siemens.com" },
+      { name: "Toyota", logo: memberLogo("toyota", "EB0A1E"), href: "https://www.toyota-global.com" },
+      { name: "IBM", logo: memberLogo("ibm", "054ADA"), href: "https://www.ibm.com" },
+      { name: "Accenture", logo: memberLogo("accenture", "A100FF"), href: "https://www.accenture.com" },
+      { name: "Samsung", logo: memberLogo("samsung", "1428A0"), href: "https://www.samsung.com" },
+      { name: "Intel", logo: memberLogo("intel", "0071C5"), href: "https://www.intel.com" },
+      { name: "NVIDIA", logo: memberLogo("nvidia", "76B900"), href: "https://www.nvidia.com" },
+      { name: "Tesla", logo: memberLogo("tesla", "CC0000"), href: "https://www.tesla.com" },
+      { name: "Cisco", logo: memberLogo("cisco", "1BA0D7"), href: "https://www.cisco.com" },
+      { name: "SAP", logo: memberLogo("sap", "0FAAFF"), href: "https://www.sap.com" },
+      { name: "Boeing", logo: memberLogo("boeing", "0033A0"), href: "https://www.boeing.com" },
+      { name: "Airbus", logo: memberLogo("airbus", "00205B"), href: "https://www.airbus.com" },
+      { name: "Dell", logo: memberLogo("dell", "007DB8"), href: "https://www.dell.com" },
+      { name: "Visa", logo: memberLogo("visa", "1A1F71"), href: "https://www.visa.com" },
+      { name: "Mastercard", logo: memberLogo("mastercard", "EB001B"), href: "https://www.mastercard.com" },
+      { name: "PayPal", logo: memberLogo("paypal", "00457C"), href: "https://www.paypal.com" },
+      { name: "Stripe", logo: memberLogo("stripe", "635BFF"), href: "https://stripe.com" },
+      { name: "Spotify", logo: memberLogo("spotify", "1DB954"), href: "https://www.spotify.com" },
+      { name: "Airbnb", logo: memberLogo("airbnb", "FF5A5F"), href: "https://www.airbnb.com" },
+      { name: "Shopify", logo: memberLogo("shopify", "7AB55C"), href: "https://www.shopify.com" },
+      { name: "HubSpot", logo: memberLogo("hubspot", "FF7A59"), href: "https://www.hubspot.com" },
+      { name: "Atlassian", logo: memberLogo("atlassian", "0052CC"), href: "https://www.atlassian.com" },
     ],
   },
   {
@@ -113,27 +124,27 @@ const CATEGORIES: Category[] = [
     members: [
       {
         name: "Shopify",
-        logo: "https://cdn.simpleicons.org/shopify/7AB55C",
+        logo: memberLogo("shopify", "7AB55C"),
         href: "https://www.shopify.com",
       },
       {
         name: "HubSpot",
-        logo: "https://cdn.simpleicons.org/hubspot/FF7A59",
+        logo: memberLogo("hubspot", "FF7A59"),
         href: "https://www.hubspot.com",
       },
       {
         name: "Mailchimp",
-        logo: "https://cdn.simpleicons.org/mailchimp/FFE01B",
+        logo: memberLogo("mailchimp", "FFE01B"),
         href: "https://mailchimp.com",
       },
       {
         name: "Atlassian",
-        logo: "https://cdn.simpleicons.org/atlassian/0052CC",
+        logo: memberLogo("atlassian", "0052CC"),
         href: "https://www.atlassian.com",
       },
       {
         name: "Zendesk",
-        logo: "https://cdn.simpleicons.org/zendesk/03363D",
+        logo: memberLogo("zendesk", "03363D"),
         href: "https://www.zendesk.com",
       },
     ],
@@ -146,24 +157,24 @@ const CATEGORIES: Category[] = [
     members: [
       {
         name: "Sarah Chen",
-        logo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=face",
+        logo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=280&h=280&fit=crop&crop=face",
       },
       {
         name: "James Okonkwo",
-        logo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=face",
+        logo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=280&h=280&fit=crop&crop=face",
         href: "https://example.com",
       },
       {
         name: "Elena Rodriguez",
-        logo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=face",
+        logo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=280&h=280&fit=crop&crop=face",
       },
       {
         name: "David Müller",
-        logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=face",
+        logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=280&h=280&fit=crop&crop=face",
       },
       {
         name: "Amira Hassan",
-        logo: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=160&h=160&fit=crop&crop=face",
+        logo: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=280&h=280&fit=crop&crop=face",
         href: "https://example.com",
       },
     ],
@@ -176,26 +187,22 @@ const CATEGORIES: Category[] = [
     members: [
       {
         name: "Harvard Business School",
-        logo: "https://logo.clearbit.com/hbs.edu",
         href: "https://www.hbs.edu",
       },
       {
         name: "London School of Economics",
-        logo: "https://logo.clearbit.com/lse.ac.uk",
         href: "https://www.lse.ac.uk",
       },
       {
         name: "INSEAD",
-        logo: "https://logo.clearbit.com/insead.edu",
         href: "https://www.insead.edu",
       },
       {
         name: "Wharton School",
-        logo: "https://logo.clearbit.com/wharton.upenn.edu",
+        href: "https://www.wharton.upenn.edu",
       },
       {
         name: "IE Business School",
-        logo: "https://logo.clearbit.com/ie.edu",
         href: "https://www.ie.edu",
       },
     ],
@@ -267,26 +274,31 @@ function MemberLogo({
   accent: (typeof ACCENT)[Category["accent"]];
   kind: Category["kind"];
 }) {
-  const shape = kind === "person" ? "rounded-full" : "rounded-card";
+  const [failed, setFailed] = useState(false);
+  const isPerson = kind === "person";
+  const isPortrait = isPerson && Boolean(member.logo?.includes("unsplash.com"));
 
-  if (member.logo) {
-    const isPortrait = kind === "person" && member.logo.includes("unsplash.com");
+  const boxClass = isPerson
+    ? "relative flex size-[5.75rem] shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-background sm:size-24 lg:size-28"
+    : "relative flex h-[100px] w-full items-center justify-center overflow-hidden rounded-card border border-line bg-background px-4 py-3 sm:h-[112px] lg:h-[120px]";
 
+  if (member.logo && !failed) {
     return (
-      <span
-        className={`relative flex size-[4.5rem] items-center justify-center overflow-hidden border border-line bg-background ${shape} sm:size-20`}
-      >
+      <span className={boxClass}>
         <img
           src={member.logo}
           alt=""
-          width={80}
-          height={80}
+          width={isPerson ? 112 : 220}
+          height={isPerson ? 112 : 72}
           loading="lazy"
           decoding="async"
+          onError={() => setFailed(true)}
           className={
             isPortrait
-              ? "size-full object-cover"
-              : "max-h-[70%] max-w-[70%] object-contain"
+              ? "size-full object-cover object-center"
+              : isPerson
+                ? "max-h-[68%] max-w-[68%] object-contain object-center"
+                : "h-14 w-auto max-w-[92%] object-contain object-center sm:h-16 lg:h-[4.75rem]"
           }
         />
       </span>
@@ -294,12 +306,11 @@ function MemberLogo({
   }
 
   return (
-    <span
-      className={`relative flex size-[4.5rem] items-center justify-center overflow-hidden border border-line ${shape} ${accent.logoBg} sm:size-20`}
-      aria-hidden="true"
-    >
+    <span className={`${boxClass} ${accent.logoBg}`} aria-hidden={!member.logo}>
       <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 to-transparent" />
-      <span className={`relative font-display text-[22px] font-bold tracking-tight sm:text-[24px] ${accent.logoText}`}>
+      <span
+        className={`relative font-display font-bold tracking-tight ${isPerson ? "text-[20px] sm:text-[22px]" : "text-[22px] sm:text-[26px]"} ${accent.logoText}`}
+      >
         {initials(member.name)}
       </span>
     </span>
@@ -322,7 +333,7 @@ function MemberTileCard({
         aria-hidden="true"
       />
       <MemberLogo member={member} accent={accent} kind={kind} />
-      <span className="relative mt-5 min-w-0 text-center">
+      <span className="relative mt-4 min-w-0 w-full text-center">
         <span className="block truncate text-[15px] font-bold text-foreground sm:text-[16px]">{member.name}</span>
         <span className="mt-1 block text-[12px] tracking-[0.08em] text-muted-fg uppercase">
           {kind === "person" ? "Member" : "Organisation"}
@@ -336,7 +347,7 @@ function MemberTileCard({
     </>
   );
 
-  const className = `group/tile relative flex h-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-4 py-7 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-5 sm:py-8`;
+  const className = `group/tile relative flex h-full w-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-4 sm:py-6`;
 
   if (member.href) {
     return (
@@ -347,6 +358,92 @@ function MemberTileCard({
   }
 
   return <div className={className}>{inner}</div>;
+}
+
+function CategoryMembersList({
+  members,
+  accent,
+  kind,
+  categoryId,
+}: {
+  members: MemberTile[];
+  accent: (typeof ACCENT)[Category["accent"]];
+  kind: Category["kind"];
+  categoryId: string;
+}) {
+  const useCollapsible = members.length > MEMBERS_GRID_LIMIT;
+  const [expanded, setExpanded] = useState(false);
+  const [gridKey, setGridKey] = useState(0);
+
+  const handleToggle = () => {
+    setExpanded((open) => {
+      if (!open) setGridKey((key) => key + 1);
+      return !open;
+    });
+  };
+
+  const membersGrid = (
+    <ul
+      key={useCollapsible ? gridKey : undefined}
+      id={`members-grid-${categoryId}`}
+      data-expanded={useCollapsible && expanded ? "true" : undefined}
+      className="members-grid grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+    >
+      {members.map((m, i) => (
+        <li
+          key={m.name}
+          className="min-w-0"
+          style={useCollapsible && expanded ? { animationDelay: `${Math.min(i, 12) * 35}ms` } : undefined}
+        >
+          <MemberTileCard member={m} accent={accent} kind={kind} />
+        </li>
+      ))}
+    </ul>
+  );
+
+  return (
+    <div className="mt-8">
+      {useCollapsible ? (
+        <div className="w-full">
+          <button
+            type="button"
+            id={`members-toggle-${categoryId}`}
+            aria-expanded={expanded}
+            aria-controls={`members-grid-${categoryId}`}
+            onClick={handleToggle}
+            className="flex w-full items-center justify-between gap-4 rounded-card border border-line bg-surface/60 px-5 py-4 text-start transition-all duration-500 ease-in-out hover:border-navy/30 hover:bg-surface hover:shadow-card sm:px-6 sm:py-5"
+          >
+            <span className="min-w-0">
+              <span className="block text-[16px] font-bold text-foreground sm:text-[18px]">
+                {expanded ? "Hide members" : `View all ${members.length} members`}
+              </span>
+              {!expanded ? (
+                <span className="mt-1 block text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
+                  {members.length} {kind === "person" ? "profiles" : "organisations"} — click to expand the full list
+                </span>
+              ) : null}
+            </span>
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-line bg-background sm:size-11">
+              <ChevronDown
+                className={`size-5 text-navy transition-transform duration-500 ease-in-out sm:size-[22px] ${expanded ? "rotate-180" : ""}`}
+                aria-hidden="true"
+              />
+            </span>
+          </button>
+
+          <div
+            className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] duration-500 ease-in-out ${
+              expanded ? "mt-6 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className={`min-h-0 overflow-hidden ${expanded ? "" : "pointer-events-none"}`}>{membersGrid}</div>
+          </div>
+        </div>
+      ) : (
+        membersGrid
+      )}
+    </div>
+  );
 }
 
 function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
@@ -377,13 +474,7 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
 
         <hr className="mt-8 border-line" />
 
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {cat.members.map((m) => (
-            <li key={m.name}>
-              <MemberTileCard member={m} accent={a} kind={cat.kind} />
-            </li>
-          ))}
-        </ul>
+        <CategoryMembersList members={cat.members} accent={a} kind={cat.kind} categoryId={String(index)} />
       </div>
     </li>
   );
@@ -393,7 +484,7 @@ function OurMembers() {
   return (
     <>
       <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
+        <div className="bg-teal px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
           <div className="mx-auto max-w-xl">
             <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Our Members</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
@@ -435,6 +526,16 @@ function OurMembers() {
             <rect x="60" y="400" width="300" height="80" rx="40" strokeWidth="1.5" />
             <path d="M300 60l180 180-180 180L120 240z" strokeWidth="1.5" />
           </svg>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden border-t border-line py-14 lg:py-20">
+        <div
+          className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="container-wbc relative">
+          <MembershipTypesSection />
         </div>
       </section>
 

@@ -70,6 +70,7 @@ function Contact() {
         tags={["Membership", "Partnerships", "Media"]}
         image={contactBuilding}
         imageAlt="WBC headquarters building in Paris"
+        tone="orange"
       />
 
       <section className="py-16 lg:py-20">

@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
       },
       { name: "application-name", content: "World Business Council" },
-      { name: "theme-color", content: "#1a3a5c" },
+      { name: "theme-color", content: "#0c3163" },
       { property: "og:site_name", content: "World Business Council" },
       { property: "og:title", content: "World Business Council" },
       {
@@ -109,11 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "256x256" },
-      { rel: "icon", href: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-      { rel: "icon", href: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-      { rel: "icon", href: "/favicon.ico", sizes: "any" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -132,7 +128,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "World Business Council",
               alternateName: "WBC",
               url: SITE_URL,
-              logo: `${SITE_URL}/wbc-mark.png`,
+              logo: `${SITE_URL}/favicon.svg`,
               image: OG_IMAGE,
               email: "contact@wbccme.org",
               foundingDate: "2026",
@@ -151,7 +147,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               publisher: {
                 "@type": "Organization",
                 name: "World Business Council",
-                logo: `${SITE_URL}/wbc-mark.png`,
+                logo: `${SITE_URL}/favicon.svg`,
               },
             },
           ],
@@ -198,7 +194,7 @@ function RootComponent() {
         <main id="main">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
-          <AdvertisingOpportunities />
+          {pathname !== "/advertising" ? <AdvertisingOpportunities /> : null}
         </main>
         <Footer />
       </I18nProvider>

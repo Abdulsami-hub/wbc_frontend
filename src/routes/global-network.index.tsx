@@ -63,6 +63,7 @@ function GlobalNetwork() {
         tags={TAGS}
         image={networkBg}
         imageAlt="Illuminated world map representing the WBC global network"
+        tone="blue"
         ctaLabel="Explore Affiliates"
         ctaTo="/affiliates"
       />

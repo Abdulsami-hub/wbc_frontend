@@ -4,6 +4,8 @@ import { RouterProvider } from "@tanstack/react-router";
 import { StartClient } from "@tanstack/react-start/client";
 import { getRouter } from "./router";
 
+const router = getRouter();
+
 /**
  * Dual entry:
  * - Dev / SSR: hydrate the full document via StartClient (TanStack Start shell).
@@ -13,7 +15,6 @@ function mount() {
   const rootEl = document.getElementById("root");
 
   if (rootEl) {
-    const router = getRouter();
     startTransition(() => {
       createRoot(rootEl).render(
         <StrictMode>
@@ -34,4 +35,8 @@ function mount() {
   });
 }
 
-mount();
+try {
+  mount();
+} catch (error) {
+  console.error("[WBC] Client bootstrap failed:", error);
+}

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdvertisingRouteImport } from './routes/advertising'
 import { Route as AffiliateGuideRouteImport } from './routes/affiliate-guide'
 import { Route as AffiliatesRouteImport } from './routes/affiliates'
 import { Route as BecomeAMemberRouteImport } from './routes/become-a-member'
@@ -45,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertisingRoute = AdvertisingRouteImport.update({
+  id: '/advertising',
+  path: '/advertising',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AffiliateGuideRoute = AffiliateGuideRouteImport.update({
@@ -179,6 +185,7 @@ const WbcTeamSlugRoute = WbcTeamSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/advertising': typeof AdvertisingRoute
   '/affiliate-guide': typeof AffiliateGuideRoute
   '/affiliates': typeof AffiliatesRouteWithChildren
   '/become-a-member': typeof BecomeAMemberRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/advertising': typeof AdvertisingRoute
   '/affiliate-guide': typeof AffiliateGuideRoute
   '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/advertising': typeof AdvertisingRoute
   '/affiliate-guide': typeof AffiliateGuideRoute
   '/affiliates': typeof AffiliatesRouteWithChildren
   '/become-a-member': typeof BecomeAMemberRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/advertising'
     | '/affiliate-guide'
     | '/affiliates'
     | '/become-a-member'
@@ -293,6 +303,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/advertising'
     | '/affiliate-guide'
     | '/become-a-member'
     | '/contact'
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/advertising'
     | '/affiliate-guide'
     | '/affiliates'
     | '/become-a-member'
@@ -347,6 +359,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdvertisingRoute: typeof AdvertisingRoute
   AffiliateGuideRoute: typeof AffiliateGuideRoute
   AffiliatesRoute: typeof AffiliatesRouteWithChildren
   BecomeAMemberRoute: typeof BecomeAMemberRoute
@@ -376,6 +389,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertising': {
+      id: '/advertising'
+      path: '/advertising'
+      fullPath: '/advertising'
+      preLoaderRoute: typeof AdvertisingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/affiliate-guide': {
@@ -632,6 +652,7 @@ const WbcTeamRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdvertisingRoute: AdvertisingRoute,
   AffiliateGuideRoute: AffiliateGuideRoute,
   AffiliatesRoute: AffiliatesRouteWithChildren,
   BecomeAMemberRoute: BecomeAMemberRoute,

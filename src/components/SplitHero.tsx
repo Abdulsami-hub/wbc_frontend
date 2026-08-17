@@ -1,5 +1,13 @@
 import { Link } from "@tanstack/react-router";
 
+export type HeroTone = "navy" | "orange" | "blue";
+
+const TONE_BG: Record<HeroTone, string> = {
+  navy: "bg-navy",
+  orange: "bg-orange",
+  blue: "bg-teal",
+};
+
 export function SplitHero({
   eyebrow,
   title,
@@ -10,6 +18,7 @@ export function SplitHero({
   ctaLabel,
   ctaTo,
   ctaHash,
+  tone = "navy",
 }: {
   eyebrow: string;
   title: string;
@@ -20,10 +29,12 @@ export function SplitHero({
   ctaLabel?: string;
   ctaTo?: string;
   ctaHash?: string;
+  /** Brand panel color: navy #0c3163 · orange #fe4812 · blue #0d67c2 */
+  tone?: HeroTone;
 }) {
   return (
     <section className="grid lg:grid-cols-[1.15fr_1fr]">
-      <div className="bg-orange px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
+      <div className={`${TONE_BG[tone]} px-6 py-16 sm:px-10 lg:py-24 xl:px-20`}>
         <div className="mx-auto max-w-xl">
           <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">{eyebrow}</p>
           <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">

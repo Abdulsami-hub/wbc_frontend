@@ -150,13 +150,16 @@ export function Header() {
                 </div>
               );
             })}
-            <div className="py-4">
+            <div className="mb-4 flex items-center gap-2.5 py-4">
               <LanguageSwitcher />
+              <Link
+                to="/become-a-member"
+                onClick={closeMobile}
+                className="btn-orange-to-outline !min-h-9 !rounded-md !px-3 !text-[12px] !tracking-[0.06em]"
+              >
+                {t("cta.join")}
+              </Link>
             </div>
-
-            <Link to="/become-a-member" onClick={closeMobile} className="btn-orange-to-outline mb-4 !rounded-md">
-              {t("cta.join")}
-            </Link>
           </nav>
         </div>
       )}
