@@ -160,8 +160,8 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      <div className="sticky top-[57px] z-30 border-b border-line bg-background/90 shadow-[0_8px_24px_oklch(0.28_0.02_255_/_0.06)] backdrop-blur-md">
-        <nav className="container-wbc flex gap-2 overflow-x-auto py-3" aria-label="On this page">
+      <div className="affiliate-page-nav">
+        <nav className="container-wbc flex min-h-[var(--affiliate-subnav-height)] items-center gap-2 overflow-x-auto py-2" aria-label="On this page">
           {NAV.map((item) => {
             const on = activeNav === item.href;
             return (
@@ -204,7 +204,7 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      <section id="about" className="relative scroll-mt-28 overflow-hidden border-b border-line py-16 lg:py-24">
+      <section id="about" className="affiliate-section-anchor relative overflow-hidden border-b border-line py-16 lg:py-24">
         <div className="pointer-events-none absolute -end-24 top-10 size-[320px] rounded-full bg-blue/8 blur-3xl" aria-hidden="true" />
         <div className="container-wbc relative grid items-start gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
           <div data-reveal>
@@ -268,7 +268,7 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      <section id="services" className="scroll-mt-28 border-b border-line bg-surface py-16 lg:py-24">
+      <section id="services" className="affiliate-section-anchor border-b border-line bg-surface py-16 lg:py-24">
         <div className="container-wbc">
           <div data-reveal className="max-w-2xl">
             <p className="eyebrow">What we do</p>
@@ -335,7 +335,7 @@ function MediaSection({ media }: { media: AffiliateMedia }) {
   const [hero, sideA, sideB, ...rest] = items;
 
   return (
-    <section id="gallery" className="scroll-mt-28 border-b border-line py-16 lg:py-24">
+    <section id="gallery" className="affiliate-section-anchor border-b border-line py-16 lg:py-24">
       <div className="container-wbc">
         <div data-reveal className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
@@ -486,7 +486,7 @@ function OfficersSection({ officers }: { officers: AffiliateOfficer[] }) {
   if (officers.length === 0) return null;
 
   return (
-    <section id="officers" className="scroll-mt-28 border-b border-line bg-surface py-16 lg:py-24">
+    <section id="officers" className="affiliate-section-anchor border-b border-line bg-surface py-16 lg:py-24">
       <div className="container-wbc">
         <div data-reveal className="max-w-2xl">
           <p className="eyebrow">Leadership</p>
@@ -551,7 +551,7 @@ function ContactSection({ contact, place }: { contact: AffiliateContact; place: 
   const mapQuery = encodeURIComponent(contact.address ?? place);
 
   return (
-    <section id="contact" className="scroll-mt-28 py-16 lg:py-24">
+    <section id="contact" className="affiliate-section-anchor py-16 lg:py-24">
       <div className="container-wbc">
         <div data-reveal className="max-w-2xl">
           <p className="eyebrow">Contact</p>
