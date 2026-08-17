@@ -18,13 +18,9 @@ export function Logo({
   const src =
     variant === "footer" ? logoFooter : variant === "light" && !framed ? logoLight : logoNavy;
   const heightClass =
-    variant === "footer"
-      ? size === "lg"
-        ? "h-12 w-auto sm:h-14"
-        : "h-11 w-auto sm:h-12"
-      : size === "lg"
-        ? "h-11 w-auto sm:h-12 lg:h-[52px]"
-        : "h-10 w-auto sm:h-11";
+    size === "lg"
+      ? "h-11 w-auto sm:h-12 lg:h-[52px]"
+      : "h-10 w-auto sm:h-11";
 
   return (
     <Link
@@ -36,8 +32,8 @@ export function Logo({
       <img
         src={src}
         alt="World Business Council"
-        width={variant === "footer" ? 320 : 260}
-        height={variant === "footer" ? 80 : 68}
+        width={260}
+        height={68}
         className={`${heightClass} object-contain object-left`}
         decoding="async"
       />

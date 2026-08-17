@@ -80,8 +80,8 @@ export function MembershipTypesSection({ showActions = false }: MembershipTypesS
 
       {showActions ? (
         <div data-reveal className="mt-10 flex flex-wrap justify-center gap-3">
-          <Link to="/membership/benefits" className="btn-navy !rounded-md">
-            Membership Benefits
+          <Link to="/membership" hash="benefits" className="btn-navy !rounded-md">
+            WBC Membership
           </Link>
           <Link to="/become-a-member" className="btn-orange">
             Become a Member

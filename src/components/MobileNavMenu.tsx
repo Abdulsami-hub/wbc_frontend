@@ -44,7 +44,7 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
     "/membership": [
       {
         label: "Benefits",
-        items: [{ title: t("link.benefits"), to: "/membership/benefits" }],
+        items: [{ title: t("link.wbcMembership"), to: "/membership" }],
       },
       {
         label: "Join",
@@ -106,23 +106,20 @@ export function MobileNavSubmenuPanel({
   return (
     <div className="border-t border-line/80 bg-surface/50 px-4 py-3">
       {groups.map((group) => (
-        <div key={group.label} className="py-2">
-          <p className="text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">{group.label}</p>
-          <ul className="mt-2 space-y-1">
-            {group.items.map((item) => (
-              <li key={`${item.to}-${item.hash ?? item.title}`}>
-                <Link
-                  to={item.to}
-                  {...(item.hash ? { hash: item.hash } : {})}
-                  onClick={onNavigate}
-                  className="block rounded-md px-2 py-2.5 text-[15px] font-medium text-foreground transition-colors hover:bg-background hover:text-navy"
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul key={group.label} className="space-y-1 py-1">
+          {group.items.map((item) => (
+            <li key={`${item.to}-${item.hash ?? item.title}`}>
+              <Link
+                to={item.to}
+                {...(item.hash ? { hash: item.hash } : {})}
+                onClick={onNavigate}
+                className="block rounded-md px-2 py-2.5 text-[15px] font-medium text-foreground transition-colors hover:bg-background hover:text-navy"
+              >
+                {item.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
       ))}
     </div>
   );

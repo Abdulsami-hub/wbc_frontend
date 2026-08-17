@@ -31,7 +31,7 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
   {
     title: "footer.membership",
     links: [
-      { key: "link.benefits", to: "/membership/benefits" },
+      { key: "link.wbcMembership", to: "/membership" },
       { key: "link.become", to: "/become-a-member" },
       { key: "nav.ourMembers", to: "/our-members" },
     ],
@@ -78,7 +78,6 @@ export function Footer() {
           <div className="max-w-xs">
             <Logo variant="footer" size="lg" />
             <p className="mt-5 text-[15px] leading-relaxed">{t("footer.tagline")}</p>
-            <p className="mt-3 text-[13px] font-semibold tracking-[0.08em] text-white/55 uppercase">@WBCCME</p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {SOCIAL.map((s) => (
                 <li key={s.label}>

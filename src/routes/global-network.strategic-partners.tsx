@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-import { OurPartners } from "@/components/OurPartners";
+import { PartnersDirectory } from "@/components/PartnersDirectory";
 import networkBg from "@/assets/network-bg.jpg";
 
 export const Route = createFileRoute("/global-network/strategic-partners")({
@@ -105,10 +105,12 @@ function StrategicPartners() {
         tags={["Chambers", "Institutions", "Private Sector"]}
         image={networkBg}
         imageAlt="Global cooperation network representing WBC strategic partnerships"
-        tone="blue"
+        tone="orange"
         ctaLabel="Partner with WBC"
         ctaTo="/contact"
       />
+
+      <PartnersDirectory />
 
       {/* Overview */}
       <section className="relative overflow-hidden py-14 lg:py-20">
@@ -288,9 +290,6 @@ function StrategicPartners() {
           </ol>
         </div>
       </section>
-
-      {/* Partner logos / network strip */}
-      <OurPartners />
 
       {/* Closing CTA */}
       <section className="border-t border-line py-14 lg:py-20">

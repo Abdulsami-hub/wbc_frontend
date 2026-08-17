@@ -21,7 +21,8 @@ export const Route = createFileRoute("/what-we-do")({
       { property: "og:title", content: "Core Activities & Services — WBC" },
       {
         property: "og:description",
-        content: "A structured overview of WBC services across networking, advisory support, events, and growth initiatives.",
+        content:
+          "A structured overview of WBC services across networking, advisory support, events, and growth initiatives.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -117,31 +118,40 @@ function WhatWeDo() {
   return (
     <>
       {/* Split hero */}
-      <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-teal px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
-          <div className="mx-auto max-w-xl">
-            <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">What We Do</p>
-            <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
-              Core Activities &amp; Services
-            </h1>
-            <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              The World Business Council (WBC) delivers a wide range of services and activities designed to connect,
-              support, and empower businesses, Business Councils and business associations worldwide. Our work focuses
-              on building a strong global ecosystem that promotes collaboration, innovation, and sustainable development.
-            </p>
-            <ul className="intro-4 mt-9 flex flex-wrap gap-3">
-              {TAGS.map((t) => (
-                <li
-                  key={t}
-                  className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
+      <section className="relative">
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
+        <div className="bg-teal lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <div className="max-w-xl">
+              <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">
+                What We Do
+              </p>
+              <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
+                Core Activities &amp; Services
+              </h1>
+              <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
+                The World Business Council (WBC) delivers a wide range of services and activities
+                designed to connect, support, and empower businesses, Business Councils and business
+                associations worldwide. Our work focuses on building a strong global ecosystem that
+                promotes collaboration, innovation, and sustainable development.
+              </p>
+              <ul className="intro-4 mt-9 flex flex-wrap gap-3">
+                {TAGS.map((t) => (
+                  <li
+                    key={t}
+                    className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
+                  >
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="relative min-h-[280px] bg-navy-deep lg:min-h-0">
+        <div className="hero-media-right bg-navy-deep">
           <img
             src={heroImg}
             alt="WBC members presenting business insights in a boardroom"
@@ -160,16 +170,21 @@ function WhatWeDo() {
           <div className="overflow-visible rounded-card border border-line bg-background p-6 sm:p-10 lg:p-12 transition-shadow duration-300 hover:shadow-card">
             <div data-reveal className="flex items-start justify-between gap-6">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Service Portfolio</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">
+                  Service Portfolio
+                </p>
                 <h2 className="mt-3 text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
                   13 Strategic Pillars of Support
                 </h2>
                 <p className="mt-5 max-w-3xl text-[16px] leading-relaxed text-muted-fg">
-                  A structured, image-led overview of WBC services designed to help organizations identify where
-                  cooperation starts and where growth can be accelerated.
+                  A structured, image-led overview of WBC services designed to help organizations
+                  identify where cooperation starts and where growth can be accelerated.
                 </p>
               </div>
-              <span aria-hidden="true" className="rtl-mirror mt-2 hidden text-[22px] text-muted-fg sm:block">
+              <span
+                aria-hidden="true"
+                className="rtl-mirror mt-2 hidden text-[22px] text-muted-fg sm:block"
+              >
                 →
               </span>
             </div>
@@ -206,7 +221,9 @@ function WhatWeDo() {
           >
             <div className="grid items-center gap-12 lg:grid-cols-2">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Membership</p>
+                <p className="text-[13px] font-semibold tracking-[0.16em] text-muted-fg uppercase">
+                  Membership
+                </p>
                 <span className="accent-rule mt-3" />
                 <h2 className="mt-6 text-[30px] leading-[1.1] font-bold text-foreground sm:text-4xl lg:text-[46px]">
                   Join the World Business Council

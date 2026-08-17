@@ -7,9 +7,9 @@ const GROUPS = [
     label: "Membership",
     items: [
       {
-        titleKey: "link.benefits" as const,
-        desc: "Advantages of joining WBC",
-        to: "/membership/benefits" as const,
+        titleKey: "link.wbcMembership" as const,
+        desc: "Types, benefits, fees",
+        to: "/membership" as const,
       },
       {
         titleKey: "link.become" as const,

@@ -43,7 +43,7 @@ const en: Dict = {
   "cta.join": "Join WBC",
   "lang.label": "Language",
   "footer.tagline":
-    "We build a global network that empowers businesses through collaboration, innovation, and trust.",
+    "An international business support organization connecting businesses, professionals and institutions worldwide.",
   "footer.about": "About",
   "footer.network": "Network",
   "footer.membership": "Membership",
@@ -75,7 +75,7 @@ const fr: Dict = {
   "cta.join": "Rejoindre le WBC",
   "lang.label": "Langue",
   "footer.tagline":
-    "Nous construisons un réseau mondial qui renforce les entreprises par la collaboration, l'innovation et la confiance.",
+    "Une organisation internationale de soutien aux entreprises reliant entreprises, professionnels et institutions à l'échelle mondiale.",
   "footer.about": "À propos",
   "footer.network": "Réseau",
   "footer.membership": "Adhésion",
@@ -107,7 +107,7 @@ const es: Dict = {
   "cta.join": "Únete al WBC",
   "lang.label": "Idioma",
   "footer.tagline":
-    "Construimos una red global que impulsa a las empresas mediante colaboración, innovación y confianza.",
+    "Una organización internacional de apoyo empresarial que conecta empresas, profesionales e instituciones en todo el mundo.",
   "footer.about": "Nosotros",
   "footer.network": "Red",
   "footer.membership": "Membresía",
@@ -138,7 +138,7 @@ const ar: Dict = {
   "nav.news": "الأخبار",
   "cta.join": "انضم إلى WBC",
   "lang.label": "اللغة",
-  "footer.tagline": "نبني شبكة عالمية تمكّن الشركات من خلال التعاون والابتكار والثقة.",
+  "footer.tagline": "منظمة دولية لدعم الأعمال تربط الشركات والمهنيين والمؤسسات حول العالم.",
   "footer.about": "نبذة",
   "footer.network": "الشبكة",
   "footer.membership": "العضوية",
@@ -169,7 +169,7 @@ const zh: Dict = {
   "nav.news": "新闻",
   "cta.join": "加入 WBC",
   "lang.label": "语言",
-  "footer.tagline": "我们构建全球网络，通过合作、创新与信任赋能企业。",
+  "footer.tagline": "一个国际商业支持组织，连接全球的企业、专业人士和机构。",
   "footer.about": "关于",
   "footer.network": "网络",
   "footer.membership": "会员",
@@ -201,7 +201,7 @@ const ru: Dict = {
   "cta.join": "Вступить в WBC",
   "lang.label": "Язык",
   "footer.tagline":
-    "Мы создаём глобальную сеть, которая укрепляет бизнес через сотрудничество, инновации и доверие.",
+    "Международная организация поддержки бизнеса, объединяющая компании, профессионалов и учреждения по всему миру.",
   "footer.about": "О нас",
   "footer.network": "Сеть",
   "footer.membership": "Членство",

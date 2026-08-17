@@ -10,7 +10,13 @@ function GlobeIcon() {
   );
 }
 
-export function LanguageSwitcher({ className = "" }: { className?: string }) {
+export function LanguageSwitcher({
+  className = "",
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
   const { lang, setLang, t } = useI18n();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -39,12 +45,16 @@ export function LanguageSwitcher({ className = "" }: { className?: string }) {
         aria-label={t("lang.label")}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="inline-flex h-9 items-center gap-2 rounded-md border border-line px-2.5 text-foreground transition-colors hover:border-foreground/40"
+        className={`inline-flex h-9 items-center gap-2 rounded-md border border-line text-foreground transition-colors hover:border-foreground/40 ${
+          compact ? "size-9 justify-center px-0" : "px-2.5"
+        }`}
       >
         <GlobeIcon />
-        <span className="max-w-[7.5rem] truncate text-[13px] font-medium" dir={current.dir} lang={current.code}>
-          {current.name}
-        </span>
+        {!compact ? (
+          <span className="max-w-[7.5rem] truncate text-[13px] font-medium" dir={current.dir} lang={current.code}>
+            {current.name}
+          </span>
+        ) : null}
       </button>
 
       {open && (

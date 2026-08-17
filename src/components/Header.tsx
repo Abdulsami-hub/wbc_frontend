@@ -54,8 +54,8 @@ export function Header() {
                 onFocus={() => setMenu(hasMenu ? l.to : null)}
                 aria-expanded={hasMenu ? isOpen : undefined}
                 aria-haspopup={hasMenu ? "true" : undefined}
-                className={`nav-link group relative inline-flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-foreground/80 transition-colors duration-300 hover:text-navy [&.active]:text-navy ${
-                  isOpen ? "is-open text-navy" : ""
+                className={`nav-link group relative inline-flex items-center gap-1.5 px-3 py-2 text-[15px] font-medium text-foreground/80 transition-colors duration-300 hover:text-foreground [&.active]:text-foreground ${
+                  isOpen ? "is-open text-foreground" : ""
                 }`}
               >
                 <span className="relative">
@@ -88,6 +88,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2 lg:gap-3">
+          <LanguageSwitcher className="lg:hidden" compact />
           <LanguageSwitcher className="hidden lg:block" />
           <Link
             to="/become-a-member"
@@ -102,7 +103,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex size-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-navy/5 hover:text-navy lg:hidden"
+            className="inline-flex size-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-foreground/5 hover:text-foreground lg:hidden"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
@@ -132,7 +133,7 @@ export function Header() {
                     <Link
                       to={l.to}
                       onClick={closeMobile}
-                      className="flex-1 py-3.5 text-[17px] font-medium text-foreground transition-colors hover:text-navy [&.active]:text-navy"
+                      className="flex-1 py-3.5 text-[17px] font-medium text-foreground transition-colors hover:text-foreground [&.active]:text-foreground"
                     >
                       {t(l.key)}
                     </Link>
@@ -150,8 +151,7 @@ export function Header() {
                 </div>
               );
             })}
-            <div className="mb-4 flex items-center gap-2.5 py-4">
-              <LanguageSwitcher />
+            <div className="mb-4 py-4">
               <Link
                 to="/become-a-member"
                 onClick={closeMobile}

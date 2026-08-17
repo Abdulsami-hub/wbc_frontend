@@ -74,12 +74,16 @@ export function AffiliateLocationProfile({
 
   return (
     <>
-      <section className="grid lg:grid-cols-[1.12fr_1fr]">
-        <div className="relative overflow-hidden bg-teal px-6 py-14 sm:px-10 lg:py-20 xl:px-16">
-          <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
-          <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl" aria-hidden="true" />
-
-          <div className="relative mx-auto max-w-xl">
+      <section className="relative">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 overflow-hidden bg-teal lg:block" aria-hidden="true">
+          <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl" />
+          <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl" />
+        </div>
+        <div className="relative overflow-hidden bg-teal lg:bg-transparent">
+          <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl lg:hidden" />
+          <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl lg:hidden" />
+          <div className="container-wbc relative py-14 lg:py-20">
+            <div className="max-w-xl">
             <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
@@ -145,10 +149,11 @@ export function AffiliateLocationProfile({
                 Contact details <span aria-hidden="true">→</span>
               </a>
             </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative min-h-[280px] overflow-hidden bg-navy-deep lg:min-h-[560px]">
+        <div className="hero-media-right bg-navy-deep">
           {details.heroImage ? (
             <img
               src={details.heroImage}

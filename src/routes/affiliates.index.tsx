@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import heroImg from "@/assets/affiliates-hero.jpg";
+import heroImg from "@/assets/affiliates-hero.png";
 import {
   AFFILIATE_REGIONS,
   type AffiliateCountry,
@@ -185,42 +185,47 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
 function Affiliates() {
   return (
     <>
-      <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-teal px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
-          <div className="mx-auto max-w-xl">
-            <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Affiliates</p>
-            <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
-              WBC Affiliates
-            </h1>
-            <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              WBC affiliates play a key role in connecting entrepreneurs, institutions, and the wider business community
-              with the global WBC network.
-            </p>
-            <ul className="intro-4 mt-9 flex flex-wrap gap-3">
-              {TAGS.map((t) => (
-                <li key={t} className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white">
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/contact"
-              className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
-            >
-              Fill the Application Form <span aria-hidden="true" className="rtl-mirror">→</span>
-            </Link>
+      <section className="relative">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div className="lg:grid lg:grid-cols-2">
+          <div className="relative z-[1] flex items-center bg-teal lg:absolute lg:inset-y-0 lg:start-0 lg:w-1/2 lg:bg-transparent">
+            <div className="w-full px-5 py-12 sm:px-6 lg:py-8 lg:ps-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pe-10">
+              <div className="max-w-xl">
+                <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Affiliates</p>
+                <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
+                  WBC Affiliates
+                </h1>
+                <p className="intro-3 mt-5 max-w-lg text-[16px] leading-relaxed text-white/90">
+                  WBC affiliates play a key role in connecting entrepreneurs, institutions, and the wider business community
+                  with the global WBC network.
+                </p>
+                <ul className="intro-4 mt-7 flex flex-wrap gap-3">
+                  {TAGS.map((t) => (
+                    <li key={t} className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contact"
+                  className="intro-4 mt-6 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
+                >
+                  Fill the Application Form <span aria-hidden="true" className="rtl-mirror">→</span>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="relative min-h-[280px] bg-navy-deep lg:min-h-0">
-          <img
-            src={heroImg}
-            alt="WBC affiliate representatives meeting in front of a global network map"
-            width={1200}
-            height={900}
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover"
-          />
+          <div className="bg-white lg:col-start-2">
+            <img
+              src={heroImg}
+              alt="WBC affiliate representatives meeting in front of a global network map"
+              width={1024}
+              height={662}
+              fetchPriority="high"
+              decoding="async"
+              className="block h-auto w-full"
+            />
+          </div>
         </div>
       </section>
 

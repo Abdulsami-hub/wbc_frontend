@@ -37,7 +37,7 @@ function BecomeAMember() {
         imageAlt="Business professionals shaking hands during a membership meeting"
         tone="orange"
         ctaLabel="View Benefits"
-        ctaTo="/membership/benefits"
+        ctaTo="/membership"
       />
 
       <section className="relative overflow-hidden py-16 lg:py-24">
@@ -63,8 +63,8 @@ function BecomeAMember() {
               ))}
             </ul>
             <div className="mt-10">
-              <Link to="/membership/benefits" className="btn-navy !rounded-md">
-                Compare Benefits
+              <Link to="/membership" hash="benefits" className="btn-navy !rounded-md">
+                WBC Membership
               </Link>
             </div>
           </div>

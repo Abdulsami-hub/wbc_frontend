@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroBuilding from "@/assets/who-we-are-building.png";
+import heroImg from "@/assets/who-we-are-hero.png";
 
 export const Route = createFileRoute("/who-we-are")({
   head: () => ({
@@ -168,9 +168,11 @@ function OurValues() {
 function WhoWeAre() {
   return (
     <>
-      <section className="grid items-stretch lg:grid-cols-2">
-        <div className="flex items-center bg-navy px-6 py-16 sm:px-10 lg:py-24">
-          <div className="mx-auto w-full max-w-xl">
+      <section className="relative">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div className="bg-orange lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <div className="w-full max-w-xl">
             <nav aria-label="Breadcrumb" className="intro-1 mb-6 text-[14px] text-white/80">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
@@ -197,17 +199,20 @@ function WhoWeAre() {
                 </li>
               ))}
             </ul>
+            </div>
           </div>
         </div>
-        <img
-          src={heroBuilding}
-          alt="Modern glass and concrete office building exterior against a blue sky"
-          width={1600}
-          height={1000}
-          fetchPriority="high"
-          decoding="async"
-          className="intro-img h-72 w-full object-cover sm:h-96 lg:h-auto"
-        />
+        <div className="hero-media-right bg-navy-deep">
+          <img
+            src={heroImg}
+            alt="WBC boardroom overlooking the Paris skyline at dusk"
+            width={1600}
+            height={1000}
+            fetchPriority="high"
+            decoding="async"
+            className="intro-img absolute inset-0 size-full object-cover"
+          />
+        </div>
       </section>
 
       <section className="relative overflow-hidden bg-surface py-16 lg:py-24">

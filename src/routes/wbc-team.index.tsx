@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import heroImg from "@/assets/team-hero.jpg";
 import { TEAM, type TeamMember } from "@/content/team";
 import {
@@ -85,6 +85,15 @@ function TeamProfileModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] w-[min(920px,calc(100vw-1.5rem))] max-w-none overflow-y-auto rounded-card border-line p-0 sm:rounded-card">
@@ -159,9 +168,11 @@ function WbcTeam() {
 
   return (
     <>
-      <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-navy px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
-          <div className="mx-auto max-w-xl">
+      <section className="relative">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div className="bg-orange lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <div className="max-w-xl">
             <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">WBC Team</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
               The team behind global business cooperation.
@@ -185,9 +196,10 @@ function WbcTeam() {
             >
               Contact WBC Team
             </Link>
+            </div>
           </div>
         </div>
-        <div className="relative min-h-[280px] bg-navy lg:min-h-0">
+        <div className="hero-media-right bg-navy">
           <img
             src={heroImg}
             alt="WBC team members collaborating around a boardroom table"

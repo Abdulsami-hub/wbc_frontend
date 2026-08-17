@@ -1,6 +1,4 @@
-// Temporary preview background. To restore the original:
-// import VALUES_BG from "@/assets/vision-mission-bg.jpg";
-import VALUES_BG from "@/assets/our-values-bg-temp.png";
+import VALUES_BG from "@/assets/our-values-bg.png";
 
 const VALUES = [
   {

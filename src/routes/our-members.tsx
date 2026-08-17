@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { CTASection } from "@/components/CTASection";
-import { MembershipTypesSection } from "@/components/membership/MembershipTypesSection";
+import heroImg from "@/assets/our-members-hero.png";
 
 const MEMBERS_GRID_LIMIT = 20;
 
@@ -371,29 +371,24 @@ function CategoryMembersList({
   kind: Category["kind"];
   categoryId: string;
 }) {
-  const useCollapsible = members.length > MEMBERS_GRID_LIMIT;
+  const visible = members.slice(0, MEMBERS_GRID_LIMIT);
+  const extra = members.slice(MEMBERS_GRID_LIMIT);
+  const extraCount = extra.length;
   const [expanded, setExpanded] = useState(false);
-  const [gridKey, setGridKey] = useState(0);
+  const visibleCount = visible.length + (expanded ? extraCount : 0);
+  const unit = kind === "person" ? (extraCount === 1 ? "profile" : "profiles") : extraCount === 1 ? "organisation" : "organisations";
 
-  const handleToggle = () => {
-    setExpanded((open) => {
-      if (!open) setGridKey((key) => key + 1);
-      return !open;
-    });
-  };
-
-  const membersGrid = (
+  const renderGrid = (items: MemberTile[], id: string, animate = false) => (
     <ul
-      key={useCollapsible ? gridKey : undefined}
-      id={`members-grid-${categoryId}`}
-      data-expanded={useCollapsible && expanded ? "true" : undefined}
-      className="members-grid grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+      id={id}
+      data-expanded={animate ? "true" : undefined}
+      className={`${animate ? "members-grid" : "partner-logo-grid"} grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}
     >
-      {members.map((m, i) => (
+      {items.map((m, i) => (
         <li
           key={m.name}
           className="min-w-0"
-          style={useCollapsible && expanded ? { animationDelay: `${Math.min(i, 12) * 35}ms` } : undefined}
+          style={animate ? { animationDelay: `${Math.min(i, 12) * 35}ms` } : undefined}
         >
           <MemberTileCard member={m} accent={accent} kind={kind} />
         </li>
@@ -403,45 +398,43 @@ function CategoryMembersList({
 
   return (
     <div className="mt-8">
-      {useCollapsible ? (
-        <div className="w-full">
-          <button
-            type="button"
+      {renderGrid(visible, `members-grid-${categoryId}`)}
+
+      {extraCount > 0 ? (
+        <details
+          className="mt-5 overflow-hidden rounded-card border border-line bg-surface/60 transition-shadow duration-300 open:shadow-card"
+          open={expanded}
+          onToggle={(e) => {
+            const next = (e.currentTarget as HTMLDetailsElement).open;
+            if (next !== expanded) setExpanded(next);
+          }}
+        >
+          <summary
             id={`members-toggle-${categoryId}`}
-            aria-expanded={expanded}
-            aria-controls={`members-grid-${categoryId}`}
-            onClick={handleToggle}
-            className="flex w-full items-center justify-between gap-4 rounded-card border border-line bg-surface/60 px-5 py-4 text-start transition-all duration-500 ease-in-out hover:border-navy/30 hover:bg-surface hover:shadow-card sm:px-6 sm:py-5"
+            className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-start marker:content-none hover:bg-surface sm:px-6 sm:py-5 [&::-webkit-details-marker]:hidden"
           >
             <span className="min-w-0">
               <span className="block text-[16px] font-bold text-foreground sm:text-[18px]">
-                {expanded ? "Hide members" : `View all ${members.length} members`}
+                {expanded ? "Hide extra members" : `View ${extraCount} more members`}
               </span>
-              {!expanded ? (
-                <span className="mt-1 block text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
-                  {members.length} {kind === "person" ? "profiles" : "organisations"} — click to expand the full list
-                </span>
-              ) : null}
+              <span className="mt-1 block text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
+                {expanded
+                  ? `Showing all ${members.length} ${kind === "person" ? "profiles" : "organisations"}`
+                  : `${extraCount} ${unit} — click to expand. Showing ${visibleCount} of ${members.length}`}
+              </span>
             </span>
             <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-line bg-background sm:size-11">
               <ChevronDown
-                className={`size-5 text-navy transition-transform duration-500 ease-in-out sm:size-[22px] ${expanded ? "rotate-180" : ""}`}
+                className={`size-5 text-navy transition-transform duration-300 sm:size-[22px] ${expanded ? "rotate-180" : ""}`}
                 aria-hidden="true"
               />
             </span>
-          </button>
-
-          <div
-            className={`grid overflow-hidden transition-[grid-template-rows,opacity,margin-top] duration-500 ease-in-out ${
-              expanded ? "mt-6 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
-            }`}
-          >
-            <div className={`min-h-0 overflow-hidden ${expanded ? "" : "pointer-events-none"}`}>{membersGrid}</div>
+          </summary>
+          <div className="border-t border-line px-5 py-5 sm:px-6 sm:py-6">
+            {renderGrid(extra, `members-grid-extra-${categoryId}`, true)}
           </div>
-        </div>
-      ) : (
-        membersGrid
-      )}
+        </details>
+      ) : null}
     </div>
   );
 }
@@ -483,9 +476,11 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
 function OurMembers() {
   return (
     <>
-      <section className="grid lg:grid-cols-[1.15fr_1fr]">
-        <div className="bg-teal px-6 py-16 sm:px-10 lg:py-24 xl:px-20">
-          <div className="mx-auto max-w-xl">
+      <section className="relative">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div className="bg-orange lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <div className="max-w-xl">
             <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Our Members</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
               Discover the WBC Members Network
@@ -510,32 +505,19 @@ function OurMembers() {
             >
               Go to member profiles <span aria-hidden="true" className="rtl-mirror">→</span>
             </a>
+            </div>
           </div>
         </div>
-        <div className="relative min-h-[240px] overflow-hidden bg-background lg:min-h-0">
-          <span className="pointer-events-none absolute right-[-12%] top-[-10%] size-72 rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
-          <svg
-            className="absolute inset-0 size-full text-line"
-            viewBox="0 0 600 600"
-            fill="none"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <rect x="60" y="200" width="480" height="90" rx="45" strokeWidth="1.5" />
-            <rect x="40" y="300" width="400" height="90" rx="45" strokeWidth="1.5" />
-            <rect x="60" y="400" width="300" height="80" rx="40" strokeWidth="1.5" />
-            <path d="M300 60l180 180-180 180L120 240z" strokeWidth="1.5" />
-          </svg>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden border-t border-line py-14 lg:py-20">
-        <div
-          className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="container-wbc relative">
-          <MembershipTypesSection />
+        <div className="hero-media-right bg-navy-deep">
+          <img
+            src={heroImg}
+            alt="WBC members networking at a global innovation summit"
+            width={1600}
+            height={974}
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover"
+          />
         </div>
       </section>
 
