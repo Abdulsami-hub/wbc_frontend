@@ -8,7 +8,6 @@ import {
   type AffiliateMedia,
   type AffiliateOfficer,
 } from "@/content/affiliate-details";
-import { AffiliateSkyline } from "@/components/affiliates/AffiliateSkyline";
 import {
   Dialog,
   DialogContent,
@@ -158,9 +157,6 @@ export function AffiliateLocationProfile({
             />
           ) : null}
           <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-[42%] opacity-90">
-            <AffiliateSkyline label={affiliate.name} />
-          </div>
         </div>
       </section>
 

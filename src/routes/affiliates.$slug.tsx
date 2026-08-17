@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getAffiliate, type AffiliateProfile } from "@/content/affiliates";
 import { CTASection } from "@/components/CTASection";
 import { AffiliateLocationProfile } from "@/components/affiliates/AffiliateLocationProfile";
-import { AffiliateSkyline } from "@/components/affiliates/AffiliateSkyline";
 
 export const Route = createFileRoute("/affiliates/$slug")({
   loader: ({ params }) => {
@@ -70,11 +69,16 @@ function RegionProfile({
 }) {
   return (
     <>
-      <section className="relative isolate overflow-hidden min-h-[70vh]">
-        <div className="absolute inset-0" aria-hidden="true">
-          <AffiliateSkyline label={affiliate.name} />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-navy/20" />
-        </div>
+      <section className="relative isolate overflow-hidden min-h-[70vh] bg-navy">
+        <div
+          className="pointer-events-none absolute -end-24 top-0 size-[360px] rounded-full bg-blue/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -start-20 bottom-0 size-[320px] rounded-full bg-orange/15 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-navy/30" aria-hidden="true" />
         <div className="container-wbc relative flex min-h-[70vh] flex-col justify-end py-16 lg:py-20">
           <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/70">
             <ol className="flex flex-wrap items-center gap-2">
