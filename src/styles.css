@@ -47,6 +47,22 @@
   --affiliate-subnav-gap: 0.5rem;
 }
 
+/* Radix dialogs — stay visible in production without tw-animate enter utilities */
+@layer components {
+  .dialog-overlay[data-state="open"],
+  [data-radix-dialog-overlay][data-state="open"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .dialog-content[data-state="open"],
+  [data-radix-dialog-content][data-state="open"] {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-line);
