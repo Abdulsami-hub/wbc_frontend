@@ -1,4 +1,4 @@
-import eventsImage from "@/assets/events.jpg";
+import eventsImage from "@/assets/events-menu.png";
 import { EVENT_CATEGORIES } from "@/content/events";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 
@@ -15,7 +15,7 @@ export function MegaMenuEvents({ onNavigate }: { onNavigate?: () => void }) {
       description="Summits, forums, networking, trade missions, and business meetings across the WBC network."
       promo={{
         image: eventsImage,
-        alt: "Delegates attending an international WBC business forum",
+        alt: "Keynote speaker on stage at a WBC business conference, addressing a full auditorium",
         text: "Browse upcoming programmes and past event highlights.",
         cta: "All events",
         to: "/events",
