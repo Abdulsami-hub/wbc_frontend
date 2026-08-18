@@ -1,4 +1,4 @@
-import networkImage from "@/assets/network-bg.jpg";
+import networkImage from "@/assets/network-menu.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 
 const GROUPS = [
@@ -26,8 +26,8 @@ const GROUPS = [
         to: "/our-members" as const,
       },
       {
-        title: "Partners",
-        desc: "Partnerships, joint initiatives, and cooperation",
+        title: "Partners and Sponsors",
+        desc: "Partnerships, sponsorships, joint initiatives, and cooperation",
         to: "/global-network/strategic-partners" as const,
       },
     ],
@@ -41,7 +41,7 @@ export function MegaMenuNetwork({ onNavigate }: { onNavigate?: () => void }) {
       description="Headquarters, affiliates, members, and partners working as one collaborative global network."
       promo={{
         image: networkImage,
-        alt: "Illuminated world map representing the WBC global network",
+        alt: "Clasped hands with a digital world map and connected network nodes",
         text: "Explore how WBC connects institutions and businesses across regions.",
         cta: "View network",
         to: "/global-network",

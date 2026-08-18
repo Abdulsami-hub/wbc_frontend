@@ -168,12 +168,12 @@ function WbcTeam() {
 
   return (
     <>
-      <section className="relative">
+      <section className="relative flex flex-col">
         <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
-            <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">WBC Team</p>
+            <p className="intro-1 hero-kicker">WBC Team</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
               The team behind global business cooperation.
             </h1>

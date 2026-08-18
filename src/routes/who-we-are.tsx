@@ -168,21 +168,22 @@ function OurValues() {
 function WhoWeAre() {
   return (
     <>
-      <section className="relative">
+      <section className="relative flex flex-col">
         <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="w-full max-w-xl">
-            <nav aria-label="Breadcrumb" className="intro-1 mb-6 text-[14px] text-white/80">
+            <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
               <ol className="flex flex-wrap items-center gap-2">
                 <li>
-                  <Link to="/" className="transition-colors hover:text-white">Home</Link>
+                  <Link to="/" className="hover:text-white">Home</Link>
                 </li>
-                <li aria-hidden="true" className="text-white/60">/</li>
+                <li aria-hidden="true">/</li>
                 <li className="font-semibold text-white">Who We Are</li>
               </ol>
             </nav>
-            <h1 className="intro-2 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
+            <p className="intro-1 mt-8 hero-kicker">About Us</p>
+            <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
               Who We Are
             </h1>
             <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">

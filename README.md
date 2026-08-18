@@ -516,7 +516,7 @@ Institutional Membership
 
 02
 
-Corporate/Enterprise Membership
+Corporate Membership
 
 03
 

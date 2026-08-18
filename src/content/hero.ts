@@ -38,7 +38,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     description: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
     panelClass: "bg-navy",
     image: slide1,
-    alt: "Modern glass business centre at dusk with people in the plaza",
+    alt: "Executive boardroom overlooking the Paris skyline at twilight, with the illuminated Eiffel Tower",
     primary: { label: "Who We Are", to: "/who-we-are", variant: "outline" },
     secondary: { label: "What We Do", to: "/what-we-do", variant: "ghost" },
   },

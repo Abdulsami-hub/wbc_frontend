@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import contactBuilding from "@/assets/contact-building.jpg";
+import contactHero from "@/assets/contact-hero.png";
 import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -68,8 +68,8 @@ function Contact() {
         title="Contact Us"
         description="Questions about membership, partnerships, or events? Our team in Paris is here to help."
         tags={["Membership", "Partnerships", "Media"]}
-        image={contactBuilding}
-        imageAlt="WBC headquarters building in Paris"
+        image={contactHero}
+        imageAlt="WBC headquarters at 36 rue Scheffer in Paris at dusk"
         tone="orange"
       />
 
@@ -118,28 +118,6 @@ function Contact() {
                     www.wbccme.org
                   </a>
                 </dd>
-              </div>
-              <div>
-                <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Follow us</dt>
-                <dd className="mt-3 flex flex-wrap gap-2">
-                  {[
-                    { label: "LinkedIn", href: "https://www.linkedin.com/company/wbccme" },
-                    { label: "X", href: "https://x.com/WBCCME" },
-                    { label: "Facebook", href: "https://www.facebook.com/WBCCME" },
-                    { label: "YouTube", href: "https://www.youtube.com/@WBCCME" },
-                  ].map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border border-line px-3 py-1.5 text-[13px] font-semibold text-foreground transition-colors hover:border-navy hover:text-navy"
-                    >
-                      {s.label}
-                    </a>
-                  ))}
-                </dd>
-                <p className="mt-3 text-[14px] font-semibold tracking-[0.08em] text-muted-fg uppercase">@WBCCME</p>
               </div>
             </dl>
 

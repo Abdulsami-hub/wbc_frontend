@@ -109,9 +109,9 @@ export function OurPartners() {
           </p>
           <h2
             data-reveal
-            className="mt-3 max-w-xl text-[30px] font-extrabold leading-[1.08] tracking-tight text-navy sm:mt-4 sm:text-[40px] lg:text-[46px]"
+            className="mt-3 whitespace-nowrap text-[clamp(1.15rem,4.2vw,2.75rem)] font-extrabold leading-[1.08] tracking-tight text-foreground sm:mt-4"
           >
-            Our Partners
+            Our Partners and Sponsors
           </h2>
           <p data-reveal className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
             Trusted institutions, enterprises, and alliances collaborating with WBC across regions.

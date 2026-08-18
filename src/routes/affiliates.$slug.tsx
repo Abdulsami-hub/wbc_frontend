@@ -97,7 +97,7 @@ function RegionProfile({
               <li className="font-semibold text-white">{affiliate.name}</li>
             </ol>
           </nav>
-          <p className="intro-2 mt-8 text-[12px] font-semibold tracking-[0.22em] text-white/70 uppercase">Region</p>
+          <p className="hero-kicker mt-8">Region</p>
           <h1 className="intro-2 mt-3 text-[42px] font-extrabold leading-[0.95] text-white sm:text-[58px] lg:text-[68px]">
             {affiliate.name}
           </h1>

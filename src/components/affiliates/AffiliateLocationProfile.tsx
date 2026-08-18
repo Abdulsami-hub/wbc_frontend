@@ -74,7 +74,7 @@ export function AffiliateLocationProfile({
 
   return (
     <>
-      <section className="relative">
+      <section className="relative flex flex-col">
         <div className="absolute inset-y-0 start-0 hidden w-1/2 overflow-hidden bg-teal lg:block" aria-hidden="true">
           <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl" />
           <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl" />
@@ -112,7 +112,7 @@ export function AffiliateLocationProfile({
               </ol>
             </nav>
 
-            <p className="intro-1 mt-8 font-display text-[12px] tracking-[0.22em] text-white/80 uppercase">
+            <p className="intro-1 mt-8 hero-kicker">
               {affiliate.region}
             </p>
 
@@ -129,14 +129,16 @@ export function AffiliateLocationProfile({
               <span className="border border-white/70 px-3 py-1.5 text-[12px] font-semibold tracking-[0.12em] text-white uppercase">
                 {isActive ? "Active affiliate" : "Inactive affiliate"}
               </span>
-              <span className="border border-white/40 px-3 py-1.5 text-[12px] font-semibold tracking-[0.12em] text-white/85 uppercase">
+              <span
+                className={`border px-3 py-1.5 text-[12px] font-semibold tracking-[0.12em] uppercase ${
+                  affiliate.kind === "city"
+                    ? "border-orange bg-orange text-white"
+                    : "border-white/40 text-white/85"
+                }`}
+              >
                 {affiliate.kind === "city" ? "City" : "Country"}
               </span>
             </div>
-
-            <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90 sm:text-[17px]">
-              {details.locationIntro}
-            </p>
 
             <div className="intro-4 mt-8 flex flex-wrap gap-3">
               <a href="#about" className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]">
@@ -218,7 +220,8 @@ export function AffiliateLocationProfile({
               Local presence, global reach
             </h2>
             <span className="accent-rule mt-5" />
-            <p className="mt-6 text-[17px] leading-relaxed text-muted-fg sm:text-[18px]">{details.about}</p>
+            <p className="mt-6 text-[17px] leading-relaxed text-muted-fg sm:text-[18px]">{details.locationIntro}</p>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">{details.about}</p>
 
             {affiliate.kind === "country" && affiliate.cities.length > 0 ? (
               <div className="mt-8">
@@ -231,8 +234,8 @@ export function AffiliateLocationProfile({
                         params={{ slug: city.slug }}
                         className={`inline-flex rounded-card border px-4 py-2 text-[15px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card ${
                           city.status === "active"
-                            ? "border-teal/55 text-teal hover:bg-teal/5"
-                            : "border-line text-muted-fg hover:border-muted-fg/40"
+                            ? "border-orange/55 text-orange hover:bg-orange/5"
+                            : "border-line text-orange/70 hover:border-orange/40"
                         }`}
                       >
                         {city.name}

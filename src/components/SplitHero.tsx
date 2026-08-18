@@ -17,6 +17,8 @@ export function SplitHero({
   imageAlt,
   ctaLabel,
   ctaTo,
+  ctaHref,
+  ctaDownload,
   ctaHash,
   tone = "navy",
 }: {
@@ -28,17 +30,20 @@ export function SplitHero({
   imageAlt: string;
   ctaLabel?: string;
   ctaTo?: string;
+  /** External or file URL (used instead of `ctaTo` when set). */
+  ctaHref?: string;
+  ctaDownload?: string | boolean;
   ctaHash?: string;
   /** Brand panel color: navy #0c3163 · orange #fe4812 · blue #0d67c2 */
   tone?: HeroTone;
 }) {
   return (
-    <section className="relative">
+    <section className="relative flex flex-col">
       <div className={`absolute inset-y-0 start-0 hidden w-1/2 lg:block ${TONE_BG[tone]}`} aria-hidden="true" />
       <div className={`${TONE_BG[tone]} lg:bg-transparent`}>
         <div className="container-wbc py-16 lg:py-24">
           <div className="max-w-xl">
-            <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">{eyebrow}</p>
+            <p className="intro-1 hero-kicker">{eyebrow}</p>
             <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
               {title}
             </h1>
@@ -52,17 +57,30 @@ export function SplitHero({
                 ))}
               </ul>
             )}
-            {ctaLabel && ctaTo && (
-              <Link
-                to={ctaTo}
-                {...(ctaHash ? { hash: ctaHash } : {})}
-                className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
-              >
-                {ctaLabel}{" "}
-                <span aria-hidden="true" className="rtl-mirror">
-                  →
-                </span>
-              </Link>
+            {ctaLabel && (ctaHref || ctaTo) && (
+              ctaHref ? (
+                <a
+                  href={ctaHref}
+                  download={ctaDownload ?? true}
+                  className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
+                >
+                  {ctaLabel}{" "}
+                  <span aria-hidden="true" className="rtl-mirror">
+                    →
+                  </span>
+                </a>
+              ) : (
+                <Link
+                  to={ctaTo!}
+                  {...(ctaHash ? { hash: ctaHash } : {})}
+                  className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
+                >
+                  {ctaLabel}{" "}
+                  <span aria-hidden="true" className="rtl-mirror">
+                    →
+                  </span>
+                </Link>
+              )
             )}
           </div>
         </div>

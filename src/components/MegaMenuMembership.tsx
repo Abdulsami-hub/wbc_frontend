@@ -1,4 +1,4 @@
-import menuImage from "@/assets/events.jpg";
+import menuImage from "@/assets/membership-menu.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 
@@ -39,7 +39,7 @@ export function MegaMenuMembership({ onNavigate }: { onNavigate?: () => void }) 
       description="Explore membership benefits, apply to become a member, and browse our members directory."
       promo={{
         image: menuImage,
-        alt: "Speaker addressing WBC members at a membership event",
+        alt: "Members networking on a busy convention floor",
         text: "Start your journey with WBC and unlock global business opportunities.",
         cta: "Become a Member",
         to: "/become-a-member",

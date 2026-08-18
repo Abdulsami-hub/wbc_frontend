@@ -94,7 +94,7 @@ function MembershipOverview() {
               Membership Benefits
             </h2>
             <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-              Compare included benefits across Institutional, Enterprise, SME, and Individual membership.
+              Compare included benefits across Institutional, Corporate, SME, and Individual membership.
             </p>
           </div>
 

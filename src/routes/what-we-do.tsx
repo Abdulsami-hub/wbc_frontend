@@ -118,7 +118,7 @@ function WhatWeDo() {
   return (
     <>
       {/* Split hero */}
-      <section className="relative">
+      <section className="relative flex flex-col">
         <div
           className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
           aria-hidden="true"
@@ -126,7 +126,7 @@ function WhatWeDo() {
         <div className="bg-teal lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
-              <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">
+              <p className="intro-1 hero-kicker">
                 What We Do
               </p>
               <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">

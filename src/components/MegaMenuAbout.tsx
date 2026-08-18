@@ -1,4 +1,4 @@
-import aboutMenuImage from "@/assets/news-forum.jpg";
+import aboutMenuImage from "@/assets/about-menu.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 
@@ -44,7 +44,7 @@ export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
       description="Learn about the World Business Council — our mission, vision, values, and global initiatives that empower businesses worldwide."
       promo={{
         image: aboutMenuImage,
-        alt: "WBC speaker addressing members at a council forum",
+        alt: "Modern glass skyscrapers at dusk",
         text: "Explore the full story of WBC and how we connect businesses across the globe.",
         cta: "View all",
         to: "/who-we-are",

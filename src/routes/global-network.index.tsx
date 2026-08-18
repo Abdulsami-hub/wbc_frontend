@@ -40,8 +40,8 @@ const PILLARS = [
     to: "/our-members" as const,
   },
   {
-    title: "Partners",
-    body: "Organizations and institutions collaborating with WBC through partnerships, joint initiatives, and international cooperation.",
+    title: "Partners and Sponsors",
+    body: "Organizations and institutions collaborating with WBC through partnerships, sponsorships, joint initiatives, and international cooperation.",
     to: "/global-network/strategic-partners" as const,
   },
 ] as const;

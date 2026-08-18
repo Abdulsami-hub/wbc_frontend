@@ -96,6 +96,7 @@
 
 @utility hero-media-right {
   position: relative;
+  order: -1;
   min-height: 17.5rem;
   overflow: hidden;
 
@@ -105,6 +106,7 @@
     inset-inline-end: 0;
     width: 50%;
     min-height: 0;
+    order: unset;
   }
 }
 
@@ -466,6 +468,16 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted-fg);
+}
+
+/* Hero small title — uppercase, wide tracking, white (affiliate standard) */
+@utility hero-kicker {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.8);
 }
 
 @utility fade-up {

@@ -30,7 +30,7 @@ function Cta({
 function SlideCopy({ slide, active }: { slide: HeroSlide; active: boolean }) {
   return (
     <div className="max-w-[560px]">
-      <p className={`${active ? "intro-1" : ""} font-display text-[13px] font-normal tracking-[0.14em] text-white/90 uppercase`}>
+      <p className={`${active ? "intro-1" : ""} hero-kicker`}>
         {slide.eyebrow}
       </p>
       <h1 className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}>
@@ -82,7 +82,7 @@ function SlideMedia({ slide, active }: { slide: HeroSlide; active: boolean }) {
 
 function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
   const copyPanel = (
-    <div className="flex flex-col justify-center py-10 pb-8 lg:py-28 lg:pb-28">
+    <div className="flex flex-col justify-center py-10 pb-16 lg:py-28 lg:pb-28">
       <SlideCopy slide={slide} active={active} />
     </div>
   );
@@ -121,7 +121,7 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
       <div className={`shrink-0 ${slide.panelClass} lg:bg-transparent`}>
         <div className="container-wbc">{copyPanel}</div>
       </div>
-      <div className="relative min-h-0 flex-1 overflow-hidden lg:absolute lg:inset-y-0 lg:end-0 lg:w-1/2">
+      <div className="relative order-first min-h-0 flex-1 overflow-hidden lg:absolute lg:inset-y-0 lg:end-0 lg:order-none lg:w-1/2">
         <SlideMedia slide={slide} active={active} />
       </div>
     </div>

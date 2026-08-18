@@ -164,7 +164,7 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
                           to="/affiliates/$slug"
                           params={{ slug: city.slug }}
                           className={`text-[15px] transition-colors hover:underline ${
-                            city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
+                            city.status === "active" ? "font-medium text-orange" : "text-orange/70"
                           }`}
                         >
                           {city.name}
@@ -191,7 +191,7 @@ function Affiliates() {
           <div className="relative z-[1] flex items-center bg-teal lg:absolute lg:inset-y-0 lg:start-0 lg:w-1/2 lg:bg-transparent">
             <div className="w-full px-5 py-12 sm:px-6 lg:py-8 lg:ps-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pe-10">
               <div className="max-w-xl">
-                <p className="intro-1 font-display text-[12px] tracking-[0.22em] text-white uppercase">Affiliates</p>
+                <p className="intro-1 hero-kicker">Affiliates</p>
                 <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
                   WBC Affiliates
                 </h1>

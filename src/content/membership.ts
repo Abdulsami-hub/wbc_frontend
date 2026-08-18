@@ -6,7 +6,7 @@ export const MEMBERSHIP_TIERS = [
     icon: "building",
   },
   {
-    title: "Corporate/Enterprise",
+    title: "Corporate",
     subtitle: "Membership",
     body: "Corporations, enterprises, and large business organizations seeking strategic partnerships, international visibility, and business opportunities.",
     icon: "brief",
@@ -76,7 +76,7 @@ export const WHY_JOIN = [
 
 export const PLAN_TIERS = [
   { id: "institutional", label: "Institutional", price: "1000 € / Year" },
-  { id: "enterprise", label: "Enterprise", price: "1000 € / Year" },
+  { id: "enterprise", label: "Corporate", price: "1000 € / Year" },
   { id: "sme", label: "SME", price: "200 € / Year" },
   { id: "individual", label: "Individual", price: "50 € / Year" },
 ] as const;

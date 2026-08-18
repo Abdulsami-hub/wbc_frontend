@@ -7,13 +7,13 @@ import networkBg from "@/assets/network-bg.jpg";
 export const Route = createFileRoute("/global-network/strategic-partners")({
   head: () => ({
     meta: [
-      { title: "Strategic Partnerships & Institutional Relations — World Business Council" },
+      { title: "Partners and Sponsors — World Business Council" },
       {
         name: "description",
         content:
           "WBC develops partnerships with chambers of commerce, NGOs, international organizations, governments, and private sector entities to enhance global cooperation and expand impact.",
       },
-      { property: "og:title", content: "Strategic Partnerships — WBC" },
+      { property: "og:title", content: "Partners and Sponsors — WBC" },
       {
         property: "og:description",
         content:
@@ -99,8 +99,8 @@ function StrategicPartners() {
   return (
     <>
       <SplitHero
-        eyebrow="Strategic Partnerships & Institutional Relations"
-        title="Partner with WBC"
+        eyebrow="Partners and Sponsors"
+        title="Partners and Sponsors"
         description="Developing partnerships with chambers of commerce, NGOs, international organizations, governments, and private sector entities to enhance global cooperation and expand impact."
         tags={["Chambers", "Institutions", "Private Sector"]}
         image={networkBg}
