@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 /**
  * Scroll-reveal: sets `data-revealed` on `[data-reveal]` when in view.
- * First scan is deferred until after hydration so SSR HTML still matches
- * the client tree (lazy routes like Contact hydrate after the root effect).
+ * No MutationObserver — watching the whole document caused freezes when
+ * dialogs, dropdowns, or form focus changed the DOM.
  */
 export function useReveal(key?: string, enabled = true) {
   useEffect(() => {
@@ -42,49 +42,27 @@ export function useReveal(key?: string, enabled = true) {
       for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
         if (observed.has(n)) continue;
         observed.add(n);
-        const top = n.getBoundingClientRect().top;
-        if (top < window.innerHeight * 0.96) {
-          n.setAttribute("data-revealed", "");
-        } else {
-          observer.observe(n);
-        }
+        observer.observe(n);
       }
     };
 
-    let raf = 0;
+    let debounce = 0;
     const scheduleScan = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        raf = requestAnimationFrame(scan);
-      });
+      window.clearTimeout(debounce);
+      debounce = window.setTimeout(scan, 100);
     };
 
-    let started = false;
-    let mo: MutationObserver | undefined;
-    const start = () => {
-      if (started) return;
-      started = true;
-      scheduleScan();
-      mo = new MutationObserver(() => scheduleScan());
-      mo.observe(document.body, { childList: true, subtree: true });
-      window.addEventListener("scroll", scheduleScan, { passive: true });
-      window.addEventListener("resize", scheduleScan, { passive: true });
-    };
+    // Initial scans after hydration / route change only.
+    const startTimer = window.setTimeout(scan, 150);
+    const retryTimers = [500, 1200].map((ms) => window.setTimeout(scan, ms));
 
-    // Root useEffect runs before lazy page components hydrate. Wait one
-    // macrotask + a frame so Contact (and similar) can match SSR HTML first.
-    let startTimer = window.setTimeout(() => {
-      startTimer = 0;
-      requestAnimationFrame(start);
-    }, 150);
-
-    const retryTimers = [400, 900, 1800].map((ms) => window.setTimeout(scheduleScan, ms));
+    window.addEventListener("scroll", scheduleScan, { passive: true });
+    window.addEventListener("resize", scheduleScan, { passive: true });
 
     return () => {
-      if (startTimer) window.clearTimeout(startTimer);
-      cancelAnimationFrame(raf);
+      window.clearTimeout(startTimer);
+      window.clearTimeout(debounce);
       for (const t of retryTimers) window.clearTimeout(t);
-      mo?.disconnect();
       window.removeEventListener("scroll", scheduleScan);
       window.removeEventListener("resize", scheduleScan);
       observer.disconnect();

@@ -41,4 +41,7 @@ try {
   console.error("[WBC] Client bootstrap failed:", error);
 }
 
-void import("./lib/image-cache").then((m) => m.registerImageCache());
+void import("./lib/image-cache").then((m) => {
+  // Clear any previously installed SW that could leave stale freeze-prone clients.
+  m.unregisterImageCache?.();
+});

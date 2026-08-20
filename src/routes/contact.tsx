@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import contactHero from "@/assets/contact-hero.png";
 import { SplitHero } from "@/components/SplitHero";
 import { ContactForm } from "@/components/ContactForm";
@@ -57,6 +58,45 @@ function PinIcon() {
       <path d="M12 22s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z" />
       <circle cx="12" cy="10" r="2.5" />
     </svg>
+  );
+}
+
+function ContactMap() {
+  const [showMap, setShowMap] = useState(false);
+
+  return (
+    <div className="mt-10 overflow-hidden rounded-card border border-line transition-shadow duration-300 hover:shadow-card">
+      {showMap ? (
+        <iframe
+          title={`Map — ${ADDRESS_LINE}`}
+          src={MAP_EMBED}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="aspect-[16/10] w-full border-0"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowMap(true)}
+          className="flex aspect-[16/10] w-full flex-col items-center justify-center gap-3 bg-surface px-6 text-center transition-colors hover:bg-light-grey"
+        >
+          <span className="text-[15px] font-semibold text-foreground">Load map</span>
+          <span className="text-[13px] text-muted-fg">{ADDRESS_LINE}</span>
+        </button>
+      )}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line bg-background px-4 py-3 sm:px-5">
+        <p className="text-[14px] font-medium text-foreground">{ADDRESS_LINE}</p>
+        <a
+          href={MAPS_LINK}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-navy hover:underline"
+        >
+          Open in Maps <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
   );
 }
 
@@ -121,27 +161,7 @@ function Contact() {
               </div>
             </dl>
 
-            <div className="mt-10 overflow-hidden rounded-card border border-line transition-shadow duration-300 hover:shadow-card">
-              <iframe
-                title={`Map — ${ADDRESS_LINE}`}
-                src={MAP_EMBED}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="aspect-[16/10] w-full border-0"
-                allowFullScreen
-              />
-              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line bg-background px-4 py-3 sm:px-5">
-                <p className="text-[14px] font-medium text-foreground">{ADDRESS_LINE}</p>
-                <a
-                  href={MAPS_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-navy hover:underline"
-                >
-                  Open in Maps <span aria-hidden="true">→</span>
-                </a>
-              </div>
-            </div>
+            <ContactMap />
           </div>
 
           <div data-reveal className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:p-8">

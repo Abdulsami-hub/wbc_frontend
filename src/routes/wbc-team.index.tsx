@@ -1,14 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import heroImg from "@/assets/team-hero.jpg";
 import { TEAM, type TeamMember } from "@/content/team";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { SimpleModal } from "@/components/SimpleModal";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/wbc-team/")({
@@ -86,79 +80,67 @@ function TeamProfileModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+  if (!member) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] w-[min(920px,calc(100vw-1.5rem))] max-w-none overflow-y-auto rounded-card border-line p-0 sm:rounded-card">
-        {member ? (
-          <>
-            <DialogHeader className="sr-only">
-              <DialogTitle>{member.name}</DialogTitle>
-              <DialogDescription>{member.role}</DialogDescription>
-            </DialogHeader>
+    <SimpleModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title={member.name}
+      description={member.role}
+      className="p-0"
+    >
+      <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="relative min-h-[280px] bg-navy-deep lg:min-h-full">
+          <img
+            src={member.image}
+            alt={`${member.name}, ${member.role} at the World Business Council`}
+            width={800}
+            height={1000}
+            className="absolute inset-0 size-full object-cover object-top"
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy-deep/20"
+            aria-hidden="true"
+          />
+        </div>
 
-            <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="relative min-h-[280px] bg-navy-deep lg:min-h-full">
-                <img
-                  src={member.image}
-                  alt={`${member.name}, ${member.role} at the World Business Council`}
-                  width={800}
-                  height={1000}
-                  className="absolute inset-0 size-full object-cover object-top"
-                />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy-deep/20"
-                  aria-hidden="true"
-                />
-              </div>
+        <div className="flex flex-col p-6 sm:p-8 lg:p-10">
+          <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">{member.group}</p>
+          <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[34px]">{member.name}</h2>
+          <p className="mt-2 text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
+          <span className="accent-rule mt-5" />
+          <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
 
-              <div className="flex flex-col p-6 sm:p-8 lg:p-10">
-                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">{member.group}</p>
-                <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[34px]">{member.name}</h2>
-                <p className="mt-2 text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
-                <span className="accent-rule mt-5" />
-                <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
+          <div className="mt-8 space-y-3 border-t border-line pt-6 text-[15px]">
+            <p className="text-muted-fg">
+              Email:{" "}
+              <a href={`mailto:${member.email}`} className="font-semibold text-foreground underline decoration-line underline-offset-4">
+                {member.email}
+              </a>
+            </p>
+            <p className="text-muted-fg">
+              Phone: <span className="font-semibold text-foreground">{member.phone}</span>
+            </p>
+          </div>
 
-                <div className="mt-8 space-y-3 border-t border-line pt-6 text-[15px]">
-                  <p className="text-muted-fg">
-                    Email:{" "}
-                    <a href={`mailto:${member.email}`} className="font-semibold text-foreground underline decoration-line underline-offset-4">
-                      {member.email}
-                    </a>
-                  </p>
-                  <p className="text-muted-fg">
-                    Phone: <span className="font-semibold text-foreground">{member.phone}</span>
-                  </p>
-                </div>
+          <div className="mt-6 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
+              LinkedIn
+            </a>
+            <a href="https://x.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
+              X
+            </a>
+          </div>
 
-                <div className="mt-6 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
-                  <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
-                    LinkedIn
-                  </a>
-                  <a href="https://x.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
-                    X
-                  </a>
-                </div>
-
-                <div className="mt-auto pt-8">
-                  <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
-                    Contact WBC Team
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+          <div className="mt-auto pt-8">
+            <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
+              Contact WBC Team
+            </Link>
+          </div>
+        </div>
+      </div>
+    </SimpleModal>
   );
 }
 

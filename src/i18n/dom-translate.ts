@@ -28,7 +28,7 @@ export async function loadMap(lang: LangCode): Promise<TMap | null> {
   }
 }
 
-const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE"]);
+const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE", "INPUT"]);
 const ATTRS = ["aria-label", "placeholder", "alt", "title"] as const;
 
 const originalText = new WeakMap<Text, string>();
@@ -49,8 +49,6 @@ function translateTextNode(node: Text, map: TMap | null) {
   const lead = source.slice(0, source.indexOf(key[0]!));
   const trail = source.slice(source.indexOf(key[0]!) + key.length);
   const next = `${lead}${hit}${trail}`;
-  // Only write when needed — some browsers queue characterData even for no-op
-  // writes, which used to infinite-loop the MutationObserver and freeze the page.
   if (node.nodeValue !== next) node.nodeValue = next;
 }
 
@@ -81,7 +79,8 @@ export function translateTree(root: Node, map: TMap | null) {
       parent &&
       !SKIP_TAGS.has(parent.tagName) &&
       !parent.closest("svg") &&
-      !parent.closest("[data-no-translate]")
+      !parent.closest("[data-no-translate]") &&
+      !parent.closest("[role='dialog']")
     ) {
       translateTextNode(root as Text, map);
     }
@@ -91,10 +90,23 @@ export function translateTree(root: Node, map: TMap | null) {
 
   const el = root as Element;
   if (el instanceof Element) {
-    if (SKIP_TAGS.has(el.tagName) || el.closest("svg") || el.closest("[data-no-translate]")) return;
+    if (
+      SKIP_TAGS.has(el.tagName) ||
+      el.closest("svg") ||
+      el.closest("[data-no-translate]") ||
+      el.closest("[role='dialog']")
+    ) {
+      return;
+    }
     translateAttributes(el, map);
     el.querySelectorAll("[aria-label],[placeholder],[alt],[title]").forEach((child) => {
-      if (!child.closest("svg") && !child.closest("[data-no-translate]")) translateAttributes(child, map);
+      if (
+        !child.closest("svg") &&
+        !child.closest("[data-no-translate]") &&
+        !child.closest("[role='dialog']")
+      ) {
+        translateAttributes(child, map);
+      }
     });
   }
 
@@ -107,7 +119,8 @@ export function translateTree(root: Node, map: TMap | null) {
       !parent ||
       SKIP_TAGS.has(parent.tagName) ||
       parent.closest("svg") ||
-      parent.closest("[data-no-translate]")
+      parent.closest("[data-no-translate]") ||
+      parent.closest("[role='dialog']")
     ) {
       continue;
     }
@@ -115,45 +128,12 @@ export function translateTree(root: Node, map: TMap | null) {
   }
 }
 
-let observer: MutationObserver | null = null;
-let applying = false;
-
-/** Applies the language to the whole document and keeps future DOM updates translated. */
+/**
+ * One-shot translation on language change only.
+ * Do NOT attach a MutationObserver — watching body mutations while dialogs /
+ * RemoveScroll / dropdowns update the DOM has frozen the tab in production.
+ */
 export function applyDocumentTranslation(map: TMap | null) {
-  observer?.disconnect();
-  observer = null;
-
-  applying = true;
-  try {
-    translateTree(document.body, map);
-  } finally {
-    applying = false;
-  }
-
-  if (!map) return () => {};
-
-  // Observe structural DOM updates only. Watching characterData re-enters on every
-  // text write we make and can freeze the tab (especially in WebKit).
-  observer = new MutationObserver((records) => {
-    if (applying) return;
-
-    const roots: Node[] = [];
-    for (const record of records) {
-      record.addedNodes.forEach((node) => roots.push(node));
-    }
-    if (!roots.length) return;
-
-    applying = true;
-    try {
-      for (const node of roots) translateTree(node, map);
-    } finally {
-      applying = false;
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  return () => {
-    observer?.disconnect();
-    observer = null;
-  };
+  translateTree(document.body, map);
+  return () => {};
 }

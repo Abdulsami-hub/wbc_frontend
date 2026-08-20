@@ -9,13 +9,7 @@ import {
   EVENTS,
   type EventRecord,
 } from "@/content/events";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { SimpleModal } from "@/components/SimpleModal";
 import { Skeleton } from "@/components/ui/skeleton";
 
 function EventMetaRow({
@@ -67,119 +61,106 @@ function EventDetailModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const category = event ? EVENT_CATEGORIES.find((c) => c.id === event.categoryId) : undefined;
-
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+  if (!event) return null;
+  const category = EVENT_CATEGORIES.find((c) => c.id === event.categoryId);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] w-[min(960px,calc(100vw-1.5rem))] max-w-none overflow-y-auto rounded-card border-line p-0 sm:rounded-card">
-        {event ? (
-          <>
-            <DialogHeader className="sr-only">
-              <DialogTitle>{event.title}</DialogTitle>
-              <DialogDescription>{event.summary}</DialogDescription>
-            </DialogHeader>
-
-            <div className="p-6 sm:p-8 lg:p-10">
-                {category ? (
-                  <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
-                ) : null}
-                <div className={category ? "mt-3" : ""}>
-                  <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
-                </div>
-                <h2 className="mt-3 text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">{event.title}</h2>
-                <p className="mt-4 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
-                <span className="accent-rule mt-5" />
-
-                {event.registrationFee ? (
-                  <dl className="mt-6">
-                    <div className="rounded-card border border-line bg-surface px-4 py-3">
-                      <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Registration</dt>
-                      <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.registrationFee}</dd>
-                    </div>
-                  </dl>
-                ) : null}
-
-                <div className="mt-8">
-                  <h3 className="text-[17px] font-bold text-foreground">About this event</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.description}</p>
-                </div>
-
-                {event.agenda && event.agenda.length > 0 ? (
-                  <div className="mt-8">
-                    <h3 className="text-[17px] font-bold text-foreground">Agenda</h3>
-                    <ul className="mt-4 space-y-3">
-                      {event.agenda.map((a) => (
-                        <li key={`${a.time}-${a.title}`} className="flex gap-4 border-b border-line pb-3 text-[14px]">
-                          <span className="w-16 shrink-0 font-semibold text-foreground sm:w-20">{a.time}</span>
-                          <span className="text-muted-fg">{a.title}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {event.speakers && event.speakers.length > 0 ? (
-                  <div className="mt-8">
-                    <h3 className="text-[17px] font-bold text-foreground">Speakers</h3>
-                    <ul className="mt-4 space-y-3">
-                      {event.speakers.map((s) => (
-                        <li key={s.name}>
-                          <p className="font-semibold text-foreground">{s.name}</p>
-                          <p className="text-[13px] text-muted-fg">{s.role}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                {event.media && event.media.length > 0 ? (
-                  <div className="mt-8">
-                    <h3 className="text-[17px] font-bold text-foreground">Media</h3>
-                    <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {event.media.map((m) => (
-                        <li key={m.url} className="group overflow-hidden rounded-card border border-line">
-                          <div className="relative overflow-hidden">
-                            <img
-                              src={m.url}
-                              alt={m.caption ?? ""}
-                              className="card-zoom-img aspect-[4/3] w-full object-cover"
-                            />
-                          </div>
-                          {m.caption ? <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p> : null}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-
-                <div className="mt-auto flex flex-wrap gap-3 pt-8">
-                  {event.registrationUrl ? (
-                    <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
-                      Register / Enquire
-                    </Link>
-                  ) : null}
-                  <Link
-                    to="/become-a-member"
-                    className="btn-base border border-line bg-background text-foreground hover:border-navy"
-                    onClick={() => onOpenChange(false)}
-                  >
-                    Become a Member
-                  </Link>
-                </div>
-            </div>
-          </>
+    <SimpleModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title={event.title}
+      description={event.summary}
+      className="w-[min(960px,calc(100vw-1.5rem))] p-0"
+    >
+      <div className="p-6 sm:p-8 lg:p-10">
+        {category ? (
+          <p className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">{category.title}</p>
         ) : null}
-      </DialogContent>
-    </Dialog>
+        <div className={category ? "mt-3" : ""}>
+          <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
+        </div>
+        <h2 className="mt-3 text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">{event.title}</h2>
+        <p className="mt-4 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
+        <span className="accent-rule mt-5" />
+
+        {event.registrationFee ? (
+          <dl className="mt-6">
+            <div className="rounded-card border border-line bg-surface px-4 py-3">
+              <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Registration</dt>
+              <dd className="mt-1 text-[15px] font-semibold text-foreground">{event.registrationFee}</dd>
+            </div>
+          </dl>
+        ) : null}
+
+        <div className="mt-8">
+          <h3 className="text-[17px] font-bold text-foreground">About this event</h3>
+          <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.description}</p>
+        </div>
+
+        {event.agenda && event.agenda.length > 0 ? (
+          <div className="mt-8">
+            <h3 className="text-[17px] font-bold text-foreground">Agenda</h3>
+            <ul className="mt-4 space-y-3">
+              {event.agenda.map((a) => (
+                <li key={`${a.time}-${a.title}`} className="flex gap-4 border-b border-line pb-3 text-[14px]">
+                  <span className="w-16 shrink-0 font-semibold text-foreground sm:w-20">{a.time}</span>
+                  <span className="text-muted-fg">{a.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {event.speakers && event.speakers.length > 0 ? (
+          <div className="mt-8">
+            <h3 className="text-[17px] font-bold text-foreground">Speakers</h3>
+            <ul className="mt-4 space-y-3">
+              {event.speakers.map((s) => (
+                <li key={s.name}>
+                  <p className="font-semibold text-foreground">{s.name}</p>
+                  <p className="text-[13px] text-muted-fg">{s.role}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {event.media && event.media.length > 0 ? (
+          <div className="mt-8">
+            <h3 className="text-[17px] font-bold text-foreground">Media</h3>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {event.media.map((m) => (
+                <li key={m.url} className="group overflow-hidden rounded-card border border-line">
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={m.url}
+                      alt={m.caption ?? ""}
+                      className="card-zoom-img aspect-[4/3] w-full object-cover"
+                    />
+                  </div>
+                  {m.caption ? <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p> : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        <div className="mt-auto flex flex-wrap gap-3 pt-8">
+          {event.registrationUrl ? (
+            <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
+              Register / Enquire
+            </Link>
+          ) : null}
+          <Link
+            to="/become-a-member"
+            className="btn-base border border-line bg-background text-foreground hover:border-navy"
+            onClick={() => onOpenChange(false)}
+          >
+            Become a Member
+          </Link>
+        </div>
+      </div>
+    </SimpleModal>
   );
 }
 
