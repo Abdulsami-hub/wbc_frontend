@@ -11,6 +11,11 @@ type I18nValue = {
 
 const I18nContext = createContext<I18nValue | null>(null);
 
+/**
+ * UI strings via `t()` only.
+ * Full-document DOM translation (TreeWalker + attribute writes) is disabled —
+ * it contributed to production freezes with forms/modals/dropdowns.
+ */
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<LangCode>(DEFAULT_LANG);
 
@@ -34,10 +39,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
   }, []);
-
-  // DOM-wide translation disabled — walking document.body froze Contact / modals /
-  // affiliate dropdowns in production. Nav/UI strings still use t().
-  // Do NOT re-enable applyDocumentTranslation until a safer scoped strategy exists.
 
   const t = useCallback(
     (key: TranslationKey) => DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key,

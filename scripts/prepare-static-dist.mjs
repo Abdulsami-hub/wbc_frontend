@@ -149,8 +149,15 @@ writeFileSync(
   )}\n`,
 );
 
+// Drop SSR/server output — static hosts (cPanel/Vercel static) only need the client SPA.
 rmSync(dist, { recursive: true, force: true });
 renameSync(staging, dist);
 
-console.log(`Static site ready: dist/index.html (js=${jsEntry}, css=${cssEntry}, stamp=${buildStamp})`);
-console.log(`VERIFY AFTER UPLOAD: View source on wbccme.org must show ${jsEntry} (not an older index-*.js)`);
+// Guard: never ship a nested client/server layout that confuses uploads.
+if (existsSync(join(dist, "client")) || existsSync(join(dist, "server"))) {
+  console.error("dist still contains client/ or server/ — static flatten failed.");
+  process.exit(1);
+}
+
+console.log(`Static SPA ready: dist/index.html (js=${jsEntry}, css=${cssEntry}, stamp=${buildStamp})`);
+console.log(`VERIFY AFTER UPLOAD: View source must show meta wbc-build=${buildStamp} and script ${jsEntry}`);

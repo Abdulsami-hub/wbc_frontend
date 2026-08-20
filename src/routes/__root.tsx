@@ -4,15 +4,13 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 
-import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-// Temporarily disabled: embla + focus handlers participated in production freezes.
-// import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
+import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { I18nProvider } from "@/i18n";
 
 function NotFoundComponent() {
@@ -73,10 +71,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 /**
- * Shell is required for TanStack Start SSR (`npm run dev`).
- * Do NOT mount `<HeadContent />` — live document head sync freezes Chrome when
- * focusing inputs (Contact / Membership) or interacting with overlays/modals.
- * Static SEO tags are emitted by `scripts/prepare-static-dist.mjs` for production.
+ * Minimal shell for `vite dev` (TanStack Start).
+ * No HeadContent / Scripts — those live-document APIs freeze Chrome in the
+ * static SPA production build when focusing inputs or opening overlays.
  */
 function RootShell({ children }: { children: ReactNode }) {
   return (
@@ -85,19 +82,8 @@ function RootShell({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>World Business Council</title>
-        <link rel="stylesheet" href={appCss} />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap"
-        />
       </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
@@ -111,6 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -124,7 +111,11 @@ function RootComponent() {
         <Header />
         <main id="main">
           <Outlet />
-          {/* AdvertisingOpportunities temporarily disabled for production freeze isolation */}
+          {pathname !== "/advertising" &&
+          pathname !== "/contact" &&
+          pathname !== "/become-a-member" ? (
+            <AdvertisingOpportunities />
+          ) : null}
         </main>
         <Footer />
       </I18nProvider>
