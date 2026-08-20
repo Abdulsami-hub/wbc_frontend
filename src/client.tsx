@@ -3,6 +3,10 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { StartClient } from "@tanstack/react-start/client";
 import { getRouter } from "./router";
+import { unregisterImageCache } from "./lib/image-cache";
+
+// Run before React mounts so stale production SW / caches cannot serve freeze-prone clients.
+unregisterImageCache();
 
 const router = getRouter();
 
@@ -40,8 +44,3 @@ try {
 } catch (error) {
   console.error("[WBC] Client bootstrap failed:", error);
 }
-
-void import("./lib/image-cache").then((m) => {
-  // Clear any previously installed SW that could leave stale freeze-prone clients.
-  m.unregisterImageCache?.();
-});

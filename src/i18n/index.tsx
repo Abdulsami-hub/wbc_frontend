@@ -37,22 +37,31 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // English strings are rendered via t(); skip the synchronous body DOM walk.
+    if (lang === "en") return;
+
     let cancelled = false;
     let cleanup: (() => void) | undefined;
-    let raf = 0;
+    let idle = 0;
 
     loadMap(lang).then((map) => {
-      if (cancelled) return;
-      // Defer so the language menu can close before the full DOM walk.
-      raf = requestAnimationFrame(() => {
+      if (cancelled || !map) return;
+      const run = () => {
         if (cancelled) return;
         cleanup = applyDocumentTranslation(map);
-      });
+      };
+      // Idle scheduling keeps input focus / modal open responsive during translation.
+      if (typeof requestIdleCallback === "function") {
+        idle = requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        idle = window.setTimeout(run, 0) as unknown as number;
+      }
     });
 
     return () => {
       cancelled = true;
-      cancelAnimationFrame(raf);
+      if (typeof cancelIdleCallback === "function" && idle) cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
       cleanup?.();
     };
   }, [lang]);

@@ -115,7 +115,7 @@ function Contact() {
 
       <section className="py-16 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-2 lg:gap-14">
-          <div data-reveal>
+          <div>
             <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">Contact Information</h2>
             <span className="accent-rule mt-4" />
             <p className="mt-5 text-[16px] leading-relaxed text-muted-fg text-justify">
@@ -164,7 +164,7 @@ function Contact() {
             <ContactMap />
           </div>
 
-          <div data-reveal className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:p-8">
+          <div data-no-translate className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:p-8">
             <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">Send Us a Message</h2>
             <span className="accent-rule mt-4 mb-6" />
             <ContactForm />

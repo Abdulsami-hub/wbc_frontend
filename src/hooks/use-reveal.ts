@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 /**
  * Scroll-reveal: sets `data-revealed` on `[data-reveal]` when in view.
- * No MutationObserver — watching the whole document caused freezes when
- * dialogs, dropdowns, or form focus changed the DOM.
+ * No scroll/resize listeners — focusing inputs (mobile keyboard) or opening
+ * dropdowns fired resize/scroll storms that froze Contact / Affiliates in production.
  */
 export function useReveal(key?: string, enabled = true) {
   useEffect(() => {
@@ -13,10 +13,8 @@ export function useReveal(key?: string, enabled = true) {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const observed = new WeakSet<Element>();
-
     const revealAll = () => {
-      for (const n of document.querySelectorAll("[data-reveal]")) {
+      for (const n of document.querySelectorAll("[data-reveal], [data-reveal-group]")) {
         n.setAttribute("data-revealed", "");
       }
     };
@@ -25,6 +23,8 @@ export function useReveal(key?: string, enabled = true) {
       const t = window.setTimeout(revealAll, 150);
       return () => window.clearTimeout(t);
     }
+
+    const observed = new WeakSet<Element>();
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -39,32 +39,20 @@ export function useReveal(key?: string, enabled = true) {
     );
 
     const scan = () => {
-      for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
+      for (const n of document.querySelectorAll<HTMLElement>("[data-reveal], [data-reveal-group]")) {
         if (observed.has(n)) continue;
         observed.add(n);
         observer.observe(n);
       }
     };
 
-    let debounce = 0;
-    const scheduleScan = () => {
-      window.clearTimeout(debounce);
-      debounce = window.setTimeout(scan, 100);
-    };
-
-    // Initial scans after hydration / route change only.
+    // Route-change scans only — never re-scan on scroll/resize (production freeze source).
     const startTimer = window.setTimeout(scan, 150);
-    const retryTimers = [500, 1200].map((ms) => window.setTimeout(scan, ms));
-
-    window.addEventListener("scroll", scheduleScan, { passive: true });
-    window.addEventListener("resize", scheduleScan, { passive: true });
+    const retryTimers = [500, 1200, 2500].map((ms) => window.setTimeout(scan, ms));
 
     return () => {
       window.clearTimeout(startTimer);
-      window.clearTimeout(debounce);
       for (const t of retryTimers) window.clearTimeout(t);
-      window.removeEventListener("scroll", scheduleScan);
-      window.removeEventListener("resize", scheduleScan);
       observer.disconnect();
     };
   }, [key, enabled]);
