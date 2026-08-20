@@ -4,7 +4,6 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  useRouterState,
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
@@ -12,7 +11,8 @@ import { type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
+// Temporarily disabled: embla + focus handlers participated in production freezes.
+// import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { I18nProvider } from "@/i18n";
 
 function NotFoundComponent() {
@@ -111,7 +111,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -125,11 +124,7 @@ function RootComponent() {
         <Header />
         <main id="main">
           <Outlet />
-          {pathname !== "/advertising" &&
-          pathname !== "/contact" &&
-          pathname !== "/become-a-member" ? (
-            <AdvertisingOpportunities />
-          ) : null}
+          {/* AdvertisingOpportunities temporarily disabled for production freeze isolation */}
         </main>
         <Footer />
       </I18nProvider>

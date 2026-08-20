@@ -53,7 +53,7 @@ const INDIVIDUAL_LABELS: Record<(typeof INDIVIDUAL_REQUIRED)[number], string> = 
 };
 
 const inputClass =
-  "mt-1.5 w-full rounded-md border border-line bg-background px-3.5 py-2.5 text-[15px] text-foreground outline-none transition-colors focus:border-navy";
+  "mt-1.5 w-full rounded-md border border-line bg-background px-3.5 py-2.5 text-[15px] text-foreground outline-none";
 
 function Field({
   id,
