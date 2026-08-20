@@ -134,6 +134,24 @@ function StrategicPartners() {
               Partnerships are designed to be practical and accountable — from joint programmes and institutional
               dialogues to long-term collaboration that strengthens the WBC network worldwide.
             </p>
+            <div data-reveal data-reveal-group className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+              <article className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
+                <span className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100" />
+                <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Media Sponsors</p>
+                <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
+                  Media sponsors help expand visibility through co-branded coverage, campaign amplification, and
+                  audience reach across platforms.
+                </p>
+              </article>
+              <article className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
+                <span className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100" />
+                <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Corporate Sponsors</p>
+                <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
+                  Corporate sponsors support event delivery, partnership programmes, and strategic initiatives with
+                  resources, expertise, and long-term collaboration.
+                </p>
+              </article>
+            </div>
           </div>
 
           <aside data-reveal className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8">
