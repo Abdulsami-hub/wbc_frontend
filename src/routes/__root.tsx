@@ -71,11 +71,23 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 /**
- * Minimal shell for `vite dev` (TanStack Start).
- * No HeadContent / Scripts — those live-document APIs freeze Chrome in the
- * static SPA production build when focusing inputs or opening overlays.
+ * Document shell for TanStack Start (`hydrateRoot(document)` / SSR only).
+ *
+ * CRITICAL (React 19): never render <html>/<body>/<head> under
+ * createRoot(#root). That creates HostSingleton fibers whose container is
+ * div#root while selectionchange targets #document — infinite loop →
+ * Chrome "Page Unresponsive" on any input/textarea focus.
+ *
+ * Static SPA index.html already has the real document; shell must be a no-op.
  */
 function RootShell({ children }: { children: ReactNode }) {
+  const spaMount =
+    typeof document !== "undefined" && document.getElementById("root") !== null;
+
+  if (spaMount) {
+    return children;
+  }
+
   return (
     <html lang="en">
       <head>

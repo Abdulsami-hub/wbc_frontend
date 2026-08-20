@@ -8,8 +8,10 @@ import "./styles.css";
 /**
  * Dual entry:
  * - Static `dist/index.html` has `#root` → pure SPA (RouterProvider only).
- * - `vite dev` / SSR has no `#root` → StartClient (lazy), so production static
- *   builds never execute Start head/scroll sync that freezes Chrome on focus.
+ * - `vite dev` / SSR has no `#root` → StartClient (lazy).
+ *
+ * Root shell must NOT render <html>/<body> under createRoot(#root) — React 19
+ * HostSingleton + selectionchange infinite-loops and freezes Chrome on input focus.
  */
 unregisterImageCache();
 
