@@ -34,6 +34,7 @@ export function AffiliateLocationProfile({
 }: {
   affiliate: Extract<AffiliateProfile, { kind: "country" | "city" }>;
 }) {
+  const isCity = affiliate.kind === "city";
   const details = getAffiliateDetails(affiliate);
   const title = placeTitle(affiliate);
   const isActive = affiliate.status === "active";
@@ -75,11 +76,14 @@ export function AffiliateLocationProfile({
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 overflow-hidden bg-teal lg:block" aria-hidden="true">
+        <div
+          className={`absolute inset-y-0 start-0 hidden w-1/2 overflow-hidden lg:block ${isCity ? "bg-orange" : "bg-teal"}`}
+          aria-hidden="true"
+        >
           <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl" />
           <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl" />
         </div>
-        <div className="relative overflow-hidden bg-teal lg:bg-transparent">
+        <div className={`relative overflow-hidden lg:bg-transparent ${isCity ? "bg-orange" : "bg-teal"}`}>
           <span className="pointer-events-none absolute -end-16 -top-16 size-56 rounded-full bg-white/10 blur-2xl lg:hidden" />
           <span className="pointer-events-none absolute -start-10 bottom-0 size-40 rounded-full bg-navy/20 blur-2xl lg:hidden" />
           <div className="container-wbc relative py-14 lg:py-20">
@@ -211,31 +215,46 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      <section id="about" className="affiliate-section-anchor relative overflow-hidden border-b border-line py-16 lg:py-24">
-        <div className="pointer-events-none absolute -end-24 top-10 size-[320px] rounded-full bg-blue/8 blur-3xl" aria-hidden="true" />
-        <div className="container-wbc relative grid items-start gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
-          <div data-reveal>
-            <p className="eyebrow">About the affiliate</p>
-            <h2 className="mt-3 text-[30px] font-bold leading-tight text-foreground sm:text-[40px]">
-              Local presence, global reach
+      <section id="about" className="affiliate-section-anchor relative overflow-hidden border-b border-line py-14 lg:py-20">
+        <div className="pointer-events-none absolute -start-20 top-8 size-[280px] rounded-full bg-orange/10 blur-3xl" aria-hidden="true" />
+        <div className="pointer-events-none absolute -end-16 bottom-0 size-[260px] rounded-full bg-blue/10 blur-3xl" aria-hidden="true" />
+        <div data-reveal data-reveal-group className="container-wbc relative grid items-stretch gap-5 lg:grid-cols-2 lg:gap-6">
+          <article className="group guide-card relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-background p-6 shadow-card sm:p-8">
+            <span
+              className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-40 bg-gradient-to-r from-orange via-teal to-transparent transition-transform duration-700 group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+            <span
+              className={`guide-glow -end-10 -top-10 size-40 ${isCity ? "bg-orange/35" : "bg-teal/30"}`}
+              aria-hidden="true"
+            />
+            <span className="guide-num pointer-events-none absolute end-5 top-5 font-display text-[42px] font-bold tabular-nums text-blue/15 sm:text-[52px]">
+              01
+            </span>
+            <p className="relative text-[12px] font-semibold tracking-[0.2em] text-muted-fg uppercase">
+              {isCity ? "City overview" : "Country overview"}
+            </p>
+            <h2 className="relative mt-3 text-[24px] font-bold leading-tight text-foreground transition-colors duration-300 group-hover:text-navy sm:text-[30px]">
+              {title}
             </h2>
-            <span className="accent-rule mt-5" />
-            <p className="mt-6 text-[17px] leading-relaxed text-muted-fg sm:text-[18px]">{details.locationIntro}</p>
-            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">{details.about}</p>
+            <span className="guide-accent relative mt-5" aria-hidden="true" />
+            <p className="relative mt-5 flex-1 text-[16px] leading-relaxed text-muted-fg transition-colors duration-300 group-hover:text-foreground/80">
+              {details.locationIntro}
+            </p>
 
             {affiliate.kind === "country" && affiliate.cities.length > 0 ? (
-              <div className="mt-8">
+              <div className="relative mt-7">
                 <h3 className="text-[12px] font-semibold tracking-[0.16em] text-muted-fg uppercase">Cities in this country</h3>
-                <ul className="mt-4 flex flex-wrap gap-3">
+                <ul className="mt-3 flex flex-wrap gap-2.5">
                   {affiliate.cities.map((city) => (
                     <li key={city.slug}>
                       <Link
                         to="/affiliates/$slug"
                         params={{ slug: city.slug }}
-                        className={`inline-flex rounded-card border px-4 py-2 text-[15px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card ${
+                        className={`inline-flex rounded-card border px-3.5 py-1.5 text-[14px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card ${
                           city.status === "active"
-                            ? "border-orange/55 text-orange hover:bg-orange/5"
-                            : "border-line text-orange/70 hover:border-orange/40"
+                            ? "border-teal/55 text-teal hover:bg-teal/5"
+                            : "border-line text-muted-fg hover:border-muted-fg/40"
                         }`}
                       >
                         {city.name}
@@ -250,29 +269,41 @@ export function AffiliateLocationProfile({
               <Link
                 to="/affiliates/$slug"
                 params={{ slug: affiliate.countrySlug }}
-                className="mt-8 inline-flex items-center gap-2 rounded-card border border-line bg-background px-4 py-3 text-[15px] font-semibold shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-teal/40"
+                className="relative mt-7 inline-flex w-fit items-center gap-2 rounded-card border border-line bg-surface px-4 py-2.5 text-[14px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-orange/50 hover:shadow-card"
               >
                 Country profile: {affiliate.countryName}
-                <span aria-hidden="true">→</span>
+                <span
+                  className="transition-transform duration-300 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
               </Link>
             ) : null}
-          </div>
+          </article>
 
-          <aside data-reveal className="group relative overflow-hidden rounded-card border border-navy/10 bg-navy p-7 text-white shadow-card sm:p-8">
-            <span className="pointer-events-none absolute -end-10 -top-10 size-36 rounded-full bg-orange/0 transition-all duration-500 group-hover:scale-150 group-hover:bg-orange/25" aria-hidden="true" />
-            <p className="relative text-[12px] font-bold tracking-[0.18em] text-white/60 uppercase">At a glance</p>
-            <ul className="relative mt-6 space-y-5">
-              <GlanceRow label="Type" value={affiliate.kind === "city" ? "City affiliate" : "Country affiliate"} />
-              <GlanceRow label="Region" value={affiliate.region} />
-              <GlanceRow label="Headquarters" value="Paris" />
-            </ul>
-            <Link
-              to="/affiliates"
-              className="relative mt-8 inline-flex items-center gap-2 border-b border-white/40 pb-0.5 text-[14px] font-semibold text-white transition-colors hover:border-orange hover:text-orange"
-            >
-              ← All affiliates
-            </Link>
-          </aside>
+          <article className="group guide-card relative flex h-full flex-col overflow-hidden rounded-card border border-navy/20 bg-navy p-6 text-white shadow-card sm:p-8">
+            <span
+              className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-40 bg-gradient-to-r from-orange via-orange/40 to-transparent transition-transform duration-700 group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+            <span className="guide-glow -end-10 -top-10 size-44 bg-orange/40" aria-hidden="true" />
+            <span
+              className="pointer-events-none absolute -start-8 bottom-0 size-32 rounded-full bg-blue/30 opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-100"
+              aria-hidden="true"
+            />
+            <span className="guide-num pointer-events-none absolute end-5 top-5 font-display text-[42px] font-bold tabular-nums text-white/10 sm:text-[52px]">
+              02
+            </span>
+            <p className="relative text-[12px] font-semibold tracking-[0.2em] text-white/65 uppercase">
+              About the affiliate
+            </p>
+            <h2 className="relative mt-3 text-[24px] font-bold leading-tight sm:text-[30px]">
+              Local presence, global reach
+            </h2>
+            <span className="guide-accent relative mt-5" aria-hidden="true" />
+            <p className="relative mt-5 flex-1 text-[16px] leading-relaxed text-white/80">{details.about}</p>
+          </article>
         </div>
       </section>
 
@@ -619,15 +650,6 @@ function ContactSection({ contact, place }: { contact: AffiliateContact; place: 
         </div>
       </div>
     </section>
-  );
-}
-
-function GlanceRow({ label, value }: { label: string; value: string }) {
-  return (
-    <li className="flex items-start justify-between gap-4 border-b border-white/15 pb-4 last:border-0 last:pb-0">
-      <span className="text-[13px] text-white/65">{label}</span>
-      <span className="max-w-[60%] text-end text-[15px] font-semibold">{value}</span>
-    </li>
   );
 }
 

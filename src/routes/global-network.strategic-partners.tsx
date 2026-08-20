@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 import { PartnersDirectory } from "@/components/PartnersDirectory";
-import networkBg from "@/assets/network-bg.jpg";
+import partnersHero from "@/assets/partners-hero.png";
 
 export const Route = createFileRoute("/global-network/strategic-partners")({
   head: () => ({
@@ -103,8 +103,8 @@ function StrategicPartners() {
         title="Partners and Sponsors"
         description="Developing partnerships with chambers of commerce, NGOs, international organizations, governments, and private sector entities to enhance global cooperation and expand impact."
         tags={["Chambers", "Institutions", "Private Sector"]}
-        image={networkBg}
-        imageAlt="Global cooperation network representing WBC strategic partnerships"
+        image={partnersHero}
+        imageAlt="Business partners shaking hands across a conference table"
         tone="orange"
         ctaLabel="Partner with WBC"
         ctaTo="/contact"

@@ -21,6 +21,7 @@ export function SplitHero({
   ctaDownload,
   ctaHash,
   tone = "navy",
+  imageFit = "cover",
 }: {
   eyebrow: string;
   title: string;
@@ -36,6 +37,8 @@ export function SplitHero({
   ctaHash?: string;
   /** Brand panel color: navy #0c3163 · orange #fe4812 · blue #0d67c2 */
   tone?: HeroTone;
+  /** `contain` shows the full photo without cropping left or right. */
+  imageFit?: "cover" | "contain";
 }) {
   return (
     <section className="relative flex flex-col">
@@ -93,7 +96,9 @@ export function SplitHero({
           height={900}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 size-full object-cover"
+          className={`absolute inset-0 size-full ${
+            imageFit === "contain" ? "object-contain object-center" : "object-cover"
+          }`}
         />
       </div>
     </section>

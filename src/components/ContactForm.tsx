@@ -2,6 +2,8 @@ import { useState } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+const CONTACT_API = "https://api.wbccme.org/api/contact/";
+
 const FIELDS = [
   { name: "name", label: "Name", type: "text", autoComplete: "name" },
   { name: "email", label: "Email", type: "email", autoComplete: "email" },
@@ -11,8 +13,9 @@ const FIELDS = [
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "loading") return;
 
@@ -31,16 +34,57 @@ export function ContactForm() {
     if (String(data.get("company") ?? "")) return; // honeypot
 
     setErrors(next);
+    setSubmitError("");
     if (Object.keys(next).length > 0) {
       setStatus("error");
       return;
     }
 
+    const payload = {
+      name: String(data.get("name") ?? "").trim(),
+      email,
+      subject: String(data.get("subject") ?? "").trim(),
+      message,
+    };
+
     setStatus("loading");
-    window.setTimeout(() => {
+    try {
+      const res = await fetch(CONTACT_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let body: unknown = null;
+      try {
+        body = await res.json();
+      } catch {
+        body = null;
+      }
+
+      if (!res.ok) {
+        if (body && typeof body === "object") {
+          const apiErrors: Record<string, string> = {};
+          for (const key of ["name", "email", "subject", "message"] as const) {
+            const value = (body as Record<string, unknown>)[key];
+            if (Array.isArray(value) && typeof value[0] === "string") apiErrors[key] = value[0];
+            else if (typeof value === "string") apiErrors[key] = value;
+          }
+          if (Object.keys(apiErrors).length > 0) {
+            setErrors(apiErrors);
+            setStatus("error");
+            return;
+          }
+        }
+        throw new Error("Request failed");
+      }
+
       setStatus("success");
       form.reset();
-    }, 700);
+    } catch {
+      setStatus("error");
+      setSubmitError("We could not send your message. Please try again or email contact@wbccme.org.");
+    }
   }
 
   const inputClass =
@@ -102,7 +146,9 @@ export function ContactForm() {
         {status === "error" && Object.keys(errors).length > 0 && (
           <span className="text-foreground">Please correct the highlighted fields.</span>
         )}
+        {status === "error" && submitError && <span className="text-foreground">{submitError}</span>}
       </p>
     </form>
   );
 }
+

@@ -178,7 +178,8 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  useReveal(pathname);
+  const routerReady = useRouterState({ select: (s) => !s.isLoading });
+  useReveal(pathname, routerReady);
 
   return (
     <QueryClientProvider client={queryClient}>

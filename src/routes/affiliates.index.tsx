@@ -164,7 +164,7 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
                           to="/affiliates/$slug"
                           params={{ slug: city.slug }}
                           className={`text-[15px] transition-colors hover:underline ${
-                            city.status === "active" ? "font-medium text-orange" : "text-orange/70"
+                            city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
                           }`}
                         >
                           {city.name}

@@ -2,14 +2,18 @@ import { useEffect } from "react";
 
 /**
  * Scroll-reveal: sets `data-revealed` on `[data-reveal]` when in view.
- * Rescans after navigation and when lazy route chunks mount so content
- * is not left invisible until a hard refresh.
+ * First scan is deferred until after hydration so SSR HTML still matches
+ * the client tree (lazy routes like Contact hydrate after the root effect).
  */
-export function useReveal(key?: string) {
+export function useReveal(key?: string, enabled = true) {
   useEffect(() => {
+    if (!enabled) return;
+
     const reduced =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const observed = new WeakSet<Element>();
 
     const revealAll = () => {
       for (const n of document.querySelectorAll("[data-reveal]")) {
@@ -18,8 +22,7 @@ export function useReveal(key?: string) {
     };
 
     if (typeof IntersectionObserver === "undefined" || reduced) {
-      revealAll();
-      const t = window.setTimeout(revealAll, 300);
+      const t = window.setTimeout(revealAll, 150);
       return () => window.clearTimeout(t);
     }
 
@@ -36,8 +39,9 @@ export function useReveal(key?: string) {
     );
 
     const scan = () => {
-      for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-observed])")) {
-        n.setAttribute("data-observed", "");
+      for (const n of document.querySelectorAll<HTMLElement>("[data-reveal]")) {
+        if (observed.has(n)) continue;
+        observed.add(n);
         const top = n.getBoundingClientRect().top;
         if (top < window.innerHeight * 0.96) {
           n.setAttribute("data-revealed", "");
@@ -55,22 +59,35 @@ export function useReveal(key?: string) {
       });
     };
 
-    scheduleScan();
-    const retryTimers = [50, 150, 350, 800, 1600].map((ms) => window.setTimeout(scheduleScan, ms));
+    let started = false;
+    let mo: MutationObserver | undefined;
+    const start = () => {
+      if (started) return;
+      started = true;
+      scheduleScan();
+      mo = new MutationObserver(() => scheduleScan());
+      mo.observe(document.body, { childList: true, subtree: true });
+      window.addEventListener("scroll", scheduleScan, { passive: true });
+      window.addEventListener("resize", scheduleScan, { passive: true });
+    };
 
-    const mo = new MutationObserver(() => scheduleScan());
-    mo.observe(document.body, { childList: true, subtree: true });
+    // Root useEffect runs before lazy page components hydrate. Wait one
+    // macrotask + a frame so Contact (and similar) can match SSR HTML first.
+    let startTimer = window.setTimeout(() => {
+      startTimer = 0;
+      requestAnimationFrame(start);
+    }, 150);
 
-    window.addEventListener("scroll", scheduleScan, { passive: true });
-    window.addEventListener("resize", scheduleScan, { passive: true });
+    const retryTimers = [400, 900, 1800].map((ms) => window.setTimeout(scheduleScan, ms));
 
     return () => {
+      if (startTimer) window.clearTimeout(startTimer);
       cancelAnimationFrame(raf);
       for (const t of retryTimers) window.clearTimeout(t);
-      mo.disconnect();
+      mo?.disconnect();
       window.removeEventListener("scroll", scheduleScan);
       window.removeEventListener("resize", scheduleScan);
       observer.disconnect();
     };
-  }, [key]);
+  }, [key, enabled]);
 }

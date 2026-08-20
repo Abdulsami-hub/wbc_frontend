@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroCity from "@/assets/hero-city.jpg";
+import { HERO_SLIDES } from "@/content/hero";
 import { HeroSlider } from "@/components/HeroSlider";
 import { LatestNews } from "@/components/LatestNews";
 import { OurPartners } from "@/components/OurPartners";
@@ -24,7 +24,9 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "preload", as: "image", href: heroCity, fetchPriority: "high" }],
+    links: HERO_SLIDES[0]?.image
+      ? [{ rel: "preload", as: "image", href: HERO_SLIDES[0].image, fetchPriority: "high" }]
+      : [],
   }),
   component: Home,
 });

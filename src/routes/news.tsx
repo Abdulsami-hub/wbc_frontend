@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { NEWS } from "@/content/news";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-import newsForum from "@/assets/news-forum.jpg";
+import newsHero from "@/assets/news-hero.png";
 
 export const Route = createFileRoute("/news")({
   head: () => ({
@@ -28,8 +28,8 @@ function NewsPage() {
         title="News & Blogs"
         description="Institutional activities, market signals, and stories from across the WBC network."
         tags={["Network", "Markets", "Programmes"]}
-        image={newsForum}
-        imageAlt="Delegates at a WBC forum"
+        image={newsHero}
+        imageAlt="WBC colleagues reviewing reports and market insights"
         tone="navy"
         ctaLabel="Contact the Team"
         ctaTo="/contact"
