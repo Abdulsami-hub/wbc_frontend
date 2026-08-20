@@ -1,29 +1,21 @@
-import { PARTNER_CATEGORIES, PARTNER_ROW_COPY, PARTNER_ROWS, partnerLogo, type Partner } from "@/content/partners";
+import { PARTNER_ROW_COPY, PARTNER_ROWS, partnerLogo, type Partner } from "@/content/partners";
 
-const ROW_MOTION = [
-  { duration: "36s", delay: "0s" },
-  { duration: "48s", delay: "-12s" },
-  { duration: "40s", delay: "-22s" },
-] as const;
-
-const ROW_BADGE = ["bg-orange", "bg-navy", "bg-teal"] as const;
-
-function MarqueeCard({ partner }: { partner: Partner }) {
+function Card({ partner }: { partner: Partner }) {
   const className =
-    "group relative flex h-[100px] w-[160px] shrink-0 flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-line/80 bg-white px-3 py-3 shadow-[0_2px_8px_oklch(0.28_0.02_255_/_0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:shadow-card sm:h-[112px] sm:w-[180px]";
+    "group relative flex h-[112px] w-[188px] shrink-0 flex-col items-center justify-center gap-2 overflow-hidden rounded-card border border-line bg-background px-4 py-3 shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:h-[128px] sm:w-[220px] sm:gap-2.5 sm:px-5 lg:h-[140px] lg:w-[240px]";
 
   const content = (
     <>
       <img
         src={partnerLogo(partner)}
         alt=""
-        width={160}
-        height={56}
+        width={200}
+        height={72}
         loading="lazy"
         decoding="async"
-        className="h-10 w-auto max-w-[85%] object-contain object-center transition-transform duration-300 group-hover:scale-105 sm:h-11"
+        className="h-14 w-auto max-w-[85%] object-contain object-center sm:h-16 lg:h-[4.5rem]"
       />
-      <p className="line-clamp-2 max-w-full text-center text-[10px] font-semibold leading-snug text-muted-fg transition-colors group-hover:text-navy sm:text-[11px]">
+      <p className="line-clamp-2 max-w-full text-center text-[11px] font-bold leading-snug tracking-[0.04em] text-navy uppercase sm:text-[12px]">
         {partner.label}
       </p>
     </>
@@ -64,57 +56,43 @@ function Row({
   return (
     <div className="min-w-0 overflow-hidden">
       <div
-        className="marquee-track-left flex w-max gap-3 sm:gap-4"
+        className="marquee-track-left flex w-max gap-3 sm:gap-4 lg:gap-5"
         style={{
           ["--marquee-duration" as string]: duration,
           ["--marquee-delay" as string]: delay,
         }}
       >
         {loop.map((p, i) => (
-          <MarqueeCard key={`${p.slug}-${i}`} partner={p} />
+          <Card key={`${p.slug}-${i}`} partner={p} />
         ))}
       </div>
     </div>
   );
 }
 
-function CategoryBand({
-  title,
-  body,
-  index,
-  items,
-  motion,
-}: {
-  title: string;
-  body: string;
-  index: number;
-  items: Partner[];
-  motion: (typeof ROW_MOTION)[number];
-}) {
-  const badge = ROW_BADGE[index] ?? ROW_BADGE[0];
-
+function CopyCard({ title, body, index }: { title: string; body: string; index: number }) {
   return (
-    <div className="min-w-0 space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-line pb-4">
-        <div>
-          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-[0.12em] text-white uppercase ${badge}`}>
-            {PARTNER_CATEGORIES[index]?.kindLabel ?? "Partner"}
-          </span>
-          <h3 className="mt-2 text-[18px] font-bold text-foreground sm:text-[20px]">{title}</h3>
-          <p className="mt-1 max-w-xl text-[14px] leading-relaxed text-muted-fg">{body}</p>
-        </div>
-        <span className="font-display text-[32px] font-bold text-foreground/10 tabular-nums">{String(index + 1).padStart(2, "0")}</span>
-      </div>
-      <div dir="ltr" className="partner-marquee-frame min-w-0 rounded-2xl border border-line/80 bg-white/90 p-3 shadow-[inset_0_1px_0_oklch(1_0_0_/_0.6)] sm:p-4">
-        <Row items={items} duration={motion.duration} delay={motion.delay} />
-      </div>
+    <div className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:border-orange/35 hover:shadow-card sm:p-6">
+      <span
+        className="absolute start-0 top-0 h-full w-1 bg-navy transition-colors duration-300 group-hover:bg-orange"
+        aria-hidden="true"
+      />
+      <p className="text-[11px] font-bold tracking-[0.18em] text-orange uppercase">0{index + 1}</p>
+      <h3 className="mt-2 text-[16px] font-bold text-navy sm:text-[17px]">{title}</h3>
+      <p className="mt-2 text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">{body}</p>
     </div>
   );
 }
 
+const ROW_MOTION = [
+  { duration: "36s", delay: "0s" },
+  { duration: "48s", delay: "-12s" },
+  { duration: "40s", delay: "-22s" },
+] as const;
+
 export function OurPartners() {
   return (
-    <section className="relative overflow-x-clip border-t border-line bg-gradient-to-b from-surface/60 to-background py-12 sm:py-16 lg:py-24">
+    <section className="relative overflow-x-clip border-t border-line bg-surface/40 py-12 sm:py-16 lg:py-24">
       <div
         className="pointer-events-none absolute -start-24 top-16 size-[320px] rounded-full bg-orange/8 blur-3xl"
         aria-hidden="true"
@@ -127,7 +105,7 @@ export function OurPartners() {
       <div className="container-wbc relative">
         <div className="min-w-0">
           <p data-reveal className="text-[12px] font-bold uppercase tracking-[0.18em] text-orange sm:text-[13px]">
-            Partner Network
+            Growing Institutional Network
           </p>
           <h2
             data-reveal
@@ -136,21 +114,47 @@ export function OurPartners() {
             Our Partners and Sponsors
           </h2>
           <p data-reveal className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-            Institutions, media, and enterprises supporting WBC through strategic partnerships and sponsorship.
+            Trusted institutions, enterprises, and alliances collaborating with WBC across regions.
           </p>
         </div>
 
-        <div data-reveal data-reveal-group className="mt-10 space-y-10">
+        <div data-reveal data-reveal-group className="mt-8 space-y-8 lg:hidden">
           {PARTNER_ROW_COPY.map((row, i) => (
-            <CategoryBand
-              key={row.title}
-              title={row.title}
-              body={row.body}
-              index={i}
-              items={PARTNER_ROWS[i]!}
-              motion={ROW_MOTION[i]!}
-            />
+            <div key={row.title} className="min-w-0 space-y-4">
+              <CopyCard title={row.title} body={row.body} index={i} />
+              <div
+                dir="ltr"
+                className="partner-marquee-frame min-w-0 rounded-card border border-line bg-background/80 p-3 shadow-card sm:p-4"
+              >
+                <Row items={PARTNER_ROWS[i]!} duration={ROW_MOTION[i]!.duration} delay={ROW_MOTION[i]!.delay} />
+              </div>
+            </div>
           ))}
+        </div>
+
+        <div className="mt-10 hidden min-w-0 gap-14 lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center">
+          <div data-reveal data-reveal-group className="min-w-0 space-y-4">
+            {PARTNER_ROW_COPY.map((row, i) => (
+              <CopyCard key={row.title} title={row.title} body={row.body} index={i} />
+            ))}
+          </div>
+
+          <div
+            data-reveal
+            dir="ltr"
+            className="partner-marquee-frame relative min-w-0 rounded-card border border-line bg-background p-5 shadow-card"
+          >
+            <div className="flex flex-col gap-4">
+              {PARTNER_ROWS.map((items, i) => (
+                <Row
+                  key={i}
+                  items={items}
+                  duration={ROW_MOTION[i]!.duration}
+                  delay={ROW_MOTION[i]!.delay}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
