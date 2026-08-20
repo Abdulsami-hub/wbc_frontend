@@ -1,7 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { DEFAULT_LANG, LANGUAGES, STORAGE_KEY, type LangCode } from "./languages";
 import { DICTIONARIES, type TranslationKey } from "./dictionary";
-import { applyDocumentTranslation, loadMap } from "./dom-translate";
 
 type I18nValue = {
   lang: LangCode;
@@ -36,35 +35,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    // English strings are rendered via t(); skip the synchronous body DOM walk.
-    if (lang === "en") return;
-
-    let cancelled = false;
-    let cleanup: (() => void) | undefined;
-    let idle = 0;
-
-    loadMap(lang).then((map) => {
-      if (cancelled || !map) return;
-      const run = () => {
-        if (cancelled) return;
-        cleanup = applyDocumentTranslation(map);
-      };
-      // Idle scheduling keeps input focus / modal open responsive during translation.
-      if (typeof requestIdleCallback === "function") {
-        idle = requestIdleCallback(run, { timeout: 2000 });
-      } else {
-        idle = window.setTimeout(run, 0) as unknown as number;
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      if (typeof cancelIdleCallback === "function" && idle) cancelIdleCallback(idle);
-      else window.clearTimeout(idle);
-      cleanup?.();
-    };
-  }, [lang]);
+  // DOM-wide translation disabled — walking document.body froze Contact/modals in production.
+  // Nav/UI strings still use t(); full-page maps can be re-enabled later with a safer strategy.
 
   const t = useCallback(
     (key: TranslationKey) => DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key,

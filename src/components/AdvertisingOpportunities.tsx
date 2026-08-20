@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useRef, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import { useEffect, useRef, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
 import forumImg from "@/assets/news-forum.jpg";
 import membershipImg from "@/assets/membership.jpg";
@@ -31,45 +30,30 @@ const OPPORTUNITIES = [
 
 const AUTO_MS = 5000;
 
+/**
+ * Lightweight carousel without Embla — Embla's MutationObserver reInit path
+ * contributed to production freezes when other page DOM changed (forms/modals).
+ */
 export function AdvertisingOpportunities() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-    return () => {
-      emblaApi.off("select", onSelect);
-      emblaApi.off("reInit", onSelect);
-    };
-  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
 
   useEffect(() => {
-    if (!emblaApi) return;
-
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
-      emblaApi.scrollNext();
+      setIndex((i) => (i + 1) % OPPORTUNITIES.length);
     }, AUTO_MS);
-
     return () => window.clearInterval(id);
-  }, [emblaApi]);
+  }, []);
 
   const pause = () => setPaused(true);
   const resume = () => setPaused(false);
+  const current = OPPORTUNITIES[index]!;
 
   return (
     <section
@@ -92,10 +76,8 @@ export function AdvertisingOpportunities() {
             {OPPORTUNITIES.map((o, i) => (
               <div
                 key={o.title}
-                className={`absolute inset-0 transition-all duration-700 ease-out ${
-                  i === index
-                    ? "z-[1] scale-100 opacity-100"
-                    : "pointer-events-none z-0 scale-[1.06] opacity-0"
+                className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                  i === index ? "z-[1] opacity-100" : "pointer-events-none z-0 opacity-0"
                 }`}
                 aria-hidden={i !== index}
               >
@@ -142,7 +124,7 @@ export function AdvertisingOpportunities() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => emblaApi?.scrollPrev()}
+                  onClick={() => setIndex((i) => (i - 1 + OPPORTUNITIES.length) % OPPORTUNITIES.length)}
                   className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
                   aria-label="Previous opportunity"
                 >
@@ -152,7 +134,7 @@ export function AdvertisingOpportunities() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => emblaApi?.scrollNext()}
+                  onClick={() => setIndex((i) => (i + 1) % OPPORTUNITIES.length)}
                   className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
                   aria-label="Next opportunity"
                 >
@@ -163,35 +145,21 @@ export function AdvertisingOpportunities() {
               </div>
             </div>
 
-            <div ref={emblaRef} className="overflow-hidden">
-              <div className="flex">
-                {OPPORTUNITIES.map((o, i) => (
-                  <div
-                    key={o.title}
-                    className="min-w-0 shrink-0 grow-0 basis-full"
-                    role="group"
-                    aria-roledescription="slide"
-                    aria-label={`${i + 1} of ${OPPORTUNITIES.length}`}
-                  >
-                    <article className="pe-2">
-                      <span className="font-display text-[40px] leading-none font-bold text-blue/25 tabular-nums sm:text-[48px]">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <p className="mt-2 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">{o.kicker}</p>
-                      <h3 className="mt-1.5 text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]">{o.title}</h3>
-                      <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">{o.body}</p>
-                    </article>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <article className="pe-2">
+              <span className="font-display text-[40px] leading-none font-bold text-blue/25 tabular-nums sm:text-[48px]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-2 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">{current.kicker}</p>
+              <h3 className="mt-1.5 text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]">{current.title}</h3>
+              <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">{current.body}</p>
+            </article>
 
             <div className="mt-5 flex items-center gap-3 lg:mt-6">
               {OPPORTUNITIES.map((o, i) => (
                 <button
                   key={o.title}
                   type="button"
-                  onClick={() => emblaApi?.scrollTo(i)}
+                  onClick={() => setIndex(i)}
                   className={`h-1 flex-1 transition-colors ${i === index ? "bg-orange" : "bg-line hover:bg-navy/30"}`}
                   aria-label={`Go to ${o.title}`}
                 />
@@ -199,10 +167,7 @@ export function AdvertisingOpportunities() {
             </div>
 
             <div className="mt-5 lg:mt-6">
-              <Link
-                to="/advertising"
-                className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]"
-              >
+              <Link to="/advertising" className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]">
                 Enquire about advertising
               </Link>
             </div>

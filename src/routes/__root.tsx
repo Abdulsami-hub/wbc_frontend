@@ -195,7 +195,8 @@ function RootComponent() {
         <main id="main">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
-          {pathname !== "/advertising" ? <AdvertisingOpportunities /> : null}
+          {/* Temporarily hidden on Contact — carousel timers interacted poorly with form focus in production. */}
+          {pathname !== "/advertising" && pathname !== "/contact" ? <AdvertisingOpportunities /> : null}
         </main>
         <Footer />
       </I18nProvider>

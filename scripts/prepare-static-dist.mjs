@@ -144,4 +144,5 @@ writeFileSync(
 rmSync(dist, { recursive: true, force: true });
 renameSync(staging, dist);
 
-console.log(`Static site ready: dist/index.html (js=${jsEntry}, css=${cssEntry})`);
+console.log(`Static site ready: dist/index.html (js=${jsEntry}, css=${cssEntry}, stamp=${buildStamp})`);
+console.log(`VERIFY AFTER UPLOAD: View source on wbccme.org must show ${jsEntry} (not an older index-*.js)`);

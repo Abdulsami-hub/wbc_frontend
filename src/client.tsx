@@ -1,4 +1,4 @@
-import { StrictMode, startTransition } from "react";
+import { startTransition } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { StartClient } from "@tanstack/react-start/client";
@@ -21,21 +21,14 @@ function mount() {
   if (rootEl) {
     startTransition(() => {
       createRoot(rootEl).render(
-        <StrictMode>
-          <RouterProvider router={router} />
-        </StrictMode>,
+        <RouterProvider router={router} />,
       );
     });
     return;
   }
 
   startTransition(() => {
-    hydrateRoot(
-      document,
-      <StrictMode>
-        <StartClient />
-      </StrictMode>,
-    );
+    hydrateRoot(document, <StartClient />);
   });
 }
 
