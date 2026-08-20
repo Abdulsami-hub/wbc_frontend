@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { DEFAULT_LANG, LANGUAGES, STORAGE_KEY, type LangCode } from "./languages";
 import { DICTIONARIES, type TranslationKey } from "./dictionary";
+import { applyDocumentTranslation, loadMap } from "./dom-translate";
 
 type I18nValue = {
   lang: LangCode;
@@ -35,8 +36,26 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // DOM-wide translation disabled — walking document.body froze Contact/modals in production.
-  // Nav/UI strings still use t(); full-page maps can be re-enabled later with a safer strategy.
+  useEffect(() => {
+    let cancelled = false;
+    let cleanup: (() => void) | undefined;
+    let raf = 0;
+
+    loadMap(lang).then((map) => {
+      if (cancelled) return;
+      // Defer so the language menu can close before the full DOM walk.
+      raf = requestAnimationFrame(() => {
+        if (cancelled) return;
+        cleanup = applyDocumentTranslation(map);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      cleanup?.();
+    };
+  }, [lang]);
 
   const t = useCallback(
     (key: TranslationKey) => DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key,

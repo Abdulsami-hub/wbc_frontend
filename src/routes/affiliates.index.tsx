@@ -118,7 +118,6 @@ function CountryDropdown({
       </div>
       {isOpen && (
         <div
-          data-no-translate
           className={`absolute start-0 top-full z-30 w-full overflow-hidden rounded-b-card border border-t-0 bg-background shadow-card ${
             country.status === "active" ? "border-teal" : "border-line"
           }`}

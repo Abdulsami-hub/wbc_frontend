@@ -159,6 +159,7 @@ function BecomeAMember() {
 
             <div
               data-reveal
+              data-no-translate
               className="relative overflow-hidden rounded-card border border-line bg-background p-6 shadow-card sm:p-8 lg:p-10"
             >
               <span

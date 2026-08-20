@@ -36,9 +36,7 @@ export function AffiliateLocationProfile({
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible?.target.id) return;
-        const next = `#${visible.target.id}`;
-        setActiveNav((prev) => (prev === next ? prev : next));
+        if (visible?.target.id) setActiveNav(`#${visible.target.id}`);
       },
       { rootMargin: "-35% 0px -50% 0px", threshold: [0.15, 0.4] },
     );

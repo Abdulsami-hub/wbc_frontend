@@ -33,44 +33,17 @@ cpSync(assetsSource, staging, { recursive: true });
 const assetsDir = join(staging, "assets");
 const files = readdirSync(assetsDir);
 const jsEntry = files.find((f) => /^index-.*\.js$/.test(f));
-const cssEntry = files.find((f) => /^styles-.*\.css$/.test(f)) ?? files.find((f) => /\.css$/.test(f));
-const buildStamp = new Date().toISOString();
+const cssEntry = files.find((f) => /^styles-.*\.css$/.test(f));
 
-if (!jsEntry) {
-  console.error("Could not find hashed index JS in", assetsDir, files.filter((f) => f.endsWith(".js")).slice(0, 10));
+if (!jsEntry || !cssEntry) {
+  console.error("Could not find hashed index JS / styles CSS.");
   process.exit(1);
 }
 
-if (!cssEntry) {
-  console.warn("No CSS entry found — continuing without stylesheet link.");
-}
-
-/** Runs before the app bundle so stale SW / caches cannot block the freeze fix. */
-const SW_CLEANUP_SCRIPT = `<script>
-(function () {
-  if (!("serviceWorker" in navigator)) return;
-  navigator.serviceWorker.getRegistrations().then(function (regs) {
-    for (var i = 0; i < regs.length; i++) regs[i].unregister();
-  });
-  if ("caches" in window) {
-    caches.keys().then(function (keys) {
-      for (var i = 0; i < keys.length; i++) {
-        if (keys[i].indexOf("wbc-images") === 0) caches.delete(keys[i]);
-      }
-    });
-  }
-})();
-</script>`;
-
-const cssLink = cssEntry
-  ? `<link rel="stylesheet" crossorigin href="/assets/${cssEntry}" />`
-  : "";
-
-// Always emit a static SPA shell so index.html references the latest hashed assets
-// and runs SW cleanup before the app bundle (critical for the production freeze fix).
-writeFileSync(
-  join(staging, "index.html"),
-  `<!doctype html>
+if (!existsSync(join(staging, "index.html"))) {
+  writeFileSync(
+    join(staging, "index.html"),
+    `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -103,27 +76,22 @@ writeFileSync(
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap"
     />
-    <meta name="wbc-build" content="${buildStamp}" />
-    ${cssLink}
+    <link rel="stylesheet" crossorigin href="/assets/${cssEntry}" />
   </head>
   <body>
     <div id="root"></div>
-    ${SW_CLEANUP_SCRIPT}
     <script type="module" crossorigin src="/assets/${jsEntry}"></script>
   </body>
 </html>
 `,
-);
+  );
+}
 
 writeFileSync(
   join(staging, "vercel.json"),
   `${JSON.stringify(
     {
       headers: [
-        {
-          source: "/index.html",
-          headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
-        },
         {
           source: "/assets/(.*)",
           headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
@@ -152,5 +120,4 @@ writeFileSync(
 rmSync(dist, { recursive: true, force: true });
 renameSync(staging, dist);
 
-console.log(`Static site ready: dist/index.html (js=${jsEntry}, css=${cssEntry}, stamp=${buildStamp})`);
-console.log(`VERIFY AFTER UPLOAD: View source on wbccme.org must show ${jsEntry} (not an older index-*.js)`);
+console.log(`Static site ready: dist/index.html (js=${jsEntry}, css=${cssEntry})`);

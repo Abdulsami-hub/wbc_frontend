@@ -38,7 +38,7 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="relative sticky top-0 z-50 border-b border-line bg-background" onMouseLeave={() => setMenu(null)}>
+    <header className="sticky top-0 z-50 bg-background/95 shadow-header backdrop-blur-md" onMouseLeave={() => setMenu(null)}>
       <div className="container-wbc flex h-[72px] items-center justify-between gap-4 lg:h-20">
         <Logo size="lg" onClick={() => { setMenu(null); closeMobile(); }} />
 

@@ -8,9 +8,7 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    // Disabled: scroll restoration + input focus scroll-into-view froze Contact
-    // (Playwright click on #name hung after "done scrolling" on production builds).
-    scrollRestoration: false,
+    scrollRestoration: true,
     defaultPreloadStaleTime: 0,
   });
 
