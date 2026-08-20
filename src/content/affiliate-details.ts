@@ -115,19 +115,6 @@ const COUNTRY_ISO: Record<string, string> = {
   venezuela: "ve",
 };
 
-const HERO_PHOTOS = [
-  "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1600&q=70",
-  "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1600&q=70",
-] as const;
-
 /** Override real affiliate content here by slug when it is available. */
 export const AFFILIATE_DETAILS: Partial<Record<string, Partial<AffiliateDetails>>> = {};
 
@@ -205,7 +192,9 @@ function defaultDetails(
   const ext = String(10 + ((seed >> 4) % 88)).padStart(2, "0");
 
   return {
-    heroImage: HERO_PHOTOS[seed % HERO_PHOTOS.length],
+    // Do not use random city/country photos. Hero image must be set
+    // explicitly per affiliate in AFFILIATE_DETAILS[slug].heroImage.
+    heroImage: undefined,
     logo: flagUrl(countrySlug, 160),
     locationIntro: isCity
       ? `${profile.name} is a commercial and institutional hub in ${profile.countryName}. The city connects regional enterprise with WBC’s global programmes across trade, investment, and professional networking.`

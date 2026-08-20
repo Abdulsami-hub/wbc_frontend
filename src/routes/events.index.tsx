@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function EventMetaRow({
   dateLabel,
@@ -268,49 +269,23 @@ function Events() {
             ))}
           </ul>
 
-          {filtered.length > 0 ? (
-            <ul data-reveal data-reveal-group className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((event) => (
-                  <li
-                    key={event.slug}
-                    className="group flex flex-col overflow-hidden rounded-card border border-line bg-background"
-                  >
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={event.image}
-                        alt=""
-                        width={800}
-                        height={500}
-                        loading="lazy"
-                        className="card-zoom-img aspect-[16/10] w-full object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
-                      <h3 className="mt-3 text-[22px] font-bold leading-snug text-foreground sm:text-[24px]">
-                        {event.title}
-                      </h3>
-                      <p className="mt-4 flex-1 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
-                      <button
-                        type="button"
-                        onClick={() => setSelected(event)}
-                        className="mt-6 inline-flex cursor-pointer items-center gap-2 text-[16px] font-bold text-blue transition-colors hover:text-blue/80"
-                      >
-                        View details
-                        <span aria-hidden="true" className="rtl-mirror transition-transform group-hover:translate-x-1">
-                          →
-                        </span>
-                      </button>
-                    </div>
-                  </li>
-              ))}
-            </ul>
-          ) : (
-            <div data-reveal className="mx-auto mt-14 max-w-lg rounded-card border border-line bg-surface px-6 py-12 text-center transition-shadow duration-300 hover:shadow-card">
-              <h3 className="text-lg font-bold text-foreground">No events in this category</h3>
-              <p className="mt-2 text-[15px] text-muted-fg">Check back soon or browse all events.</p>
-            </div>
-          )}
+          <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading events">
+            {Array.from({ length: Math.max(6, filtered.length || 0) }).map((_, i) => (
+              <li key={i} className="group flex flex-col overflow-hidden rounded-card border border-line bg-background">
+                <Skeleton className="aspect-[16/10] w-full rounded-none" />
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                    <Skeleton className="h-4 w-28" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                  <Skeleton className="mt-3 h-7 w-[80%]" />
+                  <Skeleton className="mt-4 h-4 w-[96%]" />
+                  <Skeleton className="mt-2 h-4 w-[88%]" />
+                  <Skeleton className="mt-6 h-5 w-28" />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -21,11 +21,11 @@ export function AffiliateLocationProfile({
   const details = getAffiliateDetails(affiliate);
   const title = placeTitle(affiliate);
   const isActive = affiliate.status === "active";
-  const seed = title.length + affiliate.slug.length;
+  const baseNumbers = { established: "0", members: "0", programmes: "0" };
   const stats = [
-    { label: "Established", value: String(2015 + (seed % 9)) },
-    { label: "Members", value: `${40 + ((seed * 11) % 160)}+` },
-    { label: "Programmes / year", value: String(6 + (seed % 10)) },
+    { label: "Established", value: baseNumbers.established },
+    { label: "Members", value: baseNumbers.members },
+    { label: "Programmes / year", value: baseNumbers.programmes },
     { label: "Status", value: isActive ? "Active" : "Inactive" },
   ];
   const [activeNav, setActiveNav] = useState("#about");
@@ -140,7 +140,17 @@ export function AffiliateLocationProfile({
               alt=""
               className="affiliate-hero-img absolute inset-0 size-full object-cover"
             />
-          ) : null}
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-navy via-navy-dark to-navy-deep px-6 text-center">
+              <div className="max-w-md">
+                <p className="text-[12px] font-bold tracking-[0.18em] text-white/65 uppercase">Hero image pending</p>
+                <h2 className="mt-3 text-[26px] font-bold leading-tight text-white sm:text-[32px]">{title}</h2>
+                <p className="mt-3 text-[14px] leading-relaxed text-white/75">
+                  A dedicated photo for this {isCity ? "city" : "country"} profile will be added soon.
+                </p>
+              </div>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" />
         </div>
       </section>

@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/wbc-team/")({
   ssr: false,
@@ -161,6 +162,19 @@ function TeamProfileModal({
   );
 }
 
+function TeamCardSkeleton() {
+  return (
+    <li className="overflow-hidden rounded-card border border-line bg-background">
+      <Skeleton className="aspect-[4/5] w-full rounded-none" />
+      <div className="border-t border-line p-5 sm:p-6">
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="mt-3 h-3.5 w-1/2" />
+        <Skeleton className="mt-5 h-3.5 w-1/3" />
+      </div>
+    </li>
+  );
+}
+
 function WbcTeam() {
   const [selected, setSelected] = useState<TeamMember | null>(null);
   const board = TEAM.filter((m) => m.group === "Board of Directors");
@@ -233,9 +247,9 @@ function WbcTeam() {
               Strategic oversight for governance, finance, policy direction, and institutional accountability.
             </p>
           </div>
-          <ul data-reveal data-reveal-group className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {board.map((m) => (
-              <PersonCard key={m.slug} member={m} onOpen={setSelected} />
+          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true" aria-label="Loading board of directors">
+            {Array.from({ length: Math.max(4, board.length) }).map((_, i) => (
+              <TeamCardSkeleton key={i} />
             ))}
           </ul>
 
@@ -245,9 +259,9 @@ function WbcTeam() {
               Daily management, operations, communications, and program delivery for members and partners.
             </p>
           </div>
-          <ul data-reveal data-reveal-group className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {secretariat.map((m) => (
-              <PersonCard key={m.slug} member={m} onOpen={setSelected} />
+          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true" aria-label="Loading secretariat">
+            {Array.from({ length: Math.max(4, secretariat.length) }).map((_, i) => (
+              <TeamCardSkeleton key={i} />
             ))}
           </ul>
         </div>

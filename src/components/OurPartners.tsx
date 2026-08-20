@@ -1,4 +1,16 @@
-import { PARTNER_ROW_COPY, PARTNER_ROWS, partnerLogo, type Partner } from "@/content/partners";
+import { PARTNER_ROW_COPY, PARTNER_ROWS, type Partner } from "@/content/partners";
+
+const TAGS = ["BC", "CCI", "NGO", "ORG", "BIZ", "MEDIA"] as const;
+
+function partnerTag(partner: Partner) {
+  const upper = partner.label.toUpperCase();
+  if (upper.includes("CHAMBER") || upper.includes("CCI")) return "CCI";
+  if (upper.includes("COUNCIL") || upper.includes("BUSINESS")) return "BC";
+  if (upper.includes("NGO") || upper.includes("FOUNDATION")) return "NGO";
+  if (upper.includes("MEDIA") || upper.includes("PRESS")) return "MEDIA";
+  const seed = partner.slug.length + partner.label.length;
+  return TAGS[seed % TAGS.length];
+}
 
 function Card({ partner }: { partner: Partner }) {
   const className =
@@ -6,15 +18,9 @@ function Card({ partner }: { partner: Partner }) {
 
   const content = (
     <>
-      <img
-        src={partnerLogo(partner)}
-        alt=""
-        width={200}
-        height={72}
-        loading="lazy"
-        decoding="async"
-        className="h-14 w-auto max-w-[85%] object-contain object-center sm:h-16 lg:h-[4.5rem]"
-      />
+      <span className="rounded-full border border-navy/20 bg-surface px-3 py-1 text-[11px] font-extrabold tracking-[0.16em] text-navy uppercase sm:text-[12px]">
+        {partnerTag(partner)}
+      </span>
       <p className="line-clamp-2 max-w-full text-center text-[11px] font-bold leading-snug tracking-[0.04em] text-navy uppercase sm:text-[12px]">
         {partner.label}
       </p>

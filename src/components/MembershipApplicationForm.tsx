@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
+const MEMBERSHIP_API = "https://api.wbccme.org/api/membership-applications/";
 
 export const MEMBERSHIP_TYPES = [
   { id: "institutional", label: "Institutional Membership" },
@@ -87,9 +88,10 @@ export function MembershipApplicationForm() {
   const [membershipType, setMembershipType] = useState<MembershipTypeId>("institutional");
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
   const isIndividual = membershipType === "individual";
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "loading") return;
 
@@ -117,17 +119,104 @@ export function MembershipApplicationForm() {
     }
 
     setErrors(next);
+    setSubmitError("");
     if (Object.keys(next).length > 0) {
       setStatus("error");
       return;
     }
 
+    const payload = {
+      membership_type: membershipType,
+      membershipType,
+      organization: String(data.get("organization") ?? "").trim(),
+      field_of_activity: String(data.get("activity") ?? "").trim(),
+      activity: String(data.get("activity") ?? "").trim(),
+      country: String(data.get("country") ?? "").trim(),
+      city: String(data.get("city") ?? "").trim(),
+      mailing_address: String(data.get("address") ?? "").trim(),
+      address: String(data.get("address") ?? "").trim(),
+      website: String(data.get("website") ?? "").trim(),
+      representative_first_name: String(data.get("firstName") ?? "").trim(),
+      first_name: String(data.get("firstName") ?? "").trim(),
+      firstName: String(data.get("firstName") ?? "").trim(),
+      representative_last_name: String(data.get("lastName") ?? "").trim(),
+      last_name: String(data.get("lastName") ?? "").trim(),
+      lastName: String(data.get("lastName") ?? "").trim(),
+      designation: String(data.get("designation") ?? "").trim(),
+      profession: String(data.get("profession") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      telephone: String(data.get("telephone") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
+    };
+
     setStatus("loading");
-    window.setTimeout(() => {
+    try {
+      const res = await fetch(MEMBERSHIP_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let body: unknown = null;
+      try {
+        body = await res.json();
+      } catch {
+        body = null;
+      }
+
+      if (!res.ok) {
+        if (body && typeof body === "object") {
+          const apiErrors: Record<string, string> = {};
+          const keys: Array<keyof typeof next | string> = [
+            ...ORG_REQUIRED,
+            ...INDIVIDUAL_REQUIRED,
+            "activity",
+            "address",
+            "website",
+            "membershipType",
+            "non_field_errors",
+            "detail",
+          ];
+          for (const key of keys) {
+            const raw = (body as Record<string, unknown>)[key];
+            if (Array.isArray(raw) && typeof raw[0] === "string") apiErrors[String(key)] = raw[0];
+            else if (typeof raw === "string") apiErrors[String(key)] = raw;
+          }
+          if (Object.keys(apiErrors).length > 0) {
+            const normalized: Record<string, string> = { ...apiErrors };
+            if (normalized["first_name"] && !normalized["firstName"]) normalized["firstName"] = normalized["first_name"];
+            if (normalized["last_name"] && !normalized["lastName"]) normalized["lastName"] = normalized["last_name"];
+            if (normalized["representative_first_name"] && !normalized["firstName"]) {
+              normalized["firstName"] = normalized["representative_first_name"];
+            }
+            if (normalized["representative_last_name"] && !normalized["lastName"]) {
+              normalized["lastName"] = normalized["representative_last_name"];
+            }
+            if (normalized["field_of_activity"] && !normalized["activity"]) {
+              normalized["activity"] = normalized["field_of_activity"];
+            }
+            if (normalized["mailing_address"] && !normalized["address"]) {
+              normalized["address"] = normalized["mailing_address"];
+            }
+            setErrors(normalized);
+            const top = normalized["non_field_errors"] ?? normalized["detail"];
+            if (top) setSubmitError(top);
+            setStatus("error");
+            return;
+          }
+        }
+        throw new Error("Request failed");
+      }
+
       setStatus("success");
+      setErrors({});
+      setSubmitError("");
       form.reset();
       setMembershipType("institutional");
-    }, 700);
+    } catch {
+      setStatus("error");
+      setSubmitError("We could not submit your application. Please try again or email contact@wbccme.org.");
+    }
   }
 
   return (
@@ -381,6 +470,7 @@ export function MembershipApplicationForm() {
           {status === "error" && Object.keys(errors).length > 0 && (
             <span className="text-foreground">Please correct the highlighted fields.</span>
           )}
+          {status === "error" && submitError && <span className="text-foreground">{submitError}</span>}
         </p>
       </div>
     </form>

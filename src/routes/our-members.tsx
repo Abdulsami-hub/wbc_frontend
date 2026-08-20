@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { CTASection } from "@/components/CTASection";
 import { SplitHero } from "@/components/SplitHero";
+import { Skeleton } from "@/components/ui/skeleton";
 import heroImg from "@/assets/our-members-hero.png";
 
 const MEMBERS_GRID_LIMIT = 20;
@@ -266,56 +267,11 @@ function ArrowUpRight() {
   );
 }
 
-function MemberLogo({
-  member,
-  accent,
-  kind,
-}: {
-  member: MemberTile;
-  accent: (typeof ACCENT)[Category["accent"]];
-  kind: Category["kind"];
-}) {
-  const [failed, setFailed] = useState(false);
-  const isPerson = kind === "person";
-  const isPortrait = isPerson && Boolean(member.logo?.includes("unsplash.com"));
-
-  const boxClass = isPerson
-    ? "relative flex size-[5.75rem] shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-background sm:size-24 lg:size-28"
-    : "relative flex h-[100px] w-full items-center justify-center overflow-hidden rounded-card border border-line bg-background px-4 py-3 sm:h-[112px] lg:h-[120px]";
-
-  if (member.logo && !failed) {
-    return (
-      <span className={boxClass}>
-        <img
-          src={member.logo}
-          alt=""
-          width={isPerson ? 112 : 220}
-          height={isPerson ? 112 : 72}
-          loading="lazy"
-          decoding="async"
-          onError={() => setFailed(true)}
-          className={
-            isPortrait
-              ? "size-full object-cover object-center"
-              : isPerson
-                ? "max-h-[68%] max-w-[68%] object-contain object-center"
-                : "h-14 w-auto max-w-[92%] object-contain object-center sm:h-16 lg:h-[4.75rem]"
-          }
-        />
-      </span>
-    );
+function MemberLogo({ kind }: { kind: Category["kind"] }) {
+  if (kind === "person") {
+    return <Skeleton className="size-[5.75rem] shrink-0 rounded-full border border-line sm:size-24 lg:size-28" />;
   }
-
-  return (
-    <span className={`${boxClass} ${accent.logoBg}`} aria-hidden={!member.logo}>
-      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/50 to-transparent" />
-      <span
-        className={`relative font-display font-bold tracking-tight ${isPerson ? "text-[20px] sm:text-[22px]" : "text-[22px] sm:text-[26px]"} ${accent.logoText}`}
-      >
-        {initials(member.name)}
-      </span>
-    </span>
-  );
+  return <Skeleton className="h-[100px] w-full rounded-card border border-line sm:h-[112px] lg:h-[120px]" />;
 }
 
 function MemberTileCard({
@@ -333,7 +289,7 @@ function MemberTileCard({
         className={`pointer-events-none absolute -end-8 -top-8 size-24 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover/tile:opacity-100 ${accent.glow}`}
         aria-hidden="true"
       />
-      <MemberLogo member={member} accent={accent} kind={kind} />
+      <MemberLogo kind={kind} />
       <span className="relative mt-4 min-w-0 w-full text-center">
         <span className="block truncate text-[15px] font-bold text-foreground sm:text-[16px]">{member.name}</span>
         <span className="mt-1 block text-[12px] tracking-[0.08em] text-muted-fg uppercase">
