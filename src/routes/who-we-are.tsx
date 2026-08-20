@@ -316,7 +316,7 @@ function WhoWeAre() {
               {[
                 { k: "Paris", v: "Global headquarters" },
                 { k: "2026", v: "Founded" },
-                { k: "Worldwide", v: "Council network" },
+                { k: "Worldwide", v: "WBC Network" },
               ].map((s) => (
                 <div key={s.k} className="min-w-0 text-center sm:text-start">
                   <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{s.k}</dt>
