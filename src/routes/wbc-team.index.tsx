@@ -241,6 +241,7 @@ function WbcTeam() {
 
           <hr className="mt-12 border-line" />
 
+          {/* Board of Directors — temporarily hidden (skeleton)
           <div data-reveal className="mt-12 flex flex-wrap items-baseline justify-between gap-4">
             <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Board of Directors (BoD)</h3>
             <p className="text-[15px] text-muted-fg">
@@ -252,7 +253,9 @@ function WbcTeam() {
               <TeamCardSkeleton key={i} />
             ))}
           </ul>
+          */}
 
+          {/* Secretariat — temporarily hidden (skeleton)
           <div data-reveal className="mt-16 flex flex-wrap items-baseline justify-between gap-4">
             <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Secretariat</h3>
             <p className="text-[15px] text-muted-fg">
@@ -264,6 +267,7 @@ function WbcTeam() {
               <TeamCardSkeleton key={i} />
             ))}
           </ul>
+          */}
         </div>
       </section>
 

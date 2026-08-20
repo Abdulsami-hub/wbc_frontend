@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { HERO_SLIDES } from "@/content/hero";
 import { HeroSlider } from "@/components/HeroSlider";
 import { LatestNews } from "@/components/LatestNews";
-import { OurPartners } from "@/components/OurPartners";
+// import { OurPartners } from "@/components/OurPartners";
 import { WhatIsWbcSection } from "@/components/home/WhatIsWbcSection";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { OurValuesSection } from "@/components/home/OurValuesSection";
@@ -39,7 +39,7 @@ function Home() {
       <FeaturedServices />
       <OurValuesSection />
       <LatestNews />
-      <OurPartners />
+      {/* <OurPartners /> */}
     </>
   );
 }

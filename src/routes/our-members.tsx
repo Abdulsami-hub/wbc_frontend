@@ -290,29 +290,14 @@ function MemberTileCard({
         aria-hidden="true"
       />
       <MemberLogo kind={kind} />
-      <span className="relative mt-4 min-w-0 w-full text-center">
-        <span className="block truncate text-[15px] font-bold text-foreground sm:text-[16px]">{member.name}</span>
-        <span className="mt-1 block text-[12px] tracking-[0.08em] text-muted-fg uppercase">
-          {kind === "person" ? "Member" : "Organisation"}
-        </span>
+      <span className="relative mt-4 flex min-w-0 w-full flex-col items-center gap-2" aria-busy="true">
+        <Skeleton className="h-4 w-[75%]" />
+        <Skeleton className="h-3 w-[45%]" />
       </span>
-      {member.href ? (
-        <span className="absolute end-3 top-3 text-muted-fg transition-all duration-300 group-hover/tile:translate-x-0.5 group-hover/tile:-translate-y-0.5 group-hover/tile:text-foreground">
-          <ArrowUpRight />
-        </span>
-      ) : null}
     </>
   );
 
   const className = `group/tile relative flex h-full w-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-4 sm:py-6`;
-
-  if (member.href) {
-    return (
-      <a href={member.href} target="_blank" rel="noopener noreferrer" className={className}>
-        {inner}
-      </a>
-    );
-  }
 
   return <div className={className}>{inner}</div>;
 }
