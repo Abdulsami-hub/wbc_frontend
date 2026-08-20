@@ -40,3 +40,5 @@ try {
 } catch (error) {
   console.error("[WBC] Client bootstrap failed:", error);
 }
+
+void import("./lib/image-cache").then((m) => m.registerImageCache());

@@ -96,8 +96,21 @@ writeFileSync(
           source: "/assets/(.*)",
           headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
         },
+        {
+          source: "/:path(.*)\\.(png|jpg|jpeg|webp|gif|svg|ico|avif)",
+          headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+        },
+        {
+          source: "/image-cache-sw.js",
+          headers: [{ key: "Cache-Control", value: "public, max-age=0, must-revalidate" }],
+        },
       ],
-      rewrites: [{ source: "/((?!assets/).*)", destination: "/index.html" }],
+      rewrites: [
+        {
+          source: "/((?!assets/|image-cache-sw.js|favicon.svg|site.webmanifest|robots.txt).*)",
+          destination: "/index.html",
+        },
+      ],
     },
     null,
     2,
