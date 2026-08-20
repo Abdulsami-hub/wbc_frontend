@@ -4,25 +4,24 @@ import { RouterProvider } from "@tanstack/react-router";
 import { StartClient } from "@tanstack/react-start/client";
 import { getRouter } from "./router";
 import { unregisterImageCache } from "./lib/image-cache";
+import "./styles.css";
 
-// Run before React mounts so stale production SW / caches cannot serve freeze-prone clients.
+// Clear leftover image-cache SW from older deploys before React mounts.
 unregisterImageCache();
 
 const router = getRouter();
 
 /**
  * Dual entry:
- * - Dev / SSR: hydrate the full document via StartClient (TanStack Start shell).
- * - Static `dist/index.html`: mount into `#root` with RouterProvider (no `$_TSR` bootstrap).
+ * - Static `dist/index.html`: mount into `#root` with RouterProvider.
+ * - Dev / SSR (TanStack Start): hydrate the full document via StartClient.
  */
 function mount() {
   const rootEl = document.getElementById("root");
 
   if (rootEl) {
     startTransition(() => {
-      createRoot(rootEl).render(
-        <RouterProvider router={router} />,
-      );
+      createRoot(rootEl).render(<RouterProvider router={router} />);
     });
     return;
   }

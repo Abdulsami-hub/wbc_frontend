@@ -33,8 +33,17 @@ cpSync(assetsSource, staging, { recursive: true });
 const assetsDir = join(staging, "assets");
 const files = readdirSync(assetsDir);
 const jsEntry = files.find((f) => /^index-.*\.js$/.test(f));
-const cssEntry = files.find((f) => /^styles-.*\.css$/.test(f));
+const cssEntry = files.find((f) => /^styles-.*\.css$/.test(f)) ?? files.find((f) => /\.css$/.test(f));
 const buildStamp = new Date().toISOString();
+
+if (!jsEntry) {
+  console.error("Could not find hashed index JS in", assetsDir, files.filter((f) => f.endsWith(".js")).slice(0, 10));
+  process.exit(1);
+}
+
+if (!cssEntry) {
+  console.warn("No CSS entry found — continuing without stylesheet link.");
+}
 
 /** Runs before the app bundle so stale SW / caches cannot block the freeze fix. */
 const SW_CLEANUP_SCRIPT = `<script>
@@ -53,10 +62,9 @@ const SW_CLEANUP_SCRIPT = `<script>
 })();
 </script>`;
 
-if (!jsEntry || !cssEntry) {
-  console.error("Could not find hashed index JS / styles CSS.");
-  process.exit(1);
-}
+const cssLink = cssEntry
+  ? `<link rel="stylesheet" crossorigin href="/assets/${cssEntry}" />`
+  : "";
 
 // Always emit a static SPA shell so index.html references the latest hashed assets
 // and runs SW cleanup before the app bundle (critical for the production freeze fix).
@@ -96,7 +104,7 @@ writeFileSync(
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap"
     />
     <meta name="wbc-build" content="${buildStamp}" />
-    <link rel="stylesheet" crossorigin href="/assets/${cssEntry}" />
+    ${cssLink}
   </head>
   <body>
     <div id="root"></div>

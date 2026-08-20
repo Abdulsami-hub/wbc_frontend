@@ -11,44 +11,8 @@ const MAP_EMBED = `https://maps.google.com/maps?q=${MAPS_QUERY}&t=&z=16&ie=UTF8&
 const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${MAPS_QUERY}`;
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact Us — World Business Council" },
-      {
-        name: "description",
-        content: `Get in touch with the World Business Council at ${ADDRESS_LINE}. Email ${EMAIL} or send a message.`,
-      },
-      { property: "og:title", content: "Contact the World Business Council" },
-      {
-        property: "og:description",
-        content: "Reach the WBC team in Paris by email or through our contact form.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          name: "Contact the World Business Council",
-          mainEntity: {
-            "@type": "Organization",
-            name: "World Business Council",
-            email: EMAIL,
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "36, rue Scheffer",
-              postalCode: "75016",
-              addressLocality: "Paris",
-              addressCountry: "FR",
-            },
-          },
-        }),
-      },
-    ],
-  }),
+  // Per-route `head` is omitted for the static SPA — TanStack head sync on the
+  // live document was freezing Chrome when focusing Contact inputs.
   component: Contact,
 });
 
@@ -164,7 +128,10 @@ function Contact() {
             <ContactMap />
           </div>
 
-          <div data-no-translate className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:p-8">
+          <div
+            data-no-translate
+            className="rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:p-8"
+          >
             <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">Send Us a Message</h2>
             <span className="accent-rule mt-4 mb-6" />
             <ContactForm />
