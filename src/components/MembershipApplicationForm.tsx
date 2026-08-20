@@ -220,7 +220,7 @@ export function MembershipApplicationForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-8">
+    <form onSubmit={onSubmit} noValidate className="space-y-8" data-no-translate>
       <fieldset>
         <legend className="sr-only">Membership type</legend>
         <div className="flex flex-wrap gap-3">

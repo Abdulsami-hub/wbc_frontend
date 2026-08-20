@@ -8,7 +8,9 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    scrollRestoration: true,
+    // Disabled: scroll restoration + input focus scroll-into-view froze Contact /
+    // Membership / overlays on production builds (Chrome "Page Unresponsive").
+    scrollRestoration: false,
     defaultPreloadStaleTime: 0,
   });
 

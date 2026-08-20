@@ -5,7 +5,6 @@ import {
   createRootRouteWithContext,
   useRouter,
   useRouterState,
-  HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
@@ -14,11 +13,7 @@ import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
-import { useReveal } from "@/hooks/use-reveal";
 import { I18nProvider } from "@/i18n";
-
-const SITE_URL = "https://wbccme.org";
-const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 function NotFoundComponent() {
   return (
@@ -77,95 +72,27 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "World Business Council" },
-      {
-        name: "description",
-        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
-      },
-      { name: "application-name", content: "World Business Council" },
-      { name: "theme-color", content: "#0c3163" },
-      { property: "og:site_name", content: "World Business Council" },
-      { property: "og:title", content: "World Business Council" },
-      {
-        property: "og:description",
-        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: SITE_URL },
-      { property: "og:image", content: OG_IMAGE },
-      { property: "og:image:alt", content: "World Business Council logo" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "World Business Council" },
-      {
-        name: "twitter:description",
-        content: "We build a global network that empowers businesses through collaboration, innovation, and trust.",
-      },
-      { name: "twitter:image", content: OG_IMAGE },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "manifest", href: "/site.webmanifest" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap",
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "Organization",
-              name: "World Business Council",
-              alternateName: "WBC",
-              url: SITE_URL,
-              logo: `${SITE_URL}/favicon.svg`,
-              image: OG_IMAGE,
-              email: "contact@wbccme.org",
-              foundingDate: "2026",
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "36, rue Scheffer",
-                postalCode: "75016",
-                addressLocality: "Paris",
-                addressCountry: "FR",
-              },
-            },
-            {
-              "@type": "WebSite",
-              name: "World Business Council",
-              url: SITE_URL,
-              publisher: {
-                "@type": "Organization",
-                name: "World Business Council",
-                logo: `${SITE_URL}/favicon.svg`,
-              },
-            },
-          ],
-        }),
-      },
-    ],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
-
+/**
+ * Shell is required for TanStack Start SSR (`npm run dev`).
+ * Do NOT mount `<HeadContent />` — live document head sync freezes Chrome when
+ * focusing inputs (Contact / Membership) or interacting with overlays/modals.
+ * Static SEO tags are emitted by `scripts/prepare-static-dist.mjs` for production.
+ */
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <HeadContent />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>World Business Council</title>
+        <link rel="stylesheet" href={appCss} />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap"
+        />
       </head>
       <body>
         {children}
@@ -175,16 +102,20 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  shellComponent: RootShell,
+  component: RootComponent,
+  notFoundComponent: NotFoundComponent,
+  errorComponent: ErrorComponent,
+});
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const routerReady = useRouterState({ select: (s) => !s.isLoading });
-  useReveal(pathname, routerReady);
 
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
-        <HeadContent />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-[60] focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
@@ -193,9 +124,12 @@ function RootComponent() {
         </a>
         <Header />
         <main id="main">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
-          {pathname !== "/advertising" ? <AdvertisingOpportunities /> : null}
+          {pathname !== "/advertising" &&
+          pathname !== "/contact" &&
+          pathname !== "/become-a-member" ? (
+            <AdvertisingOpportunities />
+          ) : null}
         </main>
         <Footer />
       </I18nProvider>
