@@ -87,7 +87,7 @@ function CopyCard({ title, body, index }: { title: string; body: string; index: 
 const ROW_MOTION = [
   { duration: "36s", delay: "0s" },
   { duration: "48s", delay: "-12s" },
-  { duration: "40s", delay: "-22s" },
+  { duration: "90s", delay: "-22s" },
 ] as const;
 
 export function OurPartners() {

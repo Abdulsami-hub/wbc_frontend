@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import heroImg from "@/assets/affiliates-hero.png";
 import {
   AFFILIATE_REGIONS,
+  type AffiliateCity,
   type AffiliateCountry,
   type AffiliateRegion,
   type AffiliateStatus,
@@ -58,12 +59,106 @@ const FAQS = [
 function statusClasses(status: AffiliateStatus, open?: boolean) {
   if (status === "active") {
     return open
-      ? "border-teal bg-teal/5 shadow-card"
+      ? "border-teal bg-background shadow-card"
       : "border-teal/55 hover:border-teal text-foreground";
   }
   return open
-    ? "border-line bg-surface/80 shadow-card"
+    ? "border-line bg-background shadow-card"
     : "border-line text-muted-fg hover:border-muted-fg/40";
+}
+
+function CountryDropdown({
+  country,
+  isOpen,
+  onToggle,
+}: {
+  country: AffiliateCountry;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setQuery("");
+      inputRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  const cities = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return country.cities;
+    return country.cities.filter((city) => city.name.toLowerCase().includes(q));
+  }, [country.cities, query]);
+
+  return (
+    <li
+      className={`relative self-start rounded-card border bg-background transition-all ${isOpen ? "z-30 rounded-b-none" : "z-0"} ${statusClasses(country.status, isOpen)}`}
+    >
+      <div className="flex w-full items-center justify-between gap-2 px-4 py-3.5">
+        <Link
+          to="/affiliates/$slug"
+          params={{ slug: country.slug }}
+          className={`min-w-0 flex-1 text-[16px] font-bold transition-colors hover:underline ${
+            country.status === "active" ? "text-teal" : "text-muted-fg"
+          }`}
+        >
+          {country.name}
+        </Link>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isOpen}
+          aria-label={`${isOpen ? "Collapse" : "Expand"} cities in ${country.name}`}
+          className="inline-flex size-9 shrink-0 items-center justify-center text-current"
+        >
+          <Chevron open={isOpen} />
+        </button>
+      </div>
+      {isOpen && (
+        <div
+          className={`absolute start-0 top-full z-30 w-full overflow-hidden rounded-b-card border border-t-0 bg-background shadow-card ${
+            country.status === "active" ? "border-teal" : "border-line"
+          }`}
+        >
+          <div className="border-b border-line px-4 py-3">
+            <label htmlFor={`city-search-${country.slug}`} className="sr-only">
+              Search cities in {country.name}
+            </label>
+            <input
+              ref={inputRef}
+              id={`city-search-${country.slug}`}
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search cities…"
+              className="w-full rounded-md border border-line bg-background px-3 py-2 text-[14px] text-foreground outline-none transition-colors placeholder:text-muted-fg focus:border-teal"
+            />
+          </div>
+          <ul className="max-h-52 space-y-2.5 overflow-y-auto px-5 py-4">
+            {cities.length > 0 ? (
+              cities.map((city: AffiliateCity) => (
+                <li key={city.slug}>
+                  <Link
+                    to="/affiliates/$slug"
+                    params={{ slug: city.slug }}
+                    className={`block text-[15px] transition-colors hover:underline ${
+                      city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
+                    }`}
+                  >
+                    {city.name}
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li className="text-[14px] text-muted-fg">No cities match your search.</li>
+            )}
+          </ul>
+        </div>
+      )}
+    </li>
+  );
 }
 
 function Chevron({ open }: { open: boolean }) {
@@ -129,53 +224,14 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
         </div>
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {countries.map((c: AffiliateCountry) => {
-            const isOpen = open === c.slug;
-            return (
-              <li
-                key={c.slug}
-                className={`self-start overflow-hidden rounded-card border bg-background transition-all ${statusClasses(c.status, isOpen)}`}
-              >
-                <div className="flex w-full items-center justify-between gap-2 px-4 py-3.5">
-                  <Link
-                    to="/affiliates/$slug"
-                    params={{ slug: c.slug }}
-                    className={`min-w-0 flex-1 text-[16px] font-bold transition-colors hover:underline ${
-                      c.status === "active" ? "text-teal" : "text-muted-fg"
-                    }`}
-                  >
-                    {c.name}
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setOpen(isOpen ? null : c.slug)}
-                    aria-expanded={isOpen}
-                    aria-label={`${isOpen ? "Collapse" : "Expand"} cities in ${c.name}`}
-                    className="inline-flex size-9 shrink-0 items-center justify-center text-current"
-                  >
-                    <Chevron open={isOpen} />
-                  </button>
-                </div>
-                {isOpen && (
-                  <ul className="border-t border-line px-5 py-4 space-y-2.5">
-                    {c.cities.map((city) => (
-                      <li key={city.slug}>
-                        <Link
-                          to="/affiliates/$slug"
-                          params={{ slug: city.slug }}
-                          className={`text-[15px] transition-colors hover:underline ${
-                            city.status === "active" ? "font-medium text-teal" : "text-muted-fg"
-                          }`}
-                        >
-                          {city.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
+          {countries.map((c: AffiliateCountry) => (
+            <CountryDropdown
+              key={c.slug}
+              country={c}
+              isOpen={open === c.slug}
+              onToggle={() => setOpen(open === c.slug ? null : c.slug)}
+            />
+          ))}
         </ul>
       </div>
     </section>

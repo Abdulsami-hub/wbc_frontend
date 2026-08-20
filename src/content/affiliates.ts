@@ -34,12 +34,20 @@ type RawCity = { name: string; status?: AffiliateStatus };
 type RawCountry = { name: string; status?: AffiliateStatus; cities: (string | RawCity)[] };
 type RawRegion = { name: string; slug: string; blurb: string; countries: RawCountry[] };
 
-function buildCity(countrySlug: string, city: string | RawCity): AffiliateCity {
+/** Temporary: only France (country) and Paris (city) are active. */
+function resolveCountryStatus(name: string): AffiliateStatus {
+  return name === "France" ? "active" : "inactive";
+}
+
+function resolveCityStatus(countryName: string, cityName: string): AffiliateStatus {
+  return countryName === "France" && cityName === "Paris" ? "active" : "inactive";
+}
+
+function buildCity(countryName: string, countrySlug: string, city: string | RawCity): AffiliateCity {
   const name = typeof city === "string" ? city : city.name;
-  const status = typeof city === "string" ? "inactive" : (city.status ?? "inactive");
   return {
     name,
-    status,
+    status: resolveCityStatus(countryName, name),
     slug: `${countrySlug}-${slugifyName(name)}`,
   };
 }
@@ -48,9 +56,9 @@ function buildCountry(raw: RawCountry): AffiliateCountry {
   const slug = slugifyName(raw.name);
   return {
     name: raw.name,
-    status: raw.status ?? "inactive",
+    status: resolveCountryStatus(raw.name),
     slug,
-    cities: raw.cities.map((c) => buildCity(slug, c)),
+    cities: raw.cities.map((c) => buildCity(raw.name, slug, c)),
   };
 }
 
