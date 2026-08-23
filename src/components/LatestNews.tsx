@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { NEWS } from "@/content/news";
+import { NEWS, type NewsItem } from "@/content/news";
+import { NewsStoryModal } from "@/components/NewsStoryModal";
 
 export function LatestNews() {
+  const [selected, setSelected] = useState<NewsItem | null>(null);
+
   return (
     <section className="py-16 lg:py-20">
       <div className="container-wbc">
@@ -48,17 +52,25 @@ export function LatestNews() {
                 <p className="card-kicker sm:text-[13px]">{item.category}</p>
                 <h3 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h3>
                 <p className="mt-3 text-[16px] leading-relaxed text-muted-fg text-justify">{item.body}</p>
-                <Link to="/news" className="card-link mt-6">
+                <button type="button" onClick={() => setSelected(item)} className="card-link mt-6 self-start text-start">
                   {item.cta}
                   <span aria-hidden="true" className="card-link-arrow rtl-mirror">
                     →
                   </span>
-                </Link>
+                </button>
               </div>
             </li>
           ))}
         </ul>
       </div>
+
+      <NewsStoryModal
+        item={selected}
+        open={selected !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelected(null);
+        }}
+      />
     </section>
   );
 }

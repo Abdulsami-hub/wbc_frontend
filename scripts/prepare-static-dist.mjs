@@ -82,6 +82,8 @@ writeFileSync(
     />
     <meta name="theme-color" content="#1a3a5c" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:site_name" content="World Business Council" />
     <meta property="og:title" content="World Business Council" />
@@ -139,7 +141,7 @@ writeFileSync(
       ],
       rewrites: [
         {
-          source: "/((?!assets/|image-cache-sw.js|favicon.svg|site.webmanifest|robots.txt).*)",
+          source: "/((?!assets/|image-cache-sw.js|favicon\\.svg|favicon\\.ico|favicon-.*\\.png|apple-touch-icon\\.png|site\\.webmanifest|robots\\.txt).*)",
           destination: "/index.html",
         },
       ],

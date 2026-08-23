@@ -5,9 +5,11 @@ import {
   createRootRouteWithContext,
   useRouter,
   useRouterState,
+  Scripts,
 } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 
+import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
@@ -79,6 +81,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
  * Chrome "Page Unresponsive" on any input/textarea focus.
  *
  * Static SPA index.html already has the real document; shell must be a no-op.
+ * Dev SSR still needs stylesheet + <Scripts /> or the page renders unstyled.
  */
 function RootShell({ children }: { children: ReactNode }) {
   const spaMount =
@@ -94,8 +97,21 @@ function RootShell({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>World Business Council</title>
+        <link rel="stylesheet" href={appCss} />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap"
+        />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Scripts />
+      </body>
     </html>
   );
 }

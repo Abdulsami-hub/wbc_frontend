@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FormFeedback } from "@/components/FormFeedback";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -14,6 +15,12 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
+
+  function resetToForm() {
+    setStatus("idle");
+    setErrors({});
+    setSubmitError("");
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -80,6 +87,8 @@ export function ContactForm() {
       }
 
       setStatus("success");
+      setErrors({});
+      setSubmitError("");
       form.reset();
     } catch {
       setStatus("error");
@@ -89,6 +98,18 @@ export function ContactForm() {
 
   const inputClass =
     "mt-1.5 w-full rounded-none border border-line bg-background px-3.5 py-2.5 text-[15px] text-foreground outline-none";
+
+  if (status === "success") {
+    return (
+      <FormFeedback
+        variant="success"
+        title="Message sent"
+        description="Thank you — your message has been received. Our team will get back to you shortly."
+        actionLabel="Send another message"
+        onAction={resetToForm}
+      />
+    );
+  }
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4" data-no-translate>
@@ -141,14 +162,15 @@ export function ContactForm() {
         {status === "loading" ? "Sending…" : "Send Message"}
       </button>
 
-      <p aria-live="polite" className="text-[15px]">
-        {status === "success" && <span className="text-foreground">Thank you — your message has been received.</span>}
-        {status === "error" && Object.keys(errors).length > 0 && (
-          <span className="text-foreground">Please correct the highlighted fields.</span>
-        )}
-        {status === "error" && submitError && <span className="text-foreground">{submitError}</span>}
-      </p>
+      {status === "error" && (Object.keys(errors).length > 0 || submitError) ? (
+        <FormFeedback
+          variant="error"
+          title={submitError ? "Could not send message" : "Please check the form"}
+          description={
+            submitError || "Some fields need your attention before we can send your message."
+          }
+        />
+      ) : null}
     </form>
   );
 }
-

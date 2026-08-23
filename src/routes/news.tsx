@@ -1,7 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { NEWS } from "@/content/news";
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { NEWS, type NewsItem } from "@/content/news";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
+import { NewsStoryModal } from "@/components/NewsStoryModal";
 import newsHero from "@/assets/news-hero.png";
 
 export const Route = createFileRoute("/news")({
@@ -21,6 +23,8 @@ export const Route = createFileRoute("/news")({
 });
 
 function NewsPage() {
+  const [selected, setSelected] = useState<NewsItem | null>(null);
+
   return (
     <>
       <SplitHero
@@ -60,12 +64,12 @@ function NewsPage() {
                   </p>
                   <h2 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h2>
                   <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{item.body}</p>
-                  <Link to="/contact" className="card-link mt-6">
+                  <button type="button" onClick={() => setSelected(item)} className="card-link mt-6 self-start text-start">
                     {item.cta}
                     <span aria-hidden="true" className="card-link-arrow rtl-mirror">
                       →
                     </span>
-                  </Link>
+                  </button>
                 </div>
               </li>
             ))}
@@ -78,6 +82,14 @@ function NewsPage() {
         description="Join WBC to receive programme updates and participate in the global network."
         ctaLabel="Become a Member"
         to="/become-a-member"
+      />
+
+      <NewsStoryModal
+        item={selected}
+        open={selected !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelected(null);
+        }}
       />
     </>
   );

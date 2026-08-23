@@ -1,6 +1,9 @@
 import { useState, type ReactNode } from "react";
+import { FormFeedback } from "@/components/FormFeedback";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+/** Host is api.wbccme.org; path prefix /api/ matches contact — not a duplicate bug. */
 const MEMBERSHIP_API = "https://api.wbccme.org/api/membership-applications/";
 
 export const MEMBERSHIP_TYPES = [
@@ -84,12 +87,25 @@ function Field({
   );
 }
 
+function optionalUrl(raw: string) {
+  const v = raw.trim();
+  if (!v) return "";
+  if (/^https?:\/\//i.test(v)) return v;
+  return `https://${v}`;
+}
+
 export function MembershipApplicationForm() {
   const [membershipType, setMembershipType] = useState<MembershipTypeId>("institutional");
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
   const isIndividual = membershipType === "individual";
+
+  function resetToForm() {
+    setStatus("idle");
+    setErrors({});
+    setSubmitError("");
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -125,26 +141,27 @@ export function MembershipApplicationForm() {
       return;
     }
 
-    const payload = {
+    const firstName = String(data.get("firstName") ?? "").trim();
+    const lastName = String(data.get("lastName") ?? "").trim();
+    const organization = String(data.get("organization") ?? "").trim();
+    const profession = String(data.get("profession") ?? "").trim();
+    const designation = String(data.get("designation") ?? "").trim();
+    const website = optionalUrl(String(data.get("website") ?? ""));
+
+    // Field names match OpenAPI `MembershipApplicationCreateRequest`.
+    const payload: Record<string, string> = {
       membership_type: membershipType,
-      membershipType,
-      organization: String(data.get("organization") ?? "").trim(),
+      company_name: isIndividual ? `${firstName} ${lastName}`.trim() : organization,
       field_of_activity: String(data.get("activity") ?? "").trim(),
-      activity: String(data.get("activity") ?? "").trim(),
       country: String(data.get("country") ?? "").trim(),
       city: String(data.get("city") ?? "").trim(),
       mailing_address: String(data.get("address") ?? "").trim(),
+      website,
+      first_name: firstName,
+      last_name: lastName,
+      designation: isIndividual ? profession : designation,
       address: String(data.get("address") ?? "").trim(),
-      website: String(data.get("website") ?? "").trim(),
-      representative_first_name: String(data.get("firstName") ?? "").trim(),
-      first_name: String(data.get("firstName") ?? "").trim(),
-      firstName: String(data.get("firstName") ?? "").trim(),
-      representative_last_name: String(data.get("lastName") ?? "").trim(),
-      last_name: String(data.get("lastName") ?? "").trim(),
-      lastName: String(data.get("lastName") ?? "").trim(),
-      designation: String(data.get("designation") ?? "").trim(),
-      profession: String(data.get("profession") ?? "").trim(),
-      email: String(data.get("email") ?? "").trim(),
+      email,
       telephone: String(data.get("telephone") ?? "").trim(),
       message: String(data.get("message") ?? "").trim(),
     };
@@ -167,39 +184,23 @@ export function MembershipApplicationForm() {
       if (!res.ok) {
         if (body && typeof body === "object") {
           const apiErrors: Record<string, string> = {};
-          const keys: Array<keyof typeof next | string> = [
-            ...ORG_REQUIRED,
-            ...INDIVIDUAL_REQUIRED,
-            "activity",
-            "address",
-            "website",
-            "membershipType",
-            "non_field_errors",
-            "detail",
-          ];
-          for (const key of keys) {
-            const raw = (body as Record<string, unknown>)[key];
-            if (Array.isArray(raw) && typeof raw[0] === "string") apiErrors[String(key)] = raw[0];
-            else if (typeof raw === "string") apiErrors[String(key)] = raw;
+          const keyMap: Record<string, string> = {
+            company_name: "organization",
+            first_name: "firstName",
+            last_name: "lastName",
+            field_of_activity: "activity",
+            mailing_address: "address",
+            designation: isIndividual ? "profession" : "designation",
+            membership_type: "membershipType",
+          };
+          for (const [apiKey, value] of Object.entries(body as Record<string, unknown>)) {
+            const formKey = keyMap[apiKey] ?? apiKey;
+            if (Array.isArray(value) && typeof value[0] === "string") apiErrors[formKey] = value[0];
+            else if (typeof value === "string") apiErrors[formKey] = value;
           }
           if (Object.keys(apiErrors).length > 0) {
-            const normalized: Record<string, string> = { ...apiErrors };
-            if (normalized["first_name"] && !normalized["firstName"]) normalized["firstName"] = normalized["first_name"];
-            if (normalized["last_name"] && !normalized["lastName"]) normalized["lastName"] = normalized["last_name"];
-            if (normalized["representative_first_name"] && !normalized["firstName"]) {
-              normalized["firstName"] = normalized["representative_first_name"];
-            }
-            if (normalized["representative_last_name"] && !normalized["lastName"]) {
-              normalized["lastName"] = normalized["representative_last_name"];
-            }
-            if (normalized["field_of_activity"] && !normalized["activity"]) {
-              normalized["activity"] = normalized["field_of_activity"];
-            }
-            if (normalized["mailing_address"] && !normalized["address"]) {
-              normalized["address"] = normalized["mailing_address"];
-            }
-            setErrors(normalized);
-            const top = normalized["non_field_errors"] ?? normalized["detail"];
+            setErrors(apiErrors);
+            const top = apiErrors["non_field_errors"] ?? apiErrors["detail"];
             if (top) setSubmitError(top);
             setStatus("error");
             return;
@@ -217,6 +218,18 @@ export function MembershipApplicationForm() {
       setStatus("error");
       setSubmitError("We could not submit your application. Please try again or email contact@wbccme.org.");
     }
+  }
+
+  if (status === "success") {
+    return (
+      <FormFeedback
+        variant="success"
+        title="Application received"
+        description="Thank you — your membership application has been submitted. Our team will review it and contact you by email."
+        actionLabel="Submit another application"
+        onAction={resetToForm}
+      />
+    );
   }
 
   return (
@@ -337,7 +350,7 @@ export function MembershipApplicationForm() {
                 className={inputClass}
               />
             </Field>
-            <Field id="website" label="Website (optional)">
+            <Field id="website" label="Website (optional)" error={errors["website"]}>
               <input id="website" name="website" type="url" inputMode="url" placeholder="https://" className={inputClass} />
             </Field>
           </div>
@@ -360,7 +373,7 @@ export function MembershipApplicationForm() {
                 className={inputClass}
               />
             </Field>
-            <Field id="activity" label="Field of Activity">
+            <Field id="activity" label="Field of Activity" error={errors["activity"]}>
               <input id="activity" name="activity" type="text" className={inputClass} />
             </Field>
             <Field id="country" label="Country" required error={errors["country"]}>
@@ -389,11 +402,11 @@ export function MembershipApplicationForm() {
             </Field>
           </div>
 
-          <Field id="address" label="Mailing Address">
+          <Field id="address" label="Mailing Address" error={errors["address"]}>
             <input id="address" name="address" type="text" autoComplete="street-address" className={inputClass} />
           </Field>
 
-          <Field id="website" label="Website">
+          <Field id="website" label="Website" error={errors["website"]}>
             <input id="website" name="website" type="url" inputMode="url" placeholder="https://" className={inputClass} />
           </Field>
 
@@ -446,7 +459,7 @@ export function MembershipApplicationForm() {
                 className={inputClass}
               />
             </Field>
-            <Field id="telephone" label="Telephone">
+            <Field id="telephone" label="Telephone" error={errors["telephone"]}>
               <input id="telephone" name="telephone" type="tel" autoComplete="tel" className={inputClass} />
             </Field>
           </div>
@@ -459,19 +472,19 @@ export function MembershipApplicationForm() {
 
       <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
 
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="space-y-4">
         <button type="submit" disabled={status === "loading"} className="btn-orange disabled:opacity-70">
           {status === "loading" ? "Submitting…" : "Submit Application"}
         </button>
-        <p aria-live="polite" className="text-[15px]">
-          {status === "success" && (
-            <span className="text-foreground">Thank you — your membership application has been received.</span>
-          )}
-          {status === "error" && Object.keys(errors).length > 0 && (
-            <span className="text-foreground">Please correct the highlighted fields.</span>
-          )}
-          {status === "error" && submitError && <span className="text-foreground">{submitError}</span>}
-        </p>
+        {status === "error" && (Object.keys(errors).length > 0 || submitError) ? (
+          <FormFeedback
+            variant="error"
+            title={submitError ? "Could not submit application" : "Please check the form"}
+            description={
+              submitError || "Some fields need your attention before we can submit your application."
+            }
+          />
+        ) : null}
       </div>
     </form>
   );
