@@ -4,9 +4,9 @@ export type AdvertisingPackage = {
   summary: string;
 };
 
-/** Replace this file in `public/` (or via admin upload) with the current rates PDF. */
+/** Replace this file in `public/` (or via admin upload) with the current media kit PDF. */
 export const ADVERTISING_RATES_PDF = "/advertising-rates.pdf";
-export const ADVERTISING_RATES_PDF_FILENAME = "WBC-Advertising-Rates.pdf";
+export const ADVERTISING_RATES_PDF_FILENAME = "WBC-Advertising-Media-Kit.pdf";
 
 export const ADVERTISING_PACKAGES: AdvertisingPackage[] = [
   {

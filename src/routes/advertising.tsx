@@ -15,12 +15,12 @@ export const Route = createFileRoute("/advertising")({
       {
         name: "description",
         content:
-          "Explore WBC advertising opportunities: events, digital features, and partnership packages.",
+          "Advertise with WBC using a digital poster or banner, short description, and website link. Download the WBC Advertising Media Kit.",
       },
       { property: "og:title", content: "Advertising — WBC" },
       {
         property: "og:description",
-        content: "Events, digital features, and partnership packages with the WBC network.",
+        content: "Digital poster, short description, and website link requirements for WBC advertising.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -35,12 +35,12 @@ function AdvertisingPage() {
       <SplitHero
         eyebrow="Grow with WBC"
         title="Advertising"
-        description="Put your brand in front of institutional and corporate decision-makers through events, digital features, and partnership packages."
-        tags={["Events", "Digital", "Partnerships"]}
+        description="Submit a digital poster or banner, a short title and description, and one website link to reach institutional and corporate decision-makers across the WBC network."
+        tags={["Banner", "Copy", "Link"]}
         image={eventsImg}
         imageAlt="Business audience at a WBC programme"
         tone="blue"
-        ctaLabel="Download PDF"
+        ctaLabel="WBC Advertising Media Kit"
         ctaHref={ADVERTISING_RATES_PDF}
         ctaDownload={ADVERTISING_RATES_PDF_FILENAME}
       />
@@ -62,8 +62,8 @@ function AdvertisingPage() {
             </h2>
             <span className="accent-rule mx-auto mt-5" />
             <p className="mt-5 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              From flagship events to digital features and annual partnership packages — every option is
-              built to put your brand in front of institutional and corporate decision-makers.
+              Your advertising package may include a digital poster or banner, a short description of your
+              organisation or offer, and one website link for interested visitors.
             </p>
           </div>
 
@@ -98,12 +98,12 @@ function AdvertisingPage() {
               aria-hidden="true"
             />
             <div>
-              <p className="eyebrow">Rates & packages</p>
+              <p className="eyebrow">Media kit</p>
               <h2 className="mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
-                Download the advertising PDF
+                WBC Advertising Media Kit
               </h2>
               <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-                Full pricing, inclusions, and booking details are in the PDF.
+                Image sizes, copy guidelines, and link requirements for advertising with WBC.
               </p>
             </div>
             <a
@@ -111,7 +111,7 @@ function AdvertisingPage() {
               download={ADVERTISING_RATES_PDF_FILENAME}
               className="btn-orange-to-outline mt-6 !min-h-9 !rounded-md !px-4 !text-[12px] lg:mt-0 lg:shrink-0"
             >
-              Download PDF
+              WBC Advertising Media Kit
             </a>
           </div>
         </div>
@@ -119,7 +119,7 @@ function AdvertisingPage() {
 
       <CTASection
         title="Put your brand in front of the WBC network"
-        description="Events, digital features, and partnership packages designed for institutional reach and lasting visibility."
+        description="Submit your banner, short copy, and website link — then reach institutional and corporate audiences across WBC."
         ctaLabel="Contact WBC"
         to="/contact"
       />
