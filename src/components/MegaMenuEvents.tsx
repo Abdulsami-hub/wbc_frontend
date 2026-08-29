@@ -12,7 +12,7 @@ export function MegaMenuEvents({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <MegaMenuShell
       title="Events"
-      description="Summits, forums, networking, trade missions, and business meetings across the WBC network."
+      description="Business conferences, trade missions & B2B, networking & speaker events, exhibitions & trade fairs, plus seminars, workshops and training."
       promo={{
         image: eventsImage,
         alt: "Keynote speaker on stage at a WBC business conference, addressing a full auditorium",

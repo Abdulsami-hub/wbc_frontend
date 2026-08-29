@@ -8,12 +8,31 @@ export type EventCategory = {
 };
 
 export const EVENT_CATEGORIES: EventCategory[] = [
-  { id: "summits", title: "Summits & Forums", desc: "High-level executive gatherings" },
-  { id: "conferences", title: "Conferences", desc: "Sector and thematic conferences" },
-  { id: "networking", title: "Networking Events", desc: "Curated B2B connections" },
-  { id: "missions", title: "Trade Missions", desc: "Delegations and market visits" },
-  { id: "roundtables", title: "Roundtables", desc: "Focused working sessions" },
-  { id: "exhibitions", title: "Exhibitions", desc: "Showcases and expos" },
+  {
+    id: "business-conferences",
+    title: "Business Conferences",
+    desc: "Summits, Forums, Conferences, Dialogues & Roundtables",
+  },
+  {
+    id: "trade-missions-b2b",
+    title: "Trade Missions & B2B",
+    desc: "Trade Missions, Business Delegations & B2B Matchmaking",
+  },
+  {
+    id: "networking-speaker",
+    title: "Networking & Speaker Events",
+    desc: "Networking Events, Business Receptions & Hosted Speakers",
+  },
+  {
+    id: "exhibitions-trade-fairs",
+    title: "Exhibitions & Trade Fairs",
+    desc: "Exhibitions, Trade Fairs, Trade Shows & Business Expos",
+  },
+  {
+    id: "seminars-workshops-training",
+    title: "Seminars, Workshops & Training",
+    desc: "Seminars, Workshops, Training & Professional Development",
+  },
 ];
 
 export type EventRecord = {
@@ -39,7 +58,7 @@ import membershipImg from "@/assets/membership.jpg";
 export const EVENTS: EventRecord[] = [
   {
     slug: "global-business-summit-2026",
-    categoryId: "summits",
+    categoryId: "business-conferences",
     title: "WBC Global Business Summit 2026",
     summary: "Leaders from institutions and enterprise gather to shape cross-border cooperation.",
     description:
@@ -66,7 +85,7 @@ export const EVENTS: EventRecord[] = [
   },
   {
     slug: "europe-trade-mission",
-    categoryId: "missions",
+    categoryId: "trade-missions-b2b",
     title: "Europe Trade & Investment Mission",
     summary: "A focused delegation connecting members with partners across key European markets.",
     description:
@@ -84,7 +103,7 @@ export const EVENTS: EventRecord[] = [
   },
   {
     slug: "innovation-networking-evening",
-    categoryId: "networking",
+    categoryId: "networking-speaker",
     title: "Innovation Networking Evening",
     summary: "An evening of curated introductions for innovators, investors, and member companies.",
     description:
