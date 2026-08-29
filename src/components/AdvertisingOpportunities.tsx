@@ -7,11 +7,11 @@ import membershipImg from "@/assets/membership.jpg";
 
 const OPPORTUNITIES = [
   {
-    title: "Event sponsorship",
+    title: "Events",
     body: "Position your brand beside summits, forums, and trade programmes attended by institutional and corporate leaders.",
     kicker: "Visibility",
     image: eventsImg,
-    alt: "Business audience at a WBC sponsored programme",
+    alt: "Business audience at a WBC programme",
   },
   {
     title: "Digital & print features",
@@ -122,7 +122,7 @@ export function AdvertisingOpportunities() {
                 Advertising Opportunities
               </h2>
               <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/85 sm:text-[14px] lg:mt-3">
-                Connect your organisation with decision-makers through sponsorships, features, and partnership packages.
+                Connect your organisation with decision-makers through events, features, and partnership packages.
               </p>
             </div>
           </div>

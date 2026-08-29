@@ -11,16 +11,16 @@ import {
 export const Route = createFileRoute("/advertising")({
   head: () => ({
     meta: [
-      { title: "Advertising & Sponsorship — World Business Council" },
+      { title: "Advertising — World Business Council" },
       {
         name: "description",
         content:
-          "Explore WBC advertising and sponsorship opportunities: event sponsorship, digital features, and partnership packages.",
+          "Explore WBC advertising opportunities: events, digital features, and partnership packages.",
       },
-      { property: "og:title", content: "Advertising & Sponsorship — WBC" },
+      { property: "og:title", content: "Advertising — WBC" },
       {
         property: "og:description",
-        content: "Event sponsorship, digital features, and partnership packages with the WBC network.",
+        content: "Events, digital features, and partnership packages with the WBC network.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -34,11 +34,11 @@ function AdvertisingPage() {
     <>
       <SplitHero
         eyebrow="Grow with WBC"
-        title="Advertising & Sponsorship"
+        title="Advertising"
         description="Put your brand in front of institutional and corporate decision-makers through events, digital features, and partnership packages."
         tags={["Events", "Digital", "Partnerships"]}
         image={eventsImg}
-        imageAlt="Business audience at a WBC sponsored programme"
+        imageAlt="Business audience at a WBC programme"
         tone="blue"
         ctaLabel="Download PDF"
         ctaHref={ADVERTISING_RATES_PDF}
@@ -62,7 +62,7 @@ function AdvertisingPage() {
             </h2>
             <span className="accent-rule mx-auto mt-5" />
             <p className="mt-5 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              From flagship event sponsorship to digital features and annual partnership packages — every option is
+              From flagship events to digital features and annual partnership packages — every option is
               built to put your brand in front of institutional and corporate decision-makers.
             </p>
           </div>
@@ -119,7 +119,7 @@ function AdvertisingPage() {
 
       <CTASection
         title="Put your brand in front of the WBC network"
-        description="Sponsorships, digital features, and partnership packages designed for institutional reach and lasting visibility."
+        description="Events, digital features, and partnership packages designed for institutional reach and lasting visibility."
         ctaLabel="Contact WBC"
         to="/contact"
       />

@@ -10,8 +10,8 @@ export const ADVERTISING_RATES_PDF_FILENAME = "WBC-Advertising-Rates.pdf";
 
 export const ADVERTISING_PACKAGES: AdvertisingPackage[] = [
   {
-    id: "event-sponsorship",
-    title: "Event sponsorship",
+    id: "events",
+    title: "Events",
     summary:
       "Align your brand with WBC summits, forums, conferences, and trade programmes attended by institutional and corporate decision-makers.",
   },
