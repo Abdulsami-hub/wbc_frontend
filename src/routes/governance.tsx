@@ -3,6 +3,7 @@ import { useState } from "react";
 import heroImg from "@/assets/gov-hero.png";
 import assemblyImg from "@/assets/gov-assembly.png";
 import boardImg from "@/assets/gov-board.jpg";
+import honoraryImg from "@/assets/gov-honorary.png";
 import secretariatImg from "@/assets/gov-secretariat.jpg";
 
 export const Route = createFileRoute("/governance")({
@@ -12,13 +13,13 @@ export const Route = createFileRoute("/governance")({
       {
         name: "description",
         content:
-          "How the World Business Council is governed: General Assembly, Board of Directors, and Secretariat operating under statutes, rules of procedure, and internal policies.",
+          "How the World Business Council is governed: General Assembly, Board of Directors, Honorary Board, Staff Members, and Committees & Working Groups.",
       },
       { property: "og:title", content: "Governance that protects trust and drives coordinated action — WBC" },
       {
         property: "og:description",
         content:
-          "WBC governance structure: General Assembly, Board of Directors, and Secretariat, with clear mandates and accountability.",
+          "WBC governance structure: General Assembly, Board of Directors, Honorary Board, Staff Members, and Committees & Working Groups.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -65,32 +66,50 @@ const BODIES: Body[] = [
     ],
   },
   {
-    id: "secretariat",
-    name: "Secretariat",
+    id: "honorary-board",
+    name: "Honorary Board (HB)",
+    image: honoraryImg,
+    icon: "user",
+    rows: [
+      {
+        label: "Role",
+        value:
+          "The Honorary Board is a consultative body composed of distinguished individuals who provide advice, expertise, and support to WBC and its international mission.",
+      },
+    ],
+  },
+  {
+    id: "staff-members",
+    name: "Staff Members",
     image: secretariatImg,
     icon: "shield",
     rows: [
       {
         label: "Role",
         value:
-          "The secretariat, led by the Director General, is responsible for the day-to-day management and administration of WBC. It supports the implementation of policies, programs, and decisions adopted by the General Assembly and the Board of Directors.",
+          "The staff members, led by the Director General, are responsible for the day-to-day management and administration of WBC. They support the implementation of policies, programmes, and decisions adopted by the General Assembly and the Board of Directors.",
+      },
+    ],
+  },
+  {
+    id: "committees-working-groups",
+    name: "Committees & Working Groups",
+    image: assemblyImg,
+    icon: "lines",
+    rows: [
+      {
+        label: "Role",
+        value:
+          "Committees and Working Groups support WBC by providing expertise and contributing to specific programmes, initiatives, projects, and areas of activity.",
       },
     ],
   },
 ];
 
-const SUPPORT = [
-  {
-    label: "Board of Advisors, Honorary Members, Committees & Representatives",
-    value:
-      "WBC also benefits from the expertise and guidance of its Board of Advisors, Honorary Members, committees, and representatives worldwide, supporting informed decision-making, effective governance, and global engagement.",
-  },
-] as const;
-
 const FAQ = [
   {
     q: "How is WBC's leadership structure organized?",
-    a: "WBC is guided by a board-level governance body and supported by executive leadership that manages day-to-day operations, program delivery, and international coordination.",
+    a: "WBC is governed by its General Assembly, with the support of a Board of Directors, Honorary Board, Staff Members, Committees and Working Groups.",
   },
   {
     q: "How are board members or senior leaders appointed?",
@@ -98,7 +117,7 @@ const FAQ = [
   },
   {
     q: "How can members contribute to governance discussions?",
-    a: "Members participate through the General Assembly, committee work, and consultation rounds where priorities, policies, and program direction are reviewed.",
+    a: "Members participate through the General Assembly, committee work, and consultation rounds where priorities, policies, and programme direction are reviewed.",
   },
   {
     q: "What accountability measures guide governance decisions?",
@@ -106,7 +125,7 @@ const FAQ = [
   },
   {
     q: "How do strategic decisions move from proposal to approval?",
-    a: "Proposals are prepared by the Secretariat, examined by the Board of Directors, and submitted for approval to the General Assembly where the mandate requires it.",
+    a: "Proposals are prepared by the Staff Members, examined by the Board of Directors, and submitted for approval to the General Assembly where the mandate requires it.",
   },
 ] as const;
 
@@ -187,13 +206,9 @@ function Governance() {
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
               The World Business Council (WBC) is governed by its General Assembly, with the support of a Board of
-              Directors and the staff members. It operates in accordance with its Statutes, Rules of Procedure, and
-              internal policies, ensuring transparency, accountability, and effective governance in support of its
-              international mission.
-            </p>
-            <p className="mt-4 text-[17px] leading-relaxed text-muted-fg">
-              WBC is governed through a transparent and accountable governance structure designed to support its
-              international mission and long-term development.
+              Directors, Honorary Board, Staff Members, Committees and Working Groups. It operates in accordance with
+              its Statutes, Rules of Procedure, and internal policies, ensuring transparency, accountability, and
+              effective governance in support of its international mission.
             </p>
             <ul className="mt-8 flex flex-wrap gap-3">
               {BODIES.map((b) => (
@@ -237,29 +252,14 @@ function Governance() {
                 </div>
                 <dl className="mt-6">
                   {b.rows.map((r) => (
-                    <div
-                      key={r.label}
-                      className="grid gap-2 border-t border-line py-5 sm:grid-cols-[0.42fr_1fr] sm:gap-8"
-                    >
+                    <div key={r.label} className="border-t border-line py-5 ps-16">
                       <dt className="text-[16px] font-bold text-foreground">{r.label}</dt>
-                      <dd className="text-[16px] leading-relaxed text-muted-fg">{r.value}</dd>
+                      <dd className="mt-2 text-[16px] leading-relaxed text-muted-fg">{r.value}</dd>
                     </div>
                   ))}
                 </dl>
               </article>
             ))}
-
-            <div data-reveal className="border border-line bg-background p-6 sm:p-8">
-              <p className="text-[14px] font-bold tracking-[0.18em] text-foreground uppercase">Additional Support Layer</p>
-              <dl className="mt-4">
-                {SUPPORT.map((s) => (
-                  <div key={s.label} className="grid gap-2 border-t border-line py-5 sm:grid-cols-[0.42fr_1fr] sm:gap-8">
-                    <dt className="text-[16px] font-bold text-foreground">{s.label}</dt>
-                    <dd className="text-[16px] leading-relaxed text-muted-fg">{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
           </div>
         </div>
       </section>
