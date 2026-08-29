@@ -31,13 +31,14 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
         items: [
           { title: "WBC Headquarters", to: "/who-we-are" },
           { title: "WBC Affiliates", to: "/affiliates" },
+          { title: "WBC Members", to: "/our-members" },
         ],
       },
       {
-        label: "Members & Partners",
+        label: "Sponsors & Partners",
         items: [
-          { title: "Institutional Members", to: "/our-members" },
-          { title: t("link.partners"), to: "/global-network/strategic-partners" },
+          { title: "WBC Sponsors", to: "/global-network/strategic-partners" },
+          { title: "WBC Strategic Partners", to: "/global-network/strategic-partners" },
         ],
       },
     ],

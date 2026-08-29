@@ -12,22 +12,27 @@ const GROUPS = [
       },
       {
         title: "WBC Affiliates",
-        desc: "Official representatives in countries and cities",
+        desc: "Official representatives connecting local communities to the global network",
         to: "/affiliates" as const,
+      },
+      {
+        title: "WBC Members",
+        desc: "Institutional, corporate, SME, and individual members",
+        to: "/our-members" as const,
       },
     ],
   },
   {
-    label: "Members & Partners",
+    label: "Sponsors & Partners",
     items: [
       {
-        title: "Institutional Members",
-        desc: "Institutional, corporate, SME, and individual members",
-        to: "/our-members" as const,
+        title: "WBC Sponsors",
+        desc: "Financial, media, in-kind, and other forms of sponsorship",
+        to: "/global-network/strategic-partners" as const,
       },
       {
-        title: "Partners and Sponsors",
-        desc: "Partnerships, sponsorships, joint initiatives, and cooperation",
+        title: "WBC Strategic Partners",
+        desc: "Strategic cooperation, joint initiatives, and institutional relations",
         to: "/global-network/strategic-partners" as const,
       },
     ],
@@ -38,7 +43,7 @@ export function MegaMenuNetwork({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <MegaMenuShell
       title="Global Network"
-      description="Headquarters, affiliates, members, and partners working as one collaborative global network."
+      description="Headquarters, affiliates, members, sponsors, and strategic partners working as one collaborative global network."
       promo={{
         image: networkImage,
         alt: "Clasped hands with a digital world map and connected network nodes",

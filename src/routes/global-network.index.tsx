@@ -10,10 +10,13 @@ export const Route = createFileRoute("/global-network/")({
       {
         name: "description",
         content:
-          "WBC's global network: headquarters, affiliates, institutional members, and strategic partners connecting businesses worldwide.",
+          "WBC's global network: headquarters, affiliates, members, sponsors, and strategic partners connecting businesses worldwide.",
       },
       { property: "og:title", content: "WBC Global Network" },
-      { property: "og:description", content: "Headquarters, affiliates, institutional members, and strategic partners." },
+      {
+        property: "og:description",
+        content: "Headquarters, affiliates, members, sponsors, and strategic partners.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -31,7 +34,7 @@ const PILLARS = [
   },
   {
     title: "WBC Affiliates",
-    body: "Official WBC representatives established in countries and cities to promote and implement WBC's mission and activities.",
+    body: "Official WBC representatives established in countries and cities to promote and implement WBC's mission and activities and connect local business communities with the global WBC network.",
     to: "/affiliates" as const,
   },
   {
@@ -40,8 +43,13 @@ const PILLARS = [
     to: "/our-members" as const,
   },
   {
-    title: "Partners and Sponsors",
-    body: "Organizations and institutions collaborating with WBC through partnerships, sponsorships, joint initiatives, and international cooperation.",
+    title: "WBC Sponsors",
+    body: "Companies, media organizations, institutions, and other organizations supporting WBC through financial, media, in-kind, or other forms of sponsorship.",
+    to: "/global-network/strategic-partners" as const,
+  },
+  {
+    title: "WBC Strategic Partners",
+    body: "Organizations and institutions collaborating with WBC through strategic cooperation, joint initiatives, programmes, institutional relations, and international business development.",
     to: "/global-network/strategic-partners" as const,
   },
 ] as const;
@@ -75,8 +83,8 @@ function GlobalNetwork() {
               Become part of the WBC Global Network
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
-              Become part of the WBC Global Network by joining as a member or strategic partner, and connect with a
-              growing international community committed to collaboration, innovation, and shared success.
+              Become part of the WBC Global Network by joining as a member, sponsor or strategic partner, and connect
+              with a growing international community committed to collaboration, innovation, and shared success.
             </p>
             <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
               Lead WBC&apos;s mission in your country or city by establishing a WBC Affiliate and become the official
@@ -100,7 +108,7 @@ function GlobalNetwork() {
           <div data-reveal>
             <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
-              Four connected layers
+              Five connected layers
             </h2>
           </div>
 
@@ -112,7 +120,9 @@ function GlobalNetwork() {
                   className="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-background p-7 pe-14 transition-shadow duration-300 hover:shadow-card sm:p-8 sm:pe-14"
                 >
                   <span className="block h-[3px] w-10 bg-orange" aria-hidden="true" />
-                  <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">0{i + 1}</span>
+                  <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <h3 className="mt-7 text-[21px] leading-snug font-bold text-foreground">{p.title}</h3>
                   <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{p.body}</p>
                   <span className="link-arrow mt-6">
