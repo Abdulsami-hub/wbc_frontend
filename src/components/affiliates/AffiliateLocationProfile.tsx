@@ -1,8 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { AffiliateProfile } from "@/content/affiliates";
-import { getAffiliateDetails, placeTitle } from "@/content/affiliate-details";
+import {
+  getAffiliateDetails,
+  placeTitle,
+  type AffiliateContact,
+  type AffiliateMedia,
+  type AffiliateOfficer,
+} from "@/content/affiliate-details";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
+
+function isYoutubeSrc(src: string) {
+  return /youtube\.com|youtu\.be/i.test(src);
+}
 
 const NAV = [
   { href: "#about", label: "About" },
@@ -46,6 +62,17 @@ export function AffiliateLocationProfile({
     });
     return () => observer.disconnect();
   }, []);
+
+  const hasGallery =
+    Boolean(details.media.flyer) || details.media.photos.length > 0 || details.media.videos.length > 0;
+  const hasOfficers = details.officers.length > 0;
+  const hasContact = Boolean(
+    details.contact.address ||
+      details.contact.website ||
+      details.contact.email ||
+      details.contact.phone ||
+      details.contact.socials.some((s) => s.href),
+  );
 
   return (
     <>
@@ -338,11 +365,344 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      <GallerySkeletonSection />
-      <OfficersSkeletonSection />
-      <ContactSkeletonSection />
+      {hasGallery ? <MediaSection media={details.media} /> : <GallerySkeletonSection />}
+      {hasOfficers ? <OfficersSection officers={details.officers} /> : <OfficersSkeletonSection />}
+      {hasContact ? <ContactSection contact={details.contact} place={title} /> : <ContactSkeletonSection />}
     </>
   );
+}
+
+
+
+function MediaSection({ media }: { media: AffiliateMedia }) {
+  const [active, setActive] = useState<{ kind: "image" | "video"; src: string; label: string } | null>(null);
+
+  const items: { kind: "image" | "video"; src: string; label: string }[] = [];
+  if (media.flyer) items.push({ kind: "image", src: media.flyer, label: "Flyer" });
+  media.photos.forEach((src, i) => items.push({ kind: "image", src, label: `Photo ${i + 1}` }));
+  media.videos.forEach((src, i) => items.push({ kind: "video", src, label: `Video ${i + 1}` }));
+
+  if (items.length === 0) return null;
+
+  const [hero, sideA, sideB, ...rest] = items;
+
+  return (
+    <section id="gallery" className="affiliate-section-anchor border-b border-line py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Gallery</p>
+            <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Flyer, pictures & video</h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+              Featured media in a collage layout. Click any tile to open it larger.
+            </p>
+          </div>
+          <p className="text-[13px] font-semibold text-muted-fg">{items.length} items</p>
+        </div>
+
+        <div data-reveal className="mt-10 space-y-3">
+          <div
+            className={`grid gap-3 ${
+              items.length === 1
+                ? "grid-cols-1"
+                : items.length === 2
+                  ? "min-h-[280px] grid-cols-1 sm:min-h-[380px] sm:grid-cols-3 sm:grid-rows-2 lg:min-h-[440px]"
+                  : "min-h-[320px] grid-cols-1 sm:min-h-[400px] sm:grid-cols-3 sm:grid-rows-2 lg:min-h-[480px]"
+            }`}
+          >
+            <MediaBentoTile
+              item={hero}
+              featured
+              className={
+                items.length === 1
+                  ? "aspect-[16/10] sm:aspect-[21/9]"
+                  : "aspect-[4/3] sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:min-h-0 sm:h-full"
+              }
+              onOpen={setActive}
+            />
+            {sideA ? (
+              <MediaBentoTile
+                item={sideA}
+                className={
+                  items.length === 2
+                    ? "aspect-[4/3] sm:col-span-1 sm:row-span-2 sm:aspect-auto sm:h-full sm:min-h-0"
+                    : "aspect-[4/3] sm:col-span-1 sm:row-span-1 sm:aspect-auto sm:h-full sm:min-h-0"
+                }
+                onOpen={setActive}
+              />
+            ) : null}
+            {sideB ? (
+              <MediaBentoTile
+                item={sideB}
+                className="aspect-[4/3] sm:col-span-1 sm:row-span-1 sm:aspect-auto sm:h-full sm:min-h-0"
+                onOpen={setActive}
+              />
+            ) : null}
+          </div>
+
+          {rest.length > 0 ? (
+            <ul data-reveal data-reveal-group className="grid grid-cols-2 gap-3 md:grid-cols-3">
+              {rest.map((item, i) => (
+                <li key={`${item.label}-${item.src}`} className={i === 0 && rest.length >= 3 ? "md:col-span-2" : ""}>
+                  <MediaBentoTile
+                    item={item}
+                    className={i === 0 && rest.length >= 3 ? "aspect-[21/9]" : "aspect-[4/3]"}
+                    onOpen={setActive}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      </div>
+
+      <Dialog open={Boolean(active)} onOpenChange={(open) => !open && setActive(null)}>
+        <DialogContent className="max-w-[min(720px,calc(100vw-1.5rem))] overflow-hidden p-0">
+          <DialogHeader className="px-5 pt-5">
+            <DialogTitle>{active?.label ?? "Media"}</DialogTitle>
+          </DialogHeader>
+          <div className="bg-navy/5 p-5 pt-3">
+            {active?.kind === "image" ? (
+              <img src={active.src} alt={active.label} className="mx-auto max-h-[70vh] w-auto max-w-full object-contain" />
+            ) : active?.kind === "video" ? (
+              <div className="aspect-video w-full overflow-hidden rounded-md bg-black">
+                {isYoutubeSrc(active.src) ? (
+                  <iframe
+                    src={active.src}
+                    title={active.label}
+                    className="size-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video src={active.src} controls className="size-full" playsInline />
+                )}
+              </div>
+            ) : null}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </section>
+  );
+}
+
+function MediaBentoTile({
+  item,
+  className = "",
+  featured,
+  onOpen,
+}: {
+  item: { kind: "image" | "video"; src: string; label: string };
+  className?: string;
+  featured?: boolean;
+  onOpen: (item: { kind: "image" | "video"; src: string; label: string }) => void;
+}) {
+  const youtube = item.kind === "video" && isYoutubeSrc(item.src);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(item)}
+      className={`group relative block h-full w-full overflow-hidden rounded-lg bg-navy/10 text-start shadow-card transition-transform duration-500 hover:scale-[1.01] ${className}`}
+    >
+      {item.kind === "image" ? (
+        <img
+          src={item.src}
+          alt=""
+          className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : youtube ? (
+        <>
+          <iframe
+            src={item.src}
+            title={item.label}
+            className="pointer-events-none absolute inset-0 size-full scale-110 object-cover"
+            tabIndex={-1}
+          />
+          <span className="absolute inset-0 flex items-center justify-center bg-navy/20 transition-colors duration-300 group-hover:bg-navy/35">
+            <span
+              className={`flex items-center justify-center rounded-full bg-white/95 text-navy shadow-lg transition-transform duration-300 group-hover:scale-110 ${
+                featured ? "size-14 text-[22px]" : "size-11 text-[18px]"
+              }`}
+            >
+              ▶
+            </span>
+          </span>
+        </>
+      ) : (
+        <>
+          <video
+            src={item.src}
+            muted
+            playsInline
+            preload="metadata"
+            className="pointer-events-none absolute inset-0 size-full object-cover"
+          />
+          <span className="absolute inset-0 flex items-center justify-center bg-navy/20 transition-colors duration-300 group-hover:bg-navy/35">
+            <span
+              className={`flex items-center justify-center rounded-full bg-white/95 text-navy shadow-lg transition-transform duration-300 group-hover:scale-110 ${
+                featured ? "size-14 text-[22px]" : "size-11 text-[18px]"
+              }`}
+            >
+              ▶
+            </span>
+          </span>
+        </>
+      )}
+      <span className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <span className="absolute inset-x-0 bottom-0 translate-y-full px-4 py-3 text-[12px] font-semibold tracking-[0.1em] text-white uppercase transition-transform duration-300 group-hover:translate-y-0">
+        {item.label}
+      </span>
+    </button>
+  );
+}
+
+function OfficersSection({ officers }: { officers: AffiliateOfficer[] }) {
+  if (officers.length === 0) return null;
+
+  return (
+    <section id="officers" className="affiliate-section-anchor border-b border-line bg-surface py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="max-w-2xl">
+          <p className="eyebrow">Leadership</p>
+          <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Officers</h2>
+          <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+            A compact directory that scales with the team. Portraits, roles, and contact details stay aligned as people
+            are added or removed.
+          </p>
+        </div>
+
+        <ul data-reveal data-reveal-group className="mt-10 grid gap-4 md:grid-cols-2">
+          {officers.map((officer) => (
+            <li key={`${officer.position}-${officer.name}`}>
+              <article className="flex h-full items-center gap-4 rounded-card border border-line bg-background p-4 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:gap-5 sm:p-5">
+                <div className="size-[88px] shrink-0 overflow-hidden rounded-full border border-line bg-navy/10 sm:size-[96px]">
+                  {officer.photo ? (
+                    <img
+                      src={officer.photo}
+                      alt=""
+                      width={192}
+                      height={192}
+                      className="size-full object-cover object-top"
+                    />
+                  ) : (
+                    <div className="flex size-full items-center justify-center text-[18px] font-bold text-navy/40">
+                      {initials(officer.name)}
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] font-bold tracking-[0.14em] text-orange uppercase">{officer.position}</p>
+                  <h3 className="mt-1 text-[18px] font-bold text-foreground sm:text-[19px]">{officer.name}</h3>
+                  <div className="mt-2 space-y-0.5 text-[13px] text-muted-fg sm:text-[14px]">
+                    {officer.email ? (
+                      <a href={`mailto:${officer.email}`} className="block truncate hover:text-navy">
+                        {officer.email}
+                      </a>
+                    ) : null}
+                    {officer.phone ? (
+                      <a href={`tel:${officer.phone}`} className="block hover:text-navy">
+                        {officer.phone}
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function ContactSection({ contact, place }: { contact: AffiliateContact; place: string }) {
+  const rows = [
+    { label: "Address", value: contact.address },
+    { label: "Website", value: contact.website, href: contact.website },
+    { label: "Email", value: contact.email, href: contact.email ? `mailto:${contact.email}` : undefined },
+    { label: "Phone", value: contact.phone, href: contact.phone ? `tel:${contact.phone}` : undefined },
+  ];
+  const mapSrc = (() => {
+    const embed = contact.mapEmbedUrl?.trim();
+    if (embed) {
+      if (embed.includes("output=embed") || embed.includes("/embed")) return embed;
+      return `https://maps.google.com/maps?q=${encodeURIComponent(embed)}&t=&z=12&ie=UTF8&iwloc=&output=embed`;
+    }
+    return `https://maps.google.com/maps?q=${encodeURIComponent(contact.address ?? place)}&t=&z=12&ie=UTF8&iwloc=&output=embed`;
+  })();
+
+  return (
+    <section id="contact" className="affiliate-section-anchor py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="max-w-2xl">
+          <p className="eyebrow">Contact</p>
+          <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Visit & get in touch</h2>
+          <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+            Reach the local affiliate office and find them on the map.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 overflow-hidden rounded-card border border-line shadow-card lg:grid-cols-2">
+          <div data-reveal className="bg-background p-7 sm:p-9">
+            <dl className="space-y-5">
+              {rows.map((row) => (
+                <div key={row.label}>
+                  <dt className="text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">{row.label}</dt>
+                  <dd className="mt-1.5 text-[16px] text-foreground">
+                    {row.value && row.href ? (
+                      <a
+                        href={row.href}
+                        className="hover:text-teal"
+                        target={row.href.startsWith("http") ? "_blank" : undefined}
+                        rel="noreferrer"
+                      >
+                        {row.value}
+                      </a>
+                    ) : (
+                      <span>{row.value ?? "To be added"}</span>
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <h3 className="mt-8 text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">Social media</h3>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {contact.socials.map((s) =>
+                s.href ? (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex rounded-md border border-line px-3 py-2 text-[13px] font-semibold transition-colors hover:border-teal hover:text-teal"
+                    >
+                      {s.label}
+                    </a>
+                  </li>
+                ) : null,
+              )}
+            </ul>
+          </div>
+          <iframe
+            title={`Map — ${place}`}
+            src={mapSrc}
+            className="h-[280px] w-full lg:h-full lg:min-h-[420px]"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("");
 }
 
 function GallerySkeletonSection() {

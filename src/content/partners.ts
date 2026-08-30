@@ -28,7 +28,7 @@ export function partnerLogo(p: Partner) {
 export const PARTNER_CATEGORIES: PartnerCategory[] = [
   {
     name: "Strategic Partners",
-    desc: "Chambers of commerce, associations, and public institutions amplifying WBC programmes worldwide.",
+    desc: "Institutions and organizations in structured, long-term collaboration with WBC.",
     accent: "orange",
     kindLabel: "Partner",
     partners: [
@@ -54,7 +54,7 @@ export const PARTNER_CATEGORIES: PartnerCategory[] = [
   },
   {
     name: "Corporate Sponsors",
-    desc: "Companies and platforms collaborating on trade, innovation, and cross-border growth.",
+    desc: "Companies supporting WBC events, programmes, and initiatives.",
     accent: "teal",
     kindLabel: "Sponsor",
     partners: [

@@ -3,29 +3,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import eventsImg from "@/assets/events.jpg";
 import forumImg from "@/assets/news-forum.jpg";
-import membershipImg from "@/assets/membership.jpg";
 
 const OPPORTUNITIES = [
   {
-    title: "Events",
-    body: "Position your brand beside summits, forums, and trade programmes attended by institutional and corporate leaders.",
-    kicker: "Visibility",
+    title: "Video Advertising",
+    body: "Promote your business, products, services, events or campaigns through a short promotional video.",
+    kicker: "Video",
     image: eventsImg,
     alt: "Business audience at a WBC programme",
   },
   {
-    title: "Digital & print features",
-    body: "Reach members and partners through newsletters, web features, and campaign placements across the WBC network.",
-    kicker: "Reach",
+    title: "Poster or Banner Advertising",
+    body: "Display a professional visual advertisement with a short title, description and website link.",
+    kicker: "Visual",
     image: forumImg,
     alt: "International business forum stage and audience",
-  },
-  {
-    title: "Partnership packages",
-    body: "Build multi-touch visibility with tailored packages spanning events, content, and network introductions.",
-    kicker: "Growth",
-    image: membershipImg,
-    alt: "Professionals collaborating in a WBC partnership setting",
   },
 ] as const;
 
@@ -122,7 +114,7 @@ export function AdvertisingOpportunities() {
                 Advertising Opportunities
               </h2>
               <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/85 sm:text-[14px] lg:mt-3">
-                Connect your organisation with decision-makers through events, features, and partnership packages.
+                Advertise in the WBC website footer through video or poster/banner placements.
               </p>
             </div>
           </div>
@@ -130,7 +122,7 @@ export function AdvertisingOpportunities() {
           <div className="relative flex flex-col justify-center border-line px-6 py-7 sm:px-10 lg:aspect-video lg:overflow-hidden lg:border-s lg:px-10 lg:py-6 xl:px-12">
             <div className="mb-4 flex items-end justify-between gap-4 lg:mb-5">
               <div>
-                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">Ways to partner</p>
+                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">Advertising formats</p>
                 <p className="mt-1.5 text-[14px] text-muted-fg sm:text-[15px]">
                   <span className="font-bold text-foreground tabular-nums">
                     {String(index + 1).padStart(2, "0")}

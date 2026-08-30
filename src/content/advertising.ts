@@ -1,4 +1,4 @@
-export type AdvertisingPackage = {
+export type AdvertisingFormat = {
   id: string;
   title: string;
   summary: string;
@@ -8,23 +8,36 @@ export type AdvertisingPackage = {
 export const ADVERTISING_RATES_PDF = "/advertising-rates.pdf";
 export const ADVERTISING_RATES_PDF_FILENAME = "WBC-Advertising-Media-Kit.pdf";
 
-export const ADVERTISING_PACKAGES: AdvertisingPackage[] = [
+export const ADVERTISING_HERO = {
+  eyebrow: "Advertising",
+  title: "Advertising",
+  description:
+    "The World Business Council (WBC) offers advertising opportunities through its website to help businesses, organizations and institutions increase their visibility and promote their products, services, events and initiatives to an international business audience.",
+  tags: ["Footer placement", "Video", "Poster & Banner"],
+  ctaLabel: "WBC Advertising Media Kit",
+} as const;
+
+export const ADVERTISING_OVERVIEW = {
+  kicker: "Website advertising",
+  title: "Reach an international business audience",
+  description:
+    "Advertising space is available in the WBC website footer, providing opportunities to display engaging promotional content and direct visitors to your business or campaign.",
+} as const;
+
+export const ADVERTISING_FORMATS: AdvertisingFormat[] = [
   {
-    id: "events",
-    title: "Events",
+    id: "video",
+    title: "Video Advertising",
     summary:
-      "Align your brand with WBC summits, forums, conferences, and trade programmes attended by institutional and corporate decision-makers.",
+      "Promote your business, products, services, events or campaigns through a short promotional video.",
   },
   {
-    id: "digital-print",
-    title: "Digital & print features",
+    id: "poster-banner",
+    title: "Poster or Banner Advertising",
     summary:
-      "Reach WBC members and partners through newsletters, web placements, and campaign features across the network.",
-  },
-  {
-    id: "partnership-packages",
-    title: "Partnership packages",
-    summary:
-      "Build multi-touch visibility with annual packages spanning events, content, introductions, and network access.",
+      "Display a professional visual advertisement with a short title, description and website link.",
   },
 ];
+
+/** @deprecated Use ADVERTISING_FORMATS — kept for any legacy imports */
+export const ADVERTISING_PACKAGES = ADVERTISING_FORMATS;

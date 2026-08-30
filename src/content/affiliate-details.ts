@@ -18,6 +18,7 @@ export type AffiliateContact = {
   website?: string;
   email?: string;
   phone?: string;
+  mapEmbedUrl?: string;
   socials: AffiliateSocial[];
 };
 
