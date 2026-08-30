@@ -10,7 +10,6 @@ import {
   type EventRecord,
 } from "@/content/events";
 import { SimpleModal } from "@/components/SimpleModal";
-import { Skeleton } from "@/components/ui/skeleton";
 
 function EventMetaRow({
   dateLabel,
@@ -129,18 +128,21 @@ function EventDetailModal({
           <div className="mt-8">
             <h3 className="text-[17px] font-bold text-foreground">Media</h3>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-              {event.media.map((m) => (
-                <li key={m.url} className="group overflow-hidden rounded-card border border-line">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={m.url}
-                      alt={m.caption ?? ""}
-                      className="card-zoom-img aspect-[4/3] w-full object-cover"
-                    />
-                  </div>
-                  {m.caption ? <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p> : null}
-                </li>
-              ))}
+              {event.media.flatMap((m) => {
+                const urls = m.photos && m.photos.length > 0 ? m.photos.map((p) => p.url) : [m.url];
+                return urls.filter(Boolean).map((url, i) => (
+                  <li key={`${m.caption ?? "media"}-${url}-${i}`} className="group overflow-hidden rounded-card border border-line">
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={url}
+                        alt={m.caption ?? ""}
+                        className="card-zoom-img aspect-[4/3] w-full object-cover"
+                      />
+                    </div>
+                    {m.caption && i === 0 ? <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p> : null}
+                  </li>
+                ));
+              })}
             </ul>
           </div>
         ) : null}
@@ -199,8 +201,8 @@ function Events() {
       <SplitHero
         eyebrow="Global Programme"
         title="Events"
-        description="Summits, forums, conferences, exhibitions, and roundtables bringing the WBC network together."
-        tags={["Forums", "Networking", "Trade Missions"]}
+        description="Special events, business programmes, workshops, and network events bringing the WBC community together."
+        tags={["Special Events", "Business Events", "Training"]}
         image={eventsImg}
         imageAlt="Delegates attending an international WBC business forum"
         tone="orange"
@@ -250,22 +252,40 @@ function Events() {
             ))}
           </ul>
 
-          <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Loading events">
-            {Array.from({ length: Math.max(6, filtered.length || 0) }).map((_, i) => (
-              <li key={i} className="group flex flex-col overflow-hidden rounded-card border border-line bg-background">
-                <Skeleton className="aspect-[16/10] w-full rounded-none" />
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-                    <Skeleton className="h-4 w-28" />
-                    <Skeleton className="h-4 w-24" />
-                  </div>
-                  <Skeleton className="mt-3 h-7 w-[80%]" />
-                  <Skeleton className="mt-4 h-4 w-[96%]" />
-                  <Skeleton className="mt-2 h-4 w-[88%]" />
-                  <Skeleton className="mt-6 h-5 w-28" />
-                </div>
+          <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.length === 0 ? (
+              <li className="col-span-full rounded-card border border-line bg-background px-6 py-12 text-center text-[15px] text-muted-fg">
+                No events in this category yet.
               </li>
-            ))}
+            ) : (
+              filtered.map((event) => (
+                <li key={event.slug}>
+                  <button
+                    type="button"
+                    onClick={() => setSelected(event)}
+                    className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-line bg-background text-start transition-shadow duration-300 hover:shadow-card"
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={event.image}
+                        alt=""
+                        className="card-zoom-img aspect-[16/10] w-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+                      <EventMetaRow dateLabel={event.dateLabel} location={event.location} />
+                      <h3 className="mt-3 text-[20px] font-bold leading-snug text-foreground transition-colors group-hover:text-navy">
+                        {event.title}
+                      </h3>
+                      <p className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-muted-fg">{event.summary}</p>
+                      <span className="mt-6 inline-flex items-center gap-2 text-[14px] font-bold text-orange">
+                        View details <span aria-hidden="true" className="rtl-mirror">→</span>
+                      </span>
+                    </div>
+                  </button>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </section>

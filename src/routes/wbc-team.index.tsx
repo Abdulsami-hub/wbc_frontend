@@ -3,7 +3,6 @@ import { useState } from "react";
 import heroImg from "@/assets/team-hero.jpg";
 import { TEAM, type TeamMember } from "@/content/team";
 import { SimpleModal } from "@/components/SimpleModal";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/wbc-team/")({
   ssr: false,
@@ -112,26 +111,38 @@ function TeamProfileModal({
           <span className="accent-rule mt-5" />
           <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
 
-          <div className="mt-8 space-y-3 border-t border-line pt-6 text-[15px]">
-            <p className="text-muted-fg">
-              Email:{" "}
-              <a href={`mailto:${member.email}`} className="font-semibold text-foreground underline decoration-line underline-offset-4">
-                {member.email}
-              </a>
-            </p>
-            <p className="text-muted-fg">
-              Phone: <span className="font-semibold text-foreground">{member.phone}</span>
-            </p>
-          </div>
+          {(member.email || member.phone) && (
+            <div className="mt-8 space-y-3 border-t border-line pt-6 text-[15px]">
+              {member.email && (
+                <p className="text-muted-fg">
+                  Email:{" "}
+                  <a href={`mailto:${member.email}`} className="font-semibold text-foreground underline decoration-line underline-offset-4">
+                    {member.email}
+                  </a>
+                </p>
+              )}
+              {member.phone && (
+                <p className="text-muted-fg">
+                  Phone: <span className="font-semibold text-foreground">{member.phone}</span>
+                </p>
+              )}
+            </div>
+          )}
 
-          <div className="mt-6 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
-              LinkedIn
-            </a>
-            <a href="https://x.com" target="_blank" rel="noreferrer" className="hover:text-foreground">
-              X
-            </a>
-          </div>
+          {(member.linkedinUrl || member.xUrl) && (
+            <div className="mt-6 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
+              {member.linkedinUrl && (
+                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                  LinkedIn
+                </a>
+              )}
+              {member.xUrl && (
+                <a href={member.xUrl} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                  X
+                </a>
+              )}
+            </div>
+          )}
 
           <div className="mt-auto pt-8">
             <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
@@ -141,19 +152,6 @@ function TeamProfileModal({
         </div>
       </div>
     </SimpleModal>
-  );
-}
-
-function TeamCardSkeleton() {
-  return (
-    <li className="overflow-hidden rounded-card border border-line bg-background">
-      <Skeleton className="aspect-[4/5] w-full rounded-none" />
-      <div className="border-t border-line p-5 sm:p-6">
-        <Skeleton className="h-6 w-3/4" />
-        <Skeleton className="mt-3 h-3.5 w-1/2" />
-        <Skeleton className="mt-5 h-3.5 w-1/3" />
-      </div>
-    </li>
   );
 }
 
@@ -223,33 +221,37 @@ function WbcTeam() {
 
           <hr className="mt-12 border-line" />
 
-          {/* Board of Directors — temporarily hidden (skeleton)
-          <div data-reveal className="mt-12 flex flex-wrap items-baseline justify-between gap-4">
-            <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Board of Directors (BoD)</h3>
-            <p className="text-[15px] text-muted-fg">
-              Strategic oversight for governance, finance, policy direction, and institutional accountability.
-            </p>
-          </div>
-          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true" aria-label="Loading board of directors">
-            {Array.from({ length: Math.max(4, board.length) }).map((_, i) => (
-              <TeamCardSkeleton key={i} />
-            ))}
-          </ul>
-          */}
+          {board.length > 0 && (
+            <>
+              <div data-reveal className="mt-12 flex flex-wrap items-baseline justify-between gap-4">
+                <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Board of Directors (BoD)</h3>
+                <p className="text-[15px] text-muted-fg">
+                  Strategic oversight for governance, finance, policy direction, and institutional accountability.
+                </p>
+              </div>
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label="Board of Directors">
+                {board.map((member) => (
+                  <PersonCard key={member.slug} member={member} onOpen={setSelected} />
+                ))}
+              </ul>
+            </>
+          )}
 
-          {/* Secretariat — temporarily hidden (skeleton)
-          <div data-reveal className="mt-16 flex flex-wrap items-baseline justify-between gap-4">
-            <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Secretariat</h3>
-            <p className="text-[15px] text-muted-fg">
-              Daily management, operations, communications, and program delivery for members and partners.
-            </p>
-          </div>
-          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true" aria-label="Loading secretariat">
-            {Array.from({ length: Math.max(4, secretariat.length) }).map((_, i) => (
-              <TeamCardSkeleton key={i} />
-            ))}
-          </ul>
-          */}
+          {secretariat.length > 0 && (
+            <>
+              <div data-reveal className="mt-16 flex flex-wrap items-baseline justify-between gap-4">
+                <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Secretariat</h3>
+                <p className="text-[15px] text-muted-fg">
+                  Daily management, operations, communications, and program delivery for members and partners.
+                </p>
+              </div>
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label="Secretariat">
+                {secretariat.map((member) => (
+                  <PersonCard key={member.slug} member={member} onOpen={setSelected} />
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </section>
 

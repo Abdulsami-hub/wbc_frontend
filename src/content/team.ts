@@ -16,6 +16,8 @@ export type TeamMember = {
   email: string;
   phone: string;
   group: "Board of Directors" | "Secretariat";
+  linkedinUrl?: string;
+  xUrl?: string;
 };
 
 export const TEAM: TeamMember[] = [

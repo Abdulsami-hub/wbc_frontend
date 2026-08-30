@@ -57,7 +57,7 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
     ],
     "/events": [
       {
-        label: "Programmes",
+        label: "Event categories",
         items: EVENT_CATEGORIES.slice(0, mid).map((it) => ({
           title: it.title,
           to: "/events",
@@ -65,7 +65,7 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
         })),
       },
       {
-        label: "More",
+        label: "More categories",
         items: EVENT_CATEGORIES.slice(mid).map((it) => ({
           title: it.title,
           to: "/events",

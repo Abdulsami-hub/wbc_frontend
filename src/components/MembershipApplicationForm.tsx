@@ -3,8 +3,9 @@ import { FormFeedback } from "@/components/FormFeedback";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-/** Host is api.wbccme.org; path prefix /api/ matches contact — not a duplicate bug. */
-const MEMBERSHIP_API = "https://api.wbccme.org/api/membership-applications/";
+/** API base for public form submissions — set VITE_API_URL in env for local backend. */
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ?? 'https://api.wbccme.org';
+const MEMBERSHIP_API = `${API_BASE}/api/membership-applications`;
 
 export const MEMBERSHIP_TYPES = [
   { id: "institutional", label: "Institutional Membership" },

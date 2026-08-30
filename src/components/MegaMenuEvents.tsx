@@ -5,14 +5,14 @@ import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 export function MegaMenuEvents({ onNavigate }: { onNavigate?: () => void }) {
   const mid = Math.ceil(EVENT_CATEGORIES.length / 2);
   const groups = [
-    { label: "Programmes", items: EVENT_CATEGORIES.slice(0, mid) },
-    { label: "More", items: EVENT_CATEGORIES.slice(mid) },
+    { label: "Event categories", items: EVENT_CATEGORIES.slice(0, mid) },
+    { label: "More categories", items: EVENT_CATEGORIES.slice(mid) },
   ];
 
   return (
     <MegaMenuShell
       title="Events"
-      description="Business conferences, trade missions & B2B, networking & speaker events, exhibitions & trade fairs, plus seminars, workshops and training."
+      description="WBC Special Events, Business Events, Workshops & Trainings, and Other Events across the global network."
       promo={{
         image: eventsImage,
         alt: "Keynote speaker on stage at a WBC business conference, addressing a full auditorium",

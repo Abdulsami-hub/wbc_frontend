@@ -9,29 +9,24 @@ export type EventCategory = {
 
 export const EVENT_CATEGORIES: EventCategory[] = [
   {
-    id: "business-conferences",
-    title: "Business Conferences",
-    desc: "Summits, Forums, Conferences, Dialogues & Roundtables",
+    id: "wbc-special-events",
+    title: "WBC Special Events",
+    desc: "Leadership Events, Events for Affiliates & Members",
   },
   {
-    id: "trade-missions-b2b",
-    title: "Trade Missions & B2B",
-    desc: "Trade Missions, Business Delegations & B2B Matchmaking",
+    id: "business-events",
+    title: "Business Events",
+    desc: "Summits, Forums, Conferences, Dialogues & Roundtables, Exhibitions, Trade Missions & B2B Matchmaking, Networking Events, Business Receptions & Hosted Speakers",
   },
   {
-    id: "networking-speaker",
-    title: "Networking & Speaker Events",
-    desc: "Networking Events, Business Receptions & Hosted Speakers",
-  },
-  {
-    id: "exhibitions-trade-fairs",
-    title: "Exhibitions & Trade Fairs",
-    desc: "Exhibitions, Trade Fairs, Trade Shows & Business Expos",
-  },
-  {
-    id: "seminars-workshops-training",
-    title: "Seminars, Workshops & Training",
+    id: "workshops-trainings",
+    title: "Workshops & Trainings",
     desc: "Seminars, Workshops, Training & Professional Development",
+  },
+  {
+    id: "other-events",
+    title: "Other Events",
+    desc: "Affiliates events, partners and sponsors events",
   },
 ];
 
@@ -48,7 +43,7 @@ export type EventRecord = {
   registrationFee?: string;
   agenda?: { time: string; title: string }[];
   speakers?: { name: string; role: string }[];
-  media?: { type: "photo" | "video" | "poster"; url: string; caption?: string }[];
+  media?: { type: "photo" | "video" | "poster"; url: string; caption?: string; photos?: { url: string }[] }[];
 };
 
 import eventsImg from "@/assets/events.jpg";
@@ -58,7 +53,7 @@ import membershipImg from "@/assets/membership.jpg";
 export const EVENTS: EventRecord[] = [
   {
     slug: "global-business-summit-2026",
-    categoryId: "business-conferences",
+    categoryId: "business-events",
     title: "WBC Global Business Summit 2026",
     summary: "Leaders from institutions and enterprise gather to shape cross-border cooperation.",
     description:
@@ -85,7 +80,7 @@ export const EVENTS: EventRecord[] = [
   },
   {
     slug: "europe-trade-mission",
-    categoryId: "trade-missions-b2b",
+    categoryId: "business-events",
     title: "Europe Trade & Investment Mission",
     summary: "A focused delegation connecting members with partners across key European markets.",
     description:
@@ -103,7 +98,7 @@ export const EVENTS: EventRecord[] = [
   },
   {
     slug: "innovation-networking-evening",
-    categoryId: "networking-speaker",
+    categoryId: "business-events",
     title: "Innovation Networking Evening",
     summary: "An evening of curated introductions for innovators, investors, and member companies.",
     description:
