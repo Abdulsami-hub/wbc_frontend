@@ -47,7 +47,7 @@ function JobDetailPage() {
       <JobDetailView job={job} />
       <CTASection
         title="Explore More Opportunities"
-        description="Discover other internship roles across WBC teams and find the right fit for your skills and interests."
+        description="Discover more job and internship opportunities across the WBC network and find the right fit for your skills and interests."
         ctaLabel="View All Internships"
         to="/jobs"
       />

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getJobDepartment, type JobRecord } from "@/content/jobs";
+import { JobThumbnail } from "@/components/jobs/JobThumbnail";
 
 function BulletList({ items }: { items: string[] }) {
   return (
@@ -84,7 +85,9 @@ export function JobDetailView({ job }: { job: JobRecord }) {
           <h1 className="mt-2 max-w-4xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
             {department}
           </h1>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <JobThumbnail job={job} size="sm" />
+            <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
               <MapPin className="size-3.5 text-orange" aria-hidden="true" />
               Remote
@@ -99,7 +102,13 @@ export function JobDetailView({ job }: { job: JobRecord }) {
             <span className="inline-flex items-center rounded-full bg-navy/8 px-3 py-1 text-[12px] font-semibold text-navy">
               Voluntary / Unpaid
             </span>
+            </div>
           </div>
+          <p className="mt-4 text-[14px] font-medium text-muted-fg">
+            <span className="font-semibold text-foreground">Published:</span> {job.publishedDate}
+            <span className="mx-2 text-line">·</span>
+            <span className="font-semibold text-foreground">Application deadline:</span> {job.applicationDeadline}
+          </p>
         </div>
       </section>
 
@@ -152,7 +161,9 @@ export function JobDetailView({ job }: { job: JobRecord }) {
                 <h2 className="text-[14px] font-bold tracking-[0.1em] text-foreground uppercase">Position Details</h2>
 
                 <div className="mt-4">
-                  <SidebarField icon={CalendarDays} label="Status" value="Open until filled" />
+                  <SidebarField icon={CalendarDays} label="Published Date" value={job.publishedDate} />
+                  <SidebarField icon={CalendarDays} label="Application Deadline" value={job.applicationDeadline} />
+                  <SidebarField icon={CalendarDays} label="Status" value="Open" />
                   <SidebarField icon={FileText} label="Reference" value={`WBC-INT-${job.slug.toUpperCase().replace(/-/g, "")}`} />
                   <SidebarField
                     icon={Users}

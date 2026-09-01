@@ -15,6 +15,10 @@ export type JobRecord = {
   workType: string;
   compensation: string;
   languages: string[];
+  /** Optional role-specific logo; falls back to branded thumbnail */
+  logo?: string;
+  publishedDate: string;
+  applicationDeadline: string;
 };
 
 const APPLY_EMAIL = "contact@wbccme.org";
@@ -24,6 +28,8 @@ const JOB_DEFAULTS = {
   workType: "Remote · Part-time",
   compensation: "Voluntary / Unpaid",
   languages: ["English"],
+  publishedDate: "1 September 2026",
+  applicationDeadline: "30 September 2026",
 } as const;
 
 const BILINGUAL_LANGUAGES = ["English", "French"] as const;
@@ -419,6 +425,14 @@ export const TOTAL_POSITIONS = JOBS.reduce((sum, job) => sum + job.positionsAvai
 
 export function getJobDepartment(job: JobRecord): string {
   return job.title.replace(/\s*-\s*Internship$/i, "").trim();
+}
+
+/** Compact label for cards, e.g. "30 Sep, 2026". */
+export function formatJobDateShort(date: string): string {
+  const parts = date.trim().split(/\s+/);
+  if (parts.length < 3) return date;
+  const [day, month, year] = parts;
+  return `${day} ${month.slice(0, 3)}, ${year}`;
 }
 
 export function getJob(slug: string): JobRecord | undefined {
