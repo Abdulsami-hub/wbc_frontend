@@ -8,6 +8,7 @@ export type TranslationKey =
   | "nav.contact"
   | "nav.ourMembers"
   | "nav.news"
+  | "nav.jobs"
   | "cta.join"
   | "lang.label"
   | "footer.tagline"
@@ -40,6 +41,7 @@ const en: Dict = {
   "nav.contact": "Contact",
   "nav.ourMembers": "Our Members",
   "nav.news": "News",
+  "nav.jobs": "Jobs",
   "cta.join": "Join WBC",
   "lang.label": "Language",
   "footer.tagline":
@@ -72,6 +74,7 @@ const fr: Dict = {
   "nav.contact": "Contact",
   "nav.ourMembers": "Nos membres",
   "nav.news": "Actualités",
+  "nav.jobs": "Emplois",
   "cta.join": "Rejoindre le WBC",
   "lang.label": "Langue",
   "footer.tagline":
@@ -104,6 +107,7 @@ const es: Dict = {
   "nav.contact": "Contacto",
   "nav.ourMembers": "Nuestros miembros",
   "nav.news": "Noticias",
+  "nav.jobs": "Empleos",
   "cta.join": "Únete al WBC",
   "lang.label": "Idioma",
   "footer.tagline":
@@ -136,6 +140,7 @@ const ar: Dict = {
   "nav.contact": "اتصل بنا",
   "nav.ourMembers": "أعضاؤنا",
   "nav.news": "الأخبار",
+  "nav.jobs": "الوظائف",
   "cta.join": "انضم إلى WBC",
   "lang.label": "اللغة",
   "footer.tagline": "منظمة دولية لدعم الأعمال تربط الشركات والمهنيين والمؤسسات حول العالم.",
@@ -167,6 +172,7 @@ const zh: Dict = {
   "nav.contact": "联系我们",
   "nav.ourMembers": "我们的会员",
   "nav.news": "新闻",
+  "nav.jobs": "职位",
   "cta.join": "加入 WBC",
   "lang.label": "语言",
   "footer.tagline": "一个国际商业支持组织，连接全球的企业、专业人士和机构。",
@@ -198,6 +204,7 @@ const ru: Dict = {
   "nav.contact": "Контакты",
   "nav.ourMembers": "Наши члены",
   "nav.news": "Новости",
+  "nav.jobs": "Вакансии",
   "cta.join": "Вступить в WBC",
   "lang.label": "Язык",
   "footer.tagline":

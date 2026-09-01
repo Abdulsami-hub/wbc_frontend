@@ -41,6 +41,7 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
     links: [
       { key: "nav.news", to: "/news" },
       { key: "nav.events", to: "/events" },
+      { key: "nav.jobs", to: "/jobs" },
       { key: "nav.contact", to: "/contact" },
     ],
   },

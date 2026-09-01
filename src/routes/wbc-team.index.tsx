@@ -157,8 +157,8 @@ function TeamProfileModal({
 
 function WbcTeam() {
   const [selected, setSelected] = useState<TeamMember | null>(null);
-  const board = TEAM.filter((m) => m.group === "Board of Directors");
-  const secretariat = TEAM.filter((m) => m.group === "Secretariat");
+  // const board = TEAM.filter((m) => m.group === "Board of Directors");
+  // const secretariat = TEAM.filter((m) => m.group === "Secretariat");
 
   return (
     <>
@@ -221,6 +221,7 @@ function WbcTeam() {
 
           <hr className="mt-12 border-line" />
 
+          {/* Board of Directors (BoD) — hidden for now
           {board.length > 0 && (
             <>
               <div data-reveal className="mt-12 flex flex-wrap items-baseline justify-between gap-4">
@@ -236,7 +237,9 @@ function WbcTeam() {
               </ul>
             </>
           )}
+          */}
 
+          {/* Secretariat — hidden for now
           {secretariat.length > 0 && (
             <>
               <div data-reveal className="mt-16 flex flex-wrap items-baseline justify-between gap-4">
@@ -252,6 +255,7 @@ function WbcTeam() {
               </ul>
             </>
           )}
+          */}
         </div>
       </section>
 

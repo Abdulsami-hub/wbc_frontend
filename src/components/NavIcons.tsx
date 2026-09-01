@@ -33,6 +33,7 @@ export const FOOTER_ICONS: Partial<Record<TranslationKey, LucideIcon>> = {
   "nav.ourMembers": Users,
   "nav.news": Newspaper,
   "nav.events": CalendarDays,
+  "nav.jobs": BriefcaseBusiness,
   "nav.contact": Mail,
   "footer.privacy": Scale,
   "footer.terms": Globe2,

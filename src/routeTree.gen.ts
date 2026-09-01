@@ -19,6 +19,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GlobalNetworkRouteImport } from './routes/global-network'
 import { Route as GovernanceRouteImport } from './routes/governance'
+import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as OurMembersRouteImport } from './routes/our-members'
@@ -33,6 +34,8 @@ import { Route as GlobalNetworkIndexRouteImport } from './routes/global-network.
 import { Route as GlobalNetworkHeadquartersRouteImport } from './routes/global-network.headquarters'
 import { Route as GlobalNetworkInstitutionalMembersRouteImport } from './routes/global-network.institutional-members'
 import { Route as GlobalNetworkStrategicPartnersRouteImport } from './routes/global-network.strategic-partners'
+import { Route as JobsIndexRouteImport } from './routes/jobs.index'
+import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
 import { Route as MembershipIndexRouteImport } from './routes/membership.index'
 import { Route as MembershipBenefitsRouteImport } from './routes/membership.benefits'
 import { Route as WbcTeamIndexRouteImport } from './routes/wbc-team.index'
@@ -86,6 +89,11 @@ const GlobalNetworkRoute = GlobalNetworkRouteImport.update({
 const GovernanceRoute = GovernanceRouteImport.update({
   id: '/governance',
   path: '/governance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MembershipRoute = MembershipRouteImport.update({
@@ -161,6 +169,16 @@ const GlobalNetworkStrategicPartnersRoute =
     path: '/strategic-partners',
     getParentRoute: () => GlobalNetworkRoute,
   } as any)
+const JobsIndexRoute = JobsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => JobsRoute,
+} as any)
+const JobsSlugRoute = JobsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => JobsRoute,
+} as any)
 const MembershipIndexRoute = MembershipIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -193,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRouteWithChildren
   '/global-network': typeof GlobalNetworkRouteWithChildren
   '/governance': typeof GovernanceRoute
+  '/jobs': typeof JobsRouteWithChildren
   '/membership': typeof MembershipRouteWithChildren
   '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
@@ -204,11 +223,13 @@ export interface FileRoutesByFullPath {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/membership/': typeof MembershipIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
@@ -229,11 +250,13 @@ export interface FileRoutesByTo {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates': typeof AffiliatesIndexRoute
   '/events': typeof EventsIndexRoute
   '/global-network': typeof GlobalNetworkIndexRoute
+  '/jobs': typeof JobsIndexRoute
   '/membership': typeof MembershipIndexRoute
   '/wbc-team': typeof WbcTeamIndexRoute
 }
@@ -249,6 +272,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRouteWithChildren
   '/global-network': typeof GlobalNetworkRouteWithChildren
   '/governance': typeof GovernanceRoute
+  '/jobs': typeof JobsRouteWithChildren
   '/membership': typeof MembershipRouteWithChildren
   '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
@@ -260,11 +284,13 @@ export interface FileRoutesById {
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
+  '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
+  '/jobs/': typeof JobsIndexRoute
   '/membership/': typeof MembershipIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
@@ -281,6 +307,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/governance'
+    | '/jobs'
     | '/membership'
     | '/news'
     | '/our-members'
@@ -292,11 +319,13 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/jobs/$slug'
     | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
+    | '/jobs/'
     | '/membership/'
     | '/wbc-team/'
   fileRoutesByTo: FileRoutesByTo
@@ -317,11 +346,13 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/jobs/$slug'
     | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates'
     | '/events'
     | '/global-network'
+    | '/jobs'
     | '/membership'
     | '/wbc-team'
   id:
@@ -336,6 +367,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/global-network'
     | '/governance'
+    | '/jobs'
     | '/membership'
     | '/news'
     | '/our-members'
@@ -347,11 +379,13 @@ export interface FileRouteTypes {
     | '/global-network/headquarters'
     | '/global-network/institutional-members'
     | '/global-network/strategic-partners'
+    | '/jobs/$slug'
     | '/membership/benefits'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
+    | '/jobs/'
     | '/membership/'
     | '/wbc-team/'
   fileRoutesById: FileRoutesById
@@ -367,6 +401,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRouteWithChildren
   GlobalNetworkRoute: typeof GlobalNetworkRouteWithChildren
   GovernanceRoute: typeof GovernanceRoute
+  JobsRoute: typeof JobsRouteWithChildren
   MembershipRoute: typeof MembershipRouteWithChildren
   NewsRoute: typeof NewsRoute
   OurMembersRoute: typeof OurMembersRoute
@@ -445,6 +480,13 @@ declare module '@tanstack/react-router' {
       path: '/governance'
       fullPath: '/governance'
       preLoaderRoute: typeof GovernanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/membership': {
@@ -545,6 +587,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlobalNetworkStrategicPartnersRouteImport
       parentRoute: typeof GlobalNetworkRoute
     }
+    '/jobs/': {
+      id: '/jobs/'
+      path: '/'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof JobsIndexRouteImport
+      parentRoute: typeof JobsRoute
+    }
+    '/jobs/$slug': {
+      id: '/jobs/$slug'
+      path: '/$slug'
+      fullPath: '/jobs/$slug'
+      preLoaderRoute: typeof JobsSlugRouteImport
+      parentRoute: typeof JobsRoute
+    }
     '/membership/': {
       id: '/membership/'
       path: '/'
@@ -622,6 +678,18 @@ const GlobalNetworkRouteWithChildren = GlobalNetworkRoute._addFileChildren(
   GlobalNetworkRouteChildren,
 )
 
+interface JobsRouteChildren {
+  JobsSlugRoute: typeof JobsSlugRoute
+  JobsIndexRoute: typeof JobsIndexRoute
+}
+
+const JobsRouteChildren: JobsRouteChildren = {
+  JobsSlugRoute: JobsSlugRoute,
+  JobsIndexRoute: JobsIndexRoute,
+}
+
+const JobsRouteWithChildren = JobsRoute._addFileChildren(JobsRouteChildren)
+
 interface MembershipRouteChildren {
   MembershipBenefitsRoute: typeof MembershipBenefitsRoute
   MembershipIndexRoute: typeof MembershipIndexRoute
@@ -660,6 +728,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRouteWithChildren,
   GlobalNetworkRoute: GlobalNetworkRouteWithChildren,
   GovernanceRoute: GovernanceRoute,
+  JobsRoute: JobsRouteWithChildren,
   MembershipRoute: MembershipRouteWithChildren,
   NewsRoute: NewsRoute,
   OurMembersRoute: OurMembersRoute,
