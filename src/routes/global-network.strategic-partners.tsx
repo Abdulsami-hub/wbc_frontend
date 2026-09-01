@@ -1,19 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SplitHero } from "@/components/SplitHero";
+import { CTASection } from "@/components/CTASection";
 import { PartnersDirectory } from "@/components/PartnersDirectory";
 import partnersHero from "@/assets/partners-hero.png";
-import {
-  HOW_IT_WORKS,
-  PARTNERS_PAGE_CTA,
-  PARTNERS_PAGE_HERO,
-  SPONSORSHIP_OPPORTUNITIES,
-  SPONSORSHIP_SUPPORTS,
-  SPONSORSHIP_TYPES,
-  STRATEGIC_PARTNERS_SECTION,
-  WHERE_WE_CREATE_VALUE,
-  WHO_CAN_PARTNER,
-  WHY_SPONSOR,
-} from "@/content/partners-page";
 
 export const Route = createFileRoute("/global-network/strategic-partners")({
   head: () => ({
@@ -22,13 +11,13 @@ export const Route = createFileRoute("/global-network/strategic-partners")({
       {
         name: "description",
         content:
-          "Support global business, increase your visibility, and create opportunities through WBC sponsorships and strategic partnerships.",
+          "Explore WBC strategic partners, media sponsors, and corporate sponsors supporting programmes worldwide.",
       },
       { property: "og:title", content: "Partners and Sponsors — WBC" },
       {
         property: "og:description",
         content:
-          "WBC works with institutions, businesses, and media organizations through sponsorships and strategic partnerships worldwide.",
+          "Institutions, media platforms, and enterprises collaborating with the World Business Council.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -37,161 +26,160 @@ export const Route = createFileRoute("/global-network/strategic-partners")({
   component: StrategicPartners,
 });
 
-function CheckList({ items, dark = false }: { items: readonly string[]; dark?: boolean }) {
-  return (
-    <ul className="space-y-3">
-      {items.map((item) => (
-        <li
-          key={item}
-          className="group/item flex gap-3 text-[15px] leading-relaxed transition-transform duration-300 hover:translate-x-1 sm:text-[16px]"
-        >
-          <svg
-            className={`mt-1 size-4 shrink-0 transition-transform duration-300 group-hover/item:scale-110 ${
-              dark ? "text-orange" : "text-teal"
-            }`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.4"
-            aria-hidden="true"
-          >
-            <path d="M5 13l4 4L19 7" />
-          </svg>
-          <span className={dark ? "text-white/80" : "text-muted-fg"}>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const PARTNER_TYPES = [
+  {
+    title: "Chambers of Commerce",
+    body: "Collaborate with national and local chambers to connect member businesses with WBC programmes, trade initiatives, and cross-border opportunities.",
+  },
+  {
+    title: "NGOs",
+    body: "Work with non-governmental organizations on shared development goals, inclusive growth, and community-focused business cooperation.",
+  },
+  {
+    title: "International Organizations",
+    body: "Align with multilateral institutions to amplify dialogue on trade, investment, innovation, and sustainable economic cooperation.",
+  },
+  {
+    title: "Governments",
+    body: "Engage public-sector partners to support institutional dialogue, market access pathways, and policy-relevant business programmes.",
+  },
+  {
+    title: "Private Sector Entities",
+    body: "Partner with companies and enterprise groups to deliver joint initiatives, sponsorships, and practical commercial collaboration.",
+  },
+] as const;
+
+const IMPACT = [
+  {
+    title: "Enhance global cooperation",
+    body: "Build trusted bridges between institutions, markets, and business communities across regions.",
+  },
+  {
+    title: "Expand shared impact",
+    body: "Combine networks, expertise, and programmes to deliver stronger outcomes than any partner could alone.",
+  },
+  {
+    title: "Advance institutional relations",
+    body: "Strengthen long-term relationships with public and private stakeholders through structured engagement.",
+  },
+  {
+    title: "Unlock practical opportunities",
+    body: "Translate partnerships into events, introductions, joint projects, and visible collaboration.",
+  },
+] as const;
+
+const FOCUS_AREAS = [
+  "Joint forums, conferences, and institutional dialogues",
+  "Trade, investment, and market-access programmes",
+  "Capacity building and professional development",
+  "Research, publications, and policy-relevant insights",
+  "Regional initiatives with affiliates and members",
+  "Co-branded campaigns and network visibility",
+] as const;
+
+const PROCESS = [
+  {
+    step: "01",
+    title: "Share priorities",
+    body: "Tell us your institutional goals, regions of focus, and the type of partnership you want to build.",
+  },
+  {
+    step: "02",
+    title: "Shape the collaboration",
+    body: "WBC aligns scope, roles, and deliverables so the partnership is practical, accountable, and mission-aligned.",
+  },
+  {
+    step: "03",
+    title: "Launch & grow",
+    body: "Activate joint activities, track outcomes, and expand cooperation across the WBC global network.",
+  },
+] as const;
 
 function StrategicPartners() {
   return (
     <>
       <SplitHero
-        eyebrow={PARTNERS_PAGE_HERO.eyebrow}
-        title={PARTNERS_PAGE_HERO.title}
-        description={PARTNERS_PAGE_HERO.description}
-        tags={[...PARTNERS_PAGE_HERO.tags]}
+        eyebrow="Global Network"
+        title="Partners and Sponsors"
+        description="Institutions, media platforms, and enterprises collaborating with WBC to strengthen international business cooperation and create opportunities worldwide."
+        tags={["Strategic Partners", "Media Sponsors", "Corporate Sponsors"]}
         image={partnersHero}
         imageAlt="Business partners shaking hands across a conference table"
         tone="orange"
-        ctaLabel={PARTNERS_PAGE_HERO.ctaLabel}
-        ctaTo={PARTNERS_PAGE_HERO.ctaTo}
+        ctaLabel="Contact WBC"
+        ctaTo="/contact"
       />
 
       <PartnersDirectory />
 
-      {/* Sponsorship Opportunities */}
+      {/* Overview */}
       <section className="relative overflow-hidden py-14 lg:py-20">
         <div
           className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
           aria-hidden="true"
         />
-        <div className="container-wbc relative">
-          <div data-reveal className="max-w-3xl">
-            <p className="eyebrow">{SPONSORSHIP_OPPORTUNITIES.kicker}</p>
+        <div className="container-wbc relative grid items-start gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
+          <div data-reveal>
+            <p className="eyebrow">Our approach</p>
             <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
-              {SPONSORSHIP_OPPORTUNITIES.title}
+              Building institutional partnerships that create lasting cooperation
             </h2>
             <span className="accent-rule mt-6" />
             <p className="mt-8 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-              {SPONSORSHIP_OPPORTUNITIES.description}
+              Strategic Partnerships & Institutional Relations is how WBC connects with chambers of commerce, NGOs,
+              international organizations, governments, and private sector entities. Together, we enhance global
+              cooperation and expand shared impact across markets and communities.
             </p>
-          </div>
+            <p className="mt-5 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+              Partnerships are designed to be practical and accountable — from joint programmes and institutional
+              dialogues to long-term collaboration that strengthens the WBC network worldwide.
+            </p>
 
-          <div data-reveal data-reveal-group className="mt-12 grid gap-6 lg:grid-cols-3">
-            {SPONSORSHIP_TYPES.map((type, i) => (
-              <article
-                key={type.title}
-                className="group guide-card flex h-full flex-col border border-line bg-background p-6 sm:p-7"
-              >
-                <span className="guide-glow -end-10 -top-10 size-28 bg-orange/20" aria-hidden="true" />
-                <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="relative mt-4 text-[19px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
-                  {type.title}
-                </h3>
-                <p className="relative mt-2 text-[14px] font-semibold text-orange">{type.subtitle}</p>
-                <p className="relative mt-3 text-[15px] leading-relaxed text-muted-fg">{type.description}</p>
-                {type.items.length > 0 ? (
-                  <div className="relative mt-5">
-                    <p className="text-[12px] font-bold tracking-[0.12em] text-muted-fg uppercase">May include</p>
-                    <ul className="mt-3 space-y-2">
-                      {type.items.map((item) => (
-                        <li key={item} className="flex gap-2.5 text-[14px] leading-relaxed text-muted-fg">
-                          <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orange" aria-hidden="true" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                {type.footer ? (
-                  <p className="relative mt-5 border-t border-line pt-5 text-[14px] leading-relaxed text-muted-fg">
-                    {type.footer}
-                  </p>
-                ) : null}
-                <span className="guide-accent relative mt-auto pt-6" aria-hidden="true" />
+            <div data-reveal data-reveal-group className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+              <article className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
+                <span
+                  className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100"
+                  aria-hidden="true"
+                />
+                <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Media Sponsors</p>
+                <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
+                  Media sponsors help expand visibility through co-branded coverage, campaign amplification, and audience
+                  reach across platforms.
+                </p>
               </article>
-            ))}
+              <article className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
+                <span
+                  className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100"
+                  aria-hidden="true"
+                />
+                <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">Corporate Sponsors</p>
+                <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
+                  Corporate sponsors support event delivery, partnership programmes, and strategic initiatives with
+                  resources, expertise, and long-term collaboration.
+                </p>
+              </article>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Why Sponsor + What Supports */}
-      <section className="border-t border-line bg-surface/50 py-14 lg:py-20">
-        <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
-          <div data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
+          <aside data-reveal className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8">
             <span className="guide-glow -end-10 -top-10 size-36 bg-orange/20" aria-hidden="true" />
-            <p className="relative eyebrow">{WHY_SPONSOR.kicker}</p>
-            <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">{WHY_SPONSOR.title}</h2>
-            <p className="relative mt-4 text-[14px] font-semibold text-muted-fg">Sponsors may benefit from:</p>
-            <div className="relative mt-6">
-              <CheckList items={WHY_SPONSOR.items} />
-            </div>
-          </div>
-
-          <div data-reveal className="group relative overflow-hidden rounded-card bg-navy p-7 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-9">
-            <span
-              className="pointer-events-none absolute -end-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
-              aria-hidden="true"
-            />
-            <p className="relative text-[12px] font-bold tracking-[0.16em] text-white/60 uppercase">
-              {SPONSORSHIP_SUPPORTS.kicker}
-            </p>
-            <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">{SPONSORSHIP_SUPPORTS.title}</h2>
-            <div className="relative mt-8">
-              <CheckList items={SPONSORSHIP_SUPPORTS.items} dark />
-            </div>
-            <p className="relative mt-8 border-t border-white/15 pt-6 text-[15px] leading-relaxed text-white/75">
-              {SPONSORSHIP_SUPPORTS.closing}
-            </p>
-          </div>
+            <p className="relative text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Why partner</p>
+            <ul className="relative mt-5 space-y-4">
+              {IMPACT.slice(0, 3).map((item) => (
+                <li key={item.title} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                  <p className="text-[16px] font-bold text-foreground">{item.title}</p>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-muted-fg">{item.body}</p>
+                </li>
+              ))}
+            </ul>
+            <Link to="/contact" className="btn-orange relative mt-7 inline-flex">
+              Start a partnership conversation
+            </Link>
+          </aside>
         </div>
       </section>
 
-      {/* Strategic Partners */}
-      <section className="border-t border-line py-14 lg:py-20">
-        <div className="container-wbc grid items-start gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
-          <div data-reveal>
-            <p className="eyebrow">{STRATEGIC_PARTNERS_SECTION.kicker}</p>
-            <h2 className="mt-3 max-w-xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
-              {STRATEGIC_PARTNERS_SECTION.title}
-            </h2>
-            <span className="accent-rule mt-6" />
-            <p className="mt-8 max-w-xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-              {STRATEGIC_PARTNERS_SECTION.description}
-            </p>
-            <p className="mt-6 text-[14px] font-semibold text-foreground">Cooperation may include:</p>
-          </div>
-          <div data-reveal className="rounded-card border border-line bg-background p-7 sm:p-8">
-            <CheckList items={STRATEGIC_PARTNERS_SECTION.items} />
-          </div>
-        </div>
-      </section>
-
-      {/* Who Can Partner */}
+      {/* Partner types */}
       <section className="relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20">
         <div
           className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-navy/8 blur-3xl"
@@ -199,23 +187,29 @@ function StrategicPartners() {
         />
         <div className="container-wbc relative">
           <div data-reveal className="max-w-2xl">
-            <p className="eyebrow">{WHO_CAN_PARTNER.kicker}</p>
+            <p className="eyebrow">Who we partner with</p>
             <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
-              {WHO_CAN_PARTNER.title}
+              Five pillars of institutional partnership
             </h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+              WBC develops strategic relationships across public, private, and civil-society ecosystems.
+            </p>
             <span className="accent-rule mt-6" />
           </div>
 
-          <ul data-reveal data-reveal-group className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {WHO_CAN_PARTNER.items.map((item, i) => (
-              <li key={item}>
-                <article className="group guide-card flex h-full items-start gap-4 border border-line bg-background p-5 sm:p-6">
-                  <span className="guide-num relative shrink-0 font-display text-[13px] font-bold tabular-nums text-orange/60">
+          <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {PARTNER_TYPES.map((p, i) => (
+              <li key={p.title}>
+                <article className="group guide-card flex h-full flex-col border border-line bg-background p-6 sm:p-7">
+                  <span className="guide-glow -end-10 -top-10 size-28 bg-orange/20" aria-hidden="true" />
+                  <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="relative text-[16px] font-bold leading-snug text-foreground transition-colors duration-300 group-hover:text-navy">
-                    {item}
+                  <h3 className="relative mt-4 text-[19px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
+                    {p.title}
                   </h3>
+                  <p className="relative mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">{p.body}</p>
+                  <span className="guide-accent relative mt-6" aria-hidden="true" />
                 </article>
               </li>
             ))}
@@ -223,30 +217,61 @@ function StrategicPartners() {
         </div>
       </section>
 
-      {/* Where We Create Value */}
+      {/* Impact + focus */}
       <section className="border-t border-line py-14 lg:py-20">
-        <div className="container-wbc">
-          <div data-reveal className="mx-auto max-w-3xl text-center">
-            <p className="eyebrow">{WHERE_WE_CREATE_VALUE.kicker}</p>
-            <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
-              {WHERE_WE_CREATE_VALUE.title}
+        <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
+          <div data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
+            <span className="guide-glow -end-10 -top-10 size-36 bg-navy/15" aria-hidden="true" />
+            <p className="relative eyebrow">Outcomes</p>
+            <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
+              Enhance cooperation. Expand impact.
             </h2>
-            <span className="accent-rule mx-auto mt-6" />
+            <ul className="relative mt-8 space-y-5">
+              {IMPACT.map((item, i) => (
+                <li key={item.title} className="flex gap-4">
+                  <span className="font-display text-[13px] font-bold tabular-nums text-orange/55">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-[16px] font-bold text-foreground">{item.title}</p>
+                    <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">{item.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div data-reveal className="mt-10 flex flex-wrap justify-center gap-x-3 gap-y-3">
-            {WHERE_WE_CREATE_VALUE.items.map((item, i) => (
-              <span key={item} className="inline-flex items-center gap-3 text-[15px] text-muted-fg sm:text-[16px]">
-                {i > 0 ? <span className="hidden text-orange sm:inline" aria-hidden="true">·</span> : null}
-                <span className="rounded-full border border-line bg-background px-4 py-2 font-medium text-foreground transition-colors hover:border-orange/35">
+
+          <div data-reveal className="group relative overflow-hidden rounded-card bg-navy p-7 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-9">
+            <span
+              className="pointer-events-none absolute -end-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
+              aria-hidden="true"
+            />
+            <p className="relative text-[12px] font-bold tracking-[0.16em] text-white/60 uppercase">Focus areas</p>
+            <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">
+              Where partnerships create value
+            </h2>
+            <ul className="relative mt-8 space-y-3.5">
+              {FOCUS_AREAS.map((item) => (
+                <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-white/80">
+                  <svg
+                    className="mt-1 size-4 shrink-0 text-orange"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
                   {item}
-                </span>
-              </span>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* Process */}
       <section className="relative isolate overflow-hidden border-t border-line bg-navy py-14 lg:py-20">
         <div
           className="pointer-events-none absolute -end-20 top-0 size-[360px] rounded-full bg-orange/20 blur-3xl"
@@ -258,13 +283,21 @@ function StrategicPartners() {
         />
         <div className="container-wbc relative">
           <div data-reveal className="max-w-2xl">
-            <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">{HOW_IT_WORKS.kicker}</p>
-            <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">{HOW_IT_WORKS.title}</h2>
-            <p className="mt-4 text-[16px] leading-relaxed text-white/75">{HOW_IT_WORKS.description}</p>
+            <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">How it works</p>
+            <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">
+              From conversation to collaboration
+            </h2>
+            <p className="mt-4 text-[16px] leading-relaxed text-white/75">
+              A clear pathway to build strategic partnerships and institutional relations with WBC.
+            </p>
           </div>
 
-          <ol data-reveal data-reveal-group className="relative mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {HOW_IT_WORKS.steps.map((step) => (
+          <ol data-reveal data-reveal-group className="relative mt-12 grid gap-6 lg:grid-cols-3">
+            <span
+              className="guide-process-line pointer-events-none absolute top-8 start-[16%] end-[16%] hidden h-px bg-gradient-to-r from-transparent via-orange/70 to-transparent lg:block"
+              aria-hidden="true"
+            />
+            {PROCESS.map((step) => (
               <li key={step.step}>
                 <article className="group relative h-full overflow-hidden rounded-card border border-white/15 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-orange/40 hover:bg-white/10 sm:p-7">
                   <span
@@ -274,7 +307,7 @@ function StrategicPartners() {
                   <span className="relative inline-flex size-12 items-center justify-center bg-orange text-[14px] font-bold tabular-nums text-white transition-transform duration-300 group-hover:scale-110">
                     {step.step}
                   </span>
-                  <h3 className="relative mt-5 text-[18px] font-bold text-white">{step.title}</h3>
+                  <h3 className="relative mt-5 text-[20px] font-bold text-white">{step.title}</h3>
                   <p className="relative mt-3 text-[15px] leading-relaxed text-white/75">{step.body}</p>
                 </article>
               </li>
@@ -288,33 +321,69 @@ function StrategicPartners() {
         <div className="container-wbc">
           <div
             data-reveal
-            className="group relative overflow-hidden rounded-card border border-line bg-background p-8 transition-shadow duration-500 hover:shadow-card sm:p-10 lg:p-14"
+            className="group relative grid items-center gap-8 overflow-hidden rounded-card border border-line bg-background p-8 transition-shadow duration-500 hover:shadow-card sm:p-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12 lg:p-14"
           >
             <span
               className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-50 bg-gradient-to-r from-orange via-orange/60 to-transparent transition-transform duration-700 group-hover:scale-x-100"
               aria-hidden="true"
             />
-            <p className="eyebrow">{PARTNERS_PAGE_CTA.kicker}</p>
-            <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
-              {PARTNERS_PAGE_CTA.title}
-            </h2>
-            <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-              {PARTNERS_PAGE_CTA.description}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {PARTNERS_PAGE_CTA.buttons.map((btn, i) => (
-                <Link
-                  key={btn.label}
-                  to={btn.to}
-                  className={i === 0 ? "btn-orange" : "btn-navy !rounded-md"}
-                >
-                  {btn.label}
+            <div>
+              <p className="eyebrow">Next step</p>
+              <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+                Ready to build a strategic partnership?
+              </h2>
+              <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
+                If your chamber, NGO, international organization, government body, or private-sector entity wants to
+                expand cooperation with WBC, we invite you to start a conversation.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/contact" className="btn-orange">
+                  Partner with WBC
                 </Link>
-              ))}
+                <Link to="/global-network" className="btn-navy !rounded-md">
+                  Explore the network
+                </Link>
+              </div>
+            </div>
+            <div className="hidden border border-line bg-surface p-7 transition-colors duration-300 group-hover:border-orange/30 lg:block">
+              <p className="text-[12px] font-bold tracking-[0.14em] text-muted-fg uppercase">Related</p>
+              <ul className="mt-5 space-y-4">
+                <li>
+                  <Link to="/affiliates" className="card-link text-[15px]">
+                    WBC Affiliates
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/our-members" className="card-link text-[15px]">
+                    Institutional Members
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/what-we-do" className="card-link text-[15px]">
+                    What We Do
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
+
+      <CTASection
+        title="Strengthen global cooperation with WBC"
+        description="Connect with the WBC team to discuss strategic partnerships and institutional relations."
+        ctaLabel="Contact Us"
+        to="/contact"
+      />
     </>
   );
 }
