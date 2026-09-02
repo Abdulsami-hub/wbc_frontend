@@ -1,37 +1,43 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/who-we-are-hero.png";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { WhoWeArePageContent, WhoWeAreValue } from "@/content/who-we-are";
+import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 
 export const Route = createFileRoute("/who-we-are")({
-  head: () => ({
-    meta: [
-      { title: "Who We Are — World Business Council" },
-      {
-        name: "description",
-        content:
-          "The World Business Council is an international business support organization built on trust, connection, cooperation, and long-term growth for businesses worldwide.",
-      },
-      { property: "og:title", content: "Who We Are — World Business Council" },
-      {
-        property: "og:description",
-        content: "Our story, vision, mission, and the six core values that guide the WBC network.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(whoWeAreQueryOptions),
+  head: ({ loaderData }) => {
+    const heroImage = loaderData?.hero.image;
+    return {
+      meta: [
+        { title: "Who We Are — World Business Council" },
+        {
+          name: "description",
+          content:
+            "The World Business Council is an international business support organization built on trust, connection, cooperation, and long-term growth for businesses worldwide.",
+        },
+        { property: "og:title", content: "Who We Are — World Business Council" },
+        {
+          property: "og:description",
+          content: "Our story, vision, mission, and the six core values that guide the WBC network.",
+        },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: heroImage
+        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
+        : [],
+    };
+  },
   component: WhoWeAre,
 });
 
-const TAGS = ["Trust", "Connection", "Global Reach"] as const;
-
-const VALUES = [
-  { title: "Inclusivity", body: "Embracing diversity and valuing different perspectives.", icon: "users" },
-  { title: "Collaboration", body: "Connecting people and businesses to create shared success.", icon: "link" },
-  { title: "Innovation", body: "Encouraging creativity and forward-thinking solutions.", icon: "spark" },
-  { title: "Integrity & Excellence", body: "Upholding ethics, transparency, and high standards.", icon: "shield" },
-  { title: "Sustainable Development", body: "Promoting responsible growth for a better future.", icon: "leaf" },
-  { title: "Global Citizenship", body: "Supporting positive impact on communities and the world.", icon: "globe" },
-] as const;
+const STAT_LABELS = [
+  { key: "headquarters" as const, label: "Global headquarters" },
+  { key: "founded" as const, label: "Founded" },
+  { key: "network" as const, label: "WBC Network" },
+];
 
 function ValueIcon({ name }: { name: string }) {
   const common = {
@@ -89,7 +95,27 @@ function ValueIcon({ name }: { name: string }) {
   }
 }
 
-function OurValues() {
+function PageSkeleton() {
+  return (
+    <>
+      <section className="relative flex flex-col">
+        <div className="grid lg:grid-cols-2">
+          <Skeleton className="min-h-[420px] rounded-none bg-orange/90" />
+          <Skeleton className="hidden min-h-[420px] rounded-none lg:block" />
+        </div>
+      </section>
+      <section className="py-16 lg:py-24">
+        <div className="container-wbc">
+          <Skeleton className="h-64 rounded-lg" />
+        </div>
+      </section>
+    </>
+  );
+}
+
+function OurValues({ values }: { values: WhoWeAreValue[] }) {
+  if (!values.length) return null;
+
   return (
     <div>
       <div className="max-w-2xl">
@@ -97,7 +123,7 @@ function OurValues() {
           Core Values
         </p>
         <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]">
-          Six principles of WBC.
+          Principles of WBC.
         </h2>
         <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
           The standards that shape how we connect people, support businesses, and build lasting cooperation worldwide.
@@ -106,10 +132,10 @@ function OurValues() {
       </div>
 
       <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        {VALUES.map((v, i) => {
+        {values.map((v, i) => {
           const featured = i === 0 || i === 3;
           return (
-            <li key={v.title}>
+            <li key={v.id}>
               <article
                 className={`group relative flex h-full flex-col overflow-hidden rounded-card p-7 transition-all duration-300 sm:p-8 ${
                   featured
@@ -165,7 +191,12 @@ function OurValues() {
   );
 }
 
-function WhoWeAre() {
+function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
+  const { hero, story, missionVision, stats, coreValues } = data;
+  const [firstParagraph, ...restParagraphs] = story.paragraphs;
+  const dropCap = firstParagraph?.charAt(0) ?? "";
+  const firstBody = firstParagraph?.slice(1) ?? "";
+
   return (
     <>
       <section className="relative flex flex-col">
@@ -173,40 +204,43 @@ function WhoWeAre() {
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="w-full max-w-xl">
-            <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
-              <ol className="flex flex-wrap items-center gap-2">
-                <li>
-                  <Link to="/" className="hover:text-white">Home</Link>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li className="font-semibold text-white">Who We Are</li>
-              </ol>
-            </nav>
-            <p className="intro-1 mt-8 hero-kicker">About Us</p>
-            <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
-              Who We Are
-            </h1>
-            <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
-              An international business support organization built on trust, connection, cooperation, and long-term
-              growth for businesses, professionals, and institutions worldwide.
-            </p>
-            <ul className="intro-4 mt-9 flex flex-wrap gap-3">
-              {TAGS.map((t) => (
-                <li
-                  key={t}
-                  className="border border-white/70 px-4 py-2 text-[13px] font-bold tracking-[0.14em] text-white uppercase"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
+              <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
+                <ol className="flex flex-wrap items-center gap-2">
+                  <li>
+                    <Link to="/" className="hover:text-white">
+                      Home
+                    </Link>
+                  </li>
+                  <li aria-hidden="true">/</li>
+                  <li className="font-semibold text-white">{hero.title}</li>
+                </ol>
+              </nav>
+              <p className="intro-1 mt-8 hero-kicker">{hero.kicker}</p>
+              <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
+                {hero.title}
+              </h1>
+              <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
+                {hero.description}
+              </p>
+              {hero.tags.length > 0 ? (
+                <ul className="intro-4 mt-9 flex flex-wrap gap-3">
+                  {hero.tags.map((t) => (
+                    <li
+                      key={t}
+                      className="border border-white/70 px-4 py-2 text-[13px] font-bold tracking-[0.14em] text-white uppercase"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           </div>
         </div>
         <div className="hero-media-right bg-navy-deep">
           <img
-            src={heroImg}
-            alt="WBC boardroom overlooking the Paris skyline at dusk"
+            src={hero.image ?? heroImg}
+            alt={hero.imageAlt}
             width={1600}
             height={1000}
             fetchPriority="high"
@@ -231,46 +265,46 @@ function WhoWeAre() {
             data-reveal
             className="relative overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-14"
           >
-            <span className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent rtl:bg-gradient-to-l" aria-hidden="true" />
+            <span
+              className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange via-orange/50 to-transparent rtl:bg-gradient-to-l"
+              aria-hidden="true"
+            />
             <div className="flex items-center gap-4">
-              <span className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground" aria-hidden="true">
+              <span
+                className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground"
+                aria-hidden="true"
+              >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
                 </svg>
               </span>
               <div>
-                <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Who We Are</p>
-                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">Behind every business is a person.</p>
+                <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">{story.kicker}</p>
+                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">{story.title}</p>
               </div>
             </div>
 
             <span className="mt-8 block h-px w-full bg-line" aria-hidden="true" />
 
-            <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
-              <span className="float-start me-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-foreground">T</span>
-              he World Business Council (WBC) is an international business support organization headquartered in Paris,
-              built on a simple belief: behind every business is a person, an idea, and the ambition to create something
-              meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
-              them find the right connections, knowledge, support, and opportunities to move forward. Through our
-              international network, WBC turns connections into cooperation, ideas into action, and business
-              relationships into lasting opportunities for growth.
-            </p>
+            {firstParagraph ? (
+              <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
+                <span className="float-start me-3 mt-1 font-display text-[46px] leading-[0.85] font-bold text-foreground">
+                  {dropCap}
+                </span>
+                {firstBody}
+              </p>
+            ) : null}
 
-            <p className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
-              We believe that no business should have to grow alone—and that meaningful connections are built on trust.
-              Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
-              move forward together. WBC works to create an environment where people and businesses can connect with
-              confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
-              lasting cooperation, and shared progress.
-            </p>
+            {restParagraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 24)} className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
+                {paragraph}
+              </p>
+            ))}
           </div>
 
           <div className="flex flex-col gap-6">
-            <article
-              data-reveal
-              className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8"
-            >
+            <article data-reveal className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8">
               <span
                 className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
@@ -281,10 +315,11 @@ function WhoWeAre() {
                   <circle cx="12" cy="12" r="2.6" />
                 </svg>
               </span>
-              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-white/70 uppercase">Our Vision</p>
+              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-white/70 uppercase">
+                {missionVision.visionTitle}
+              </p>
               <p className="relative mt-3 text-[16px] leading-relaxed text-white sm:text-[17px]">
-                To be the global hub of business excellence, with a local presence in every city, empowering and uniting
-                businesses worldwide through innovation, collaboration, and sustainable development.
+                {missionVision.visionDescription}
               </p>
             </article>
 
@@ -296,16 +331,21 @@ function WhoWeAre() {
                 className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-teal/15 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
-              <span className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground" aria-hidden="true">
+              <span
+                className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground"
+                aria-hidden="true"
+              >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="8.5" />
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
                 </svg>
               </span>
-              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
+              <p className="relative mt-5 text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">
+                {missionVision.missionTitle}
+              </p>
               <p className="relative mt-3 text-[16px] leading-relaxed text-foreground/85 sm:text-[17px]">
-                We build a global network that empowers businesses through collaboration, innovation, and trust.
+                {missionVision.missionDescription}
               </p>
             </article>
 
@@ -313,15 +353,11 @@ function WhoWeAre() {
               data-reveal
               className="grid grid-cols-3 gap-3 rounded-card border border-line bg-background px-4 py-5 sm:gap-4 sm:px-5 sm:py-6"
             >
-              {[
-                { k: "Paris", v: "Global headquarters" },
-                { k: "2026", v: "Founded" },
-                { k: "Worldwide", v: "WBC Network" },
-              ].map((s) => (
-                <div key={s.k} className="min-w-0 text-center sm:text-start">
-                  <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{s.k}</dt>
+              {STAT_LABELS.map(({ key, label }) => (
+                <div key={key} className="min-w-0 text-center sm:text-start">
+                  <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{stats[key]}</dt>
                   <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
-                    {s.v}
+                    {label}
                   </dd>
                 </div>
               ))}
@@ -330,11 +366,13 @@ function WhoWeAre() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24">
-        <div className="container-wbc">
-          <OurValues />
-        </div>
-      </section>
+      {coreValues.length > 0 ? (
+        <section className="py-16 lg:py-24">
+          <div className="container-wbc">
+            <OurValues values={coreValues} />
+          </div>
+        </section>
+      ) : null}
 
       <section className="relative isolate overflow-hidden bg-navy py-16 lg:py-24">
         <div data-reveal className="container-wbc relative text-center">
@@ -351,4 +389,13 @@ function WhoWeAre() {
       </section>
     </>
   );
+}
+
+function WhoWeAre() {
+  const { data, isPending, isError } = useQuery(whoWeAreQueryOptions);
+
+  if (isPending) return <PageSkeleton />;
+  if (isError || !data) return null;
+
+  return <WhoWeArePage data={data} />;
 }

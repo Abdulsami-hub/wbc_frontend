@@ -6,10 +6,16 @@ import { WhatIsWbcSection } from "@/components/home/WhatIsWbcSection";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { OurValuesSection } from "@/components/home/OurValuesSection";
 import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
+import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 
 export const Route = createFileRoute("/")({
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(heroSlidesQueryOptions),
+  loader: async ({ context: { queryClient } }) => {
+    const [heroSlides] = await Promise.all([
+      queryClient.ensureQueryData(heroSlidesQueryOptions),
+      queryClient.ensureQueryData(whoWeAreQueryOptions),
+    ]);
+    return heroSlides;
+  },
   head: ({ loaderData }) => {
     const firstImage = loaderData?.[0]?.image;
     return {
@@ -23,7 +29,8 @@ export const Route = createFileRoute("/")({
         { property: "og:title", content: "World Business Council — Connecting Businesses" },
         {
           property: "og:description",
-          content: "A global network that empowers businesses through collaboration, innovation, and trust.",
+          content:
+            "A global network that empowers businesses through collaboration, innovation, and trust.",
         },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary_large_image" },

@@ -1,7 +1,30 @@
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { SectionHeading } from "@/components/SectionHeading";
+import { Skeleton } from "@/components/ui/skeleton";
+import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 
 export function WhatIsWbcSection() {
+  const { data, isPending } = useQuery(whoWeAreQueryOptions);
+
+  if (isPending) {
+    return (
+      <section className="border-t border-line bg-surface/30 py-16 lg:py-24">
+        <div className="container-wbc">
+          <Skeleton className="h-32 max-w-xl rounded-lg" />
+          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+            <Skeleton className="h-64 rounded-lg" />
+            <Skeleton className="h-64 rounded-lg" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!data) return null;
+
+  const { story, missionVision } = data;
+
   return (
     <section className="border-t border-line bg-surface/30 py-16 lg:py-24">
       <div className="container-wbc">
@@ -16,21 +39,14 @@ export function WhatIsWbcSection() {
           <div data-reveal className="flex min-h-0 flex-col">
             <div className="relative flex-1 overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-8">
               <span className="absolute start-0 top-0 h-full w-1 bg-orange" aria-hidden="true" />
-              <p className="text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-                The World Business Council (WBC) is an international business support organization headquartered in Paris,
-                built on a simple belief: behind every business is a person, an idea, and the ambition to create something
-                meaningful. We bring businesses, entrepreneurs, professionals, and organizations closer together, helping
-                them find the right connections, knowledge, support, and opportunities to move forward. Through our
-                international network, WBC turns connections into cooperation, ideas into action, and business
-                relationships into lasting opportunities for growth.
-              </p>
-              <p className="mt-6 text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-                We believe that no business should have to grow alone—and that meaningful connections are built on trust.
-                Behind every successful partnership is the confidence to share an idea, open a door, take a chance, and
-                move forward together. WBC works to create an environment where people and businesses can connect with
-                confidence, build trusted relationships, and turn those relationships into meaningful opportunities,
-                lasting cooperation, and shared progress.
-              </p>
+              {story.paragraphs.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 32)}
+                  className={`text-[16px] leading-[1.85] text-muted-fg sm:text-[17px] ${story.paragraphs.indexOf(paragraph) > 0 ? "mt-6" : ""}`}
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
 
@@ -49,10 +65,11 @@ export function WhatIsWbcSection() {
                   <circle cx="12" cy="12" r="2.6" />
                 </svg>
               </span>
-              <p className="relative mt-6 text-[12px] font-bold tracking-[0.2em] text-white/70 uppercase">Our Vision</p>
+              <p className="relative mt-6 text-[12px] font-bold tracking-[0.2em] text-white/70 uppercase">
+                {missionVision.visionTitle}
+              </p>
               <p className="relative mt-4 flex-1 text-[16px] leading-relaxed text-white sm:text-[17px]">
-                To be the global hub of business excellence, with a local presence in every city, empowering and uniting
-                businesses worldwide through innovation, collaboration, and sustainable development.
+                {missionVision.visionDescription}
               </p>
             </article>
 
@@ -71,9 +88,11 @@ export function WhatIsWbcSection() {
                   <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
                 </svg>
               </span>
-              <p className="relative mt-6 text-[12px] font-bold tracking-[0.2em] text-foreground uppercase">Our Mission</p>
+              <p className="relative mt-6 text-[12px] font-bold tracking-[0.2em] text-foreground uppercase">
+                {missionVision.missionTitle}
+              </p>
               <p className="relative mt-4 flex-1 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-                We build a global network that empowers businesses through collaboration, innovation, and trust.
+                {missionVision.missionDescription}
               </p>
             </article>
           </div>

@@ -1,37 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import VALUES_BG from "@/assets/our-values-bg.png";
-
-const VALUES = [
-  {
-    title: "Inclusivity",
-    body: "Embracing diversity and valuing different perspectives.",
-    icon: "users",
-  },
-  {
-    title: "Collaboration",
-    body: "Connecting people and businesses to create shared success.",
-    icon: "link",
-  },
-  {
-    title: "Innovation",
-    body: "Encouraging creativity and forward-thinking solutions.",
-    icon: "spark",
-  },
-  {
-    title: "Integrity & Excellence",
-    body: "Upholding ethics, transparency, and high standards.",
-    icon: "shield",
-  },
-  {
-    title: "Sustainable Development",
-    body: "Promoting responsible growth for a better future.",
-    icon: "leaf",
-  },
-  {
-    title: "Global Citizenship",
-    body: "Supporting positive impact on communities and the world.",
-    icon: "globe",
-  },
-] as const;
+import { Skeleton } from "@/components/ui/skeleton";
+import type { WhoWeAreValue } from "@/content/who-we-are";
+import { homeCoreValues, whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 
 function ValueIcon({ name }: { name: string }) {
   const common = {
@@ -94,10 +65,52 @@ function ValueIcon({ name }: { name: string }) {
   }
 }
 
+function ValuesGrid({ values }: { values: WhoWeAreValue[] }) {
+  return (
+    <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {values.map((v) => (
+        <li key={v.id}>
+          <article className="values-glass-card flex min-h-[240px] flex-col items-center justify-center rounded-none px-7 py-10 text-center sm:min-h-[260px] sm:px-8 sm:py-12 lg:min-h-[280px]">
+            <span className="text-white" aria-hidden="true">
+              <ValueIcon name={v.icon} />
+            </span>
+            <h3 className="mt-6 text-[20px] leading-tight font-bold tracking-tight text-white sm:text-[22px]">
+              {v.title}
+            </h3>
+            <p className="mt-4 max-w-[20rem] text-[15px] leading-relaxed text-white sm:text-[16px]">{v.body}</p>
+          </article>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function OurValuesSection() {
+  const { data, isPending } = useQuery(whoWeAreQueryOptions);
+
+  if (isPending) {
+    return (
+      <section className="relative py-20 lg:py-28">
+        <div className="absolute inset-0 bg-navy/90" aria-hidden="true" />
+        <div className="container-wbc relative">
+          <Skeleton className="h-24 max-w-xl rounded-lg bg-white/10" />
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <Skeleton className="h-64 rounded-lg bg-white/10" />
+            <Skeleton className="h-64 rounded-lg bg-white/10" />
+            <Skeleton className="h-64 rounded-lg bg-white/10" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!data) return null;
+
+  const values = homeCoreValues(data);
+  if (!values.length) return null;
+
   return (
     <section className="relative py-20 lg:py-28">
-      {/* Fixed on scroll — photo stays put while section content moves */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
         style={{ backgroundImage: `url(${VALUES_BG})` }}
@@ -113,30 +126,14 @@ export function OurValuesSection() {
           data-reveal
           className="mt-4 max-w-3xl text-[38px] font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-sm sm:text-[52px] lg:text-[64px]"
         >
-          Six principles of WBC.
+          Principles of WBC.
         </h2>
         <p data-reveal className="mt-6 max-w-2xl text-[18px] leading-relaxed text-white/90 drop-shadow-sm">
           These values shape how we convene institutions, support members and partners, and turn international
           connections into practical cooperation.
         </p>
 
-        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {VALUES.map((v) => (
-            <li key={v.title}>
-              <article className="values-glass-card flex min-h-[240px] flex-col items-center justify-center rounded-none px-7 py-10 text-center sm:min-h-[260px] sm:px-8 sm:py-12 lg:min-h-[280px]">
-                <span className="text-white" aria-hidden="true">
-                  <ValueIcon name={v.icon} />
-                </span>
-                <h3 className="mt-6 text-[20px] leading-tight font-bold tracking-tight text-white sm:text-[22px]">
-                  {v.title}
-                </h3>
-                <p className="mt-4 max-w-[20rem] text-[15px] leading-relaxed text-white sm:text-[16px]">
-                  {v.body}
-                </p>
-              </article>
-            </li>
-          ))}
-        </ul>
+        <ValuesGrid values={values} />
       </div>
     </section>
   );
