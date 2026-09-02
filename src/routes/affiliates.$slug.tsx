@@ -1,17 +1,25 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getAffiliate, type AffiliateProfile } from "@/content/affiliates";
 import { CTASection } from "@/components/CTASection";
 import { AffiliateLocationProfile } from "@/components/affiliates/AffiliateLocationProfile";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { AffiliateProfile } from "@/content/affiliates";
+import { emptyAffiliateDetails } from "@/content/affiliate-details";
+import { affiliateDetailQueryOptions } from "@/lib/queries/affiliates";
 
 export const Route = createFileRoute("/affiliates/$slug")({
-  loader: ({ params }) => {
-    const affiliate = getAffiliate(params.slug);
-    if (!affiliate) throw notFound();
-    return { affiliate };
+  loader: async ({ context: { queryClient }, params }) => {
+    try {
+      return await queryClient.ensureQueryData(affiliateDetailQueryOptions(params.slug));
+    } catch {
+      throw notFound();
+    }
   },
   head: ({ loaderData }) => {
-    const a = loaderData?.affiliate;
-    const titleName = a?.kind === "city" ? `${a.name}, ${a.countryName}` : (a?.name ?? "Affiliate");
+    const a = loaderData?.profile;
+    const heroImage = loaderData?.details?.heroImage;
+    const titleName =
+      a?.kind === "city" ? `${a.name}, ${a.countryName}` : (a?.name ?? "Affiliate");
     return {
       meta: [
         { title: `${titleName} — WBC Affiliates` },
@@ -21,19 +29,48 @@ export const Route = createFileRoute("/affiliates/$slug")({
         },
         { property: "og:title", content: `${titleName} — WBC Affiliates` },
         { property: "og:type", content: "website" },
+        ...(heroImage ? [{ property: "og:image", content: heroImage }] : []),
         { name: "twitter:card", content: "summary_large_image" },
       ],
+      links: heroImage
+        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
+        : [],
     };
   },
   component: AffiliateProfilePage,
 });
 
 function AffiliateProfilePage() {
-  const { affiliate } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const { data, isPending, isError } = useQuery(affiliateDetailQueryOptions(slug));
+
+  if (isPending) {
+    return (
+      <section className="py-16">
+        <div className="container-wbc">
+          <Skeleton className="h-96 w-full rounded-card" />
+        </div>
+      </section>
+    );
+  }
+
+  if (isError || !data) {
+    throw notFound();
+  }
+
+  const { profile: affiliate, details } = data;
 
   return (
     <>
-      {affiliate.kind === "region" ? <RegionProfile affiliate={affiliate} /> : <AffiliateLocationProfile affiliate={affiliate} />}
+      {affiliate.kind === "region" ? (
+        <RegionProfile affiliate={affiliate} />
+      ) : (
+        <AffiliateLocationProfile
+          affiliate={affiliate}
+          details={details ?? emptyAffiliateDetails()}
+          isLoading={isPending}
+        />
+      )}
 
       <section className="border-t border-line bg-surface py-12 lg:py-16">
         <div className="container-wbc flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -45,7 +82,10 @@ function AffiliateProfilePage() {
             <Link to="/contact" className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]">
               Fill the Application Form
             </Link>
-            <Link to="/affiliate-guide" className="btn-base border border-line bg-background text-foreground hover:border-navy">
+            <Link
+              to="/affiliate-guide"
+              className="btn-base border border-line bg-background text-foreground hover:border-navy"
+            >
               Establishment Guide
             </Link>
           </div>
@@ -69,7 +109,7 @@ function RegionProfile({
 }) {
   return (
     <>
-      <section className="relative isolate overflow-hidden min-h-[70vh] bg-navy">
+      <section className="relative isolate min-h-[70vh] overflow-hidden bg-navy">
         <div
           className="pointer-events-none absolute -end-24 top-0 size-[360px] rounded-full bg-blue/20 blur-3xl"
           aria-hidden="true"
@@ -101,7 +141,9 @@ function RegionProfile({
           <h1 className="intro-2 mt-3 text-[42px] font-extrabold leading-[0.95] text-white sm:text-[58px] lg:text-[68px]">
             {affiliate.name}
           </h1>
-          <p className="intro-3 mt-5 max-w-2xl text-[17px] leading-relaxed text-white/85">{affiliate.blurb}</p>
+          {affiliate.blurb ? (
+            <p className="intro-3 mt-5 max-w-2xl text-[17px] leading-relaxed text-white/85">{affiliate.blurb}</p>
+          ) : null}
         </div>
       </section>
 
@@ -128,7 +170,10 @@ function RegionProfile({
                       {country.status === "active" ? "Active" : "Inactive"} · {country.cities.length} cities
                     </span>
                   </span>
-                  <span className="text-orange transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+                  <span
+                    className="text-orange transition-transform duration-300 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  >
                     →
                   </span>
                 </Link>

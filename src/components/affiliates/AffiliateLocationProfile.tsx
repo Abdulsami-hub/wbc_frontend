@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import type { AffiliateProfile } from "@/content/affiliates";
 import {
-  getAffiliateDetails,
   placeTitle,
   type AffiliateContact,
+  type AffiliateDetails,
   type AffiliateMedia,
   type AffiliateOfficer,
 } from "@/content/affiliate-details";
@@ -30,18 +30,20 @@ const NAV = [
 
 export function AffiliateLocationProfile({
   affiliate,
+  details,
+  isLoading = false,
 }: {
   affiliate: Extract<AffiliateProfile, { kind: "country" | "city" }>;
+  details: AffiliateDetails;
+  isLoading?: boolean;
 }) {
   const isCity = affiliate.kind === "city";
-  const details = getAffiliateDetails(affiliate);
   const title = placeTitle(affiliate);
   const isActive = affiliate.status === "active";
-  const baseNumbers = { established: "0", members: "0", programmes: "0" };
   const stats = [
-    { label: "Established", value: baseNumbers.established },
-    { label: "Members", value: baseNumbers.members },
-    { label: "Programmes / year", value: baseNumbers.programmes },
+    { label: "Established", value: details.established?.trim() || "—" },
+    { label: "Members", value: details.membersCount?.trim() || "—" },
+    { label: "Programmes / year", value: details.programmesPerYear?.trim() || "—" },
     { label: "Status", value: isActive ? "Active" : "Inactive" },
   ];
   const [activeNav, setActiveNav] = useState("#about");
@@ -365,9 +367,27 @@ export function AffiliateLocationProfile({
         </div>
       </section>
 
-      {hasGallery ? <MediaSection media={details.media} /> : <GallerySkeletonSection />}
-      {hasOfficers ? <OfficersSection officers={details.officers} /> : <OfficersSkeletonSection />}
-      {hasContact ? <ContactSection contact={details.contact} place={title} /> : <ContactSkeletonSection />}
+      {isLoading ? (
+        <GallerySkeletonSection />
+      ) : hasGallery ? (
+        <MediaSection media={details.media} />
+      ) : (
+        <GalleryEmptySection />
+      )}
+      {isLoading ? (
+        <OfficersSkeletonSection />
+      ) : hasOfficers ? (
+        <OfficersSection officers={details.officers} />
+      ) : (
+        <OfficersEmptySection />
+      )}
+      {isLoading ? (
+        <ContactSkeletonSection />
+      ) : hasContact ? (
+        <ContactSection contact={details.contact} place={title} />
+      ) : (
+        <ContactEmptySection place={title} />
+      )}
     </>
   );
 }
@@ -705,6 +725,22 @@ function initials(name: string) {
     .join("");
 }
 
+function GalleryEmptySection() {
+  return (
+    <section id="gallery" className="affiliate-section-anchor border-b border-line py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="max-w-2xl">
+          <p className="eyebrow">Gallery</p>
+          <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Flyer, pictures & video</h2>
+          <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+            Featured media in a collage layout. Content will appear here once published.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function GallerySkeletonSection() {
   return (
     <section id="gallery" className="affiliate-section-anchor border-b border-line py-16 lg:py-24">
@@ -740,6 +776,22 @@ function GallerySkeletonSection() {
   );
 }
 
+function OfficersEmptySection() {
+  return (
+    <section id="officers" className="affiliate-section-anchor border-b border-line bg-surface py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="max-w-2xl">
+          <p className="eyebrow">Leadership</p>
+          <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Officers</h2>
+          <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+            A compact directory that scales with the team. Officer profiles will appear here once added.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function OfficersSkeletonSection() {
   return (
     <section id="officers" className="affiliate-section-anchor border-b border-line bg-surface py-16 lg:py-24">
@@ -767,6 +819,22 @@ function OfficersSkeletonSection() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+function ContactEmptySection({ place }: { place: string }) {
+  return (
+    <section id="contact" className="affiliate-section-anchor py-16 lg:py-24">
+      <div className="container-wbc">
+        <div data-reveal className="max-w-2xl">
+          <p className="eyebrow">Contact</p>
+          <h2 className="mt-3 text-[30px] font-bold text-foreground sm:text-[38px]">Visit & get in touch</h2>
+          <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+            Contact details for {place} will appear here once published.
+          </p>
+        </div>
       </div>
     </section>
   );

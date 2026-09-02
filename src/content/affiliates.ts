@@ -10,6 +10,8 @@ export type AffiliateCountry = {
   name: string;
   status: AffiliateStatus;
   slug: string;
+  iso2?: string;
+  flagUrl?: string;
   cities: AffiliateCity[];
 };
 
@@ -19,299 +21,6 @@ export type AffiliateRegion = {
   blurb: string;
   countries: AffiliateCountry[];
 };
-
-export function slugifyName(name: string): string {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/['’]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-type RawCity = { name: string; status?: AffiliateStatus };
-type RawCountry = { name: string; status?: AffiliateStatus; cities: (string | RawCity)[] };
-type RawRegion = { name: string; slug: string; blurb: string; countries: RawCountry[] };
-
-/** Temporary: only France (country) and Paris (city) are active. */
-function resolveCountryStatus(name: string): AffiliateStatus {
-  return name === "France" ? "active" : "inactive";
-}
-
-function resolveCityStatus(countryName: string, cityName: string): AffiliateStatus {
-  return countryName === "France" && cityName === "Paris" ? "active" : "inactive";
-}
-
-function buildCity(countryName: string, countrySlug: string, city: string | RawCity): AffiliateCity {
-  const name = typeof city === "string" ? city : city.name;
-  return {
-    name,
-    status: resolveCityStatus(countryName, name),
-    slug: `${countrySlug}-${slugifyName(name)}`,
-  };
-}
-
-function buildCountry(raw: RawCountry): AffiliateCountry {
-  const slug = slugifyName(raw.name);
-  return {
-    name: raw.name,
-    status: resolveCountryStatus(raw.name),
-    slug,
-    cities: raw.cities.map((c) => buildCity(raw.name, slug, c)),
-  };
-}
-
-const RAW_REGIONS: RawRegion[] = [
-  {
-    name: "Africa & the Middle East",
-    slug: "africa-middle-east",
-    blurb:
-      "From North Africa to the Gulf and Sub-Saharan hubs, WBC connects institutions and businesses across dynamic growth corridors.",
-    countries: [
-      { name: "Egypt", status: "active", cities: [{ name: "Cairo", status: "active" }, { name: "Alexandria", status: "inactive" }] },
-      {
-        name: "United Arab Emirates",
-        status: "active",
-        cities: [
-          { name: "Dubai", status: "active" },
-          { name: "Abu Dhabi", status: "active" },
-          { name: "Sharjah", status: "inactive" },
-        ],
-      },
-      { name: "Morocco", status: "active", cities: [{ name: "Casablanca", status: "active" }, { name: "Rabat", status: "inactive" }] },
-      { name: "Algeria", status: "inactive", cities: ["Algiers"] },
-      { name: "Tunisia", status: "inactive", cities: ["Tunis"] },
-      { name: "Kenya", status: "active", cities: [{ name: "Nairobi", status: "active" }] },
-      { name: "Nigeria", status: "active", cities: [{ name: "Lagos", status: "active" }, { name: "Abuja", status: "inactive" }] },
-      {
-        name: "South Africa",
-        status: "active",
-        cities: [
-          { name: "Johannesburg", status: "active" },
-          { name: "Cape Town", status: "inactive" },
-        ],
-      },
-      { name: "Ghana", status: "inactive", cities: ["Accra"] },
-      { name: "Ethiopia", status: "inactive", cities: ["Addis Ababa"] },
-      { name: "Senegal", status: "inactive", cities: ["Dakar"] },
-      { name: "Cote d'Ivoire", status: "inactive", cities: ["Abidjan"] },
-      {
-        name: "Saudi Arabia",
-        status: "active",
-        cities: [
-          { name: "Riyadh", status: "active" },
-          { name: "Jeddah", status: "inactive" },
-        ],
-      },
-      { name: "Qatar", status: "active", cities: [{ name: "Doha", status: "active" }] },
-      { name: "Kuwait", status: "inactive", cities: ["Kuwait City"] },
-      { name: "Bahrain", status: "inactive", cities: ["Manama"] },
-      { name: "Oman", status: "inactive", cities: ["Muscat"] },
-      { name: "Jordan", status: "inactive", cities: ["Amman"] },
-      { name: "Lebanon", status: "inactive", cities: ["Beirut"] },
-    ],
-  },
-  {
-    name: "Europe",
-    slug: "europe",
-    blurb:
-      "Anchored by Paris headquarters and a dense institutional landscape, Europe remains a cornerstone of WBC cooperation and programme delivery.",
-    countries: [
-      {
-        name: "France",
-        status: "active",
-        cities: [
-          { name: "Paris", status: "active" },
-          { name: "Lyon", status: "inactive" },
-          { name: "Marseille", status: "inactive" },
-        ],
-      },
-      {
-        name: "Germany",
-        status: "active",
-        cities: [
-          { name: "Berlin", status: "active" },
-          { name: "Frankfurt", status: "active" },
-          { name: "Munich", status: "inactive" },
-        ],
-      },
-      {
-        name: "Spain",
-        status: "active",
-        cities: [
-          { name: "Madrid", status: "active" },
-          { name: "Barcelona", status: "inactive" },
-        ],
-      },
-      {
-        name: "Italy",
-        status: "active",
-        cities: [
-          { name: "Milan", status: "active" },
-          { name: "Rome", status: "inactive" },
-        ],
-      },
-      {
-        name: "Netherlands",
-        status: "active",
-        cities: [
-          { name: "Amsterdam", status: "active" },
-          { name: "Rotterdam", status: "inactive" },
-        ],
-      },
-      { name: "Belgium", status: "active", cities: [{ name: "Brussels", status: "active" }] },
-      {
-        name: "Switzerland",
-        status: "active",
-        cities: [
-          { name: "Geneva", status: "active" },
-          { name: "Zurich", status: "inactive" },
-        ],
-      },
-      { name: "Austria", status: "inactive", cities: ["Vienna"] },
-      { name: "Sweden", status: "inactive", cities: ["Stockholm"] },
-      { name: "Denmark", status: "inactive", cities: ["Copenhagen"] },
-      { name: "Norway", status: "inactive", cities: ["Oslo"] },
-      { name: "Ireland", status: "inactive", cities: ["Dublin"] },
-      { name: "Portugal", status: "inactive", cities: ["Lisbon"] },
-      { name: "Poland", status: "inactive", cities: ["Warsaw"] },
-      { name: "Greece", status: "inactive", cities: ["Athens"] },
-    ],
-  },
-  {
-    name: "Asia & the Pacific",
-    slug: "asia-pacific",
-    blurb:
-      "Trade gateways, innovation centres, and expanding markets across Asia and the Pacific shape a fast-moving affiliate footprint.",
-    countries: [
-      { name: "Singapore", status: "active", cities: [{ name: "Singapore", status: "active" }] },
-      {
-        name: "Japan",
-        status: "active",
-        cities: [
-          { name: "Tokyo", status: "active" },
-          { name: "Osaka", status: "inactive" },
-        ],
-      },
-      { name: "South Korea", status: "active", cities: [{ name: "Seoul", status: "active" }] },
-      {
-        name: "Australia",
-        status: "active",
-        cities: [
-          { name: "Sydney", status: "active" },
-          { name: "Melbourne", status: "inactive" },
-        ],
-      },
-      { name: "New Zealand", status: "inactive", cities: ["Auckland"] },
-      {
-        name: "India",
-        status: "active",
-        cities: [
-          { name: "Mumbai", status: "active" },
-          { name: "New Delhi", status: "active" },
-          { name: "Bengaluru", status: "inactive" },
-        ],
-      },
-      {
-        name: "Pakistan",
-        status: "inactive",
-        cities: ["Karachi", "Lahore"],
-      },
-      { name: "Afghanistan", status: "inactive", cities: ["Kabul"] },
-      { name: "Tajikistan", status: "inactive", cities: ["Dushanbe"] },
-      { name: "Uzbekistan", status: "inactive", cities: ["Tashkent"] },
-      { name: "Kyrgyzstan", status: "inactive", cities: ["Bishkek"] },
-      {
-        name: "Kazakhstan",
-        status: "inactive",
-        cities: ["Almaty", "Astana"],
-      },
-      { name: "Bangladesh", status: "inactive", cities: ["Dhaka"] },
-      { name: "Sri Lanka", status: "inactive", cities: ["Colombo"] },
-      { name: "Nepal", status: "inactive", cities: ["Kathmandu"] },
-      { name: "Mongolia", status: "inactive", cities: ["Ulaanbaatar"] },
-      { name: "Indonesia", status: "inactive", cities: ["Jakarta"] },
-      { name: "Malaysia", status: "inactive", cities: ["Kuala Lumpur"] },
-      { name: "Thailand", status: "inactive", cities: ["Bangkok"] },
-    ],
-  },
-  {
-    name: "North America",
-    slug: "north-america",
-    blurb:
-      "North American affiliates link corporate, institutional, and city ecosystems into WBC’s global cooperation framework.",
-    countries: [
-      {
-        name: "United States",
-        status: "active",
-        cities: [
-          { name: "New York", status: "active" },
-          { name: "Washington, D.C.", status: "active" },
-          { name: "Los Angeles", status: "inactive" },
-        ],
-      },
-      {
-        name: "Canada",
-        status: "active",
-        cities: [
-          { name: "Toronto", status: "active" },
-          { name: "Montreal", status: "inactive" },
-        ],
-      },
-      { name: "Mexico", status: "active", cities: [{ name: "Mexico City", status: "active" }] },
-      { name: "Costa Rica", status: "inactive", cities: ["San José"] },
-      { name: "Panama", status: "inactive", cities: ["Panama City"] },
-      { name: "Dominican Republic", status: "inactive", cities: ["Santo Domingo"] },
-      { name: "Jamaica", status: "inactive", cities: ["Kingston"] },
-      { name: "Trinidad and Tobago", status: "inactive", cities: ["Port of Spain"] },
-      { name: "Guatemala", status: "inactive", cities: ["Guatemala City"] },
-      { name: "El Salvador", status: "inactive", cities: ["San Salvador"] },
-    ],
-  },
-  {
-    name: "Latin America",
-    slug: "latin-america",
-    blurb:
-      "Across Latin America, WBC affiliates support regional dialogue, trade pathways, and institutional collaboration.",
-    countries: [
-      { name: "Argentina", status: "active", cities: [{ name: "Buenos Aires", status: "active" }] },
-      { name: "Bolivia", status: "inactive", cities: ["La Paz"] },
-      {
-        name: "Brazil",
-        status: "active",
-        cities: [
-          { name: "São Paulo", status: "active" },
-          { name: "Rio de Janeiro", status: "active" },
-          { name: "Brasília", status: "inactive" },
-          { name: "Belo Horizonte", status: "inactive" },
-          { name: "Porto Alegre", status: "inactive" },
-        ],
-      },
-      { name: "Chile", status: "active", cities: [{ name: "Santiago", status: "active" }] },
-      {
-        name: "Colombia",
-        status: "active",
-        cities: [
-          { name: "Bogotá", status: "active" },
-          { name: "Medellín", status: "inactive" },
-        ],
-      },
-      { name: "Ecuador", status: "inactive", cities: ["Quito"] },
-      { name: "Paraguay", status: "inactive", cities: ["Asunción"] },
-      { name: "Peru", status: "inactive", cities: ["Lima"] },
-      { name: "Uruguay", status: "inactive", cities: ["Montevideo"] },
-      { name: "Venezuela", status: "inactive", cities: ["Caracas"] },
-    ],
-  },
-];
-
-export const AFFILIATE_REGIONS: AffiliateRegion[] = RAW_REGIONS.map((r) => ({
-  name: r.name,
-  slug: r.slug,
-  blurb: r.blurb,
-  countries: r.countries.map(buildCountry),
-}));
 
 export type AffiliateProfile =
   | {
@@ -329,6 +38,8 @@ export type AffiliateProfile =
       region: string;
       regionSlug: string;
       cities: AffiliateCity[];
+      iso2?: string;
+      flagUrl?: string;
     }
   | {
       kind: "city";
@@ -341,8 +52,14 @@ export type AffiliateProfile =
       countrySlug: string;
     };
 
-export function getRegion(slug: string): AffiliateRegion | undefined {
-  return AFFILIATE_REGIONS.find((r) => r.slug === slug);
+export function slugifyName(name: string): string {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export function regionStats(region: AffiliateRegion) {
@@ -356,8 +73,12 @@ export function regionStats(region: AffiliateRegion) {
   return { countries, activeCountries, cities, activeCities };
 }
 
-export function getAffiliate(slug: string): AffiliateProfile | undefined {
-  const region = getRegion(slug);
+export function getRegion(regions: AffiliateRegion[], slug: string): AffiliateRegion | undefined {
+  return regions.find((r) => r.slug === slug);
+}
+
+export function getAffiliate(regions: AffiliateRegion[], slug: string): AffiliateProfile | undefined {
+  const region = getRegion(regions, slug);
   if (region) {
     return {
       kind: "region",
@@ -368,7 +89,7 @@ export function getAffiliate(slug: string): AffiliateProfile | undefined {
     };
   }
 
-  for (const r of AFFILIATE_REGIONS) {
+  for (const r of regions) {
     for (const country of r.countries) {
       if (country.slug === slug) {
         return {
@@ -379,6 +100,8 @@ export function getAffiliate(slug: string): AffiliateProfile | undefined {
           region: r.name,
           regionSlug: r.slug,
           cities: country.cities,
+          iso2: country.iso2,
+          flagUrl: country.flagUrl,
         };
       }
       for (const city of country.cities) {
@@ -399,4 +122,3 @@ export function getAffiliate(slug: string): AffiliateProfile | undefined {
   }
   return undefined;
 }
-
