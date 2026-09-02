@@ -1,47 +1,42 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/team-hero.jpg";
-import { TEAM, type TeamMember } from "@/content/team";
+import { CmsLink } from "@/components/CmsLink";
 import { SimpleModal } from "@/components/SimpleModal";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { TeamMember } from "@/content/wbc-team";
+import { wbcTeamQueryOptions } from "@/lib/queries/wbc-team";
 
 export const Route = createFileRoute("/wbc-team/")({
   ssr: false,
-  head: () => ({
-    meta: [
-      { title: "WBC Team — Leadership & Secretariat | World Business Council" },
-      {
-        name: "description",
-        content:
-          "Meet the WBC team: our Board of Directors and Secretariat combine institutional experience with practical support for trusted global business cooperation.",
-      },
-      { property: "og:title", content: "The team behind global business cooperation — WBC" },
-      {
-        property: "og:description",
-        content: "Board of Directors and Secretariat leading the World Business Council's international cooperation work.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(wbcTeamQueryOptions),
+  head: ({ loaderData }) => {
+    const heroImage = loaderData?.hero.image;
+    return {
+      meta: [
+        { title: "WBC Team — Leadership & Secretariat | World Business Council" },
+        {
+          name: "description",
+          content:
+            "Meet the WBC team: our Board of Directors and Secretariat combine institutional experience with practical support for trusted global business cooperation.",
+        },
+        { property: "og:title", content: "The team behind global business cooperation — WBC" },
+        {
+          property: "og:description",
+          content:
+            "Board of Directors and Secretariat leading the World Business Council's international cooperation work.",
+        },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: heroImage
+        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
+        : [],
+    };
+  },
   component: WbcTeam,
 });
-
-const TAGS = ["Leadership", "Member Support", "Global Coordination"] as const;
-
-const PRACTICE = [
-  {
-    title: "Coordinated Planning",
-    body: "We define priorities jointly, map responsibilities early, and keep every initiative connected to member and partner objectives.",
-  },
-  {
-    title: "Responsive Execution",
-    body: "Cross-team check-ins and practical escalation paths allow us to respond quickly while preserving consistency and quality.",
-  },
-  {
-    title: "Shared Accountability",
-    body: "We review outcomes together, apply lessons quickly, and keep long-term cooperation at the center of every engagement.",
-  },
-] as const;
 
 function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMember) => void }) {
   return (
@@ -87,10 +82,10 @@ function TeamProfileModal({
       onOpenChange={onOpenChange}
       title={member.name}
       description={member.role}
-      className="p-0"
+      className="flex max-h-[min(90vh,760px)] flex-col overflow-hidden p-0"
     >
-      <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative min-h-[280px] bg-navy-deep lg:min-h-full">
+      <div className="grid shrink-0 lg:grid-cols-[minmax(240px,0.85fr)_1.15fr]">
+        <div className="relative aspect-[4/5] max-h-[280px] bg-navy-deep sm:max-h-[320px] lg:aspect-auto lg:max-h-none lg:min-h-[320px]">
           <img
             src={member.image}
             alt={`${member.name}, ${member.role} at the World Business Council`}
@@ -104,19 +99,25 @@ function TeamProfileModal({
           />
         </div>
 
-        <div className="flex flex-col p-6 sm:p-8 lg:p-10">
-          <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">{member.group}</p>
-          <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[34px]">{member.name}</h2>
-          <p className="mt-2 text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
+        <div className="flex flex-col p-6 sm:p-8 lg:py-10 lg:pe-10">
+          <p className="text-start text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">
+            {member.groupLabel}
+          </p>
+          <h2 className="mt-3 text-start text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">
+            {member.name}
+          </h2>
+          <p className="mt-2 text-start text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
           <span className="accent-rule mt-5" />
-          <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
 
           {(member.email || member.phone) && (
-            <div className="mt-8 space-y-3 border-t border-line pt-6 text-[15px]">
+            <div className="mt-6 space-y-3 border-t border-line pt-6 text-[15px]">
               {member.email && (
                 <p className="text-muted-fg">
                   Email:{" "}
-                  <a href={`mailto:${member.email}`} className="font-semibold text-foreground underline decoration-line underline-offset-4">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="font-semibold text-foreground underline decoration-line underline-offset-4"
+                  >
                     {member.email}
                   </a>
                 </p>
@@ -130,7 +131,7 @@ function TeamProfileModal({
           )}
 
           {(member.linkedinUrl || member.xUrl) && (
-            <div className="mt-6 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
+            <div className="mt-4 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
               {member.linkedinUrl && (
                 <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-foreground">
                   LinkedIn
@@ -144,21 +145,66 @@ function TeamProfileModal({
             </div>
           )}
 
-          <div className="mt-auto pt-8">
+          <div className="mt-6">
             <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
               Contact WBC Team
             </Link>
           </div>
         </div>
       </div>
+
+      {member.bio.trim() && (
+        <div className="min-h-0 shrink border-t border-line bg-surface/30">
+          <div className="max-h-[min(28vh,200px)] overflow-y-auto px-6 py-5 sm:px-8 [-webkit-overflow-scrolling:touch]">
+            <p className="text-start text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
+          </div>
+        </div>
+      )}
     </SimpleModal>
   );
 }
 
+function WbcTeamHeroSkeleton() {
+  return (
+    <section className="relative flex flex-col">
+      <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+      <div className="bg-orange lg:bg-transparent">
+        <div className="container-wbc py-16 lg:py-24">
+          <Skeleton className="h-6 w-32 bg-white/20" />
+          <Skeleton className="mt-6 h-14 max-w-lg bg-white/20" />
+          <Skeleton className="mt-6 h-24 max-w-lg bg-white/20" />
+        </div>
+      </div>
+      <div className="hero-media-right bg-navy">
+        <Skeleton className="absolute inset-0 size-full bg-white/10" />
+      </div>
+    </section>
+  );
+}
+
 function WbcTeam() {
+  const { data, isPending } = useQuery(wbcTeamQueryOptions);
   const [selected, setSelected] = useState<TeamMember | null>(null);
-  // const board = TEAM.filter((m) => m.group === "Board of Directors");
-  // const secretariat = TEAM.filter((m) => m.group === "Secretariat");
+
+  if (isPending) {
+    return (
+      <>
+        <WbcTeamHeroSkeleton />
+        <section className="py-14 lg:py-20">
+          <div className="container-wbc">
+            <Skeleton className="h-96 rounded-lg" />
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  if (!data) return null;
+
+  const { hero, people, members, collaborations } = data;
+  const heroImage = hero.image ?? heroImg;
+  const board = members.filter((member) => member.group === "board");
+  const secretariat = members.filter((member) => member.group === "secretariat");
 
   return (
     <>
@@ -167,36 +213,41 @@ function WbcTeam() {
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
-            <p className="intro-1 hero-kicker">WBC Team</p>
-            <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
-              The team behind global business cooperation.
-            </h1>
-            <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-              WBC staff connects members, institutions, and partners to practical international collaboration.
-            </p>
-            <ul className="intro-4 mt-10 flex flex-wrap gap-3">
-              {TAGS.map((t) => (
-                <li
-                  key={t}
-                  className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
+              <p className="intro-1 hero-kicker">{hero.kicker}</p>
+              <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
+                {hero.title}
+              </h1>
+              <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
+                {hero.description}
+              </p>
+              {hero.tags.length > 0 && (
+                <ul className="intro-4 mt-10 flex flex-wrap gap-3">
+                  {hero.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {hero.cta && (
+                <CmsLink
+                  href={hero.cta.url}
+                  fallback="/contact"
+                  className="intro-4 mt-8 inline-block border border-white px-7 py-4 text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-foreground"
                 >
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <Link
-              to="/contact"
-              className="intro-4 mt-8 inline-block border border-white px-7 py-4 text-[16px] font-bold text-white transition-colors hover:bg-white hover:text-foreground"
-            >
-              Contact WBC Team
-            </Link>
+                  {hero.cta.label}
+                </CmsLink>
+              )}
             </div>
           </div>
         </div>
         <div className="hero-media-right bg-navy">
           <img
-            src={heroImg}
-            alt="WBC team members collaborating around a boardroom table"
+            src={heroImage}
+            alt={hero.imageAlt}
             width={1200}
             height={1000}
             fetchPriority="high"
@@ -209,53 +260,50 @@ function WbcTeam() {
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-foreground uppercase">People of WBC</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-foreground uppercase">{people.kicker}</p>
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
-              Leadership and staff guiding international cooperation
+              {people.title}
             </h2>
-            <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-              Meet the team behind the World Business Council. Our Board of Directors and Secretariat combine
-              institutional experience with practical support to help organizations build trusted global connections.
-            </p>
+            <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">{people.description}</p>
           </div>
 
           <hr className="mt-12 border-line" />
 
-          {/* Board of Directors (BoD) — hidden for now
           {board.length > 0 && (
             <>
-              <div data-reveal className="mt-12 flex flex-wrap items-baseline justify-between gap-4">
-                <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Board of Directors (BoD)</h3>
-                <p className="text-[15px] text-muted-fg">
-                  Strategic oversight for governance, finance, policy direction, and institutional accountability.
+              <div data-reveal className="mt-12 max-w-3xl border-s-4 border-orange ps-6">
+                <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
+                  {people.boardTitle}
+                </h3>
+                <p className="mt-3 text-start text-[15px] leading-relaxed text-muted-fg">
+                  {people.boardDescription}
                 </p>
               </div>
-              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label="Board of Directors">
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label={people.boardTitle}>
                 {board.map((member) => (
                   <PersonCard key={member.slug} member={member} onOpen={setSelected} />
                 ))}
               </ul>
             </>
           )}
-          */}
 
-          {/* Secretariat — hidden for now
           {secretariat.length > 0 && (
             <>
-              <div data-reveal className="mt-16 flex flex-wrap items-baseline justify-between gap-4">
-                <h3 className="text-[22px] font-bold text-foreground sm:text-[26px]">Secretariat</h3>
-                <p className="text-[15px] text-muted-fg">
-                  Daily management, operations, communications, and program delivery for members and partners.
+              <div data-reveal className="mt-16 max-w-3xl border-s-4 border-teal ps-6">
+                <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
+                  {people.secretariatTitle}
+                </h3>
+                <p className="mt-3 text-start text-[15px] leading-relaxed text-muted-fg">
+                  {people.secretariatDescription}
                 </p>
               </div>
-              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label="Secretariat">
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label={people.secretariatTitle}>
                 {secretariat.map((member) => (
                   <PersonCard key={member.slug} member={member} onOpen={setSelected} />
                 ))}
               </ul>
             </>
           )}
-          */}
         </div>
       </section>
 
@@ -266,7 +314,9 @@ function WbcTeam() {
         />
         <div className="container-wbc relative">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Collaboration in Practice</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
+              Collaboration in Practice
+            </p>
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               How the WBC team works as one coordinated network
             </h2>
@@ -277,13 +327,20 @@ function WbcTeam() {
           </div>
 
           <ul data-reveal data-reveal-group className="mt-12 grid gap-6 lg:grid-cols-3">
-            {PRACTICE.map((p, i) => (
-              <li key={p.title} className="rounded-card border border-line bg-background p-6 sm:p-8 transition-shadow duration-300 hover:shadow-card">
-                <p className="text-[15px] font-semibold tracking-[0.16em] text-muted-fg">
+            {collaborations.map((item, i) => (
+              <li
+                key={item.id}
+                className="group relative overflow-hidden rounded-card border border-line bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orange/50 hover:shadow-card sm:p-8"
+              >
+                <span
+                  className="pointer-events-none absolute -end-8 -top-8 size-24 rounded-full bg-orange/10 transition-transform duration-500 group-hover:scale-150"
+                  aria-hidden="true"
+                />
+                <p className="relative text-start text-[15px] font-semibold tracking-[0.16em] text-muted-fg">
                   {String(i + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-5 text-[20px] font-bold text-foreground">{p.title}</h3>
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">{p.body}</p>
+                <h3 className="relative mt-5 text-start text-[20px] font-bold text-foreground">{item.title}</h3>
+                <p className="relative mt-4 text-start text-[16px] leading-relaxed text-muted-fg">{item.body}</p>
               </li>
             ))}
           </ul>
