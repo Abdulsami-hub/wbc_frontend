@@ -1,30 +1,30 @@
-import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import eventsImg from "@/assets/events.jpg";
-import forumImg from "@/assets/news-forum.jpg";
-
-const OPPORTUNITIES = [
-  {
-    title: "Video Advertising",
-    body: "Promote your business, products, services, events or campaigns through a short promotional video.",
-    kicker: "Video",
-    image: eventsImg,
-    alt: "Business audience at a WBC programme",
-  },
-  {
-    title: "Poster or Banner Advertising",
-    body: "Display a professional visual advertisement with a short title, description and website link.",
-    kicker: "Visual",
-    image: forumImg,
-    alt: "International business forum stage and audience",
-  },
-] as const;
+import { CmsLink } from "@/components/CmsLink";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  footerCarouselQueryOptions,
+  type FooterCarouselItem,
+} from "@/lib/queries/advertising-footer";
 
 const AUTO_MS = 5000;
 
-export function AdvertisingOpportunities() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
+function FooterCarouselSkeleton() {
+  return (
+    <section className="relative isolate border-t border-line bg-surface px-5 py-10 sm:px-8 sm:py-12 lg:py-16">
+      <div className="relative mx-auto w-full max-w-[1280px] overflow-hidden rounded-card border border-line bg-background shadow-card">
+        <div className="grid lg:grid-cols-2">
+          <Skeleton className="aspect-video rounded-none" />
+          <Skeleton className="hidden min-h-[280px] rounded-none lg:block" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: items.length > 1, align: "start" });
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const pausedRef = useRef(false);
@@ -51,6 +51,12 @@ export function AdvertisingOpportunities() {
 
   useEffect(() => {
     if (!emblaApi) return;
+    emblaApi.reInit();
+    setIndex(0);
+  }, [emblaApi, items]);
+
+  useEffect(() => {
+    if (!emblaApi || items.length <= 1) return;
 
     const id = window.setInterval(() => {
       if (pausedRef.current) return;
@@ -58,7 +64,7 @@ export function AdvertisingOpportunities() {
     }, AUTO_MS);
 
     return () => window.clearInterval(id);
-  }, [emblaApi]);
+  }, [emblaApi, items.length]);
 
   const pause = () => setPaused(true);
   const resume = () => setPaused(false);
@@ -81,9 +87,9 @@ export function AdvertisingOpportunities() {
       >
         <div className="grid lg:grid-cols-2">
           <div className="relative aspect-video overflow-hidden bg-navy-deep">
-            {OPPORTUNITIES.map((o, i) => (
+            {items.map((o, i) => (
               <div
-                key={o.title}
+                key={o.id}
                 className={`absolute inset-0 transition-all duration-700 ease-out ${
                   i === index
                     ? "z-[1] scale-100 opacity-100"
@@ -102,105 +108,127 @@ export function AdvertisingOpportunities() {
                 />
               </div>
             ))}
-            <div
-              className="absolute inset-0 z-[2] bg-gradient-to-t from-navy-deep via-navy-deep/55 to-navy/25 lg:bg-gradient-to-r lg:from-navy-deep/90 lg:via-navy-deep/40 lg:to-transparent rtl:lg:bg-gradient-to-l"
-              aria-hidden="true"
-            />
-            <div className="relative z-[3] flex h-full flex-col justify-end p-5 sm:p-7 lg:p-8">
-              <p className="text-[11px] font-semibold tracking-[0.2em] text-white/75 uppercase sm:text-[12px]">
-                Grow with WBC
-              </p>
-              <h2 className="mt-2 max-w-md text-[24px] font-bold leading-tight text-white sm:text-[30px] lg:text-[32px]">
-                Advertising Opportunities
-              </h2>
-              <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/85 sm:text-[14px] lg:mt-3">
-                Advertise in the WBC website footer through video or poster/banner placements.
-              </p>
-            </div>
           </div>
 
           <div className="relative flex flex-col justify-center border-line px-6 py-7 sm:px-10 lg:aspect-video lg:overflow-hidden lg:border-s lg:px-10 lg:py-6 xl:px-12">
             <div className="mb-4 flex items-end justify-between gap-4 lg:mb-5">
               <div>
-                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">Advertising formats</p>
+                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">
+                  Advertising formats
+                </p>
                 <p className="mt-1.5 text-[14px] text-muted-fg sm:text-[15px]">
                   <span className="font-bold text-foreground tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="mx-2 text-line">/</span>
-                  <span className="tabular-nums">{String(OPPORTUNITIES.length).padStart(2, "0")}</span>
+                  <span className="tabular-nums">{String(items.length).padStart(2, "0")}</span>
                 </p>
               </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => emblaApi?.scrollPrev()}
-                  className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
-                  aria-label="Previous opportunity"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path d="M15 6l-6 6 6 6" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => emblaApi?.scrollNext()}
-                  className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
-                  aria-label="Next opportunity"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path d="M9 6l6 6-6 6" />
-                  </svg>
-                </button>
-              </div>
+              {items.length > 1 ? (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => emblaApi?.scrollPrev()}
+                    className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
+                    aria-label="Previous opportunity"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      aria-hidden="true"
+                    >
+                      <path d="M15 6l-6 6 6 6" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => emblaApi?.scrollNext()}
+                    className="flex size-10 items-center justify-center border border-line bg-background text-foreground transition-colors hover:border-navy hover:bg-navy hover:text-white"
+                    aria-label="Next opportunity"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 6l6 6-6 6" />
+                    </svg>
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             <div ref={emblaRef} className="overflow-hidden">
               <div className="flex">
-                {OPPORTUNITIES.map((o, i) => (
+                {items.map((o, i) => (
                   <div
-                    key={o.title}
+                    key={o.id}
                     className="min-w-0 shrink-0 grow-0 basis-full"
                     role="group"
                     aria-roledescription="slide"
-                    aria-label={`${i + 1} of ${OPPORTUNITIES.length}`}
+                    aria-label={`${i + 1} of ${items.length}`}
                   >
                     <article className="pe-2">
                       <span className="font-display text-[40px] leading-none font-bold text-blue/25 tabular-nums sm:text-[48px]">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <p className="mt-2 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">{o.kicker}</p>
-                      <h3 className="mt-1.5 text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]">{o.title}</h3>
-                      <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">{o.body}</p>
+                      <p className="mt-2 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">
+                        {o.kicker}
+                      </p>
+                      <h3 className="mt-1.5 text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]">
+                        {o.title}
+                      </h3>
+                      <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">
+                        {o.body}
+                      </p>
                     </article>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="mt-5 flex items-center gap-3 lg:mt-6">
-              {OPPORTUNITIES.map((o, i) => (
-                <button
-                  key={o.title}
-                  type="button"
-                  onClick={() => emblaApi?.scrollTo(i)}
-                  className={`h-1 flex-1 transition-colors ${i === index ? "bg-orange" : "bg-line hover:bg-navy/30"}`}
-                  aria-label={`Go to ${o.title}`}
-                />
-              ))}
-            </div>
+            {items.length > 1 ? (
+              <div className="mt-5 flex items-center gap-3 lg:mt-6">
+                {items.map((o, i) => (
+                  <button
+                    key={o.id}
+                    type="button"
+                    onClick={() => emblaApi?.scrollTo(i)}
+                    className={`h-1 flex-1 transition-colors ${i === index ? "bg-orange" : "bg-line hover:bg-navy/30"}`}
+                    aria-label={`Go to ${o.title}`}
+                  />
+                ))}
+              </div>
+            ) : null}
 
             <div className="mt-5 lg:mt-6">
-              <Link
-                to="/advertising"
+              <CmsLink
+                href="/advertising"
                 className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]"
               >
                 Enquire about advertising
-              </Link>
+              </CmsLink>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+export function AdvertisingOpportunities() {
+  const { data: items, isPending, isError } = useQuery(footerCarouselQueryOptions);
+
+  if (isPending) return <FooterCarouselSkeleton />;
+  if (isError || !items?.length) return null;
+
+  return <FooterCarousel items={items} />;
 }

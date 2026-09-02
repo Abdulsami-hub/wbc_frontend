@@ -14,6 +14,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { I18nProvider } from "@/i18n";
+import { footerCarouselQueryOptions } from "@/lib/queries/advertising-footer";
 
 function NotFoundComponent() {
   return (
@@ -117,6 +118,8 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(footerCarouselQueryOptions),
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
