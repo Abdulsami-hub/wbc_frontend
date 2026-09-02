@@ -43,13 +43,8 @@ const PILLARS = [
     to: "/our-members" as const,
   },
   {
-    title: "WBC Sponsors",
-    body: "Companies, media organizations, institutions, and other organizations supporting WBC through financial, media, in-kind, or other forms of sponsorship.",
-    to: "/global-network/strategic-partners" as const,
-  },
-  {
-    title: "WBC Strategic Partners",
-    body: "Organizations and institutions collaborating with WBC through strategic cooperation, joint initiatives, programmes, institutional relations, and international business development.",
+    title: "WBC Partners & Sponsors",
+    body: "Organizations, media, and corporations supporting WBC through sponsorship, partnerships, and international cooperation.",
     to: "/global-network/strategic-partners" as const,
   },
 ] as const;
@@ -108,7 +103,7 @@ function GlobalNetwork() {
           <div data-reveal>
             <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
-              Five connected layers
+              Four connected layers
             </h2>
           </div>
 

@@ -49,7 +49,9 @@ export function LatestNews() {
                 />
               </div>
               <div className="flex flex-1 flex-col p-6 sm:p-7">
-                <p className="card-kicker sm:text-[13px]">{item.category}</p>
+                <p className="card-kicker sm:text-[13px]">
+                  {item.category} · {item.dateLabel}
+                </p>
                 <h3 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h3>
                 <p className="mt-3 text-[16px] leading-relaxed text-muted-fg text-justify">{item.body}</p>
                 <button type="button" onClick={() => setSelected(item)} className="card-link mt-6 self-start text-start">

@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+// import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
 import {
   EVENT_CATEGORIES,
-  EVENTS,
+  // EVENTS,
   type EventRecord,
 } from "@/content/events";
 import { SimpleModal } from "@/components/SimpleModal";
@@ -167,6 +167,8 @@ function EventDetailModal({
 }
 
 function Events() {
+  // Event cards temporarily hidden — restore when listings go live.
+  /*
   const [active, setActive] = useState<string | "all">("all");
   const [selected, setSelected] = useState<EventRecord | null>(null);
 
@@ -195,6 +197,7 @@ function Events() {
       window.history.replaceState(null, "", `${window.location.pathname}#${id}`);
     }
   }
+  */
 
   return (
     <>
@@ -210,6 +213,7 @@ function Events() {
         ctaTo="/contact"
       />
 
+      {/*
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
           <div data-reveal>
@@ -289,6 +293,7 @@ function Events() {
           </ul>
         </div>
       </section>
+      */}
 
       <CTASection
         title="Join the WBC Community"
@@ -297,6 +302,7 @@ function Events() {
         to="/become-a-member"
       />
 
+      {/*
       <EventDetailModal
         event={selected}
         open={!!selected}
@@ -304,6 +310,7 @@ function Events() {
           if (!open) setSelected(null);
         }}
       />
+      */}
     </>
   );
 }
