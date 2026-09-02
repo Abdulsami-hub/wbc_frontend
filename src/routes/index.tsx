@@ -6,6 +6,7 @@ import { WhatIsWbcSection } from "@/components/home/WhatIsWbcSection";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { OurValuesSection } from "@/components/home/OurValuesSection";
 import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
+import { whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 
 export const Route = createFileRoute("/")({
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/")({
     const [heroSlides] = await Promise.all([
       queryClient.ensureQueryData(heroSlidesQueryOptions),
       queryClient.ensureQueryData(whoWeAreQueryOptions),
+      queryClient.ensureQueryData(whatWeDoQueryOptions),
     ]);
     return heroSlides;
   },
