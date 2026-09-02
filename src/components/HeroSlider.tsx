@@ -1,7 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HERO_INTERVAL_MS, HERO_SLIDES, type HeroSlide } from "@/content/hero";
+import { HERO_INTERVAL_MS, type HeroSlide } from "@/content/hero";
 import { useI18n } from "@/i18n";
+import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CmsLink } from "@/components/CmsLink";
 
 function Cta({
   cta,
@@ -10,30 +13,25 @@ function Cta({
   cta: NonNullable<HeroSlide["primary"]>;
   className?: string;
 }) {
-  if (cta.variant === "outline") {
-    return (
-      <Link to={cta.to} className={`btn-outline-light ${className ?? ""}`}>
-        {cta.label}
-      </Link>
-    );
-  }
+  const classes =
+    cta.variant === "outline"
+      ? `btn-outline-light ${className ?? ""}`
+      : `btn-base border border-white/30 bg-white/15 text-white hover:bg-white/25 ${className ?? ""}`;
+
   return (
-    <Link
-      to={cta.to}
-      className={`btn-base border border-white/30 bg-white/15 text-white hover:bg-white/25 ${className ?? ""}`}
-    >
+    <CmsLink href={cta.to} className={classes}>
       {cta.label}
-    </Link>
+    </CmsLink>
   );
 }
 
 function SlideCopy({ slide, active }: { slide: HeroSlide; active: boolean }) {
   return (
     <div className="max-w-[560px]">
-      <p className={`${active ? "intro-1" : ""} hero-kicker`}>
-        {slide.eyebrow}
-      </p>
-      <h1 className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}>
+      <p className={`${active ? "intro-1" : ""} hero-kicker`}>{slide.eyebrow}</p>
+      <h1
+        className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}
+      >
         {slide.title.map((t, k) => (
           <span key={k} className="block">
             {t}
@@ -114,7 +112,6 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
     );
   }
 
-  // split | half-color (default): text panel + image
   return (
     <div className="relative flex h-full min-h-0 flex-col lg:block lg:min-h-[560px]">
       <div className={`absolute inset-y-0 start-0 hidden w-1/2 lg:block ${slide.panelClass}`} aria-hidden="true" />
@@ -128,11 +125,22 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
   );
 }
 
-export function HeroSlider() {
+function HeroSliderSkeleton() {
+  return (
+    <section aria-busy="true" aria-label="Loading highlights" className="relative isolate overflow-hidden">
+      <div className="h-[38rem] sm:h-[42rem] lg:min-h-[560px]">
+        <div className="grid h-full lg:grid-cols-2">
+          <Skeleton className="h-full rounded-none bg-navy/90" />
+          <Skeleton className="hidden h-full rounded-none lg:block" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HeroSliderCarousel({ slides }: { slides: HeroSlide[] }) {
   const { dir } = useI18n();
-  const slides = HERO_SLIDES;
   const n = slides.length;
-  // Track includes a clone of the first slide at the end for seamless L→R wrap.
   const [index, setIndex] = useState(0);
   const [animate, setAnimate] = useState(true);
   const [paused, setPaused] = useState(false);
@@ -152,12 +160,12 @@ export function HeroSlider() {
   }, []);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || n <= 1) return;
     timer.current = setInterval(next, HERO_INTERVAL_MS);
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [paused, next]);
+  }, [paused, next, n]);
 
   useEffect(() => {
     if (index !== n) return;
@@ -168,7 +176,12 @@ export function HeroSlider() {
     return () => window.clearTimeout(id);
   }, [index, n]);
 
-  const trackSlides = [...slides, slides[0]];
+  useEffect(() => {
+    setIndex(0);
+    setAnimate(false);
+  }, [slides]);
+
+  const trackSlides = n > 1 ? [...slides, slides[0]] : slides;
   const visualIndex = index === n ? 0 : index;
 
   return (
@@ -183,10 +196,10 @@ export function HeroSlider() {
     >
       <div dir="ltr" className="h-[38rem] sm:h-[42rem] lg:h-auto lg:min-h-[560px]">
         <div
-          className={`flex h-full items-stretch lg:h-auto ${animate ? "transition-transform duration-700 ease-out" : ""}`}
+          className={`flex h-full items-stretch lg:h-auto ${animate && n > 1 ? "transition-transform duration-700 ease-out" : ""}`}
           style={{
-            transform: `translateX(-${index * (100 / trackSlides.length)}%)`,
-            width: `${trackSlides.length * 100}%`,
+            transform: n > 1 ? `translateX(-${index * (100 / trackSlides.length)}%)` : undefined,
+            width: n > 1 ? `${trackSlides.length * 100}%` : "100%",
           }}
           onTransitionEnd={() => {
             if (index === n) {
@@ -205,9 +218,9 @@ export function HeroSlider() {
                 aria-roledescription="slide"
                 aria-label={`${(i % n) + 1} of ${n}`}
                 aria-hidden={!active}
-                inert={!active}
+                {...(active ? {} : { inert: true as const })}
                 className="flex h-full min-h-0 w-full shrink-0 flex-col lg:h-auto lg:min-h-[560px]"
-                style={{ flex: "0 0 auto", width: `${100 / trackSlides.length}%` }}
+                style={{ flex: "0 0 auto", width: n > 1 ? `${100 / trackSlides.length}%` : "100%" }}
               >
                 <SlideBody slide={s} active={active} />
               </div>
@@ -216,26 +229,37 @@ export function HeroSlider() {
         </div>
       </div>
 
-      <div className="absolute bottom-4 start-0 z-10 w-full lg:bottom-8">
-        <div className="container-wbc">
+      {n > 1 ? (
+        <div className="absolute bottom-4 start-0 z-10 w-full lg:bottom-8">
+          <div className="container-wbc">
             <div className="flex w-full items-center justify-center lg:w-1/2 lg:justify-start">
-            <div className="flex items-center gap-3 rounded-full bg-navy-dark/40 px-3.5 py-2 backdrop-blur-sm">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => go(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === visualIndex}
-                className={`size-2.5 rounded-full border border-white transition-colors ${
-                  i === visualIndex ? "bg-white" : "bg-white/20 hover:bg-white/60"
-                }`}
-              />
-            ))}
+              <div className="flex items-center gap-3 rounded-full bg-navy-dark/40 px-3.5 py-2 backdrop-blur-sm">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => go(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    aria-current={i === visualIndex}
+                    className={`size-2.5 rounded-full border border-white transition-colors ${
+                      i === visualIndex ? "bg-white" : "bg-white/20 hover:bg-white/60"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
+}
+
+export function HeroSlider() {
+  const { data: slides, isPending, isError } = useQuery(heroSlidesQueryOptions);
+
+  if (isPending) return <HeroSliderSkeleton />;
+  if (isError || !slides?.length) return null;
+
+  return <HeroSliderCarousel slides={slides} />;
 }
