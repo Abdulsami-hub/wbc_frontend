@@ -62,28 +62,3 @@ export type MembershipPageContent = {
   planTiers: MembershipPlanTier[];
   planBenefits: MembershipPlanBenefit[];
 };
-
-/** Still used by Become a Member until that page is CMS-wired. */
-export const AUDIENCES = [
-  "Nonprofit organizations",
-  "Corporations",
-  "Entrepreneurs",
-  "Professionals",
-  "Individuals",
-  "Students and academics",
-] as const;
-
-export const APPLY_STEPS = [
-  {
-    title: "Fill the Application Form",
-    body: "Complete the online Application-Form with your membership details.",
-  },
-  {
-    title: "Process the Payment",
-    body: "Submit your annual membership payment to activate your application.",
-  },
-  {
-    title: "Receive Confirmation",
-    body: "You will receive the membership confirmation and certificate within 3 working days.",
-  },
-] as const;
