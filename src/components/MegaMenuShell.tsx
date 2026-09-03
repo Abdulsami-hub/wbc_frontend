@@ -113,9 +113,11 @@ export function MegaMenuGroup({
               <span className="block text-[15px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
                 {it.title}
               </span>
-              <span className="mt-0.5 block text-[13px] leading-snug text-muted-fg transition-colors duration-300 group-hover:text-foreground/70">
-                {it.desc}
-              </span>
+              {it.desc ? (
+                <span className="mt-0.5 block text-[13px] leading-snug text-muted-fg transition-colors duration-300 group-hover:text-foreground/70">
+                  {it.desc}
+                </span>
+              ) : null}
             </Link>
           </li>
         ))}

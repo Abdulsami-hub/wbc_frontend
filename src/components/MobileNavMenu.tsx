@@ -1,12 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { EVENT_CATEGORIES } from "@/content/events";
+import type { EventCategory } from "@/content/events";
 import { useI18n, type TranslationKey } from "@/i18n";
+import { eventsQueryOptions } from "@/lib/queries/events";
 
 type SubmenuItem = { title: string; to: string; hash?: string };
 type SubmenuGroup = { label: string; items: SubmenuItem[] };
 
-export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<string, SubmenuGroup[]> {
-  const mid = Math.ceil(EVENT_CATEGORIES.length / 2);
+export function getMobileSubmenus(
+  t: (key: TranslationKey) => string,
+  eventCategories: EventCategory[] = [],
+): Record<string, SubmenuGroup[]> {
+  const mid = Math.ceil(eventCategories.length / 2);
 
   return {
     "/who-we-are": [
@@ -58,7 +63,7 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
     "/events": [
       {
         label: "Event categories",
-        items: EVENT_CATEGORIES.slice(0, mid).map((it) => ({
+        items: eventCategories.slice(0, mid).map((it) => ({
           title: it.title,
           to: "/events",
           hash: it.id,
@@ -66,13 +71,13 @@ export function getMobileSubmenus(t: (key: TranslationKey) => string): Record<st
       },
       {
         label: "More categories",
-        items: EVENT_CATEGORIES.slice(mid).map((it) => ({
+        items: eventCategories.slice(mid).map((it) => ({
           title: it.title,
           to: "/events",
           hash: it.id,
         })),
       },
-    ],
+    ].filter((group) => group.items.length > 0),
   };
 }
 
@@ -101,7 +106,8 @@ export function MobileNavSubmenuPanel({
   onNavigate: () => void;
 }) {
   const { t } = useI18n();
-  const groups = getMobileSubmenus(t)[route] ?? [];
+  const { data } = useQuery(eventsQueryOptions);
+  const groups = getMobileSubmenus(t, data?.categories ?? [])[route] ?? [];
 
   return (
     <div className="border-t border-line/80 bg-surface/50 px-4 py-3">

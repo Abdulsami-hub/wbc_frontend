@@ -1,13 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
 import eventsImage from "@/assets/events-menu.png";
-import { EVENT_CATEGORIES } from "@/content/events";
+import { eventsQueryOptions } from "@/lib/queries/events";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 
 export function MegaMenuEvents({ onNavigate }: { onNavigate?: () => void }) {
-  const mid = Math.ceil(EVENT_CATEGORIES.length / 2);
+  const { data } = useQuery(eventsQueryOptions);
+  const categories = data?.categories ?? [];
+  const mid = Math.ceil(categories.length / 2);
   const groups = [
-    { label: "Event categories", items: EVENT_CATEGORIES.slice(0, mid) },
-    { label: "More categories", items: EVENT_CATEGORIES.slice(mid) },
-  ];
+    { label: "Event categories", items: categories.slice(0, mid) },
+    { label: "More categories", items: categories.slice(mid) },
+  ].filter((g) => g.items.length > 0);
 
   return (
     <MegaMenuShell

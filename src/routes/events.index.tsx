@@ -1,15 +1,15 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
-// import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
-import { SplitHero } from "@/components/SplitHero";
 import { CTASection } from "@/components/CTASection";
-import {
-  EVENT_CATEGORIES,
-  // EVENTS,
-  type EventRecord,
-} from "@/content/events";
 import { SimpleModal } from "@/components/SimpleModal";
+import { SplitHero } from "@/components/SplitHero";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { EventCategory, EventRecord } from "@/content/events";
+import { resolveCmsUrl } from "@/lib/cms-url";
+import { eventsQueryOptions } from "@/lib/queries/events";
 
 function EventMetaRow({
   dateLabel,
@@ -34,34 +34,87 @@ function EventMetaRow({
 
 export const Route = createFileRoute("/events/")({
   ssr: false,
-  head: () => ({
-    meta: [
-      { title: "Events — World Business Council" },
-      {
-        name: "description",
-        content:
-          "Summits, forums, conferences, exhibitions, networking events, trade missions, and business meetings organised by the World Business Council.",
-      },
-      { property: "og:title", content: "WBC Events" },
-      { property: "og:description", content: "One coordinated event ecosystem for international growth and cooperation." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(eventsQueryOptions),
+  head: ({ loaderData }) => {
+    const heroImage = loaderData?.hero.image;
+    const title = loaderData?.hero.title ?? "Events — World Business Council";
+    const description =
+      loaderData?.hero.description ??
+      "Summits, forums, conferences, exhibitions, networking events, trade missions, and business meetings organised by the World Business Council.";
+
+    return {
+      meta: [
+        { title: `${title} — WBC` },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: heroImage
+        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
+        : [],
+    };
+  },
   component: Events,
 });
 
+function EventsSkeleton() {
+  return (
+    <>
+      <section className="relative flex flex-col">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div className="bg-orange lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <Skeleton className="h-6 w-40 bg-white/20" />
+            <Skeleton className="mt-6 h-14 max-w-lg bg-white/20" />
+            <Skeleton className="mt-6 h-24 max-w-lg bg-white/20" />
+          </div>
+        </div>
+        <div className="hero-media-right bg-navy-deep">
+          <Skeleton className="absolute inset-0 size-full bg-white/10" />
+        </div>
+      </section>
+      <section className="py-16 lg:py-24">
+        <div className="container-wbc space-y-6">
+          <Skeleton className="h-10 w-72" />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Skeleton className="h-72 w-full" />
+            <Skeleton className="h-72 w-full" />
+            <Skeleton className="h-72 w-full" />
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function resolveCta(url: string, fallback = "/contact") {
+  const resolved = resolveCmsUrl(url, fallback);
+  if (resolved.kind === "internal") {
+    const [path, hash] = resolved.path.split("#");
+    return {
+      ctaTo: path || fallback,
+      ctaHash: hash || undefined,
+      ctaHref: undefined as string | undefined,
+    };
+  }
+  return { ctaTo: undefined, ctaHash: undefined, ctaHref: resolved.href };
+}
+
 function EventDetailModal({
   event,
+  categories,
   open,
   onOpenChange,
 }: {
   event: EventRecord | null;
+  categories: EventCategory[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
   if (!event) return null;
-  const category = EVENT_CATEGORIES.find((c) => c.id === event.categoryId);
+  const category = categories.find((c) => c.id === event.categoryId);
 
   return (
     <SimpleModal
@@ -91,10 +144,12 @@ function EventDetailModal({
           </dl>
         ) : null}
 
-        <div className="mt-8">
-          <h3 className="text-[17px] font-bold text-foreground">About this event</h3>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.description}</p>
-        </div>
+        {event.description ? (
+          <div className="mt-8">
+            <h3 className="text-[17px] font-bold text-foreground">About this event</h3>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{event.description}</p>
+          </div>
+        ) : null}
 
         {event.agenda && event.agenda.length > 0 ? (
           <div className="mt-8">
@@ -167,53 +222,65 @@ function EventDetailModal({
 }
 
 function Events() {
-  // Event cards temporarily hidden — restore when listings go live.
-  /*
+  const { data, isPending } = useQuery(eventsQueryOptions);
+  const navigate = useNavigate();
+  const locationHash = useRouterState({
+    select: (s) => (s.location.hash ?? "").replace(/^#/, ""),
+  });
   const [active, setActive] = useState<string | "all">("all");
   const [selected, setSelected] = useState<EventRecord | null>(null);
 
+  const categories = data?.categories ?? [];
+  const events = data?.events ?? [];
+
   useEffect(() => {
-    const applyHash = () => {
-      const hash = window.location.hash.replace(/^#/, "");
-      if (hash && EVENT_CATEGORIES.some((c) => c.id === hash)) {
-        setActive(hash);
-      }
-    };
-    applyHash();
-    window.addEventListener("hashchange", applyHash);
-    return () => window.removeEventListener("hashchange", applyHash);
-  }, []);
+    if (categories.length === 0) return;
+
+    if (locationHash && categories.some((c) => c.id === locationHash)) {
+      setActive(locationHash);
+      return;
+    }
+
+    if (!locationHash) {
+      setActive("all");
+    }
+  }, [locationHash, categories]);
 
   const filtered = useMemo(() => {
-    if (active === "all") return EVENTS;
-    return EVENTS.filter((e) => e.categoryId === active);
-  }, [active]);
+    if (active === "all") return events;
+    return events.filter((e) => e.categoryId === active);
+  }, [active, events]);
 
   function selectCategory(id: string | "all") {
     setActive(id);
-    if (id === "all") {
-      window.history.replaceState(null, "", window.location.pathname);
-    } else {
-      window.history.replaceState(null, "", `${window.location.pathname}#${id}`);
-    }
+    void navigate({
+      to: "/events",
+      hash: id === "all" ? "" : id,
+      replace: true,
+    });
   }
-  */
+
+  if (isPending) return <EventsSkeleton />;
+  if (!data) return null;
+
+  const { hero } = data;
+  const heroCta = hero.cta ? resolveCta(hero.cta.url) : null;
 
   return (
     <>
       <SplitHero
-        eyebrow="Global Programme"
-        title="Events"
-        description="Special events, business programmes, workshops, and network events bringing the WBC community together."
-        tags={["Special Events", "Business Events", "Training"]}
-        image={eventsImg}
-        imageAlt="Delegates attending an international WBC business forum"
+        eyebrow={hero.kicker}
+        title={hero.title}
+        description={hero.description}
+        image={hero.image ?? eventsImg}
+        imageAlt={hero.imageAlt}
         tone="orange"
-        ctaLabel="Get Event Updates"
-        ctaTo="/contact"
+        ctaLabel={hero.cta?.label}
+        ctaTo={heroCta?.ctaTo}
+        ctaHref={heroCta?.ctaHref}
+        ctaHash={heroCta?.ctaHash}
       />
 
-      {/*
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
           <div data-reveal>
@@ -223,38 +290,40 @@ function Events() {
             </p>
           </div>
 
-          <ul data-reveal className="mt-8 flex flex-wrap gap-3">
-            <li>
-              <button
-                type="button"
-                onClick={() => selectCategory("all")}
-                aria-pressed={active === "all"}
-                className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
-                  active === "all"
-                    ? "border-orange bg-orange text-white"
-                    : "border-line bg-background text-foreground hover:border-orange"
-                }`}
-              >
-                All events
-              </button>
-            </li>
-            {EVENT_CATEGORIES.map((c) => (
-              <li key={c.id} id={c.id} className="scroll-mt-28">
+          {categories.length > 0 ? (
+            <ul data-reveal className="mt-8 flex flex-wrap gap-3">
+              <li>
                 <button
                   type="button"
-                  onClick={() => selectCategory(c.id)}
-                  aria-pressed={active === c.id}
+                  onClick={() => selectCategory("all")}
+                  aria-pressed={active === "all"}
                   className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
-                    active === c.id
+                    active === "all"
                       ? "border-orange bg-orange text-white"
                       : "border-line bg-background text-foreground hover:border-orange"
                   }`}
                 >
-                  {c.title}
+                  All events
                 </button>
               </li>
-            ))}
-          </ul>
+              {categories.map((c) => (
+                <li key={c.id} id={c.id} className="scroll-mt-28">
+                  <button
+                    type="button"
+                    onClick={() => selectCategory(c.id)}
+                    aria-pressed={active === c.id}
+                    className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
+                      active === c.id
+                        ? "border-orange bg-orange text-white"
+                        : "border-line bg-background text-foreground hover:border-orange"
+                    }`}
+                  >
+                    {c.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
           <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filtered.length === 0 ? (
@@ -293,7 +362,6 @@ function Events() {
           </ul>
         </div>
       </section>
-      */}
 
       <CTASection
         title="Join the WBC Community"
@@ -302,15 +370,14 @@ function Events() {
         to="/become-a-member"
       />
 
-      {/*
       <EventDetailModal
         event={selected}
+        categories={categories}
         open={!!selected}
         onOpenChange={(open) => {
           if (!open) setSelected(null);
         }}
       />
-      */}
     </>
   );
 }
