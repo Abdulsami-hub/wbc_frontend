@@ -13,6 +13,8 @@ export function NewsStoryModal({
 }) {
   if (!item) return null;
 
+  const hasSource = Boolean(item.sourceLabel || item.sourceUrl);
+
   return (
     <SimpleModal
       open={open}
@@ -35,7 +37,8 @@ export function NewsStoryModal({
         />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
           <p className="text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">
-            {item.category} · {item.dateLabel}
+            {item.category}
+            {item.dateLabel ? ` · ${item.dateLabel}` : ""}
           </p>
           <h2 className="mt-2 max-w-2xl text-[22px] font-bold leading-tight text-white sm:text-[28px]">
             {item.title}
@@ -44,40 +47,46 @@ export function NewsStoryModal({
       </div>
 
       <div className="p-5 sm:p-7 lg:p-8">
-        <div className="rounded-card border border-line bg-surface p-4 sm:p-5">
-          <p className="text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
-            <span className="font-semibold text-foreground">Source: </span>
-            {item.sourceLabel}
-          </p>
-          <a
-            href={item.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-2 text-[14px] font-semibold text-blue transition-colors hover:text-navy"
-          >
-            Euronews Business – Original Article
-            <ExternalLink className="size-3.5" aria-hidden="true" />
-          </a>
-        </div>
+        {hasSource ? (
+          <div className="rounded-card border border-line bg-surface p-4 sm:p-5">
+            {item.sourceLabel ? (
+              <p className="text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
+                <span className="font-semibold text-foreground">Source: </span>
+                {item.sourceLabel}
+              </p>
+            ) : null}
+            {item.sourceUrl ? (
+              <a
+                href={item.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-2 text-[14px] font-semibold text-blue transition-colors hover:text-navy"
+              >
+                Original Article
+                <ExternalLink className="size-3.5" aria-hidden="true" />
+              </a>
+            ) : null}
+          </div>
+        ) : null}
 
-        <p className="mt-6 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">{item.detail}</p>
+        {item.detail ? (
+          <p className="mt-6 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">{item.detail}</p>
+        ) : null}
 
-        <span className="accent-rule mt-6" />
-
-        <h3 className="mt-6 text-[15px] font-bold tracking-[0.08em] text-foreground uppercase">
-          Key points
-        </h3>
-        <ul className="mt-4 space-y-3">
-          {item.bullets.map((bullet) => (
-            <li key={bullet} className="flex gap-3 text-[15px] leading-relaxed text-foreground/90 sm:text-[16px]">
-              <span
-                aria-hidden="true"
-                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange"
-              />
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
+        {item.bullets.length > 0 ? (
+          <>
+            <span className="accent-rule mt-6" />
+            <h3 className="mt-6 text-[15px] font-bold tracking-[0.08em] text-foreground uppercase">Key points</h3>
+            <ul className="mt-4 space-y-3">
+              {item.bullets.map((bullet) => (
+                <li key={bullet} className="flex gap-3 text-[15px] leading-relaxed text-foreground/90 sm:text-[16px]">
+                  <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
       </div>
     </SimpleModal>
   );

@@ -1,10 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { NEWS, type NewsItem } from "@/content/news";
+import type { NewsItem } from "@/content/news";
 import { NewsStoryModal } from "@/components/NewsStoryModal";
+import { Skeleton } from "@/components/ui/skeleton";
+import { newsQueryOptions } from "@/lib/queries/news";
 
 export function LatestNews() {
+  const { data, isPending } = useQuery(newsQueryOptions);
   const [selected, setSelected] = useState<NewsItem | null>(null);
+  const articles = (data?.articles ?? []).slice(0, 3);
 
   return (
     <section className="py-16 lg:py-20">
@@ -31,39 +36,58 @@ export function LatestNews() {
           </p>
         </div>
 
-        <ul data-reveal data-reveal-group className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {NEWS.map((item) => (
-            <li
-              key={item.slug}
-              className="group flex flex-col overflow-hidden rounded-card border border-line bg-background"
-            >
-              <div className="relative overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  width={1200}
-                  height={800}
-                  loading="lazy"
-                  decoding="async"
-                  className="card-zoom-img aspect-[3/2] w-full object-cover"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-6 sm:p-7">
-                <p className="card-kicker sm:text-[13px]">
-                  {item.category} · {item.dateLabel}
-                </p>
-                <h3 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h3>
-                <p className="mt-3 text-[16px] leading-relaxed text-muted-fg text-justify">{item.body}</p>
-                <button type="button" onClick={() => setSelected(item)} className="card-link mt-6 self-start text-start">
-                  {item.cta}
-                  <span aria-hidden="true" className="card-link-arrow rtl-mirror">
-                    →
-                  </span>
-                </button>
-              </div>
+        {isPending ? (
+          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <li>
+              <Skeleton className="h-72 w-full" />
             </li>
-          ))}
-        </ul>
+            <li>
+              <Skeleton className="h-72 w-full" />
+            </li>
+            <li>
+              <Skeleton className="h-72 w-full" />
+            </li>
+          </ul>
+        ) : articles.length === 0 ? (
+          <p data-reveal className="mt-12 rounded-card border border-line bg-background px-6 py-10 text-center text-[15px] text-muted-fg">
+            No news articles published yet.
+          </p>
+        ) : (
+          <ul data-reveal data-reveal-group className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.map((item) => (
+              <li
+                key={item.id}
+                className="group flex flex-col overflow-hidden rounded-card border border-line bg-background"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    width={1200}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                    className="card-zoom-img aspect-[3/2] w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <p className="card-kicker sm:text-[13px]">
+                    {item.category}
+                    {item.dateLabel ? ` · ${item.dateLabel}` : ""}
+                  </p>
+                  <h3 className="mt-3 text-[20px] leading-tight font-bold text-foreground sm:text-[22px]">{item.title}</h3>
+                  <p className="mt-3 text-[16px] leading-relaxed text-muted-fg text-justify">{item.body}</p>
+                  <button type="button" onClick={() => setSelected(item)} className="card-link mt-6 self-start text-start">
+                    {item.cta}
+                    <span aria-hidden="true" className="card-link-arrow rtl-mirror">
+                      →
+                    </span>
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <NewsStoryModal
