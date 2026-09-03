@@ -1,4 +1,4 @@
-import { ALL_PLAN_BENEFITS, PLAN_TIERS, type PlanId } from "@/content/membership";
+import type { MembershipPlanBenefit, MembershipPlanTier } from "@/content/membership";
 
 function CheckMark({ on }: { on: boolean }) {
   if (!on) {
@@ -21,10 +21,14 @@ function CheckMark({ on }: { on: boolean }) {
 }
 
 export function BenefitsTable({
-  rows = ALL_PLAN_BENEFITS,
+  tiers,
+  rows,
 }: {
-  rows?: { label: string; plans: Record<PlanId, boolean> }[];
+  tiers: MembershipPlanTier[];
+  rows: MembershipPlanBenefit[];
 }) {
+  if (tiers.length === 0 || rows.length === 0) return null;
+
   return (
     <div className="overflow-x-auto rounded-card border border-line bg-background shadow-card">
       <table className="w-full min-w-[720px] border-collapse text-start">
@@ -33,23 +37,25 @@ export function BenefitsTable({
             <th className="px-5 py-5 text-start text-[14px] font-semibold tracking-[0.04em] sm:px-6 sm:text-[15px]">
               Benefit
             </th>
-            {PLAN_TIERS.map((tier) => (
+            {tiers.map((tier) => (
               <th key={tier.id} className="px-3 py-5 text-center sm:px-4">
                 <span className="block text-[13px] font-bold sm:text-[14px]">{tier.label}</span>
-                <span className="mt-1 block text-[12px] font-semibold text-orange sm:text-[13px]">{tier.price}</span>
+                {tier.price ? (
+                  <span className="mt-1 block text-[12px] font-semibold text-orange sm:text-[13px]">{tier.price}</span>
+                ) : null}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={row.label} className={i % 2 === 0 ? "bg-background" : "bg-surface/80"}>
+            <tr key={row.id} className={i % 2 === 0 ? "bg-background" : "bg-surface/80"}>
               <td className="px-5 py-4 text-[14px] leading-snug text-foreground sm:px-6 sm:text-[15px]">
                 {row.label}
               </td>
-              {PLAN_TIERS.map((tier) => (
+              {tiers.map((tier) => (
                 <td key={tier.id} className="px-3 py-4 text-center sm:px-4">
-                  <CheckMark on={row.plans[tier.id]} />
+                  <CheckMark on={Boolean(row.plans[tier.id])} />
                 </td>
               ))}
             </tr>

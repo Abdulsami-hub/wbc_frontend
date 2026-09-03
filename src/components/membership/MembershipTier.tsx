@@ -1,4 +1,4 @@
-import { MEMBERSHIP_TIERS } from "@/content/membership";
+import type { MembershipTier } from "@/content/membership";
 
 function TierIcon({ name }: { name: string }) {
   const common = {
@@ -49,14 +49,26 @@ function TierIcon({ name }: { name: string }) {
   }
 }
 
-export function MembershipTier({ showClosing = true, className = "" }: { showClosing?: boolean; className?: string }) {
+export function MembershipTier({
+  tiers,
+  showClosing = true,
+  closingParagraph,
+  className = "",
+}: {
+  tiers: MembershipTier[];
+  showClosing?: boolean;
+  closingParagraph?: string;
+  className?: string;
+}) {
+  if (tiers.length === 0) return null;
+
   return (
     <>
       <ul data-reveal data-reveal-group className={`grid gap-5 sm:grid-cols-2 xl:grid-cols-5 xl:gap-4 ${className}`}>
-        {MEMBERSHIP_TIERS.map((t, i) => {
+        {tiers.map((t, i) => {
           const featured = i === 0 || i === 2;
           return (
-            <li key={t.title}>
+            <li key={t.id}>
               <article
                 className={`group relative flex h-full flex-col overflow-hidden rounded-card p-6 transition-all duration-500 ease-out sm:p-7 ${
                   featured
@@ -96,13 +108,15 @@ export function MembershipTier({ showClosing = true, className = "" }: { showClo
                   className={`relative mt-6 text-[18px] font-bold leading-snug ${featured ? "text-white" : "text-foreground"}`}
                 >
                   {t.title}
-                  <span
-                    className={`mt-0.5 block text-[13px] font-semibold tracking-[0.08em] uppercase ${
-                      featured ? "text-white/60" : "text-muted-fg"
-                    }`}
-                  >
-                    {t.subtitle}
-                  </span>
+                  {t.subtitle ? (
+                    <span
+                      className={`mt-0.5 block text-[13px] font-semibold tracking-[0.08em] uppercase ${
+                        featured ? "text-white/60" : "text-muted-fg"
+                      }`}
+                    >
+                      {t.subtitle}
+                    </span>
+                  ) : null}
                 </h3>
                 <p
                   className={`relative mt-3 flex-1 text-[14px] leading-relaxed ${featured ? "text-white/80" : "text-muted-fg"}`}
@@ -120,10 +134,9 @@ export function MembershipTier({ showClosing = true, className = "" }: { showClo
           );
         })}
       </ul>
-      {showClosing ? (
+      {showClosing && closingParagraph ? (
         <p data-reveal className="mx-auto mt-10 max-w-3xl text-center text-[15px] leading-relaxed text-muted-fg">
-          No matter your size or industry, WBC membership opens doors to unparalleled opportunities for growth,
-          collaboration, and success of your businesses.
+          {closingParagraph}
         </p>
       ) : null}
     </>
