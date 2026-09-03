@@ -1,218 +1,45 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import heroImg from "@/assets/our-members-hero.png";
 import { CTASection } from "@/components/CTASection";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
-import heroImg from "@/assets/our-members-hero.png";
+import type { OurMemberAccent, OurMemberCategory, OurMemberKind, OurMemberTile } from "@/content/our-members";
+import { resolveCmsUrl } from "@/lib/cms-url";
+import { ourMembersQueryOptions } from "@/lib/queries/our-members";
 
 const MEMBERS_GRID_LIMIT = 20;
 
-function memberLogo(slug: string, color: string) {
-  return `https://cdn.simpleicons.org/${slug}/${color}`;
-}
-
 export const Route = createFileRoute("/our-members")({
-  head: () => ({
-    meta: [
-      { title: "Our Members — WBC Members Network Directory" },
-      {
-        name: "description",
-        content:
-          "Browse the WBC members network by category: institutional, corporate, SME, individual, and honorary members across sectors and regions.",
-      },
-      { property: "og:title", content: "Discover the WBC Members Network" },
-      {
-        property: "og:description",
-        content: "Explore member organizations across sectors, regions, and specialties within the WBC ecosystem.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(ourMembersQueryOptions),
+  head: ({ loaderData }) => {
+    const heroImage = loaderData?.hero.image;
+    const title = loaderData?.hero.title ?? "Our Members — WBC Members Network Directory";
+    const description =
+      loaderData?.hero.description ??
+      "Browse the WBC members network by category: institutional, corporate, SME, individual, and honorary members across sectors and regions.";
+
+    return {
+      meta: [
+        { title: `${title} — WBC` },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: heroImage
+        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
+        : [],
+    };
+  },
   component: OurMembers,
 });
 
-const TAGS = ["Cross-sector Members", "International Reach", "Verified Profiles"] as const;
-
-type MemberTile = {
-  name: string;
-  logo?: string;
-  href?: string;
-};
-
-type Category = {
-  name: string;
-  desc: string;
-  accent: "orange" | "navy" | "teal" | "blue" | "violet";
-  kind: "org" | "person";
-  members: MemberTile[];
-};
-
-const CATEGORIES: Category[] = [
-  {
-    name: "Institutional Members",
-    desc: "Business councils, chambers, associations, NGOs, foundations, universities, and other mission-driven membership organizations.",
-    accent: "orange",
-    kind: "org",
-    members: [
-      {
-        name: "United Nations",
-        logo: memberLogo("unitednations", "009EDB"),
-        href: "https://www.un.org",
-      },
-      {
-        name: "European Union",
-        logo: memberLogo("europeanunion", "002395"),
-        href: "https://european-union.europa.eu",
-      },
-      {
-        name: "World Health Organization",
-        logo: memberLogo("worldhealthorganization", "0093D5"),
-        href: "https://www.who.int",
-      },
-      {
-        name: "UNICEF",
-        logo: memberLogo("unicef", "1CABE2"),
-        href: "https://www.unicef.org",
-      },
-      {
-        name: "International Red Cross",
-        logo: memberLogo("redcross", "ED1B2E"),
-        href: "https://www.icrc.org",
-      },
-    ],
-  },
-  {
-    name: "Corporate Members",
-    desc: "Corporations, enterprises, and large organizations pursuing strategic partnerships, international visibility, and business opportunity access.",
-    accent: "navy",
-    kind: "org",
-    members: [
-      { name: "Microsoft", logo: memberLogo("microsoft", "0078D4"), href: "https://www.microsoft.com" },
-      { name: "Google", logo: memberLogo("google", "4285F4"), href: "https://www.google.com" },
-      { name: "Amazon", logo: memberLogo("amazon", "FF9900"), href: "https://www.amazon.com" },
-      { name: "Apple", logo: memberLogo("apple", "000000"), href: "https://www.apple.com" },
-      { name: "Meta", logo: memberLogo("meta", "0081FB"), href: "https://about.meta.com" },
-      { name: "Siemens", logo: memberLogo("siemens", "009999"), href: "https://www.siemens.com" },
-      { name: "Toyota", logo: memberLogo("toyota", "EB0A1E"), href: "https://www.toyota-global.com" },
-      { name: "IBM", logo: memberLogo("ibm", "054ADA"), href: "https://www.ibm.com" },
-      { name: "Accenture", logo: memberLogo("accenture", "A100FF"), href: "https://www.accenture.com" },
-      { name: "Samsung", logo: memberLogo("samsung", "1428A0"), href: "https://www.samsung.com" },
-      { name: "Intel", logo: memberLogo("intel", "0071C5"), href: "https://www.intel.com" },
-      { name: "NVIDIA", logo: memberLogo("nvidia", "76B900"), href: "https://www.nvidia.com" },
-      { name: "Tesla", logo: memberLogo("tesla", "CC0000"), href: "https://www.tesla.com" },
-      { name: "Cisco", logo: memberLogo("cisco", "1BA0D7"), href: "https://www.cisco.com" },
-      { name: "SAP", logo: memberLogo("sap", "0FAAFF"), href: "https://www.sap.com" },
-      { name: "Boeing", logo: memberLogo("boeing", "0033A0"), href: "https://www.boeing.com" },
-      { name: "Airbus", logo: memberLogo("airbus", "00205B"), href: "https://www.airbus.com" },
-      { name: "Dell", logo: memberLogo("dell", "007DB8"), href: "https://www.dell.com" },
-      { name: "Visa", logo: memberLogo("visa", "1A1F71"), href: "https://www.visa.com" },
-      { name: "Mastercard", logo: memberLogo("mastercard", "EB001B"), href: "https://www.mastercard.com" },
-      { name: "PayPal", logo: memberLogo("paypal", "00457C"), href: "https://www.paypal.com" },
-      { name: "Stripe", logo: memberLogo("stripe", "635BFF"), href: "https://stripe.com" },
-      { name: "Spotify", logo: memberLogo("spotify", "1DB954"), href: "https://www.spotify.com" },
-      { name: "Airbnb", logo: memberLogo("airbnb", "FF5A5F"), href: "https://www.airbnb.com" },
-      { name: "Shopify", logo: memberLogo("shopify", "7AB55C"), href: "https://www.shopify.com" },
-      { name: "HubSpot", logo: memberLogo("hubspot", "FF7A59"), href: "https://www.hubspot.com" },
-      { name: "Atlassian", logo: memberLogo("atlassian", "0052CC"), href: "https://www.atlassian.com" },
-    ],
-  },
-  {
-    name: "SME Members",
-    desc: "Micro, small, and medium-sized businesses, startups, entrepreneurs, and freelancers focused on growth, networking, and market access.",
-    accent: "teal",
-    kind: "org",
-    members: [
-      {
-        name: "Shopify",
-        logo: memberLogo("shopify", "7AB55C"),
-        href: "https://www.shopify.com",
-      },
-      {
-        name: "HubSpot",
-        logo: memberLogo("hubspot", "FF7A59"),
-        href: "https://www.hubspot.com",
-      },
-      {
-        name: "Mailchimp",
-        logo: memberLogo("mailchimp", "FFE01B"),
-        href: "https://mailchimp.com",
-      },
-      {
-        name: "Atlassian",
-        logo: memberLogo("atlassian", "0052CC"),
-        href: "https://www.atlassian.com",
-      },
-      {
-        name: "Zendesk",
-        logo: memberLogo("zendesk", "03363D"),
-        href: "https://www.zendesk.com",
-      },
-    ],
-  },
-  {
-    name: "Individual Members",
-    desc: "Entrepreneurs, professionals, and independent consultants advancing cooperation through expertise and cross-border engagement.",
-    accent: "blue",
-    kind: "person",
-    members: [
-      {
-        name: "Sarah Chen",
-        logo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=280&h=280&fit=crop&crop=face",
-      },
-      {
-        name: "James Okonkwo",
-        logo: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=280&h=280&fit=crop&crop=face",
-        href: "https://example.com",
-      },
-      {
-        name: "Elena Rodriguez",
-        logo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=280&h=280&fit=crop&crop=face",
-      },
-      {
-        name: "David Müller",
-        logo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=280&h=280&fit=crop&crop=face",
-      },
-      {
-        name: "Amira Hassan",
-        logo: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=280&h=280&fit=crop&crop=face",
-        href: "https://example.com",
-      },
-    ],
-  },
-  {
-    name: "Honorary Members",
-    desc: "Recognised contributors awarded for outstanding service to WBC’s mission and the wider international business community.",
-    accent: "violet",
-    kind: "org",
-    members: [
-      {
-        name: "Harvard Business School",
-        href: "https://www.hbs.edu",
-      },
-      {
-        name: "London School of Economics",
-        href: "https://www.lse.ac.uk",
-      },
-      {
-        name: "INSEAD",
-        href: "https://www.insead.edu",
-      },
-      {
-        name: "Wharton School",
-        href: "https://www.wharton.upenn.edu",
-      },
-      {
-        name: "IE Business School",
-        href: "https://www.ie.edu",
-      },
-    ],
-  },
-];
-
 const ACCENT: Record<
-  Category["accent"],
+  OurMemberAccent,
   { bar: string; glow: string; logoBg: string; logoText: string; ring: string }
 > = {
   orange: {
@@ -267,11 +94,40 @@ function ArrowUpRight() {
   );
 }
 
-function MemberLogo({ kind }: { kind: Category["kind"] }) {
+function MemberLogo({
+  member,
+  kind,
+  accent,
+}: {
+  member: OurMemberTile;
+  kind: OurMemberKind;
+  accent: (typeof ACCENT)[OurMemberAccent];
+}) {
   if (kind === "person") {
-    return <Skeleton className="size-[5.75rem] shrink-0 rounded-full border border-line sm:size-24 lg:size-28" />;
+    return (
+      <span
+        className={`relative flex size-[5.75rem] shrink-0 items-center justify-center overflow-hidden rounded-full border border-line sm:size-24 lg:size-28 ${accent.logoBg}`}
+      >
+        {member.logo ? (
+          <img src={member.logo} alt="" className="size-full object-cover object-top" />
+        ) : (
+          <span className={`text-[22px] font-bold ${accent.logoText}`}>{initials(member.name)}</span>
+        )}
+      </span>
+    );
   }
-  return <Skeleton className="h-[100px] w-full rounded-card border border-line sm:h-[112px] lg:h-[120px]" />;
+
+  return (
+    <span
+      className={`relative flex h-[100px] w-full items-center justify-center overflow-hidden rounded-card border border-line px-4 sm:h-[112px] lg:h-[120px] ${accent.logoBg}`}
+    >
+      {member.logo ? (
+        <img src={member.logo} alt="" className="max-h-[70%] max-w-[80%] object-contain" />
+      ) : (
+        <span className={`text-[20px] font-bold tracking-wide ${accent.logoText}`}>{initials(member.name)}</span>
+      )}
+    </span>
+  );
 }
 
 function MemberTileCard({
@@ -279,9 +135,9 @@ function MemberTileCard({
   accent,
   kind,
 }: {
-  member: MemberTile;
-  accent: (typeof ACCENT)[Category["accent"]];
-  kind: Category["kind"];
+  member: OurMemberTile;
+  accent: (typeof ACCENT)[OurMemberAccent];
+  kind: OurMemberKind;
 }) {
   const inner = (
     <>
@@ -289,15 +145,30 @@ function MemberTileCard({
         className={`pointer-events-none absolute -end-8 -top-8 size-24 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover/tile:opacity-100 ${accent.glow}`}
         aria-hidden="true"
       />
-      <MemberLogo kind={kind} />
-      <span className="relative mt-4 flex min-w-0 w-full flex-col items-center gap-2" aria-busy="true">
-        <Skeleton className="h-4 w-[75%]" />
-        <Skeleton className="h-3 w-[45%]" />
+      <MemberLogo member={member} kind={kind} accent={accent} />
+      <span className="relative mt-4 flex min-w-0 w-full flex-col items-center gap-1.5">
+        <span className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground sm:text-[15px]">
+          {member.name}
+        </span>
+        {member.href ? (
+          <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-muted-fg transition-colors group-hover/tile:text-navy">
+            Visit site
+            <ArrowUpRight />
+          </span>
+        ) : null}
       </span>
     </>
   );
 
   const className = `group/tile relative flex h-full w-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-4 sm:py-6`;
+
+  if (member.href) {
+    return (
+      <a href={member.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {inner}
+      </a>
+    );
+  }
 
   return <div className={className}>{inner}</div>;
 }
@@ -308,9 +179,9 @@ function CategoryMembersList({
   kind,
   categoryId,
 }: {
-  members: MemberTile[];
-  accent: (typeof ACCENT)[Category["accent"]];
-  kind: Category["kind"];
+  members: OurMemberTile[];
+  accent: (typeof ACCENT)[OurMemberAccent];
+  kind: OurMemberKind;
   categoryId: string;
 }) {
   const visible = members.slice(0, MEMBERS_GRID_LIMIT);
@@ -320,7 +191,7 @@ function CategoryMembersList({
   const visibleCount = visible.length + (expanded ? extraCount : 0);
   const unit = kind === "person" ? (extraCount === 1 ? "profile" : "profiles") : extraCount === 1 ? "organisation" : "organisations";
 
-  const renderGrid = (items: MemberTile[], id: string, animate = false) => (
+  const renderGrid = (items: OurMemberTile[], id: string, animate = false) => (
     <ul
       id={id}
       data-expanded={animate ? "true" : undefined}
@@ -328,7 +199,7 @@ function CategoryMembersList({
     >
       {items.map((m, i) => (
         <li
-          key={m.name}
+          key={m.id}
           className="min-w-0"
           style={animate ? { animationDelay: `${Math.min(i, 12) * 35}ms` } : undefined}
         >
@@ -337,6 +208,12 @@ function CategoryMembersList({
       ))}
     </ul>
   );
+
+  if (members.length === 0) {
+    return (
+      <p className="mt-8 text-[15px] text-muted-fg">No members published in this category yet.</p>
+    );
+  }
 
   return (
     <div className="mt-8">
@@ -381,7 +258,7 @@ function CategoryMembersList({
   );
 }
 
-function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
+function CategoryBlock({ cat, index }: { cat: OurMemberCategory; index: number }) {
   const a = ACCENT[cat.accent];
   return (
     <li
@@ -404,31 +281,82 @@ function CategoryBlock({ cat, index }: { cat: Category; index: number }) {
               {cat.members.length} {cat.members.length === 1 ? "profile" : "profiles"}
             </p>
           </div>
-          <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p>
+          {cat.desc ? <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p> : null}
         </div>
 
         <hr className="mt-8 border-line" />
 
-        <CategoryMembersList members={cat.members} accent={a} kind={cat.kind} categoryId={String(index)} />
+        <CategoryMembersList members={cat.members} accent={a} kind={cat.kind} categoryId={cat.id} />
       </div>
     </li>
   );
 }
 
+function OurMembersSkeleton() {
+  return (
+    <>
+      <section className="relative flex flex-col">
+        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div className="bg-orange lg:bg-transparent">
+          <div className="container-wbc py-16 lg:py-24">
+            <Skeleton className="h-6 w-40 bg-white/20" />
+            <Skeleton className="mt-6 h-14 max-w-lg bg-white/20" />
+            <Skeleton className="mt-6 h-24 max-w-lg bg-white/20" />
+          </div>
+        </div>
+        <div className="hero-media-right bg-navy-deep">
+          <Skeleton className="absolute inset-0 size-full bg-white/10" />
+        </div>
+      </section>
+      <section className="py-14 lg:py-20">
+        <div className="container-wbc space-y-8">
+          <Skeleton className="h-48 w-full rounded-card" />
+          <Skeleton className="h-48 w-full rounded-card" />
+        </div>
+      </section>
+    </>
+  );
+}
+
+function resolveHeroCta(url: string) {
+  const hashIndex = url.indexOf("#");
+  const pathPart = hashIndex >= 0 ? url.slice(0, hashIndex) : url;
+  const hash = hashIndex >= 0 ? url.slice(hashIndex + 1) : undefined;
+  const resolved = resolveCmsUrl(pathPart || "/our-members", "/our-members");
+
+  if (resolved.kind === "internal") {
+    return { ctaTo: resolved.path, ctaHref: undefined as string | undefined, ctaHash: hash };
+  }
+  return { ctaTo: undefined, ctaHref: resolved.href, ctaHash: undefined };
+}
+
 function OurMembers() {
+  const { data, isPending } = useQuery(ourMembersQueryOptions);
+
+  if (isPending) return <OurMembersSkeleton />;
+  if (!data) return null;
+
+  const { hero, categories } = data;
+  const heroImage = hero.image ?? heroImg;
+  const heroCta = hero.cta
+    ? resolveHeroCta(hero.cta.url)
+    : { ctaTo: "/our-members", ctaHref: undefined as string | undefined, ctaHash: "directory" };
+
   return (
     <>
       <SplitHero
-        eyebrow="Our Members"
-        title="Discover the WBC Members Network"
-        description="Explore member organizations and individuals across sectors, regions, and specialties to identify credible partners and practical opportunities within the WBC ecosystem."
-        tags={TAGS}
-        image={heroImg}
-        imageAlt="WBC members networking at a global innovation summit"
+        eyebrow={hero.kicker}
+        title={hero.title}
+        description={hero.description}
+        tags={hero.tags}
+        image={heroImage}
+        imageAlt={hero.imageAlt}
         tone="orange"
-        ctaLabel="Go to member profiles"
-        ctaTo="/our-members"
-        ctaHash="directory"
+        ctaLabel={hero.cta?.label}
+        ctaTo={heroCta.ctaTo}
+        ctaHref={heroCta.ctaHref}
+        ctaHash={heroCta.ctaHash}
+        ctaDownload={heroCta.ctaHref ? false : undefined}
       />
 
       <section id="directory" className="py-14 lg:py-20">
@@ -446,11 +374,15 @@ function OurMembers() {
             </p>
           </div>
 
-          <ul className="mt-12 space-y-8">
-            {CATEGORIES.map((c, i) => (
-              <CategoryBlock key={c.name} cat={c} index={i} />
-            ))}
-          </ul>
+          {categories.length > 0 ? (
+            <ul className="mt-12 space-y-8">
+              {categories.map((c, i) => (
+                <CategoryBlock key={c.id} cat={c} index={i} />
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-12 text-[16px] text-muted-fg">Member categories will appear here once published.</p>
+          )}
 
           <div data-reveal className="mt-12">
             <Link to="/membership" className="btn-orange">
