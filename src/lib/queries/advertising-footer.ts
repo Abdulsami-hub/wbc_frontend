@@ -10,6 +10,8 @@ export type FooterCarouselItem = {
   body: string;
   image: string;
   alt: string;
+  buttonLabel: string;
+  buttonUrl: string;
 };
 
 type ApiFooterCarouselItem = {
@@ -17,7 +19,13 @@ type ApiFooterCarouselItem = {
   kicker: string | null;
   title: string;
   description: string | null;
+  media_type?: string | null;
   image_url: string | null;
+  video_url?: string | null;
+  video_source?: string | null;
+  youtube_url?: string | null;
+  button_label?: string | null;
+  button_url?: string | null;
   sort_order: number;
   updated_at: string | null;
 };
@@ -27,6 +35,8 @@ type FooterCarouselResponse = {
 };
 
 const FALLBACK_IMAGES = [eventsImg, forumImg] as const;
+const DEFAULT_BUTTON_LABEL = "Enquire about advertising";
+const DEFAULT_BUTTON_URL = "/advertising";
 
 function deriveKicker(title: string, kicker: string | null): string {
   if (kicker?.trim()) return kicker.trim();
@@ -46,6 +56,8 @@ export function mapFooterCarouselItem(
     body: item.description?.trim() ?? "",
     image: item.image_url ?? FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
     alt: item.title,
+    buttonLabel: item.button_label?.trim() || DEFAULT_BUTTON_LABEL,
+    buttonUrl: item.button_url?.trim() || DEFAULT_BUTTON_URL,
   };
 }
 

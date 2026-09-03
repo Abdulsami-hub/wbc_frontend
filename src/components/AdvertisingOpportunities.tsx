@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { CmsLink } from "@/components/CmsLink";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +9,33 @@ import {
 } from "@/lib/queries/advertising-footer";
 
 const AUTO_MS = 5000;
+
+/** Absolute advertiser URLs open as assigned; relative paths use SPA navigation. */
+function AdDestinationLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const trimmed = href.trim();
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("//")) {
+    const url = trimmed.startsWith("//") ? `https:${trimmed}` : trimmed;
+    return (
+      <a href={url} className={className} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <CmsLink href={trimmed || "/advertising"} fallback="/advertising" className={className}>
+      {children}
+    </CmsLink>
+  );
+}
 
 function FooterCarouselSkeleton() {
   return (
@@ -97,15 +124,21 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
                 }`}
                 aria-hidden={i !== index}
               >
-                <img
-                  src={o.image}
-                  alt={i === index ? o.alt : ""}
-                  width={1400}
-                  height={900}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                  className="absolute inset-0 size-full object-cover object-left"
-                />
+                <AdDestinationLink
+                  href={o.buttonUrl}
+                  className="absolute inset-0 block"
+                >
+                  <img
+                    src={o.image}
+                    alt={i === index ? o.alt : ""}
+                    width={1400}
+                    height={900}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    className="absolute inset-0 size-full object-cover object-left"
+                  />
+                  <span className="sr-only">{o.buttonLabel}</span>
+                </AdDestinationLink>
               </div>
             ))}
           </div>
@@ -210,12 +243,12 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
             ) : null}
 
             <div className="mt-5 lg:mt-6">
-              <CmsLink
-                href="/advertising"
+              <AdDestinationLink
+                href={items[index]?.buttonUrl ?? "/advertising"}
                 className="btn-orange-to-outline !min-h-9 !rounded-md !px-4 !text-[12px]"
               >
-                Enquire about advertising
-              </CmsLink>
+                {items[index]?.buttonLabel ?? "Enquire about advertising"}
+              </AdDestinationLink>
             </div>
           </div>
         </div>
