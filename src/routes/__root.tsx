@@ -15,6 +15,7 @@ import { Footer } from "@/components/Footer";
 import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { I18nProvider } from "@/i18n";
 import { footerCarouselQueryOptions } from "@/lib/queries/advertising-footer";
+import { siteSettingsQueryOptions } from "@/lib/queries/site-settings";
 
 function NotFoundComponent() {
   return (
@@ -118,8 +119,12 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(footerCarouselQueryOptions),
+  loader: async ({ context: { queryClient } }) => {
+    await Promise.all([
+      queryClient.ensureQueryData(footerCarouselQueryOptions),
+      queryClient.ensureQueryData(siteSettingsQueryOptions),
+    ]);
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
