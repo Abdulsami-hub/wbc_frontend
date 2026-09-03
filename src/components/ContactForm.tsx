@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FormFeedback } from "@/components/FormFeedback";
+import { getRecaptchaSiteKey, RecaptchaV2, type RecaptchaV2Handle } from "@/components/RecaptchaV2";
 import { API_BASE } from "@/lib/api";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 const CONTACT_API = `${API_BASE}/api/contact`;
+const RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
 
 const FIELDS = [
   { name: "name", label: "Name", type: "text", autoComplete: "name" },
@@ -16,11 +18,15 @@ export function ContactForm({ className = "" }: { className?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<RecaptchaV2Handle | null>(null);
 
   function resetToForm() {
     setStatus("idle");
     setErrors({});
     setSubmitError("");
+    setRecaptchaToken(null);
+    recaptchaRef.current?.reset();
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -36,10 +42,15 @@ export function ContactForm({ className = "" }: { className?: string }) {
       if (!v) next[f.name] = `${f.label} is required.`;
     }
     const email = String(data.get("email") ?? "").trim();
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) next["email"] = "Enter a valid email address.";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
+      next["email"] = "Enter a valid email address.";
     const message = String(data.get("message") ?? "").trim();
     if (message.length < 10) next["message"] = "Message must be at least 10 characters.";
     if (String(data.get("company") ?? "")) return; // honeypot
+
+    if (RECAPTCHA_SITE_KEY && !recaptchaToken) {
+      next["recaptcha"] = "Please complete the security check.";
+    }
 
     setErrors(next);
     setSubmitError("");
@@ -48,12 +59,13 @@ export function ContactForm({ className = "" }: { className?: string }) {
       return;
     }
 
-    const payload = {
+    const payload: Record<string, string> = {
       name: String(data.get("name") ?? "").trim(),
       email,
       subject: String(data.get("subject") ?? "").trim(),
       message,
     };
+    if (recaptchaToken) payload["recaptcha_token"] = recaptchaToken;
 
     setStatus("loading");
     try {
@@ -78,14 +90,24 @@ export function ContactForm({ className = "" }: { className?: string }) {
               ? (body.errors as Record<string, unknown>)
               : (body as Record<string, unknown>);
 
-          for (const key of ["name", "email", "subject", "message"] as const) {
+          for (const key of [
+            "name",
+            "email",
+            "subject",
+            "message",
+            "recaptcha_token",
+            "recaptcha",
+          ] as const) {
             const value = source[key];
-            if (Array.isArray(value) && typeof value[0] === "string") apiErrors[key] = value[0];
-            else if (typeof value === "string") apiErrors[key] = value;
+            const formKey = key === "recaptcha_token" ? "recaptcha" : key;
+            if (Array.isArray(value) && typeof value[0] === "string") apiErrors[formKey] = value[0];
+            else if (typeof value === "string") apiErrors[formKey] = value;
           }
           if (Object.keys(apiErrors).length > 0) {
             setErrors(apiErrors);
             setStatus("error");
+            recaptchaRef.current?.reset();
+            setRecaptchaToken(null);
             return;
           }
         }
@@ -96,9 +118,15 @@ export function ContactForm({ className = "" }: { className?: string }) {
       setErrors({});
       setSubmitError("");
       form.reset();
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } catch {
       setStatus("error");
-      setSubmitError("We could not send your message. Please try again or email contact@wbccme.org.");
+      setSubmitError(
+        "We could not send your message. Please try again or email contact@wbccme.org.",
+      );
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     }
   }
 
@@ -166,9 +194,32 @@ export function ContactForm({ className = "" }: { className?: string }) {
         )}
       </div>
 
-      <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
 
-      <button type="submit" disabled={status === "loading"} className="btn-orange mt-4 w-full disabled:opacity-70">
+      {RECAPTCHA_SITE_KEY ? (
+        <RecaptchaV2
+          className="mt-4"
+          siteKey={RECAPTCHA_SITE_KEY}
+          onChange={setRecaptchaToken}
+          onReady={(api) => {
+            recaptchaRef.current = api;
+          }}
+          error={errors["recaptcha"]}
+        />
+      ) : null}
+
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="btn-orange mt-4 w-full disabled:opacity-70"
+      >
         {status === "loading" ? "Sending…" : "Send Message"}
       </button>
 

@@ -1,11 +1,15 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { FormFeedback } from "@/components/FormFeedback";
+import { getRecaptchaSiteKey, RecaptchaV2, type RecaptchaV2Handle } from "@/components/RecaptchaV2";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 /** API base for public form submissions — set VITE_API_URL in env for local backend. */
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ?? 'https://api.wbccme.org';
+const API_BASE =
+  (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "") ??
+  "https://api.wbccme.org";
 const MEMBERSHIP_API = `${API_BASE}/api/membership-applications`;
+const RECAPTCHA_SITE_KEY = getRecaptchaSiteKey();
 
 export const MEMBERSHIP_TYPES = [
   { id: "institutional", label: "Institutional Membership" },
@@ -100,12 +104,16 @@ export function MembershipApplicationForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<RecaptchaV2Handle | null>(null);
   const isIndividual = membershipType === "individual";
 
   function resetToForm() {
     setStatus("idle");
     setErrors({});
     setSubmitError("");
+    setRecaptchaToken(null);
+    recaptchaRef.current?.reset();
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -133,6 +141,10 @@ export function MembershipApplicationForm() {
     const email = String(data.get("email") ?? "").trim();
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       next["email"] = "Enter a valid email address.";
+    }
+
+    if (RECAPTCHA_SITE_KEY && !recaptchaToken) {
+      next["recaptcha"] = "Please complete the security check.";
     }
 
     setErrors(next);
@@ -166,6 +178,7 @@ export function MembershipApplicationForm() {
       telephone: String(data.get("telephone") ?? "").trim(),
       message: String(data.get("message") ?? "").trim(),
     };
+    if (recaptchaToken) payload["recaptcha_token"] = recaptchaToken;
 
     setStatus("loading");
     try {
@@ -193,8 +206,14 @@ export function MembershipApplicationForm() {
             mailing_address: "address",
             designation: isIndividual ? "profession" : "designation",
             membership_type: "membershipType",
+            recaptcha_token: "recaptcha",
           };
-          for (const [apiKey, value] of Object.entries(body as Record<string, unknown>)) {
+          const source =
+            "errors" in body && body.errors && typeof body.errors === "object"
+              ? (body.errors as Record<string, unknown>)
+              : (body as Record<string, unknown>);
+
+          for (const [apiKey, value] of Object.entries(source)) {
             const formKey = keyMap[apiKey] ?? apiKey;
             if (Array.isArray(value) && typeof value[0] === "string") apiErrors[formKey] = value[0];
             else if (typeof value === "string") apiErrors[formKey] = value;
@@ -204,6 +223,8 @@ export function MembershipApplicationForm() {
             const top = apiErrors["non_field_errors"] ?? apiErrors["detail"];
             if (top) setSubmitError(top);
             setStatus("error");
+            recaptchaRef.current?.reset();
+            setRecaptchaToken(null);
             return;
           }
         }
@@ -215,9 +236,15 @@ export function MembershipApplicationForm() {
       setSubmitError("");
       form.reset();
       setMembershipType("institutional");
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     } catch {
       setStatus("error");
-      setSubmitError("We could not submit your application. Please try again or email contact@wbccme.org.");
+      setSubmitError(
+        "We could not submit your application. Please try again or email contact@wbccme.org.",
+      );
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
     }
   }
 
@@ -352,7 +379,14 @@ export function MembershipApplicationForm() {
               />
             </Field>
             <Field id="website" label="Website (optional)" error={errors["website"]}>
-              <input id="website" name="website" type="url" inputMode="url" placeholder="https://" className={inputClass} />
+              <input
+                id="website"
+                name="website"
+                type="url"
+                inputMode="url"
+                placeholder="https://"
+                className={inputClass}
+              />
             </Field>
           </div>
           <Field id="message" label="Message">
@@ -362,7 +396,12 @@ export function MembershipApplicationForm() {
       ) : (
         <>
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field id="organization" label="Company/Organization Name" required error={errors["organization"]}>
+            <Field
+              id="organization"
+              label="Company/Organization Name"
+              required
+              error={errors["organization"]}
+            >
               <input
                 id="organization"
                 name="organization"
@@ -404,15 +443,33 @@ export function MembershipApplicationForm() {
           </div>
 
           <Field id="address" label="Mailing Address" error={errors["address"]}>
-            <input id="address" name="address" type="text" autoComplete="street-address" className={inputClass} />
+            <input
+              id="address"
+              name="address"
+              type="text"
+              autoComplete="street-address"
+              className={inputClass}
+            />
           </Field>
 
           <Field id="website" label="Website" error={errors["website"]}>
-            <input id="website" name="website" type="url" inputMode="url" placeholder="https://" className={inputClass} />
+            <input
+              id="website"
+              name="website"
+              type="url"
+              inputMode="url"
+              placeholder="https://"
+              className={inputClass}
+            />
           </Field>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field id="firstName" label="Representative First Name" required error={errors["firstName"]}>
+            <Field
+              id="firstName"
+              label="Representative First Name"
+              required
+              error={errors["firstName"]}
+            >
               <input
                 id="firstName"
                 name="firstName"
@@ -424,7 +481,12 @@ export function MembershipApplicationForm() {
                 className={inputClass}
               />
             </Field>
-            <Field id="lastName" label="Representative Last Name" required error={errors["lastName"]}>
+            <Field
+              id="lastName"
+              label="Representative Last Name"
+              required
+              error={errors["lastName"]}
+            >
               <input
                 id="lastName"
                 name="lastName"
@@ -461,7 +523,13 @@ export function MembershipApplicationForm() {
               />
             </Field>
             <Field id="telephone" label="Telephone" error={errors["telephone"]}>
-              <input id="telephone" name="telephone" type="tel" autoComplete="tel" className={inputClass} />
+              <input
+                id="telephone"
+                name="telephone"
+                type="tel"
+                autoComplete="tel"
+                className={inputClass}
+              />
             </Field>
           </div>
 
@@ -471,10 +539,32 @@ export function MembershipApplicationForm() {
         </>
       )}
 
-      <input type="text" name="website_url" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+      <input
+        type="text"
+        name="website_url"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
+
+      {RECAPTCHA_SITE_KEY ? (
+        <RecaptchaV2
+          siteKey={RECAPTCHA_SITE_KEY}
+          onChange={setRecaptchaToken}
+          onReady={(api) => {
+            recaptchaRef.current = api;
+          }}
+          error={errors["recaptcha"]}
+        />
+      ) : null}
 
       <div className="space-y-4">
-        <button type="submit" disabled={status === "loading"} className="btn-orange disabled:opacity-70">
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="btn-orange disabled:opacity-70"
+        >
           {status === "loading" ? "Submitting…" : "Submit Application"}
         </button>
         {status === "error" && (Object.keys(errors).length > 0 || submitError) ? (
@@ -482,7 +572,8 @@ export function MembershipApplicationForm() {
             variant="error"
             title={submitError ? "Could not submit application" : "Please check the form"}
             description={
-              submitError || "Some fields need your attention before we can submit your application."
+              submitError ||
+              "Some fields need your attention before we can submit your application."
             }
           />
         ) : null}
