@@ -14,10 +14,12 @@ import {
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { getJobDepartment, type JobRecord } from "@/content/jobs";
+import { formatJobDateLong, getJobDepartment, type JobRecord } from "@/content/jobs";
 import { JobThumbnail } from "@/components/jobs/JobThumbnail";
 
 function BulletList({ items }: { items: string[] }) {
+  if (items.length === 0) return null;
+
   return (
     <ul className="mt-4 space-y-3">
       {items.map((item) => (
@@ -40,6 +42,8 @@ function ContentSection({ title, children }: { title: string; children: ReactNod
 }
 
 function SidebarField({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
+  if (!value) return null;
+
   return (
     <div className="flex gap-3 border-b border-line py-4 first:pt-0 last:border-b-0 last:pb-0">
       <Icon className="mt-0.5 size-4 shrink-0 text-muted-fg" strokeWidth={1.75} aria-hidden="true" />
@@ -66,9 +70,25 @@ function LanguagePills({ languages }: { languages: string[] }) {
   );
 }
 
+function workTypeParts(workType: string): { remote?: string; schedule?: string } {
+  const parts = workType
+    .split(/[·|]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length === 0) return {};
+  if (parts.length === 1) return { remote: parts[0] };
+  return { remote: parts[0], schedule: parts.slice(1).join(" · ") };
+}
+
 export function JobDetailView({ job }: { job: JobRecord }) {
   const department = getJobDepartment(job);
-  const applyHref = `mailto:${job.applyEmail}?subject=${encodeURIComponent(`Internship Application — ${job.title}`)}`;
+  const applyHref = job.applyEmail
+    ? `mailto:${job.applyEmail}?subject=${encodeURIComponent(`Internship Application — ${job.title}`)}`
+    : null;
+  const { remote, schedule } = workTypeParts(job.workType);
+  const publishedLabel = formatJobDateLong(job.publishedDate);
+  const deadlineLabel = formatJobDateLong(job.applicationDeadline);
 
   return (
     <>
@@ -81,34 +101,53 @@ export function JobDetailView({ job }: { job: JobRecord }) {
             <ArrowLeft className="size-4" aria-hidden="true" />
             All internships
           </Link>
-          <p className="mt-6 text-[12px] font-bold tracking-[0.16em] text-orange uppercase">Internship</p>
+          <p className="mt-6 text-[12px] font-bold tracking-[0.16em] text-orange uppercase">
+            {job.announcementType || "Internship"}
+          </p>
           <h1 className="mt-2 max-w-4xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
             {department}
           </h1>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <JobThumbnail job={job} size="sm" />
             <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
-              <MapPin className="size-3.5 text-orange" aria-hidden="true" />
-              Remote
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
-              <Clock className="size-3.5 text-orange" aria-hidden="true" />
-              Part-time
-            </span>
-            <span className="inline-flex items-center rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
-              {job.positionsAvailable} {job.positionsAvailable === 1 ? "opening" : "openings"}
-            </span>
-            <span className="inline-flex items-center rounded-full bg-navy/8 px-3 py-1 text-[12px] font-semibold text-navy">
-              Voluntary / Unpaid
-            </span>
+              {remote && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
+                  <MapPin className="size-3.5 text-orange" aria-hidden="true" />
+                  {remote}
+                </span>
+              )}
+              {schedule && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
+                  <Clock className="size-3.5 text-orange" aria-hidden="true" />
+                  {schedule}
+                </span>
+              )}
+              <span className="inline-flex items-center rounded-full border border-line bg-background px-3 py-1 text-[12px] font-semibold text-foreground">
+                {job.positionsAvailable} {job.positionsAvailable === 1 ? "opening" : "openings"}
+              </span>
+              {job.compensation && (
+                <span className="inline-flex items-center rounded-full bg-navy/8 px-3 py-1 text-[12px] font-semibold text-navy">
+                  {job.compensation}
+                </span>
+              )}
             </div>
           </div>
-          <p className="mt-4 text-[14px] font-medium text-muted-fg">
-            <span className="font-semibold text-foreground">Published:</span> {job.publishedDate}
-            <span className="mx-2 text-line">·</span>
-            <span className="font-semibold text-foreground">Application deadline:</span> {job.applicationDeadline}
-          </p>
+          {(publishedLabel || deadlineLabel) && (
+            <p className="mt-4 text-[14px] font-medium text-muted-fg">
+              {publishedLabel && (
+                <>
+                  <span className="font-semibold text-foreground">Published:</span> {publishedLabel}
+                </>
+              )}
+              {publishedLabel && deadlineLabel && <span className="mx-2 text-line">·</span>}
+              {deadlineLabel && (
+                <>
+                  <span className="font-semibold text-foreground">Application deadline:</span>{" "}
+                  {deadlineLabel}
+                </>
+              )}
+            </p>
+          )}
         </div>
       </section>
 
@@ -116,44 +155,68 @@ export function JobDetailView({ job }: { job: JobRecord }) {
         <div className="container-wbc">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_340px]">
             <div className="min-w-0">
-              <ContentSection title="About World Business Council (WBC)">
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">
-                  The World Business Council (WBC) is an international business support organization connecting
-                  businesses, professionals, and institutions worldwide. Internships offer practical experience in a
-                  remote, collaborative environment focused on global business cooperation.
-                </p>
-              </ContentSection>
+              {job.aboutCompany && (
+                <ContentSection title="About World Business Council (WBC)">
+                  <p className="mt-4 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">
+                    {job.aboutCompany}
+                  </p>
+                </ContentSection>
+              )}
 
-              <ContentSection title="Job Summary">
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">{job.description}</p>
-              </ContentSection>
+              {job.description && (
+                <ContentSection title="Job Summary">
+                  <p className="mt-4 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">
+                    {job.description}
+                  </p>
+                </ContentSection>
+              )}
 
-              <ContentSection title="Key Responsibilities">
-                <BulletList items={job.responsibilities} />
-              </ContentSection>
+              {job.responsibilities.length > 0 && (
+                <ContentSection title="Key Responsibilities">
+                  <BulletList items={job.responsibilities} />
+                </ContentSection>
+              )}
 
-              <ContentSection title="Qualifications">
-                <BulletList items={job.requirements} />
-              </ContentSection>
+              {job.requirements.length > 0 && (
+                <ContentSection title="Qualifications">
+                  <BulletList items={job.requirements} />
+                </ContentSection>
+              )}
 
-              <ContentSection title="What WBC Offers">
-                <BulletList items={job.offers} />
-              </ContentSection>
+              {job.offers.length > 0 && (
+                <ContentSection title="What WBC Offers">
+                  <BulletList items={job.offers} />
+                </ContentSection>
+              )}
 
-              <ContentSection title="Working Arrangement">
-                <p className="mt-4 text-[16px] font-semibold text-foreground">{job.workingArrangement}</p>
-                <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{job.workingArrangementNote}</p>
-              </ContentSection>
+              {(job.workingArrangement || job.workingArrangementNote) && (
+                <ContentSection title="Working Arrangement">
+                  {job.workingArrangement && (
+                    <p className="mt-4 text-[16px] font-semibold text-foreground">{job.workingArrangement}</p>
+                  )}
+                  {job.workingArrangementNote && (
+                    <p className="mt-3 text-[16px] leading-relaxed text-muted-fg">{job.workingArrangementNote}</p>
+                  )}
+                </ContentSection>
+              )}
 
-              <ContentSection title="Submission Guidelines">
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-                  Send your CV/resume and a short motivation letter to{" "}
-                  <a href={applyHref} className="font-semibold text-blue transition-colors hover:text-navy">
-                    {job.applyEmail}
-                  </a>
-                  . Please include the internship title in the subject line of your email.
-                </p>
-              </ContentSection>
+              {(job.submissionGuidelines || job.applyEmail) && (
+                <ContentSection title="Submission Guidelines">
+                  <p className="mt-4 text-[16px] leading-relaxed text-muted-fg whitespace-pre-line">
+                    {job.submissionGuidelines ? (
+                      job.submissionGuidelines
+                    ) : applyHref ? (
+                      <>
+                        Send your CV/resume and a short motivation letter to{" "}
+                        <a href={applyHref} className="font-semibold text-blue transition-colors hover:text-navy">
+                          {job.applyEmail}
+                        </a>
+                        . Please include the internship title in the subject line of your email.
+                      </>
+                    ) : null}
+                  </p>
+                </ContentSection>
+              )}
             </div>
 
             <aside className="lg:sticky lg:top-24 lg:self-start">
@@ -161,10 +224,10 @@ export function JobDetailView({ job }: { job: JobRecord }) {
                 <h2 className="text-[14px] font-bold tracking-[0.1em] text-foreground uppercase">Position Details</h2>
 
                 <div className="mt-4">
-                  <SidebarField icon={CalendarDays} label="Published Date" value={job.publishedDate} />
-                  <SidebarField icon={CalendarDays} label="Application Deadline" value={job.applicationDeadline} />
-                  <SidebarField icon={CalendarDays} label="Status" value="Open" />
-                  <SidebarField icon={FileText} label="Reference" value={`WBC-INT-${job.slug.toUpperCase().replace(/-/g, "")}`} />
+                  <SidebarField icon={CalendarDays} label="Published Date" value={publishedLabel} />
+                  <SidebarField icon={CalendarDays} label="Application Deadline" value={deadlineLabel} />
+                  <SidebarField icon={CalendarDays} label="Status" value={job.status} />
+                  <SidebarField icon={FileText} label="Reference" value={job.reference} />
                   <SidebarField
                     icon={Users}
                     label="Number of Vacancies"
@@ -173,17 +236,19 @@ export function JobDetailView({ job }: { job: JobRecord }) {
                   <SidebarField icon={Briefcase} label="Announcement Type" value={job.announcementType} />
                   <SidebarField icon={MapPin} label="Work Type" value={job.workType} />
                   <SidebarField icon={Banknote} label="Compensation" value={job.compensation} />
-                  <SidebarField icon={Clock} label="Duration" value="6 months" />
-                  <SidebarField icon={CalendarDays} label="Contract Extension" value="Possible" />
+                  <SidebarField icon={Clock} label="Duration" value={job.duration} />
+                  <SidebarField icon={CalendarDays} label="Contract Extension" value={job.contractExtension} />
                   <SidebarField icon={Globe} label="Functional Area" value={department} />
 
-                  <div className="flex gap-3 border-b border-line py-4 last:border-b-0">
-                    <Languages className="mt-0.5 size-4 shrink-0 text-muted-fg" strokeWidth={1.75} aria-hidden="true" />
-                    <div className="min-w-0">
-                      <p className="text-[12px] font-medium text-muted-fg">Languages</p>
-                      <LanguagePills languages={job.languages} />
+                  {job.languages.length > 0 && (
+                    <div className="flex gap-3 border-b border-line py-4 last:border-b-0">
+                      <Languages className="mt-0.5 size-4 shrink-0 text-muted-fg" strokeWidth={1.75} aria-hidden="true" />
+                      <div className="min-w-0">
+                        <p className="text-[12px] font-medium text-muted-fg">Languages</p>
+                        <LanguagePills languages={job.languages} />
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </aside>
@@ -201,12 +266,14 @@ export function JobDetailView({ job }: { job: JobRecord }) {
           >
             <Printer className="size-4" aria-hidden="true" />
           </button>
-          <a
-            href={applyHref}
-            className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 text-[14px] font-bold text-navy transition-colors hover:bg-white/90 sm:px-6"
-          >
-            Apply now
-          </a>
+          {applyHref && (
+            <a
+              href={applyHref}
+              className="inline-flex h-10 items-center justify-center rounded-full bg-white px-5 text-[14px] font-bold text-navy transition-colors hover:bg-white/90 sm:px-6"
+            >
+              Apply now
+            </a>
+          )}
         </div>
       </div>
     </>

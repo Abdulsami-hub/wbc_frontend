@@ -1,5 +1,4 @@
 import { Briefcase } from "lucide-react";
-import logoNavy from "@/assets/wbc-logo.png";
 import { getJobDepartment, type JobRecord } from "@/content/jobs";
 
 function getInitials(text: string) {
@@ -12,7 +11,7 @@ function getInitials(text: string) {
     .toUpperCase();
 }
 
-/** WBC logo in a polished frame, or a branded gradient thumbnail when no logo is provided. */
+/** Real logo when provided; otherwise a branded initials thumbnail (never a mock WBC logo). */
 export function JobThumbnail({ job, size = "md" }: { job: JobRecord; size?: "sm" | "md" | "compact" }) {
   const department = getJobDepartment(job);
   const sizeClass =
@@ -21,13 +20,13 @@ export function JobThumbnail({ job, size = "md" }: { job: JobRecord; size?: "sm"
       : size === "sm"
         ? "size-14 sm:size-16"
         : "size-16 sm:size-[72px]";
-  const logoSrc = job.logo?.trim() ? job.logo : job.logo === "" ? null : logoNavy;
+  const logoSrc = job.logo?.trim() || null;
 
   if (logoSrc) {
     if (size === "compact") {
       return (
         <div
-          className={`${sizeClass} flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-1.5 sm:rounded-xl sm:p-2`}
+          className={`${sizeClass} flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-line bg-white p-1.5 sm:rounded-xl sm:p-2`}
         >
           <img src={logoSrc} alt="" className="h-full w-full object-contain" />
         </div>
@@ -56,7 +55,7 @@ export function JobThumbnail({ job, size = "md" }: { job: JobRecord; size?: "sm"
           <Briefcase className="size-4 text-orange" strokeWidth={2} />
         </span>
         <span className="font-display text-[11px] font-bold tracking-[0.12em] text-white/90 sm:text-[12px]">
-          {getInitials(department)}
+          {getInitials(department) || "WBC"}
         </span>
       </div>
     </div>

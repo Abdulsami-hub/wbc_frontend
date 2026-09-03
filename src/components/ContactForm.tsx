@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FormFeedback } from "@/components/FormFeedback";
+import { API_BASE } from "@/lib/api";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const CONTACT_API = "https://api.wbccme.org/api/contact/";
+const CONTACT_API = `${API_BASE}/api/contact`;
 
 const FIELDS = [
   { name: "name", label: "Name", type: "text", autoComplete: "name" },
@@ -11,7 +12,7 @@ const FIELDS = [
   { name: "subject", label: "Subject", type: "text", autoComplete: "off" },
 ] as const;
 
-export function ContactForm() {
+export function ContactForm({ className = "" }: { className?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
@@ -72,8 +73,13 @@ export function ContactForm() {
       if (!res.ok) {
         if (body && typeof body === "object") {
           const apiErrors: Record<string, string> = {};
+          const source =
+            "errors" in body && body.errors && typeof body.errors === "object"
+              ? (body.errors as Record<string, unknown>)
+              : (body as Record<string, unknown>);
+
           for (const key of ["name", "email", "subject", "message"] as const) {
-            const value = (body as Record<string, unknown>)[key];
+            const value = source[key];
             if (Array.isArray(value) && typeof value[0] === "string") apiErrors[key] = value[0];
             else if (typeof value === "string") apiErrors[key] = value;
           }
@@ -101,53 +107,57 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <FormFeedback
-        variant="success"
-        title="Message sent"
-        description="Thank you — your message has been received. Our team will get back to you shortly."
-        actionLabel="Send another message"
-        onAction={resetToForm}
-      />
+      <div className={className}>
+        <FormFeedback
+          variant="success"
+          title="Message sent"
+          description="Thank you — your message has been received. Our team will get back to you shortly."
+          actionLabel="Send another message"
+          onAction={resetToForm}
+        />
+      </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-4" data-no-translate>
-      {FIELDS.map((f) => (
-        <div key={f.name}>
-          <label htmlFor={f.name} className="text-[15px] font-medium text-foreground">
-            {f.label} <span className="text-foreground">*</span>
-          </label>
-          <input
-            id={f.name}
-            name={f.name}
-            type={f.type}
-            autoComplete={f.autoComplete}
-            required
-            aria-invalid={Boolean(errors[f.name])}
-            aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
-            className={inputClass}
-          />
-          {errors[f.name] && (
-            <p id={`${f.name}-error`} className="mt-1 text-[14px] text-foreground">
-              {errors[f.name]}
-            </p>
-          )}
-        </div>
-      ))}
+    <form onSubmit={onSubmit} noValidate className={`flex flex-col ${className}`} data-no-translate>
+      <div className="space-y-4">
+        {FIELDS.map((f) => (
+          <div key={f.name}>
+            <label htmlFor={f.name} className="text-[15px] font-medium text-foreground">
+              {f.label} <span className="text-foreground">*</span>
+            </label>
+            <input
+              id={f.name}
+              name={f.name}
+              type={f.type}
+              autoComplete={f.autoComplete}
+              required
+              aria-invalid={Boolean(errors[f.name])}
+              aria-describedby={errors[f.name] ? `${f.name}-error` : undefined}
+              className={inputClass}
+            />
+            {errors[f.name] && (
+              <p id={`${f.name}-error`} className="mt-1 text-[14px] text-foreground">
+                {errors[f.name]}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
 
-      <div>
+      <div className="mt-4 flex min-h-0 flex-1 flex-col">
         <label htmlFor="message" className="text-[15px] font-medium text-foreground">
           Message <span className="text-foreground">*</span>
         </label>
         <textarea
           id="message"
           name="message"
-          rows={5}
+          rows={4}
           required
           aria-invalid={Boolean(errors["message"])}
           aria-describedby={errors["message"] ? "message-error" : undefined}
-          className={inputClass}
+          className={`${inputClass} min-h-[7.5rem] flex-1 resize-y`}
         />
         {errors["message"] && (
           <p id="message-error" className="mt-1 text-[14px] text-foreground">
@@ -158,18 +168,20 @@ export function ContactForm() {
 
       <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
 
-      <button type="submit" disabled={status === "loading"} className="btn-orange w-full disabled:opacity-70">
+      <button type="submit" disabled={status === "loading"} className="btn-orange mt-4 w-full disabled:opacity-70">
         {status === "loading" ? "Sending…" : "Send Message"}
       </button>
 
       {status === "error" && (Object.keys(errors).length > 0 || submitError) ? (
-        <FormFeedback
-          variant="error"
-          title={submitError ? "Could not send message" : "Please check the form"}
-          description={
-            submitError || "Some fields need your attention before we can send your message."
-          }
-        />
+        <div className="mt-4">
+          <FormFeedback
+            variant="error"
+            title={submitError ? "Could not send message" : "Please check the form"}
+            description={
+              submitError || "Some fields need your attention before we can send your message."
+            }
+          />
+        </div>
       ) : null}
     </form>
   );
