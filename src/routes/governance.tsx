@@ -6,32 +6,23 @@ import { CmsLink } from "@/components/CmsLink";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GovernanceGroupIcon } from "@/content/governance";
 import { governanceQueryOptions } from "@/lib/queries/governance";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/governance")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(governanceQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "Governance — Structure, Oversight & Accountability | WBC" },
-        {
-          name: "description",
-          content:
-            "How the World Business Council is governed: General Assembly, Board of Directors, Honorary Board, Staff Members, and Committees & Working Groups.",
-        },
-        { property: "og:title", content: "Governance that protects trust and drives coordinated action — WBC" },
-        {
-          property: "og:description",
-          content:
-            "WBC governance structure: General Assembly, Board of Directors, Honorary Board, Staff Members, and Committees & Working Groups.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Governance";
+    const description =
+      loaderData?.hero?.description ??
+      "Learn how the World Business Council is governed and how decisions support members across the global network.";
+    return seoHead({
+      title,
+      description,
+      path: "/governance",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: Governance,
 });
@@ -39,7 +30,15 @@ export const Route = createFileRoute("/governance")({
 function BodyIcon({ icon }: { icon: GovernanceGroupIcon }) {
   return (
     <span className="inline-flex size-12 shrink-0 items-center justify-center border border-line text-foreground">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        aria-hidden="true"
+      >
         {icon === "user" && (
           <>
             <circle cx="12" cy="8" r="3.2" />
@@ -47,7 +46,9 @@ function BodyIcon({ icon }: { icon: GovernanceGroupIcon }) {
           </>
         )}
         {icon === "lines" && <path d="M4 8h16M4 12h11M4 16h7" />}
-        {icon === "shield" && <path d="M12 3l7 3.5v5c0 4.2-2.9 7.6-7 9.5-4.1-1.9-7-5.3-7-9.5v-5L12 3z" />}
+        {icon === "shield" && (
+          <path d="M12 3l7 3.5v5c0 4.2-2.9 7.6-7 9.5-4.1-1.9-7-5.3-7-9.5v-5L12 3z" />
+        )}
       </svg>
     </span>
   );
@@ -56,7 +57,10 @@ function BodyIcon({ icon }: { icon: GovernanceGroupIcon }) {
 function GovernanceHeroSkeleton() {
   return (
     <section className="relative flex flex-col">
-      <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+      <div
+        className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+        aria-hidden="true"
+      />
       <div className="bg-teal lg:bg-transparent">
         <div className="container-wbc py-16 lg:py-24">
           <Skeleton className="h-6 w-32 bg-white/20" />
@@ -96,7 +100,10 @@ function Governance() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-teal lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
@@ -125,7 +132,10 @@ function Governance() {
                   fallback="/contact"
                   className="intro-4 mt-8 inline-flex items-center gap-3 border-b border-white pb-1 text-[16px] font-bold text-white"
                 >
-                  {hero.cta.label} <span aria-hidden="true" className="rtl-mirror">→</span>
+                  {hero.cta.label}{" "}
+                  <span aria-hidden="true" className="rtl-mirror">
+                    →
+                  </span>
                 </CmsLink>
               )}
             </div>
@@ -153,7 +163,9 @@ function Governance() {
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               {structure.title}
             </h2>
-            <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">{structure.description}</p>
+            <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
+              {structure.description}
+            </p>
             <ul className="mt-8 flex flex-wrap gap-3">
               {groups.map((group) => (
                 <li key={group.id}>
@@ -200,7 +212,9 @@ function Governance() {
                   <dl className="mt-6">
                     <div className="border-t border-line py-5 ps-16">
                       <dt className="text-[16px] font-bold text-foreground">Role</dt>
-                      <dd className="mt-2 text-[16px] leading-relaxed text-muted-fg">{group.role}</dd>
+                      <dd className="mt-2 text-[16px] leading-relaxed text-muted-fg">
+                        {group.role}
+                      </dd>
                     </div>
                   </dl>
                 )}
@@ -213,12 +227,15 @@ function Governance() {
       <section className="bg-surface py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Governance FAQ</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
+              Governance FAQ
+            </p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[42px]">
               Clear answers on how WBC governance works
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
-              Quick guidance on leadership structure, member participation, and how decisions are made across the council.
+              Quick guidance on leadership structure, member participation, and how decisions are
+              made across the council.
             </p>
           </div>
 
@@ -254,7 +271,9 @@ function Governance() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="px-5 pb-7 text-[17px] leading-relaxed text-muted-fg sm:px-8">{faq.answer}</p>
+                      <p className="px-5 pb-7 text-[17px] leading-relaxed text-muted-fg sm:px-8">
+                        {faq.answer}
+                      </p>
                     </div>
                   </div>
                 </li>

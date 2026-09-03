@@ -4,31 +4,23 @@ import heroImg from "@/assets/who-we-are-hero.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WhoWeArePageContent, WhoWeAreValue } from "@/content/who-we-are";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/who-we-are")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(whoWeAreQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "Who We Are — World Business Council" },
-        {
-          name: "description",
-          content:
-            "The World Business Council is an international business support organization built on trust, connection, cooperation, and long-term growth for businesses worldwide.",
-        },
-        { property: "og:title", content: "Who We Are — World Business Council" },
-        {
-          property: "og:description",
-          content: "Our story, vision, mission, and the six core values that guide the WBC network.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "About World Business Council (WBC)";
+    const description =
+      loaderData?.hero?.description ??
+      "The World Business Council is an international business support organization built on trust, connection, cooperation, and long-term growth for businesses worldwide.";
+    return seoHead({
+      title,
+      description,
+      path: "/who-we-are",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: WhoWeAre,
 });
@@ -122,16 +114,24 @@ function OurValues({ values }: { values: WhoWeAreValue[] }) {
         <p data-reveal className="eyebrow">
           Core Values
         </p>
-        <h2 data-reveal className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]">
+        <h2
+          data-reveal
+          className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]"
+        >
           Principles of WBC.
         </h2>
         <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
-          The standards that shape how we connect people, support businesses, and build lasting cooperation worldwide.
+          The standards that shape how we connect people, support businesses, and build lasting
+          cooperation worldwide.
         </p>
         <span data-reveal className="accent-rule mt-6" />
       </div>
 
-      <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      <ul
+        data-reveal
+        data-reveal-group
+        className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6"
+      >
         {values.map((v, i) => {
           const featured = i === 0 || i === 3;
           return (
@@ -166,7 +166,9 @@ function OurValues({ values }: { values: WhoWeAreValue[] }) {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className={`relative mt-7 text-[18px] font-bold sm:text-[19px] ${featured ? "text-white" : "text-foreground"}`}>
+                <h3
+                  className={`relative mt-7 text-[18px] font-bold sm:text-[19px] ${featured ? "text-white" : "text-foreground"}`}
+                >
                   {v.title}
                 </h3>
                 <p
@@ -200,7 +202,10 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="w-full max-w-xl">
@@ -274,14 +279,25 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
                 className="flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground"
                 aria-hidden="true"
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                >
                   <circle cx="12" cy="12" r="9" />
                   <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
                 </svg>
               </span>
               <div>
-                <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">{story.kicker}</p>
-                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">{story.title}</p>
+                <p className="text-[13px] font-bold tracking-[0.2em] text-foreground uppercase">
+                  {story.kicker}
+                </p>
+                <p className="mt-1 text-[19px] font-bold text-foreground sm:text-[22px]">
+                  {story.title}
+                </p>
               </div>
             </div>
 
@@ -297,20 +313,36 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
             ) : null}
 
             {restParagraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 24)} className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]">
+              <p
+                key={paragraph.slice(0, 24)}
+                className="mt-8 text-[17px] leading-[1.95] text-foreground/85 sm:text-[18px]"
+              >
                 {paragraph}
               </p>
             ))}
           </div>
 
           <div className="flex flex-col gap-6">
-            <article data-reveal className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8">
+            <article
+              data-reveal
+              className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8"
+            >
               <span
                 className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
                 aria-hidden="true"
               />
-              <span className="relative flex size-11 items-center justify-center rounded-none bg-white/10 text-white" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <span
+                className="relative flex size-11 items-center justify-center rounded-none bg-white/10 text-white"
+                aria-hidden="true"
+              >
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                >
                   <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" />
                   <circle cx="12" cy="12" r="2.6" />
                 </svg>
@@ -335,7 +367,14 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
                 className="relative flex size-11 items-center justify-center rounded-none bg-orange/10 text-foreground"
                 aria-hidden="true"
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                >
                   <circle cx="12" cy="12" r="8.5" />
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
@@ -355,7 +394,9 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
             >
               {STAT_LABELS.map(({ key, label }) => (
                 <div key={key} className="min-w-0 text-center sm:text-start">
-                  <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">{stats[key]}</dt>
+                  <dt className="text-[18px] font-bold text-foreground sm:text-[20px]">
+                    {stats[key]}
+                  </dt>
                   <dd className="mt-1 text-[11px] leading-snug tracking-[0.06em] text-muted-fg uppercase sm:text-[12px]">
                     {label}
                   </dd>

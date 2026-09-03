@@ -68,38 +68,39 @@ const cssLink = cssEntry
 
 // Always emit a static SPA shell so index.html references the latest hashed assets
 // and runs SW cleanup before the app bundle (critical for the production freeze fix).
+const SITE_URL = (process.env.VITE_SITE_URL || "https://wbccme.org").replace(/\/$/, "");
+const DEFAULT_DESC =
+  "World Business Council (WBC) is an international business support organization connecting businesses, entrepreneurs, professionals, institutions, and business organizations worldwide.";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 writeFileSync(
   join(staging, "index.html"),
   `<!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>World Business Council</title>
-    <meta
-      name="description"
-      content="Building a global network that empowers businesses through collaboration, innovation, and trust."
-    />
+    <title>World Business Council (WBC) | Global Business Network</title>
+    <meta name="description" content="${DEFAULT_DESC}" />
+    <meta name="developer" content="Abdul Sami Fazilyar" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#1a3a5c" />
+    <link rel="canonical" href="${SITE_URL}/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:site_name" content="World Business Council" />
-    <meta property="og:title" content="World Business Council" />
-    <meta
-      property="og:description"
-      content="Building a global network that empowers businesses through collaboration, innovation, and trust."
-    />
+    <meta property="og:title" content="World Business Council (WBC) | Global Business Network" />
+    <meta property="og:description" content="${DEFAULT_DESC}" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="${SITE_URL}/" />
+    <meta property="og:image" content="${OG_IMAGE}" />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="World Business Council" />
-    <meta
-      name="twitter:description"
-      content="Building a global network that empowers businesses through collaboration, innovation, and trust."
-    />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:title" content="World Business Council (WBC) | Global Business Network" />
+    <meta name="twitter:description" content="${DEFAULT_DESC}" />
+    <meta name="twitter:image" content="${OG_IMAGE}" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
@@ -141,7 +142,8 @@ writeFileSync(
       ],
       rewrites: [
         {
-          source: "/((?!assets/|image-cache-sw.js|favicon\\.svg|favicon\\.ico|favicon-.*\\.png|apple-touch-icon\\.png|site\\.webmanifest|robots\\.txt).*)",
+          source:
+            "/((?!assets/|image-cache-sw.js|favicon\\.svg|favicon\\.ico|favicon-.*\\.png|apple-touch-icon\\.png|site\\.webmanifest|robots\\.txt|sitemap\\.xml|og-image\\.png).*)",
           destination: "/index.html",
         },
       ],

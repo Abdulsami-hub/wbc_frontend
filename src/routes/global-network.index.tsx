@@ -6,31 +6,23 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { globalNetworkQueryOptions } from "@/lib/queries/global-network";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/global-network/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(globalNetworkQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "Global Network — World Business Council" },
-        {
-          name: "description",
-          content:
-            "WBC's global network: headquarters, affiliates, members, sponsors, and strategic partners connecting businesses worldwide.",
-        },
-        { property: "og:title", content: "WBC Global Network" },
-        {
-          property: "og:description",
-          content: "Headquarters, affiliates, members, sponsors, and strategic partners.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Global Network";
+    const description =
+      loaderData?.hero?.description ??
+      "Discover the World Business Council global network of affiliates, members, and strategic partners.";
+    return seoHead({
+      title,
+      description,
+      path: "/global-network",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: GlobalNetwork,
 });
@@ -39,7 +31,10 @@ function GlobalNetworkSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-teal lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-32 bg-white/20" />
@@ -106,13 +101,14 @@ function GlobalNetwork() {
               Become part of the WBC Global Network
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
-              Become part of the WBC Global Network by joining as a member, sponsor or strategic partner, and connect
-              with a growing international community committed to collaboration, innovation, and shared success.
+              Become part of the WBC Global Network by joining as a member, sponsor or strategic
+              partner, and connect with a growing international community committed to
+              collaboration, innovation, and shared success.
             </p>
             <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-              Lead WBC&apos;s mission in your country or city by establishing a WBC Affiliate and become the official
-              local representative, connecting businesses with global opportunities while strengthening your local
-              business community.
+              Lead WBC&apos;s mission in your country or city by establishing a WBC Affiliate and
+              become the official local representative, connecting businesses with global
+              opportunities while strengthening your local business community.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/become-a-member" className="btn-orange">
@@ -129,7 +125,9 @@ function GlobalNetwork() {
       <section className="border-t border-line bg-surface/50 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">Network Structure</p>
+            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">
+              Network Structure
+            </p>
             <h2 className="mt-4 text-[30px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[46px]">
               Connected layers
             </h2>
@@ -146,7 +144,9 @@ function GlobalNetwork() {
                   <span className="absolute top-6 end-7 text-[14px] font-bold tabular-nums text-line">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-7 text-[21px] leading-snug font-bold text-foreground">{pillar.title}</h3>
+                  <h3 className="mt-7 text-[21px] leading-snug font-bold text-foreground">
+                    {pillar.title}
+                  </h3>
                   <p className="mt-4 text-[16px] leading-[1.75] text-muted-fg">{pillar.body}</p>
                   <span className="link-arrow mt-6">
                     Learn more
@@ -170,14 +170,19 @@ function GlobalNetwork() {
           >
             {stats.map((stat) => (
               <div key={stat.label} className="bg-background p-8">
-                <p className="text-[38px] leading-none font-extrabold tracking-tight text-foreground">{stat.value}</p>
+                <p className="text-[38px] leading-none font-extrabold tracking-tight text-foreground">
+                  {stat.value}
+                </p>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{stat.label}</p>
               </div>
             ))}
           </div>
           <div data-reveal className="mt-10 text-center">
             <Link to="/affiliates" className="text-[16px] font-bold text-foreground">
-              See where WBC is represented <span aria-hidden="true" className="rtl-mirror">→</span>
+              See where WBC is represented{" "}
+              <span aria-hidden="true" className="rtl-mirror">
+                →
+              </span>
             </Link>
           </div>
         </div>

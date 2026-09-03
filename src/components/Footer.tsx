@@ -145,14 +145,17 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} World Business Council. {t("footer.rights")}
           </p>
-          <div className="flex gap-6">
-            <Link to="/contact" className="transition-colors hover:text-white">
-              {t("footer.privacy")}
-            </Link>
-            <Link to="/contact" className="transition-colors hover:text-white">
-              {t("footer.terms")}
-            </Link>
-          </div>
+          <p>
+            Developed by:{" "}
+            <a
+              href="https://ncp.af"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              Naikbeen control panel
+            </a>
+          </p>
         </div>
       </div>
     </footer>

@@ -11,31 +11,23 @@ import type {
   AffiliateStatus,
 } from "@/content/affiliates";
 import { affiliatesQueryOptions } from "@/lib/queries/affiliates";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/affiliates/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(affiliatesQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "WBC Affiliates — Global Affiliate Footprint" },
-        {
-          name: "description",
-          content:
-            "Explore WBC affiliate presence across Africa & the Middle East, Europe, Asia & the Pacific, North America, and Latin America, country by country.",
-        },
-        { property: "og:title", content: "WBC Affiliates — Around the World" },
-        {
-          property: "og:description",
-          content: "Affiliate presence by region, country, and city across the global WBC network.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Affiliates";
+    const description =
+      loaderData?.hero?.description ??
+      "Explore World Business Council affiliates connecting businesses across regions and cities.";
+    return seoHead({
+      title,
+      description,
+      path: "/affiliates",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: Affiliates,
 });
@@ -203,14 +195,18 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
             </Link>
           </h2>
           {region.blurb ? (
-            <p className="mt-4 max-w-3xl text-[16px] leading-relaxed text-muted-fg">{region.blurb}</p>
+            <p className="mt-4 max-w-3xl text-[16px] leading-relaxed text-muted-fg">
+              {region.blurb}
+            </p>
           ) : null}
         </div>
 
         {countries.length > 0 ? (
           <>
             <div className="mt-8 rounded-card border border-line bg-background p-5 sm:flex sm:items-center sm:gap-6 sm:p-6">
-              <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">Sort by</p>
+              <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
+                Sort by
+              </p>
               <ul className="mt-4 flex flex-wrap gap-3 sm:mt-0">
                 {SORTS.map((s) => (
                   <li key={s.id}>
@@ -249,7 +245,8 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
           >
             <p className="text-[16px] font-semibold text-foreground">No countries assigned yet.</p>
             <p className="mt-2 text-[15px] leading-relaxed text-muted-fg">
-              Affiliate countries for this region will appear here once they are added in the admin panel.
+              Affiliate countries for this region will appear here once they are added in the admin
+              panel.
             </p>
           </div>
         )}
@@ -280,7 +277,10 @@ function Affiliates() {
   return (
     <>
       <section className="relative">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
         <div className="lg:grid lg:grid-cols-2">
           <div className="relative z-[1] flex items-center bg-teal lg:absolute lg:inset-y-0 lg:start-0 lg:w-1/2 lg:bg-transparent">
             <div className="w-full px-5 py-12 sm:px-6 lg:py-8 lg:ps-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pe-10">
@@ -295,7 +295,10 @@ function Affiliates() {
                 {hero.tags.length > 0 && (
                   <ul className="intro-4 mt-7 flex flex-wrap gap-3">
                     {hero.tags.map((t) => (
-                      <li key={t} className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white">
+                      <li
+                        key={t}
+                        className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white"
+                      >
                         {t}
                       </li>
                     ))}
@@ -340,8 +343,8 @@ function Affiliates() {
               About WBC around the world
             </h2>
             <p className="mt-6 text-[16px] leading-relaxed text-muted-fg">
-              This page presents WBC presence across regions and cities, helping visitors quickly understand where the
-              network is represented worldwide.
+              This page presents WBC presence across regions and cities, helping visitors quickly
+              understand where the network is represented worldwide.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <div className="inline-flex items-center gap-2.5 rounded-card border border-teal/55 bg-teal/5 px-4 py-2.5 text-[14px] font-semibold text-teal">
@@ -364,8 +367,12 @@ function Affiliates() {
       <section className="border-t border-line bg-surface/40 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">FAQ</p>
-            <h2 className="mt-4 text-[28px] font-bold text-foreground sm:text-[36px]">Affiliate questions</h2>
+            <p className="font-display text-[12px] tracking-[0.22em] text-muted-fg uppercase">
+              FAQ
+            </p>
+            <h2 className="mt-4 text-[28px] font-bold text-foreground sm:text-[36px]">
+              Affiliate questions
+            </h2>
           </div>
           <ul data-reveal data-reveal-group className="mt-8 space-y-4">
             {faqs.map((f) => (
@@ -395,8 +402,8 @@ function Affiliates() {
             Establish a WBC Affiliate
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-            We present a comprehensive service package tailored for organizations, businesses and executives seeking to
-            establish a WBC in their respective cities or countries.
+            We present a comprehensive service package tailored for organizations, businesses and
+            executives seeking to establish a WBC in their respective cities or countries.
           </p>
           <Link to="/contact" className="btn-orange mt-9">
             Fill the Application Form

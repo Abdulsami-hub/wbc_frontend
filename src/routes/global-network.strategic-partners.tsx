@@ -8,29 +8,24 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { strategicPartnersQueryOptions } from "@/lib/queries/strategic-partners";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/global-network/strategic-partners")({
-  loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(strategicPartnersQueryOptions),
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(strategicPartnersQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "Partners and Sponsors — World Business Council";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Strategic Partners";
     const description =
-      loaderData?.hero.description ??
-      "Explore WBC strategic partners, media sponsors, and corporate sponsors supporting programmes worldwide.";
-
-    return {
-      meta: [
-        { title: `${title} — WBC` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "Strategic partners working with the World Business Council to create international business opportunities.";
+    return seoHead({
+      title,
+      description,
+      path: "/global-network/strategic-partners",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: StrategicPartners,
 });
@@ -39,7 +34,10 @@ function StrategicPartnersSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />
@@ -152,7 +150,11 @@ function StrategicPartners() {
               ) : null}
 
               {hasSponsorCards ? (
-                <div data-reveal data-reveal-group className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
+                <div
+                  data-reveal
+                  data-reveal-group
+                  className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2"
+                >
                   {sponsorCards.map((card) => (
                     <article
                       key={card.id}
@@ -162,9 +164,13 @@ function StrategicPartners() {
                         className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100"
                         aria-hidden="true"
                       />
-                      <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">{card.title}</p>
+                      <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
+                        {card.title}
+                      </p>
                       {card.body ? (
-                        <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">{card.body}</p>
+                        <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
+                          {card.body}
+                        </p>
                       ) : null}
                     </article>
                   ))}
@@ -173,8 +179,14 @@ function StrategicPartners() {
             </div>
 
             {hasWhyPartner ? (
-              <aside data-reveal className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-orange/20" aria-hidden="true" />
+              <aside
+                data-reveal
+                className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8"
+              >
+                <span
+                  className="guide-glow -end-10 -top-10 size-36 bg-orange/20"
+                  aria-hidden="true"
+                />
                 {whyPartner.kicker ? (
                   <p className="relative text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
                     {whyPartner.kicker}
@@ -183,10 +195,15 @@ function StrategicPartners() {
                 {whyPartner.items.length > 0 ? (
                   <ul className="relative mt-5 space-y-4">
                     {whyPartner.items.map((item) => (
-                      <li key={item.id} className="border-b border-line pb-4 last:border-0 last:pb-0">
+                      <li
+                        key={item.id}
+                        className="border-b border-line pb-4 last:border-0 last:pb-0"
+                      >
                         <p className="text-[16px] font-bold text-foreground">{item.title}</p>
                         {item.body ? (
-                          <p className="mt-1.5 text-[14px] leading-relaxed text-muted-fg">{item.body}</p>
+                          <p className="mt-1.5 text-[14px] leading-relaxed text-muted-fg">
+                            {item.body}
+                          </p>
                         ) : null}
                       </li>
                     ))}
@@ -222,17 +239,26 @@ function StrategicPartners() {
                 </h2>
               ) : null}
               {whoWePartner.description ? (
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">{whoWePartner.description}</p>
+                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
+                  {whoWePartner.description}
+                </p>
               ) : null}
               <span className="accent-rule mt-6" />
             </div>
 
             {whoWePartner.pillars.length > 0 ? (
-              <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <ul
+                data-reveal
+                data-reveal-group
+                className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              >
                 {whoWePartner.pillars.map((pillar, i) => (
                   <li key={pillar.id}>
                     <article className="group guide-card flex h-full flex-col border border-line bg-background p-6 sm:p-7">
-                      <span className="guide-glow -end-10 -top-10 size-28 bg-orange/20" aria-hidden="true" />
+                      <span
+                        className="guide-glow -end-10 -top-10 size-28 bg-orange/20"
+                        aria-hidden="true"
+                      />
                       <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
                         {String(i + 1).padStart(2, "0")}
                       </span>
@@ -240,7 +266,9 @@ function StrategicPartners() {
                         {pillar.title}
                       </h3>
                       {pillar.body ? (
-                        <p className="relative mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">{pillar.body}</p>
+                        <p className="relative mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">
+                          {pillar.body}
+                        </p>
                       ) : null}
                       <span className="guide-accent relative mt-6" aria-hidden="true" />
                     </article>
@@ -256,8 +284,14 @@ function StrategicPartners() {
         <section className="border-t border-line py-14 lg:py-20">
           <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
             {hasOutcomes ? (
-              <div data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-navy/15" aria-hidden="true" />
+              <div
+                data-reveal
+                className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9"
+              >
+                <span
+                  className="guide-glow -end-10 -top-10 size-36 bg-navy/15"
+                  aria-hidden="true"
+                />
                 {outcomes.kicker ? <p className="relative eyebrow">{outcomes.kicker}</p> : null}
                 {outcomes.title ? (
                   <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
@@ -274,7 +308,9 @@ function StrategicPartners() {
                         <div>
                           <p className="text-[16px] font-bold text-foreground">{item.title}</p>
                           {item.body ? (
-                            <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">{item.body}</p>
+                            <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">
+                              {item.body}
+                            </p>
                           ) : null}
                         </div>
                       </li>
@@ -306,7 +342,10 @@ function StrategicPartners() {
                 {focusAreas.items.length > 0 ? (
                   <ul className="relative mt-8 space-y-3.5">
                     {focusAreas.items.map((item) => (
-                      <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-white/80">
+                      <li
+                        key={item}
+                        className="flex gap-3 text-[15px] leading-relaxed text-white/80"
+                      >
                         <svg
                           className="mt-1 size-4 shrink-0 text-orange"
                           viewBox="0 0 24 24"
@@ -341,18 +380,28 @@ function StrategicPartners() {
           <div className="container-wbc relative">
             <div data-reveal className="max-w-2xl">
               {process.kicker ? (
-                <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">{process.kicker}</p>
+                <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                  {process.kicker}
+                </p>
               ) : null}
               {process.title ? (
-                <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">{process.title}</h2>
+                <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">
+                  {process.title}
+                </h2>
               ) : null}
               {process.description ? (
-                <p className="mt-4 text-[16px] leading-relaxed text-white/75">{process.description}</p>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/75">
+                  {process.description}
+                </p>
               ) : null}
             </div>
 
             {process.steps.length > 0 ? (
-              <ol data-reveal data-reveal-group className="relative mt-12 grid gap-6 lg:grid-cols-3">
+              <ol
+                data-reveal
+                data-reveal-group
+                className="relative mt-12 grid gap-6 lg:grid-cols-3"
+              >
                 <span
                   className="guide-process-line pointer-events-none absolute top-8 start-[16%] end-[16%] hidden h-px bg-gradient-to-r from-transparent via-orange/70 to-transparent lg:block"
                   aria-hidden="true"
@@ -367,9 +416,13 @@ function StrategicPartners() {
                       <span className="relative inline-flex size-12 items-center justify-center bg-orange text-[14px] font-bold tabular-nums text-white transition-transform duration-300 group-hover:scale-110">
                         {step.step}
                       </span>
-                      <h3 className="relative mt-5 text-[20px] font-bold text-white">{step.title}</h3>
+                      <h3 className="relative mt-5 text-[20px] font-bold text-white">
+                        {step.title}
+                      </h3>
                       {step.body ? (
-                        <p className="relative mt-3 text-[15px] leading-relaxed text-white/75">{step.body}</p>
+                        <p className="relative mt-3 text-[15px] leading-relaxed text-white/75">
+                          {step.body}
+                        </p>
                       ) : null}
                     </article>
                   </li>
@@ -393,7 +446,9 @@ function StrategicPartners() {
               />
               {cta.kicker ? <p className="eyebrow">{cta.kicker}</p> : null}
               {cta.title ? (
-                <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">{cta.title}</h2>
+                <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+                  {cta.title}
+                </h2>
               ) : null}
               {cta.description ? (
                 <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
@@ -408,7 +463,11 @@ function StrategicPartners() {
                     </CmsLink>
                   ) : null}
                   {closingSecondary ? (
-                    <CmsLink href={closingSecondary.url} fallback="/global-network" className="btn-navy !rounded-md">
+                    <CmsLink
+                      href={closingSecondary.url}
+                      fallback="/global-network"
+                      className="btn-navy !rounded-md"
+                    >
                       {closingSecondary.label}
                     </CmsLink>
                   ) : null}
@@ -420,10 +479,10 @@ function StrategicPartners() {
       ) : null}
 
       <CTASection
-        title={siteCta ? (cta.title.trim() || hero.title) : hero.title}
+        title={siteCta ? cta.title.trim() || hero.title : hero.title}
         description={cta.description.trim() || hero.description}
         ctaLabel={siteCta?.label ?? "Contact Us"}
-        to={siteCta ? resolveCta(siteCta.url).ctaTo ?? "/contact" : "/contact"}
+        to={siteCta ? (resolveCta(siteCta.url).ctaTo ?? "/contact") : "/contact"}
       />
     </>
   );

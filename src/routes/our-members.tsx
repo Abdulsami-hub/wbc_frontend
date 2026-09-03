@@ -6,34 +6,33 @@ import heroImg from "@/assets/our-members-hero.png";
 import { CTASection } from "@/components/CTASection";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { OurMemberAccent, OurMemberCategory, OurMemberKind, OurMemberTile } from "@/content/our-members";
+import type {
+  OurMemberAccent,
+  OurMemberCategory,
+  OurMemberKind,
+  OurMemberTile,
+} from "@/content/our-members";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { ourMembersQueryOptions } from "@/lib/queries/our-members";
+import { seoHead } from "@/lib/seo";
 
 const MEMBERS_GRID_LIMIT = 20;
 
 export const Route = createFileRoute("/our-members")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(ourMembersQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "Our Members — WBC Members Network Directory";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Our Members";
     const description =
-      loaderData?.hero.description ??
-      "Browse the WBC members network by category: institutional, corporate, SME, individual, and honorary members across sectors and regions.";
-
-    return {
-      meta: [
-        { title: `${title} — WBC` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "Institutional members of the World Business Council network.";
+    return seoHead({
+      title,
+      description,
+      path: "/our-members",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: OurMembers,
 });
@@ -88,7 +87,15 @@ function initials(name: string) {
 
 function ArrowUpRight() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      aria-hidden="true"
+    >
       <path d="M7 17L17 7M9 7h8v8" />
     </svg>
   );
@@ -111,7 +118,9 @@ function MemberLogo({
         {member.logo ? (
           <img src={member.logo} alt="" className="size-full object-cover object-top" />
         ) : (
-          <span className={`text-[22px] font-bold ${accent.logoText}`}>{initials(member.name)}</span>
+          <span className={`text-[22px] font-bold ${accent.logoText}`}>
+            {initials(member.name)}
+          </span>
         )}
       </span>
     );
@@ -124,7 +133,9 @@ function MemberLogo({
       {member.logo ? (
         <img src={member.logo} alt="" className="max-h-[70%] max-w-[80%] object-contain" />
       ) : (
-        <span className={`text-[20px] font-bold tracking-wide ${accent.logoText}`}>{initials(member.name)}</span>
+        <span className={`text-[20px] font-bold tracking-wide ${accent.logoText}`}>
+          {initials(member.name)}
+        </span>
       )}
     </span>
   );
@@ -189,7 +200,14 @@ function CategoryMembersList({
   const extraCount = extra.length;
   const [expanded, setExpanded] = useState(false);
   const visibleCount = visible.length + (expanded ? extraCount : 0);
-  const unit = kind === "person" ? (extraCount === 1 ? "profile" : "profiles") : extraCount === 1 ? "organisation" : "organisations";
+  const unit =
+    kind === "person"
+      ? extraCount === 1
+        ? "profile"
+        : "profiles"
+      : extraCount === 1
+        ? "organisation"
+        : "organisations";
 
   const renderGrid = (items: OurMemberTile[], id: string, animate = false) => (
     <ul
@@ -276,12 +294,16 @@ function CategoryBlock({ cat, index }: { cat: OurMemberCategory; index: number }
             <p className="text-[12px] font-semibold tracking-[0.2em] text-muted-fg uppercase">
               Category {String(index + 1).padStart(2, "0")}
             </p>
-            <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">{cat.name}</h3>
+            <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">
+              {cat.name}
+            </h3>
             <p className="mt-2 text-[13px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
               {cat.members.length} {cat.members.length === 1 ? "profile" : "profiles"}
             </p>
           </div>
-          {cat.desc ? <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p> : null}
+          {cat.desc ? (
+            <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p>
+          ) : null}
         </div>
 
         <hr className="mt-8 border-line" />
@@ -296,7 +318,10 @@ function OurMembersSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />
@@ -369,8 +394,8 @@ function OurMembers() {
               Browse Members by Category
             </h2>
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-              Explore category groups and open each member profile from its card. Linked members open their website when
-              available.
+              Explore category groups and open each member profile from its card. Linked members
+              open their website when available.
             </p>
           </div>
 
@@ -381,12 +406,17 @@ function OurMembers() {
               ))}
             </ul>
           ) : (
-            <p className="mt-12 text-[16px] text-muted-fg">Member categories will appear here once published.</p>
+            <p className="mt-12 text-[16px] text-muted-fg">
+              Member categories will appear here once published.
+            </p>
           )}
 
           <div data-reveal className="mt-12">
             <Link to="/membership" className="btn-orange">
-              View Membership Categories <span aria-hidden="true" className="rtl-mirror">→</span>
+              View Membership Categories{" "}
+              <span aria-hidden="true" className="rtl-mirror">
+                →
+              </span>
             </Link>
           </div>
         </div>

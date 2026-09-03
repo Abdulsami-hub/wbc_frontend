@@ -7,29 +7,23 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { membershipQueryOptions } from "@/lib/queries/membership";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/membership/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(membershipQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "WBC Membership — Types, Benefits, Fees";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Membership";
     const description =
-      loaderData?.hero.description ??
-      "Explore WBC membership types, benefits, and fees — institutional, corporate, SME, individual, and honorary membership.";
-
-    return {
-      meta: [
-        { title: `${title} — WBC` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "World Business Council membership options, benefits, and how to join the global business network.";
+    return seoHead({
+      title,
+      description,
+      path: "/membership",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: MembershipOverview,
 });
@@ -38,7 +32,10 @@ function MembershipSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-navy lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-navy lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-navy lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />
@@ -75,7 +72,8 @@ function MembershipOverview() {
   if (isPending) return <MembershipSkeleton />;
   if (!data) return null;
 
-  const { hero, typesHeader, highlights, types, why, benefitsHeader, planTiers, planBenefits } = data;
+  const { hero, typesHeader, highlights, types, why, benefitsHeader, planTiers, planBenefits } =
+    data;
   const heroCta = hero.cta ? resolveCta(hero.cta.url) : null;
 
   return (
@@ -120,7 +118,11 @@ function MembershipOverview() {
               </div>
             ) : null}
 
-            <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul
+              data-reveal
+              data-reveal-group
+              className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            >
               {why.items.map((b, i) => (
                 <li key={b.id}>
                   <article className="group h-full rounded-card border border-line bg-background p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-7">
@@ -144,7 +146,10 @@ function MembershipOverview() {
           <div className="container-wbc">
             <div className="mx-auto max-w-2xl text-center">
               {benefitsHeader.kicker ? (
-                <p data-reveal className="text-[12px] font-bold tracking-[0.2em] text-orange uppercase">
+                <p
+                  data-reveal
+                  className="text-[12px] font-bold tracking-[0.2em] text-orange uppercase"
+                >
                   {benefitsHeader.kicker}
                 </p>
               ) : null}
@@ -168,7 +173,10 @@ function MembershipOverview() {
             </div>
 
             {benefitsHeader.disclaimer ? (
-              <p data-reveal className="mx-auto mt-8 max-w-3xl text-center text-[13px] leading-relaxed text-muted-fg">
+              <p
+                data-reveal
+                className="mx-auto mt-8 max-w-3xl text-center text-[13px] leading-relaxed text-muted-fg"
+              >
                 {benefitsHeader.disclaimer}
               </p>
             ) : null}

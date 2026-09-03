@@ -4,32 +4,23 @@ import heroImg from "@/assets/wwd-hero.jpg";
 import { ServiceCard } from "@/components/ServiceCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/what-we-do")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(whatWeDoQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "What We Do — Core Activities & Services | WBC" },
-        {
-          name: "description",
-          content:
-            "WBC's strategic pillars of support: global networking, council development, trade facilitation, events, advisory, training, membership services, and more.",
-        },
-        { property: "og:title", content: "Core Activities & Services — WBC" },
-        {
-          property: "og:description",
-          content:
-            "A structured overview of WBC services across networking, advisory support, events, and growth initiatives.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "What We Do | Business Services";
+    const description =
+      loaderData?.hero?.description ??
+      "Explore how the World Business Council supports businesses through networking, advocacy, knowledge, and international cooperation.";
+    return seoHead({
+      title,
+      description,
+      path: "/what-we-do",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: WhatWeDo,
 });
@@ -37,7 +28,10 @@ export const Route = createFileRoute("/what-we-do")({
 function WhatWeDoHeroSkeleton() {
   return (
     <section className="relative flex flex-col">
-      <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+      <div
+        className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+        aria-hidden="true"
+      />
       <div className="bg-teal lg:bg-transparent">
         <div className="container-wbc py-16 lg:py-24">
           <Skeleton className="h-6 w-32 bg-white/20" />
@@ -76,7 +70,10 @@ function WhatWeDo() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-teal lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
@@ -127,8 +124,8 @@ function WhatWeDo() {
                   Strategic Pillars of Support
                 </h2>
                 <p className="mt-5 max-w-3xl text-[16px] leading-relaxed text-muted-fg">
-                  A structured, image-led overview of WBC services designed to help organizations identify
-                  where cooperation starts and where growth can be accelerated.
+                  A structured, image-led overview of WBC services designed to help organizations
+                  identify where cooperation starts and where growth can be accelerated.
                 </p>
               </div>
               <span
@@ -154,7 +151,9 @@ function WhatWeDo() {
                   body={service.body}
                   image={service.image}
                   index={i}
-                  className={i === services.length - 1 && services.length % 2 !== 0 ? "lg:col-span-2" : ""}
+                  className={
+                    i === services.length - 1 && services.length % 2 !== 0 ? "lg:col-span-2" : ""
+                  }
                 />
               ))}
             </ul>

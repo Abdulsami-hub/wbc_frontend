@@ -8,29 +8,23 @@ import { JobListingCard } from "@/components/jobs/JobListingCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { jobsQueryOptions } from "@/lib/queries/jobs";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/jobs/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(jobsQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "Jobs & Internships — World Business Council";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Careers & Opportunities";
     const description =
-      loaderData?.hero.description ??
-      "Internship opportunities at the World Business Council: join our remote, part-time teams across international business roles.";
-
-    return {
-      meta: [
-        { title: `${title} — WBC` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "Internship and career opportunities at the World Business Council.";
+    return seoHead({
+      title,
+      description,
+      path: "/jobs",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: JobsPage,
 });
@@ -39,7 +33,10 @@ function JobsSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-navy lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-navy lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-navy lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />

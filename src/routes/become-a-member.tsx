@@ -7,29 +7,23 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { becomeAMemberQueryOptions } from "@/lib/queries/become-a-member";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/become-a-member")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(becomeAMemberQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "Become a Member — World Business Council";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Become a Member";
     const description =
-      loaderData?.hero.description ??
-      "Apply for WBC membership online. Fill the application form, process payment, and receive confirmation within 3 working days.";
-
-    return {
-      meta: [
-        { title: `${title} — WBC` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "Apply to become a World Business Council member and join a global community of businesses and professionals.";
+    return seoHead({
+      title,
+      description,
+      path: "/become-a-member",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: BecomeAMember,
 });
@@ -38,7 +32,10 @@ function BecomeAMemberSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />
@@ -131,14 +128,21 @@ function BecomeAMember() {
               ) : null}
               {eligibility.cta ? (
                 <div className="mt-10">
-                  <CmsLink href={eligibility.cta.url} className="btn-navy !rounded-md" fallback="/membership">
+                  <CmsLink
+                    href={eligibility.cta.url}
+                    className="btn-navy !rounded-md"
+                    fallback="/membership"
+                  >
                     {eligibility.cta.label}
                   </CmsLink>
                 </div>
               ) : null}
             </div>
 
-            <div data-reveal className="relative min-h-[320px] overflow-hidden rounded-card lg:min-h-full">
+            <div
+              data-reveal
+              className="relative min-h-[320px] overflow-hidden rounded-card lg:min-h-full"
+            >
               <img
                 src={eligibility.image ?? membershipImg}
                 alt={eligibility.imageAlt}
@@ -184,7 +188,10 @@ function BecomeAMember() {
           <div className="container-wbc relative">
             <div className="mx-auto max-w-2xl text-center">
               {apply.kicker ? (
-                <p data-reveal className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                <p
+                  data-reveal
+                  className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase"
+                >
                   {apply.kicker}
                 </p>
               ) : null}
@@ -204,7 +211,11 @@ function BecomeAMember() {
             </div>
 
             {apply.steps.length > 0 ? (
-              <ol data-reveal data-reveal-group className="relative mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
+              <ol
+                data-reveal
+                data-reveal-group
+                className="relative mt-14 grid gap-5 md:grid-cols-3 md:gap-6"
+              >
                 <span
                   className="pointer-events-none absolute top-[2.75rem] start-[16%] end-[16%] hidden h-px bg-white/20 md:block"
                   aria-hidden="true"

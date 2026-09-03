@@ -7,17 +7,32 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { contactQueryOptions } from "@/lib/queries/contact";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  // Per-route `head` is omitted for the static SPA — TanStack head sync on the
-  // live document was freezing Chrome when focusing Contact inputs.
+  // Static head only (no loader-dependent meta) to avoid historical SPA head-sync issues on this form page.
+  head: () =>
+    seoHead({
+      title: "Contact World Business Council (WBC)",
+      description:
+        "Contact the World Business Council for membership, partnerships, events, and general enquiries.",
+      path: "/contact",
+    }),
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(contactQueryOptions),
   component: Contact,
 });
 
 function PinIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
       <path d="M12 22s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z" />
       <circle cx="12" cy="10" r="2.5" />
     </svg>
@@ -28,7 +43,10 @@ function ContactSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-40 bg-white/20" />
@@ -90,10 +108,14 @@ function Contact() {
       <section className="py-16 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-2 lg:gap-x-14 lg:gap-y-8">
           <div>
-            <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">{info.sectionTitle}</h2>
+            <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">
+              {info.sectionTitle}
+            </h2>
             <span className="accent-rule mt-4" />
             {info.sectionDescription && (
-              <p className="mt-5 text-[16px] leading-relaxed text-muted-fg text-justify">{info.sectionDescription}</p>
+              <p className="mt-5 text-[16px] leading-relaxed text-muted-fg text-justify">
+                {info.sectionDescription}
+              </p>
             )}
 
             <dl className="mt-10 space-y-8">
@@ -112,7 +134,9 @@ function Contact() {
               )}
               {info.email && (
                 <div>
-                  <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Email</dt>
+                  <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
+                    Email
+                  </dt>
                   <dd className="mt-2">
                     <a
                       href={`mailto:${info.email}`}
@@ -125,7 +149,9 @@ function Contact() {
               )}
               {info.websiteUrl && (
                 <div>
-                  <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">Website</dt>
+                  <dt className="text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
+                    Website
+                  </dt>
                   <dd className="mt-2">
                     <a
                       href={info.websiteUrl}
@@ -162,7 +188,8 @@ function Contact() {
 
             {!info.address && !info.email && !info.websiteUrl && !info.hasMap && (
               <p className="text-[15px] text-muted-fg">
-                Contact details will appear here once they are published. You can still send a message using the form.
+                Contact details will appear here once they are published. You can still send a
+                message using the form.
               </p>
             )}
 

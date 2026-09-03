@@ -8,29 +8,23 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AFFILIATE_GUIDE_TOC } from "@/content/affiliate-guide";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { affiliateGuideQueryOptions } from "@/lib/queries/affiliate-guide";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/affiliate-guide")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(affiliateGuideQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    const title = loaderData?.hero.title ?? "WBC Affiliate Establishment Guide";
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Affiliate Guide";
     const description =
-      loaderData?.hero.description ??
-      "Establish an official WBC Affiliate. Learn about Country and City Affiliates, requirements, application process, support, and governance.";
-
-    return {
-      meta: [
-        { title: `${title} — World Business Council` },
-        { name: "description", content: description },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+      loaderData?.hero?.description ??
+      "Guidance for establishing and operating a World Business Council affiliate.";
+    return seoHead({
+      title,
+      description,
+      path: "/affiliate-guide",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: AffiliateGuide,
 });
@@ -66,7 +60,10 @@ function AffiliateGuideSkeleton() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-teal lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <Skeleton className="h-6 w-48 bg-white/20" />
@@ -101,11 +98,23 @@ function AffiliateGuide() {
   if (isPending) return <AffiliateGuideSkeleton />;
   if (!data) return null;
 
-  const { hero, overview, benefits, types, eligibilityBlocks, process, supports, financial, compliance, nextStep } =
-    data;
+  const {
+    hero,
+    overview,
+    benefits,
+    types,
+    eligibilityBlocks,
+    process,
+    supports,
+    financial,
+    compliance,
+    nextStep,
+  } = data;
 
   const heroImage = hero.image ?? networkBg;
-  const heroCta = hero.cta ? resolveCta(hero.cta.url) : { ctaTo: "/contact", ctaHref: undefined as string | undefined };
+  const heroCta = hero.cta
+    ? resolveCta(hero.cta.url)
+    : { ctaTo: "/contact", ctaHref: undefined as string | undefined };
 
   const hasOverview =
     overview.title.trim() || overview.descriptionLeft.trim() || overview.descriptionRight.trim();
@@ -158,7 +167,9 @@ function AffiliateGuide() {
                 aria-label="Guide sections"
                 className="sticky top-28 rounded-card border border-line bg-surface/90 p-5 shadow-card backdrop-blur-sm transition-shadow duration-300 hover:shadow-lg sm:p-6"
               >
-                <p className="text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">On this page</p>
+                <p className="text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">
+                  On this page
+                </p>
                 <ul className="mt-4 space-y-1">
                   {AFFILIATE_GUIDE_TOC.map((item) => (
                     <li key={item.id}>
@@ -176,7 +187,11 @@ function AffiliateGuide() {
                   ))}
                 </ul>
                 {hero.cta ? (
-                  <CmsLink href={hero.cta.url} fallback="/contact" className="btn-orange-to-outline mt-6 w-full !min-h-10 !text-[11px]">
+                  <CmsLink
+                    href={hero.cta.url}
+                    fallback="/contact"
+                    className="btn-orange-to-outline mt-6 w-full !min-h-10 !text-[11px]"
+                  >
                     {hero.cta.label}
                   </CmsLink>
                 ) : null}
@@ -187,7 +202,10 @@ function AffiliateGuide() {
       )}
 
       {benefits.length > 0 ? (
-        <section id="why" className="scroll-mt-28 relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20">
+        <section
+          id="why"
+          className="scroll-mt-28 relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20"
+        >
           <div
             className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-navy/8 blur-3xl"
             aria-hidden="true"
@@ -198,11 +216,18 @@ function AffiliateGuide() {
               <span className="accent-rule mt-6" />
             </div>
 
-            <ul data-reveal data-reveal-group className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul
+              data-reveal
+              data-reveal-group
+              className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            >
               {benefits.map((item, i) => (
                 <li key={item}>
                   <article className="group guide-card flex h-full flex-col border border-line bg-background p-5 sm:p-6">
-                    <span className="guide-glow -end-10 -top-10 size-28 bg-orange/25" aria-hidden="true" />
+                    <span
+                      className="guide-glow -end-10 -top-10 size-28 bg-orange/25"
+                      aria-hidden="true"
+                    />
                     <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -251,7 +276,9 @@ function AffiliateGuide() {
                     {type.title}
                   </h3>
                   {type.description ? (
-                    <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">{type.description}</p>
+                    <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">
+                      {type.description}
+                    </p>
                   ) : null}
                   {type.items.length > 0 ? (
                     <div className="relative mt-6">
@@ -271,15 +298,29 @@ function AffiliateGuide() {
       ) : null}
 
       {eligibilityBlocks.length > 0 ? (
-        <section id="eligibility" className="scroll-mt-28 border-t border-line bg-surface/50 py-14 lg:py-20">
+        <section
+          id="eligibility"
+          className="scroll-mt-28 border-t border-line bg-surface/50 py-14 lg:py-20"
+        >
           <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
             {eligibilityBlocks.map((block) => (
-              <div key={block.id} data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-orange/20" aria-hidden="true" />
+              <div
+                key={block.id}
+                data-reveal
+                className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9"
+              >
+                <span
+                  className="guide-glow -end-10 -top-10 size-36 bg-orange/20"
+                  aria-hidden="true"
+                />
                 <p className="relative eyebrow">{block.kindLabel}</p>
-                <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">{block.title}</h2>
+                <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
+                  {block.title}
+                </h2>
                 {block.description ? (
-                  <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">{block.description}</p>
+                  <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">
+                    {block.description}
+                  </p>
                 ) : null}
                 {block.items.length > 0 ? (
                   <div className="relative mt-6">
@@ -293,7 +334,10 @@ function AffiliateGuide() {
       ) : null}
 
       {process.steps.length > 0 ? (
-        <section id="process" className="scroll-mt-28 relative isolate overflow-hidden bg-navy py-14 lg:py-20">
+        <section
+          id="process"
+          className="scroll-mt-28 relative isolate overflow-hidden bg-navy py-14 lg:py-20"
+        >
           <div
             className="pointer-events-none absolute -end-20 top-0 size-[360px] rounded-full bg-orange/20 blur-3xl"
             aria-hidden="true"
@@ -304,12 +348,18 @@ function AffiliateGuide() {
           />
           <div className="container-wbc relative">
             <div data-reveal className="max-w-2xl">
-              <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">How to proceed</p>
+              <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                How to proceed
+              </p>
               {process.title ? (
-                <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">{process.title}</h2>
+                <h2 className="mt-3 text-[28px] font-bold leading-tight text-white sm:text-[36px]">
+                  {process.title}
+                </h2>
               ) : null}
               {process.description ? (
-                <p className="mt-4 text-[16px] leading-relaxed text-white/75">{process.description}</p>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/75">
+                  {process.description}
+                </p>
               ) : null}
             </div>
 
@@ -331,7 +381,9 @@ function AffiliateGuide() {
                     </span>
                     <h3 className="relative mt-5 text-[20px] font-bold text-white">{step.title}</h3>
                     {step.intro ? (
-                      <p className="relative mt-3 text-[14px] leading-relaxed text-white/70">{step.intro}</p>
+                      <p className="relative mt-3 text-[14px] leading-relaxed text-white/70">
+                        {step.intro}
+                      </p>
                     ) : null}
                     {step.items.length > 0 ? (
                       <div className="relative mt-5">
@@ -347,24 +399,37 @@ function AffiliateGuide() {
       ) : null}
 
       {supports.length > 0 ? (
-        <section id="support" className="scroll-mt-28 relative overflow-hidden border-t border-line py-14 lg:py-20">
+        <section
+          id="support"
+          className="scroll-mt-28 relative overflow-hidden border-t border-line py-14 lg:py-20"
+        >
           <div
             className="pointer-events-none absolute start-1/2 top-0 size-[420px] -translate-x-1/2 rounded-full bg-orange/8 blur-3xl"
             aria-hidden="true"
           />
           <div className="container-wbc relative">
-            <div data-reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div
+              data-reveal
+              className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+            >
               <div className="max-w-2xl">
                 <p className="eyebrow">Partnership</p>
                 <span className="accent-rule mt-6" />
               </div>
             </div>
 
-            <ul data-reveal data-reveal-group className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ul
+              data-reveal
+              data-reveal-group
+              className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+            >
               {supports.map((item, i) => (
                 <li key={item.id}>
                   <article className="group guide-card h-full border border-line bg-background p-6 sm:p-7">
-                    <span className="guide-glow -end-8 -top-8 size-28 bg-orange/20" aria-hidden="true" />
+                    <span
+                      className="guide-glow -end-8 -top-8 size-28 bg-orange/20"
+                      aria-hidden="true"
+                    />
                     <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/55">
                       {String(i + 1).padStart(2, "0")}
                     </span>
@@ -372,7 +437,9 @@ function AffiliateGuide() {
                       {item.title}
                     </h3>
                     {item.body ? (
-                      <p className="relative mt-2 text-[15px] leading-relaxed text-muted-fg">{item.body}</p>
+                      <p className="relative mt-2 text-[15px] leading-relaxed text-muted-fg">
+                        {item.body}
+                      </p>
                     ) : null}
                     <span className="guide-accent relative mt-5" aria-hidden="true" />
                   </article>
@@ -384,7 +451,10 @@ function AffiliateGuide() {
       ) : null}
 
       {(hasFinancial || hasCompliance) && (
-        <section id="compliance" className="scroll-mt-28 border-t border-line bg-surface/50 py-14 lg:py-20">
+        <section
+          id="compliance"
+          className="scroll-mt-28 border-t border-line bg-surface/50 py-14 lg:py-20"
+        >
           <div className="container-wbc grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
             {hasFinancial ? (
               <article
@@ -398,14 +468,20 @@ function AffiliateGuide() {
                 <p className="relative text-[12px] font-bold tracking-[0.16em] text-white/60 uppercase">
                   Financial Commitment
                 </p>
-                <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">{financial.title}</h2>
+                <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">
+                  {financial.title}
+                </h2>
                 {financial.description ? (
                   <p className="relative mt-5 text-[15px] leading-relaxed text-white/80 sm:text-[16px]">
                     {financial.description}
                   </p>
                 ) : null}
                 {financial.buttonLabel && financial.buttonUrl ? (
-                  <CmsLink href={financial.buttonUrl} fallback="/contact" className="btn-orange mt-8 inline-flex">
+                  <CmsLink
+                    href={financial.buttonUrl}
+                    fallback="/contact"
+                    className="btn-orange mt-8 inline-flex"
+                  >
                     {financial.buttonLabel}
                   </CmsLink>
                 ) : null}
@@ -413,12 +489,22 @@ function AffiliateGuide() {
             ) : null}
 
             {hasCompliance ? (
-              <article data-reveal className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
+              <article
+                data-reveal
+                className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9"
+              >
+                <span
+                  className="guide-glow -end-10 -top-10 size-36 bg-orange/15"
+                  aria-hidden="true"
+                />
                 <p className="relative eyebrow">Standards</p>
-                <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">{compliance.title}</h2>
+                <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
+                  {compliance.title}
+                </h2>
                 {compliance.description ? (
-                  <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">{compliance.description}</p>
+                  <p className="relative mt-4 text-[15px] leading-relaxed text-muted-fg">
+                    {compliance.description}
+                  </p>
                 ) : null}
                 {compliance.items.length > 0 ? (
                   <div className="relative mt-6">
@@ -443,7 +529,9 @@ function AffiliateGuide() {
                 aria-hidden="true"
               />
               <p className="eyebrow">Next step</p>
-              <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">{nextStep.title}</h2>
+              <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+                {nextStep.title}
+              </h2>
               {nextStep.description ? (
                 <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
                   {nextStep.description}

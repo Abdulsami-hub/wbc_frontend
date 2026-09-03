@@ -4,32 +4,23 @@ import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { advertisingQueryOptions } from "@/lib/queries/advertising";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/advertising")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(advertisingQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "Advertising — World Business Council" },
-        {
-          name: "description",
-          content:
-            "Advertise with WBC through video or poster/banner placements in the website footer. Reach an international business audience and promote your products, services, events and initiatives.",
-        },
-        { property: "og:title", content: "Advertising — WBC" },
-        {
-          property: "og:description",
-          content:
-            "WBC website advertising: video and poster/banner formats for businesses, organizations and institutions.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "Advertising Opportunities";
+    const description =
+      loaderData?.hero?.description ??
+      "Advertising and visibility opportunities with the World Business Council.";
+    return seoHead({
+      title,
+      description,
+      path: "/advertising",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: AdvertisingPage,
 });

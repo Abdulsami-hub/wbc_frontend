@@ -7,33 +7,24 @@ import { SimpleModal } from "@/components/SimpleModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TeamMember } from "@/content/wbc-team";
 import { wbcTeamQueryOptions } from "@/lib/queries/wbc-team";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/wbc-team/")({
   ssr: false,
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(wbcTeamQueryOptions),
   head: ({ loaderData }) => {
-    const heroImage = loaderData?.hero.image;
-    return {
-      meta: [
-        { title: "WBC Team — Leadership & Secretariat | World Business Council" },
-        {
-          name: "description",
-          content:
-            "Meet the WBC team: our Board of Directors and Secretariat combine institutional experience with practical support for trusted global business cooperation.",
-        },
-        { property: "og:title", content: "The team behind global business cooperation — WBC" },
-        {
-          property: "og:description",
-          content:
-            "Board of Directors and Secretariat leading the World Business Council's international cooperation work.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: heroImage
-        ? [{ rel: "preload", as: "image", href: heroImage, fetchPriority: "high" }]
-        : [],
-    };
+    const heroImage = loaderData?.hero?.image;
+    const title = loaderData?.hero?.title ?? "WBC Team";
+    const description =
+      loaderData?.hero?.description ??
+      "Meet the World Business Council team supporting members, affiliates, and partners worldwide.";
+    return seoHead({
+      title,
+      description,
+      path: "/wbc-team",
+      image: heroImage,
+      preloadImage: heroImage,
+    });
   },
   component: WbcTeam,
 });
@@ -41,7 +32,11 @@ export const Route = createFileRoute("/wbc-team/")({
 function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMember) => void }) {
   return (
     <li className="group overflow-hidden rounded-card border border-line bg-background">
-      <button type="button" onClick={() => onOpen(member)} className="block w-full cursor-pointer text-start">
+      <button
+        type="button"
+        onClick={() => onOpen(member)}
+        className="block w-full cursor-pointer text-start"
+      >
         <div className="relative overflow-hidden">
           <img
             src={member.image}
@@ -55,7 +50,9 @@ function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMe
         </div>
         <div className="border-t border-line p-5 sm:p-6">
           <h4 className="text-[19px] leading-snug font-bold text-foreground">{member.name}</h4>
-          <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-foreground/70 uppercase">{member.role}</p>
+          <p className="mt-2 text-[13px] font-semibold tracking-[0.12em] text-foreground/70 uppercase">
+            {member.role}
+          </p>
           <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
             View full profile
           </span>
@@ -106,7 +103,9 @@ function TeamProfileModal({
           <h2 className="mt-3 text-start text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">
             {member.name}
           </h2>
-          <p className="mt-2 text-start text-[14px] font-bold tracking-[0.12em] text-navy uppercase">{member.role}</p>
+          <p className="mt-2 text-start text-[14px] font-bold tracking-[0.12em] text-navy uppercase">
+            {member.role}
+          </p>
           <span className="accent-rule mt-5" />
 
           {(member.email || member.phone) && (
@@ -133,12 +132,22 @@ function TeamProfileModal({
           {(member.linkedinUrl || member.xUrl) && (
             <div className="mt-4 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
               {member.linkedinUrl && (
-                <a href={member.linkedinUrl} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                <a
+                  href={member.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground"
+                >
                   LinkedIn
                 </a>
               )}
               {member.xUrl && (
-                <a href={member.xUrl} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                <a
+                  href={member.xUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground"
+                >
                   X
                 </a>
               )}
@@ -167,7 +176,10 @@ function TeamProfileModal({
 function WbcTeamHeroSkeleton() {
   return (
     <section className="relative flex flex-col">
-      <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+      <div
+        className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+        aria-hidden="true"
+      />
       <div className="bg-orange lg:bg-transparent">
         <div className="container-wbc py-16 lg:py-24">
           <Skeleton className="h-6 w-32 bg-white/20" />
@@ -209,7 +221,10 @@ function WbcTeam() {
   return (
     <>
       <section className="relative flex flex-col">
-        <div className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block" aria-hidden="true" />
+        <div
+          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
+          aria-hidden="true"
+        />
         <div className="bg-orange lg:bg-transparent">
           <div className="container-wbc py-16 lg:py-24">
             <div className="max-w-xl">
@@ -260,11 +275,15 @@ function WbcTeam() {
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-foreground uppercase">{people.kicker}</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-foreground uppercase">
+              {people.kicker}
+            </p>
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               {people.title}
             </h2>
-            <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">{people.description}</p>
+            <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
+              {people.description}
+            </p>
           </div>
 
           <hr className="mt-12 border-line" />
@@ -279,7 +298,10 @@ function WbcTeam() {
                   {people.boardDescription}
                 </p>
               </div>
-              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label={people.boardTitle}>
+              <ul
+                className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                aria-label={people.boardTitle}
+              >
                 {board.map((member) => (
                   <PersonCard key={member.slug} member={member} onOpen={setSelected} />
                 ))}
@@ -297,7 +319,10 @@ function WbcTeam() {
                   {people.secretariatDescription}
                 </p>
               </div>
-              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-label={people.secretariatTitle}>
+              <ul
+                className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                aria-label={people.secretariatTitle}
+              >
                 {secretariat.map((member) => (
                   <PersonCard key={member.slug} member={member} onOpen={setSelected} />
                 ))}
@@ -321,8 +346,8 @@ function WbcTeam() {
               How the WBC team works as one coordinated network
             </h2>
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
-              Our teams align across functions and regions to keep decisions clear, responses timely, and outcomes tied
-              to a shared institutional mission.
+              Our teams align across functions and regions to keep decisions clear, responses
+              timely, and outcomes tied to a shared institutional mission.
             </p>
           </div>
 
@@ -339,8 +364,12 @@ function WbcTeam() {
                 <p className="relative text-start text-[15px] font-semibold tracking-[0.16em] text-muted-fg">
                   {String(i + 1).padStart(2, "0")}
                 </p>
-                <h3 className="relative mt-5 text-start text-[20px] font-bold text-foreground">{item.title}</h3>
-                <p className="relative mt-4 text-start text-[16px] leading-relaxed text-muted-fg">{item.body}</p>
+                <h3 className="relative mt-5 text-start text-[20px] font-bold text-foreground">
+                  {item.title}
+                </h3>
+                <p className="relative mt-4 text-start text-[16px] leading-relaxed text-muted-fg">
+                  {item.body}
+                </p>
               </li>
             ))}
           </ul>
@@ -348,7 +377,10 @@ function WbcTeam() {
           <hr data-reveal className="mt-14 border-line" />
 
           <Link to="/contact" className="btn-orange mt-10">
-            Contact WBC to Start a Conversation <span aria-hidden="true" className="rtl-mirror">→</span>
+            Contact WBC to Start a Conversation{" "}
+            <span aria-hidden="true" className="rtl-mirror">
+              →
+            </span>
           </Link>
         </div>
       </section>

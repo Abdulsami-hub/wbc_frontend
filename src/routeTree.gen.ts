@@ -38,6 +38,8 @@ import { Route as JobsIndexRouteImport } from './routes/jobs.index'
 import { Route as JobsSlugRouteImport } from './routes/jobs.$slug'
 import { Route as MembershipIndexRouteImport } from './routes/membership.index'
 import { Route as MembershipBenefitsRouteImport } from './routes/membership.benefits'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as WbcTeamIndexRouteImport } from './routes/wbc-team.index'
 import { Route as WbcTeamSlugRouteImport } from './routes/wbc-team.$slug'
 
@@ -189,6 +191,16 @@ const MembershipBenefitsRoute = MembershipBenefitsRouteImport.update({
   path: '/benefits',
   getParentRoute: () => MembershipRoute,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NewsRoute,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NewsRoute,
+} as any)
 const WbcTeamIndexRoute = WbcTeamIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -213,7 +225,7 @@ export interface FileRoutesByFullPath {
   '/governance': typeof GovernanceRoute
   '/jobs': typeof JobsRouteWithChildren
   '/membership': typeof MembershipRouteWithChildren
-  '/news': typeof NewsRoute
+  '/news': typeof NewsRouteWithChildren
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRouteWithChildren
   '/what-we-do': typeof WhatWeDoRoute
@@ -225,12 +237,14 @@ export interface FileRoutesByFullPath {
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/membership/': typeof MembershipIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
 export interface FileRoutesByTo {
@@ -241,7 +255,6 @@ export interface FileRoutesByTo {
   '/become-a-member': typeof BecomeAMemberRoute
   '/contact': typeof ContactRoute
   '/governance': typeof GovernanceRoute
-  '/news': typeof NewsRoute
   '/our-members': typeof OurMembersRoute
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
@@ -252,12 +265,14 @@ export interface FileRoutesByTo {
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates': typeof AffiliatesIndexRoute
   '/events': typeof EventsIndexRoute
   '/global-network': typeof GlobalNetworkIndexRoute
   '/jobs': typeof JobsIndexRoute
   '/membership': typeof MembershipIndexRoute
+  '/news': typeof NewsIndexRoute
   '/wbc-team': typeof WbcTeamIndexRoute
 }
 export interface FileRoutesById {
@@ -274,7 +289,7 @@ export interface FileRoutesById {
   '/governance': typeof GovernanceRoute
   '/jobs': typeof JobsRouteWithChildren
   '/membership': typeof MembershipRouteWithChildren
-  '/news': typeof NewsRoute
+  '/news': typeof NewsRouteWithChildren
   '/our-members': typeof OurMembersRoute
   '/wbc-team': typeof WbcTeamRouteWithChildren
   '/what-we-do': typeof WhatWeDoRoute
@@ -286,12 +301,14 @@ export interface FileRoutesById {
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
   '/jobs/$slug': typeof JobsSlugRoute
   '/membership/benefits': typeof MembershipBenefitsRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/wbc-team/$slug': typeof WbcTeamSlugRoute
   '/affiliates/': typeof AffiliatesIndexRoute
   '/events/': typeof EventsIndexRoute
   '/global-network/': typeof GlobalNetworkIndexRoute
   '/jobs/': typeof JobsIndexRoute
   '/membership/': typeof MembershipIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
 }
 export interface FileRouteTypes {
@@ -321,12 +338,14 @@ export interface FileRouteTypes {
     | '/global-network/strategic-partners'
     | '/jobs/$slug'
     | '/membership/benefits'
+    | '/news/$slug'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
     | '/jobs/'
     | '/membership/'
+    | '/news/'
     | '/wbc-team/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -337,7 +356,6 @@ export interface FileRouteTypes {
     | '/become-a-member'
     | '/contact'
     | '/governance'
-    | '/news'
     | '/our-members'
     | '/what-we-do'
     | '/who-we-are'
@@ -348,12 +366,14 @@ export interface FileRouteTypes {
     | '/global-network/strategic-partners'
     | '/jobs/$slug'
     | '/membership/benefits'
+    | '/news/$slug'
     | '/wbc-team/$slug'
     | '/affiliates'
     | '/events'
     | '/global-network'
     | '/jobs'
     | '/membership'
+    | '/news'
     | '/wbc-team'
   id:
     | '__root__'
@@ -381,12 +401,14 @@ export interface FileRouteTypes {
     | '/global-network/strategic-partners'
     | '/jobs/$slug'
     | '/membership/benefits'
+    | '/news/$slug'
     | '/wbc-team/$slug'
     | '/affiliates/'
     | '/events/'
     | '/global-network/'
     | '/jobs/'
     | '/membership/'
+    | '/news/'
     | '/wbc-team/'
   fileRoutesById: FileRoutesById
 }
@@ -403,7 +425,7 @@ export interface RootRouteChildren {
   GovernanceRoute: typeof GovernanceRoute
   JobsRoute: typeof JobsRouteWithChildren
   MembershipRoute: typeof MembershipRouteWithChildren
-  NewsRoute: typeof NewsRoute
+  NewsRoute: typeof NewsRouteWithChildren
   OurMembersRoute: typeof OurMembersRoute
   WbcTeamRoute: typeof WbcTeamRouteWithChildren
   WhatWeDoRoute: typeof WhatWeDoRoute
@@ -615,6 +637,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembershipBenefitsRouteImport
       parentRoute: typeof MembershipRoute
     }
+    '/news/': {
+      id: '/news/'
+      path: '/'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof NewsRoute
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof NewsRoute
+    }
     '/wbc-team/': {
       id: '/wbc-team/'
       path: '/'
@@ -704,6 +740,18 @@ const MembershipRouteWithChildren = MembershipRoute._addFileChildren(
   MembershipRouteChildren,
 )
 
+interface NewsRouteChildren {
+  NewsSlugRoute: typeof NewsSlugRoute
+  NewsIndexRoute: typeof NewsIndexRoute
+}
+
+const NewsRouteChildren: NewsRouteChildren = {
+  NewsSlugRoute: NewsSlugRoute,
+  NewsIndexRoute: NewsIndexRoute,
+}
+
+const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
+
 interface WbcTeamRouteChildren {
   WbcTeamSlugRoute: typeof WbcTeamSlugRoute
   WbcTeamIndexRoute: typeof WbcTeamIndexRoute
@@ -730,7 +778,7 @@ const rootRouteChildren: RootRouteChildren = {
   GovernanceRoute: GovernanceRoute,
   JobsRoute: JobsRouteWithChildren,
   MembershipRoute: MembershipRouteWithChildren,
-  NewsRoute: NewsRoute,
+  NewsRoute: NewsRouteWithChildren,
   OurMembersRoute: OurMembersRoute,
   WbcTeamRoute: WbcTeamRouteWithChildren,
   WhatWeDoRoute: WhatWeDoRoute,

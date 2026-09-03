@@ -8,6 +8,7 @@ import { OurValuesSection } from "@/components/home/OurValuesSection";
 import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
 import { whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   loader: async ({ context: { queryClient } }) => {
@@ -20,27 +21,15 @@ export const Route = createFileRoute("/")({
   },
   head: ({ loaderData }) => {
     const firstImage = loaderData?.[0]?.image;
-    return {
-      meta: [
-        { title: "World Business Council — Connecting Businesses, Creating Opportunities" },
-        {
-          name: "description",
-          content:
-            "WBC is a global business support organization headquartered in Paris, empowering businesses through collaboration, innovation, and trust.",
-        },
-        { property: "og:title", content: "World Business Council — Connecting Businesses" },
-        {
-          property: "og:description",
-          content:
-            "A global network that empowers businesses through collaboration, innovation, and trust.",
-        },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: firstImage
-        ? [{ rel: "preload", as: "image", href: firstImage, fetchPriority: "high" }]
-        : [],
-    };
+    return seoHead({
+      title: "World Business Council (WBC) | Global Business Network",
+      description:
+        "WBC is a global business support organization connecting businesses through collaboration, innovation, and trust.",
+      path: "/",
+      image: firstImage,
+      preloadImage: firstImage,
+      rawTitle: true,
+    });
   },
   component: Home,
 });
