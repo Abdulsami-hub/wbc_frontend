@@ -4,6 +4,7 @@ import eventsImg from "@/assets/events.jpg";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { advertisingQueryOptions } from "@/lib/queries/advertising";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/advertising")({
@@ -45,6 +46,9 @@ function AdvertisingPageSkeleton() {
 
 function AdvertisingPage() {
   const { data, isPending, isError } = useQuery(advertisingQueryOptions);
+  const showOverview = useSectionVisible("advertising", "overview");
+  const showFormats = useSectionVisible("advertising", "formats");
+  const showPdf = useSectionVisible("advertising", "pdf");
 
   if (isPending) return <AdvertisingPageSkeleton />;
   if (isError || !data) return null;
@@ -61,11 +65,12 @@ function AdvertisingPage() {
         image={hero.image ?? eventsImg}
         imageAlt={hero.imageAlt}
         tone="blue"
-        ctaLabel={pdf.buttonLabel}
-        ctaHref={pdf.fileUrl}
-        ctaDownload={pdf.fileName}
+        ctaLabel={showPdf ? pdf.buttonLabel : undefined}
+        ctaHref={showPdf ? pdf.fileUrl : undefined}
+        ctaDownload={showPdf ? pdf.fileName : undefined}
       />
 
+      {showOverview ? (
       <section className="relative overflow-hidden py-14 lg:py-20">
         <div
           className="pointer-events-none absolute -end-24 top-0 size-[320px] rounded-full bg-blue/10 blur-3xl"
@@ -84,8 +89,9 @@ function AdvertisingPage() {
           </div>
         </div>
       </section>
+      ) : null}
 
-      {formats.length > 0 ? (
+      {showFormats && formats.length > 0 ? (
         <section className="relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20">
           <div
             className="pointer-events-none absolute -start-16 bottom-0 size-[260px] rounded-full bg-orange/10 blur-3xl"
@@ -130,6 +136,7 @@ function AdvertisingPage() {
         </section>
       ) : null}
 
+      {showPdf ? (
       <section className="relative isolate overflow-hidden border-t border-line bg-surface py-14 lg:py-20">
         <div
           className="pointer-events-none absolute start-1/2 top-20 size-[420px] -translate-x-1/2 rounded-full bg-blue/8 blur-3xl"
@@ -165,6 +172,7 @@ function AdvertisingPage() {
           </div>
         </div>
       </section>
+      ) : null}
     </>
   );
 }

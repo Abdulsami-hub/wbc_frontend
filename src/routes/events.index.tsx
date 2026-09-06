@@ -8,6 +8,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { eventsQueryOptions } from "@/lib/queries/events";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 function EventMetaRow({ dateLabel, location }: { dateLabel: string; location: string }) {
@@ -98,6 +99,7 @@ function resolveCta(url: string, fallback = "/contact") {
 
 function Events() {
   const { data, isPending } = useQuery(eventsQueryOptions);
+  const showListings = useSectionVisible("events", "listings");
   const navigate = useNavigate();
   const locationHash = useRouterState({
     select: (s) => (s.location.hash ?? "").replace(/^#/, ""),
@@ -154,6 +156,7 @@ function Events() {
         ctaHash={heroCta?.ctaHash}
       />
 
+      {showListings ? (
       <section className="py-16 lg:py-24">
         <div className="container-wbc">
           <div data-reveal>
@@ -247,6 +250,7 @@ function Events() {
           </ul>
         </div>
       </section>
+      ) : null}
 
       <CTASection
         title="Join the WBC Community"

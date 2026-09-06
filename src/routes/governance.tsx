@@ -6,6 +6,7 @@ import { CmsLink } from "@/components/CmsLink";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GovernanceGroupIcon } from "@/content/governance";
 import { governanceQueryOptions } from "@/lib/queries/governance";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/governance")({
@@ -77,6 +78,9 @@ function GovernanceHeroSkeleton() {
 
 function Governance() {
   const { data, isPending } = useQuery(governanceQueryOptions);
+  const showStructure = useSectionVisible("governance", "structure");
+  const showGroups = useSectionVisible("governance", "groups");
+  const showFaq = useSectionVisible("governance", "faq");
   const [open, setOpen] = useState<number>(0);
 
   if (isPending) {
@@ -154,8 +158,10 @@ function Governance() {
         </div>
       </section>
 
+      {(showStructure || showGroups) ? (
       <section className="py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          {showStructure ? (
           <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
             <p className="text-[13px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
               Governance Structure
@@ -166,6 +172,7 @@ function Governance() {
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
               {structure.description}
             </p>
+            {showGroups ? (
             <ul className="mt-8 flex flex-wrap gap-3">
               {groups.map((group) => (
                 <li key={group.id}>
@@ -178,8 +185,11 @@ function Governance() {
                 </li>
               ))}
             </ul>
+            ) : null}
           </div>
+          ) : null}
 
+          {showGroups ? (
           <div className="space-y-8">
             {groups.map((group, i) => (
               <article
@@ -221,9 +231,12 @@ function Governance() {
               </article>
             ))}
           </div>
+          ) : null}
         </div>
       </section>
+      ) : null}
 
+      {showFaq ? (
       <section className="bg-surface py-14 lg:py-20">
         <div className="container-wbc grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div data-reveal>
@@ -289,6 +302,7 @@ function Governance() {
           </div>
         </div>
       </section>
+      ) : null}
     </>
   );
 }

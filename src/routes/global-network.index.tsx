@@ -6,6 +6,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { globalNetworkQueryOptions } from "@/lib/queries/global-network";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/global-network/")({
@@ -57,6 +58,8 @@ function GlobalNetworkSkeleton() {
 
 function GlobalNetwork() {
   const { data, isPending } = useQuery(globalNetworkQueryOptions);
+  const showStructure = useSectionVisible("global-network", "structure");
+  const showHighlights = useSectionVisible("global-network", "highlights");
 
   if (isPending) return <GlobalNetworkSkeleton />;
   if (!data) return null;
@@ -122,6 +125,7 @@ function GlobalNetwork() {
         </div>
       </section>
 
+      {showStructure ? (
       <section className="border-t border-line bg-surface/50 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
@@ -160,7 +164,9 @@ function GlobalNetwork() {
           </ul>
         </div>
       </section>
+      ) : null}
 
+      {showHighlights ? (
       <section className="border-t border-line py-14 lg:py-20">
         <div className="container-wbc">
           <div
@@ -187,6 +193,7 @@ function GlobalNetwork() {
           </div>
         </div>
       </section>
+      ) : null}
 
       <CTASection
         title="Ready to Join WBC?"

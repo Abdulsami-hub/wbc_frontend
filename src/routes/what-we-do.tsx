@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/wwd-hero.jpg";
 import { ServiceCard } from "@/components/ServiceCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
 import { seoHead } from "@/lib/seo";
 
@@ -48,6 +49,7 @@ function WhatWeDoHeroSkeleton() {
 
 function WhatWeDo() {
   const { data, isPending } = useQuery(whatWeDoQueryOptions);
+  const showPortfolio = useSectionVisible("what-we-do", "service_portfolio");
 
   if (isPending) {
     return (
@@ -112,6 +114,7 @@ function WhatWeDo() {
         </div>
       </section>
 
+      {showPortfolio ? (
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
           <div className="overflow-visible rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-12">
@@ -160,6 +163,7 @@ function WhatWeDo() {
           </div>
         </div>
       </section>
+      ) : null}
 
       <section className="pb-16 lg:pb-24">
         <div className="container-wbc">

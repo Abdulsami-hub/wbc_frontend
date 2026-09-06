@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AFFILIATE_GUIDE_TOC } from "@/content/affiliate-guide";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { affiliateGuideQueryOptions } from "@/lib/queries/affiliate-guide";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/affiliate-guide")({
@@ -94,6 +95,15 @@ function resolveCta(url: string, fallback = "/contact") {
 
 function AffiliateGuide() {
   const { data, isPending } = useQuery(affiliateGuideQueryOptions);
+  const showOverview = useSectionVisible("affiliate-guide", "overview");
+  const showBenefits = useSectionVisible("affiliate-guide", "benefits");
+  const showTypes = useSectionVisible("affiliate-guide", "types");
+  const showEligibility = useSectionVisible("affiliate-guide", "eligibility");
+  const showProcess = useSectionVisible("affiliate-guide", "process");
+  const showFinancial = useSectionVisible("affiliate-guide", "financial");
+  const showCompliance = useSectionVisible("affiliate-guide", "compliance");
+  const showSupports = useSectionVisible("affiliate-guide", "supports");
+  const showNextStep = useSectionVisible("affiliate-guide", "next_step");
 
   if (isPending) return <AffiliateGuideSkeleton />;
   if (!data) return null;
@@ -117,11 +127,24 @@ function AffiliateGuide() {
     : { ctaTo: "/contact", ctaHref: undefined as string | undefined };
 
   const hasOverview =
-    overview.title.trim() || overview.descriptionLeft.trim() || overview.descriptionRight.trim();
-  const hasFinancial = financial.title.trim() || financial.description.trim();
+    showOverview &&
+    (overview.title.trim() || overview.descriptionLeft.trim() || overview.descriptionRight.trim());
+  const hasFinancial = showFinancial && (financial.title.trim() || financial.description.trim());
   const hasCompliance =
-    compliance.title.trim() || compliance.description.trim() || compliance.items.length > 0;
-  const hasNextStep = nextStep.title.trim() || nextStep.description.trim();
+    showCompliance &&
+    (compliance.title.trim() || compliance.description.trim() || compliance.items.length > 0);
+  const hasNextStep = showNextStep && (nextStep.title.trim() || nextStep.description.trim());
+
+  const tocItems = AFFILIATE_GUIDE_TOC.filter((item) => {
+    if (item.id === "overview") return hasOverview;
+    if (item.id === "why") return showBenefits && benefits.length > 0;
+    if (item.id === "types") return showTypes && types.length > 0;
+    if (item.id === "eligibility") return showEligibility && eligibilityBlocks.length > 0;
+    if (item.id === "process") return showProcess && process.steps.length > 0;
+    if (item.id === "support") return showSupports && supports.length > 0;
+    if (item.id === "compliance") return hasFinancial || hasCompliance;
+    return true;
+  });
 
   return (
     <>
@@ -139,7 +162,7 @@ function AffiliateGuide() {
         ctaDownload={heroCta.ctaHref ? false : undefined}
       />
 
-      {(hasOverview || AFFILIATE_GUIDE_TOC.length > 0) && (
+      {(hasOverview || tocItems.length > 0) && (
         <section id="overview" className="scroll-mt-28 relative overflow-hidden py-14 lg:py-20">
           <div
             className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
@@ -171,7 +194,7 @@ function AffiliateGuide() {
                   On this page
                 </p>
                 <ul className="mt-4 space-y-1">
-                  {AFFILIATE_GUIDE_TOC.map((item) => (
+                  {tocItems.map((item) => (
                     <li key={item.id}>
                       <a
                         href={`#${item.id}`}
@@ -201,7 +224,7 @@ function AffiliateGuide() {
         </section>
       )}
 
-      {benefits.length > 0 ? (
+      {showBenefits && benefits.length > 0 ? (
         <section
           id="why"
           className="scroll-mt-28 relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20"
@@ -243,7 +266,7 @@ function AffiliateGuide() {
         </section>
       ) : null}
 
-      {types.length > 0 ? (
+      {showTypes && types.length > 0 ? (
         <section id="types" className="scroll-mt-28 border-t border-line py-14 lg:py-20">
           <div className="container-wbc">
             <div data-reveal className="max-w-2xl">
@@ -297,7 +320,7 @@ function AffiliateGuide() {
         </section>
       ) : null}
 
-      {eligibilityBlocks.length > 0 ? (
+      {showEligibility && eligibilityBlocks.length > 0 ? (
         <section
           id="eligibility"
           className="scroll-mt-28 border-t border-line bg-surface/50 py-14 lg:py-20"
@@ -333,7 +356,7 @@ function AffiliateGuide() {
         </section>
       ) : null}
 
-      {process.steps.length > 0 ? (
+      {showProcess && process.steps.length > 0 ? (
         <section
           id="process"
           className="scroll-mt-28 relative isolate overflow-hidden bg-navy py-14 lg:py-20"
@@ -398,7 +421,7 @@ function AffiliateGuide() {
         </section>
       ) : null}
 
-      {supports.length > 0 ? (
+      {showSupports && supports.length > 0 ? (
         <section
           id="support"
           className="scroll-mt-28 relative overflow-hidden border-t border-line py-14 lg:py-20"

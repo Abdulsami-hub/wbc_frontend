@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/who-we-are-hero.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WhoWeArePageContent, WhoWeAreValue } from "@/content/who-we-are";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 import { seoHead } from "@/lib/seo";
 
@@ -195,9 +196,14 @@ function OurValues({ values }: { values: WhoWeAreValue[] }) {
 
 function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
   const { hero, story, missionVision, stats, coreValues } = data;
+  const showStory = useSectionVisible("who-we-are", "who_we_are");
+  const showMissionVision = useSectionVisible("who-we-are", "mission_vision");
+  const showHighlights = useSectionVisible("who-we-are", "highlights");
+  const showCoreValues = useSectionVisible("who-we-are", "core_values");
   const [firstParagraph, ...restParagraphs] = story.paragraphs;
   const dropCap = firstParagraph?.charAt(0) ?? "";
   const firstBody = firstParagraph?.slice(1) ?? "";
+  const showAboutBlock = showStory || showMissionVision || showHighlights;
 
   return (
     <>
@@ -255,6 +261,7 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
         </div>
       </section>
 
+      {showAboutBlock ? (
       <section className="relative overflow-hidden bg-surface py-16 lg:py-24">
         <div
           className="pointer-events-none absolute -right-32 -top-24 size-[420px] rounded-full bg-orange/10 blur-3xl"
@@ -266,6 +273,7 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
         />
 
         <div className="container-wbc relative grid items-start gap-8 lg:grid-cols-[1.55fr_1fr] lg:gap-10">
+          {showStory ? (
           <div
             data-reveal
             className="relative overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-10 lg:p-14"
@@ -321,8 +329,12 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
               </p>
             ))}
           </div>
+          ) : null}
 
+          {(showMissionVision || showHighlights) ? (
           <div className="flex flex-col gap-6">
+            {showMissionVision ? (
+            <>
             <article
               data-reveal
               className="group relative overflow-hidden rounded-card bg-navy p-7 shadow-card sm:p-8"
@@ -387,7 +399,10 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
                 {missionVision.missionDescription}
               </p>
             </article>
+            </>
+            ) : null}
 
+            {showHighlights ? (
             <dl
               data-reveal
               className="grid grid-cols-3 gap-3 rounded-card border border-line bg-background px-4 py-5 sm:gap-4 sm:px-5 sm:py-6"
@@ -403,11 +418,14 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
                 </div>
               ))}
             </dl>
+            ) : null}
           </div>
+          ) : null}
         </div>
       </section>
+      ) : null}
 
-      {coreValues.length > 0 ? (
+      {showCoreValues && coreValues.length > 0 ? (
         <section className="py-16 lg:py-24">
           <div className="container-wbc">
             <OurValues values={coreValues} />

@@ -6,6 +6,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { newsQueryOptions } from "@/lib/queries/news";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/news/")({
@@ -73,6 +74,7 @@ function resolveCta(url: string, fallback = "/contact") {
 
 function NewsPage() {
   const { data, isPending } = useQuery(newsQueryOptions);
+  const showArticles = useSectionVisible("news", "articles");
 
   if (isPending) return <NewsSkeleton />;
   if (!data) return null;
@@ -95,6 +97,7 @@ function NewsPage() {
         ctaHash={heroCta?.ctaHash}
       />
 
+      {showArticles ? (
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
           {articles.length === 0 ? (
@@ -147,6 +150,7 @@ function NewsPage() {
           )}
         </div>
       </section>
+      ) : null}
 
       <CTASection
         title="Stay Connected"

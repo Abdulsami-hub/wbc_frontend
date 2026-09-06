@@ -7,6 +7,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { contactQueryOptions } from "@/lib/queries/contact";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
@@ -83,6 +84,8 @@ function resolveCta(url: string, fallback = "/contact") {
 
 function Contact() {
   const { data, isPending } = useQuery(contactQueryOptions);
+  const showInformation = useSectionVisible("contact", "information");
+  const showForm = useSectionVisible("contact", "form");
 
   if (isPending) return <ContactSkeleton />;
   if (!data) return null;
@@ -105,8 +108,10 @@ function Contact() {
         ctaHash={heroCta?.ctaHash}
       />
 
+      {(showInformation || showForm) ? (
       <section className="py-16 lg:py-20">
-        <div className="container-wbc grid gap-10 lg:grid-cols-2 lg:gap-x-14 lg:gap-y-8">
+        <div className={`container-wbc grid gap-10 lg:gap-x-14 lg:gap-y-8 ${showInformation && showForm ? "lg:grid-cols-2" : ""}`}>
+          {showInformation ? (
           <div>
             <h2 className="text-[22px] font-bold text-foreground lg:text-2xl">
               {info.sectionTitle}
@@ -166,7 +171,9 @@ function Contact() {
               )}
             </dl>
           </div>
+          ) : null}
 
+          {showForm ? (
           <div
             data-no-translate
             className="flex flex-col rounded-card border border-line bg-background p-6 transition-shadow duration-300 hover:shadow-card lg:row-span-2 lg:h-full lg:p-8"
@@ -175,7 +182,9 @@ function Contact() {
             <span className="accent-rule mt-4 mb-6" />
             <ContactForm className="min-h-0 flex-1" />
           </div>
+          ) : null}
 
+          {showInformation ? (
           <div>
             {info.hasMap && (
               <ContactMap
@@ -188,8 +197,8 @@ function Contact() {
 
             {!info.address && !info.email && !info.websiteUrl && !info.hasMap && (
               <p className="text-[15px] text-muted-fg">
-                Contact details will appear here once they are published. You can still send a
-                message using the form.
+                Contact details will appear here once they are published.
+                {showForm ? " You can still send a message using the form." : ""}
               </p>
             )}
 
@@ -201,8 +210,10 @@ function Contact() {
               .
             </p>
           </div>
+          ) : null}
         </div>
       </section>
+      ) : null}
     </>
   );
 }

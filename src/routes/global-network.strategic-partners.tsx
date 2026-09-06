@@ -7,6 +7,7 @@ import { PartnersDirectory, PartnersDirectorySkeleton } from "@/components/Partn
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { strategicPartnersQueryOptions } from "@/lib/queries/strategic-partners";
 import { seoHead } from "@/lib/seo";
 
@@ -64,6 +65,16 @@ function resolveCta(url: string, fallback = "/contact") {
 
 function StrategicPartners() {
   const { data, isPending } = useQuery(strategicPartnersQueryOptions);
+  const showProfiles = useSectionVisible("strategic-partners", "profiles");
+  const showSponsorshipOverview = useSectionVisible("strategic-partners", "sponsorship_overview");
+  const showSponsorshipTypes = useSectionVisible("strategic-partners", "sponsorship_types");
+  const showWhySponsor = useSectionVisible("strategic-partners", "why_sponsor");
+  const showSupport = useSectionVisible("strategic-partners", "support");
+  const showCooperation = useSectionVisible("strategic-partners", "cooperation");
+  const showPartnerTypes = useSectionVisible("strategic-partners", "partner_types");
+  const showFocusAreas = useSectionVisible("strategic-partners", "focus_areas");
+  const showProcess = useSectionVisible("strategic-partners", "process");
+  const showCta = useSectionVisible("strategic-partners", "cta");
 
   if (isPending) return <StrategicPartnersSkeleton />;
   if (!data) return null;
@@ -87,15 +98,19 @@ function StrategicPartners() {
     : { ctaTo: "/contact", ctaHref: undefined as string | undefined };
 
   const hasApproach =
-    approach.title.trim() || approach.description.trim() || approach.descriptionSecondary.trim();
-  const hasWhyPartner = whyPartner.items.length > 0 || Boolean(whyPartner.cta);
-  const hasSponsorCards = sponsorCards.length > 0;
+    showSponsorshipOverview &&
+    (approach.title.trim() || approach.description.trim() || approach.descriptionSecondary.trim());
+  const hasWhyPartner = showWhySponsor && (whyPartner.items.length > 0 || Boolean(whyPartner.cta));
+  const hasSponsorCards = showSponsorshipTypes && sponsorCards.length > 0;
   const hasWhoWePartner =
-    whoWePartner.title.trim() || whoWePartner.description.trim() || whoWePartner.pillars.length > 0;
-  const hasOutcomes = outcomes.title.trim() || outcomes.items.length > 0;
-  const hasFocusAreas = focusAreas.title.trim() || focusAreas.items.length > 0;
-  const hasProcess = process.title.trim() || process.steps.length > 0;
-  const hasClosingCta = cta.title.trim() || cta.description.trim() || cta.buttons.length > 0;
+    (showCooperation || showPartnerTypes) &&
+    (whoWePartner.title.trim() ||
+      whoWePartner.description.trim() ||
+      whoWePartner.pillars.length > 0);
+  const hasOutcomes = showSupport && (outcomes.title.trim() || outcomes.items.length > 0);
+  const hasFocusAreasVisible = showFocusAreas && (focusAreas.title.trim() || focusAreas.items.length > 0);
+  const hasProcess = showProcess && (process.title.trim() || process.steps.length > 0);
+  const hasClosingCta = showCta && (cta.title.trim() || cta.description.trim() || cta.buttons.length > 0);
 
   const closingPrimary = cta.buttons[0];
   const closingSecondary = cta.buttons[1];
@@ -117,7 +132,7 @@ function StrategicPartners() {
         ctaDownload={heroCta.ctaHref ? false : undefined}
       />
 
-      <PartnersDirectory categories={categories} />
+      {showProfiles ? <PartnersDirectory categories={categories} /> : null}
 
       {(hasApproach || hasWhyPartner || hasSponsorCards) && (
         <section className="relative overflow-hidden py-14 lg:py-20">
@@ -231,6 +246,7 @@ function StrategicPartners() {
             aria-hidden="true"
           />
           <div className="container-wbc relative">
+            {showCooperation ? (
             <div data-reveal className="max-w-2xl">
               {whoWePartner.kicker ? <p className="eyebrow">{whoWePartner.kicker}</p> : null}
               {whoWePartner.title ? (
@@ -245,8 +261,9 @@ function StrategicPartners() {
               ) : null}
               <span className="accent-rule mt-6" />
             </div>
+            ) : null}
 
-            {whoWePartner.pillars.length > 0 ? (
+            {showPartnerTypes && whoWePartner.pillars.length > 0 ? (
               <ul
                 data-reveal
                 data-reveal-group
@@ -280,7 +297,7 @@ function StrategicPartners() {
         </section>
       ) : null}
 
-      {(hasOutcomes || hasFocusAreas) && (
+      {(hasOutcomes || hasFocusAreasVisible) && (
         <section className="border-t border-line py-14 lg:py-20">
           <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
             {hasOutcomes ? (
@@ -320,7 +337,7 @@ function StrategicPartners() {
               </div>
             ) : null}
 
-            {hasFocusAreas ? (
+            {hasFocusAreasVisible ? (
               <div
                 data-reveal
                 className="group relative overflow-hidden rounded-card bg-navy p-7 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-9"

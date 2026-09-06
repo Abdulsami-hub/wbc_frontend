@@ -14,6 +14,7 @@ import type {
 } from "@/content/our-members";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { ourMembersQueryOptions } from "@/lib/queries/our-members";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 const MEMBERS_GRID_LIMIT = 20;
@@ -357,6 +358,7 @@ function resolveHeroCta(url: string) {
 
 function OurMembers() {
   const { data, isPending } = useQuery(ourMembersQueryOptions);
+  const showProfiles = useSectionVisible("our-members", "profiles");
 
   if (isPending) return <OurMembersSkeleton />;
   if (!data) return null;
@@ -384,6 +386,7 @@ function OurMembers() {
         ctaDownload={heroCta.ctaHref ? false : undefined}
       />
 
+      {showProfiles ? (
       <section id="directory" className="py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
@@ -421,6 +424,7 @@ function OurMembers() {
           </div>
         </div>
       </section>
+      ) : null}
 
       <CTASection
         title="Become Part of the Network"

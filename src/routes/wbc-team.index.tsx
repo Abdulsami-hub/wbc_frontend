@@ -6,6 +6,7 @@ import { CmsLink } from "@/components/CmsLink";
 import { SimpleModal } from "@/components/SimpleModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TeamMember } from "@/content/wbc-team";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { wbcTeamQueryOptions } from "@/lib/queries/wbc-team";
 import { seoHead } from "@/lib/seo";
 
@@ -196,6 +197,9 @@ function WbcTeamHeroSkeleton() {
 
 function WbcTeam() {
   const { data, isPending } = useQuery(wbcTeamQueryOptions);
+  const showPeople = useSectionVisible("wbc-team", "people");
+  const showMembers = useSectionVisible("wbc-team", "members");
+  const showCollaboration = useSectionVisible("wbc-team", "collaboration");
   const [selected, setSelected] = useState<TeamMember | null>(null);
 
   if (isPending) {
@@ -272,8 +276,10 @@ function WbcTeam() {
         </div>
       </section>
 
+      {(showPeople || showMembers) ? (
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
+          {showPeople ? (
           <div data-reveal>
             <p className="text-[13px] font-semibold tracking-[0.18em] text-foreground uppercase">
               {people.kicker}
@@ -285,10 +291,11 @@ function WbcTeam() {
               {people.description}
             </p>
           </div>
+          ) : null}
 
-          <hr className="mt-12 border-line" />
+          {showPeople && showMembers ? <hr className="mt-12 border-line" /> : null}
 
-          {board.length > 0 && (
+          {showMembers && board.length > 0 && (
             <>
               <div data-reveal className="mt-12 max-w-3xl border-s-4 border-orange ps-6">
                 <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
@@ -309,7 +316,7 @@ function WbcTeam() {
             </>
           )}
 
-          {secretariat.length > 0 && (
+          {showMembers && secretariat.length > 0 && (
             <>
               <div data-reveal className="mt-16 max-w-3xl border-s-4 border-teal ps-6">
                 <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
@@ -331,7 +338,9 @@ function WbcTeam() {
           )}
         </div>
       </section>
+      ) : null}
 
+      {showCollaboration ? (
       <section className="relative overflow-hidden bg-surface py-14 lg:py-20">
         <span
           className="pointer-events-none absolute -left-24 -top-24 size-[380px] rounded-full border border-line"
@@ -384,6 +393,7 @@ function WbcTeam() {
           </Link>
         </div>
       </section>
+      ) : null}
 
       <TeamProfileModal
         member={selected}

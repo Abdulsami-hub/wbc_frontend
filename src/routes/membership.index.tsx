@@ -7,6 +7,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { membershipQueryOptions } from "@/lib/queries/membership";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/membership/")({
@@ -68,6 +69,13 @@ function resolveCta(url: string, fallback = "/become-a-member") {
 
 function MembershipOverview() {
   const { data, isPending } = useQuery(membershipQueryOptions);
+  const showTypesHeader = useSectionVisible("membership", "types_header");
+  const showHighlights = useSectionVisible("membership", "highlights");
+  const showMembershipTypes = useSectionVisible("membership", "membership_types");
+  const showWhyJoin = useSectionVisible("membership", "why_join");
+  const showBenefitsHeader = useSectionVisible("membership", "benefits_header");
+  const showPlanTiers = useSectionVisible("membership", "plan_tiers");
+  const showPlanBenefits = useSectionVisible("membership", "plan_benefits");
 
   if (isPending) return <MembershipSkeleton />;
   if (!data) return null;
@@ -91,19 +99,24 @@ function MembershipOverview() {
         ctaHref={heroCta?.ctaHref}
       />
 
-      {(typesHeader.title || types.length > 0) && (
+      {(showTypesHeader || showHighlights || showMembershipTypes) &&
+        (typesHeader.title || types.length > 0 || highlights.length > 0) && (
         <section id="types" className="relative overflow-hidden py-16 lg:py-24">
           <div
             className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
             aria-hidden="true"
           />
           <div className="container-wbc relative">
-            <MembershipTypesSection header={typesHeader} highlights={highlights} types={types} />
+            <MembershipTypesSection
+              header={showTypesHeader ? typesHeader : { kicker: "", title: "", description: "", feeNote: "", closingParagraph: "" }}
+              highlights={showHighlights ? highlights : []}
+              types={showMembershipTypes ? types : []}
+            />
           </div>
         </section>
       )}
 
-      {why.items.length > 0 && (
+      {showWhyJoin && why.items.length > 0 && (
         <section className="border-t border-line py-16 lg:py-24">
           <div className="container-wbc">
             {why.title ? (
@@ -141,9 +154,11 @@ function MembershipOverview() {
         </section>
       )}
 
-      {(benefitsHeader.title || planBenefits.length > 0) && (
+      {(showBenefitsHeader || showPlanTiers || showPlanBenefits) &&
+        (benefitsHeader.title || planBenefits.length > 0) && (
         <section id="benefits" className="border-t border-line bg-surface py-16 lg:py-24">
           <div className="container-wbc">
+            {showBenefitsHeader ? (
             <div className="mx-auto max-w-2xl text-center">
               {benefitsHeader.kicker ? (
                 <p
@@ -167,12 +182,15 @@ function MembershipOverview() {
                 </p>
               ) : null}
             </div>
+            ) : null}
 
+            {showPlanTiers && showPlanBenefits ? (
             <div data-reveal className="mt-12">
               <BenefitsTable tiers={planTiers} rows={planBenefits} />
             </div>
+            ) : null}
 
-            {benefitsHeader.disclaimer ? (
+            {showBenefitsHeader && benefitsHeader.disclaimer ? (
               <p
                 data-reveal
                 className="mx-auto mt-8 max-w-3xl text-center text-[13px] leading-relaxed text-muted-fg"

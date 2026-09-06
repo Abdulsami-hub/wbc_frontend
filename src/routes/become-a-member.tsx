@@ -7,6 +7,7 @@ import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { becomeAMemberQueryOptions } from "@/lib/queries/become-a-member";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/become-a-member")({
@@ -76,6 +77,10 @@ function resolveCta(url: string, fallback = "/membership") {
 
 function BecomeAMember() {
   const { data, isPending } = useQuery(becomeAMemberQueryOptions);
+  const showEligibility = useSectionVisible("become-a-member", "eligibility");
+  const showAudiences = useSectionVisible("become-a-member", "audiences");
+  const showHowToApply = useSectionVisible("become-a-member", "how_to_apply");
+  const showApplicationForm = useSectionVisible("become-a-member", "application_form");
 
   if (isPending) return <BecomeAMemberSkeleton />;
   if (!data) return null;
@@ -98,23 +103,23 @@ function BecomeAMember() {
         ctaHash={heroCta?.ctaHash}
       />
 
-      {(eligibility.title || audiences.length > 0) && (
+      {((showEligibility && eligibility.title) || (showAudiences && audiences.length > 0)) && (
         <section className="relative overflow-hidden py-16 lg:py-24">
           <div className="container-wbc grid items-stretch gap-10 lg:grid-cols-2 lg:gap-14">
             <div data-reveal className="flex flex-col justify-center">
-              {eligibility.kicker ? <p className="eyebrow">{eligibility.kicker}</p> : null}
-              {eligibility.title ? (
+              {showEligibility && eligibility.kicker ? <p className="eyebrow">{eligibility.kicker}</p> : null}
+              {showEligibility && eligibility.title ? (
                 <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
                   {eligibility.title}
                 </h2>
               ) : null}
-              <span className="accent-rule mt-5" />
-              {eligibility.description ? (
+              {showEligibility ? <span className="accent-rule mt-5" /> : null}
+              {showEligibility && eligibility.description ? (
                 <p className="mt-6 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
                   {eligibility.description}
                 </p>
               ) : null}
-              {audiences.length > 0 ? (
+              {showAudiences && audiences.length > 0 ? (
                 <ul className="mt-8 flex flex-wrap gap-2.5">
                   {audiences.map((a) => (
                     <li
@@ -126,7 +131,7 @@ function BecomeAMember() {
                   ))}
                 </ul>
               ) : null}
-              {eligibility.cta ? (
+              {showEligibility && eligibility.cta ? (
                 <div className="mt-10">
                   <CmsLink
                     href={eligibility.cta.url}
@@ -139,6 +144,7 @@ function BecomeAMember() {
               ) : null}
             </div>
 
+            {showEligibility ? (
             <div
               data-reveal
               className="relative min-h-[320px] overflow-hidden rounded-card lg:min-h-full"
@@ -171,11 +177,12 @@ function BecomeAMember() {
                 </div>
               )}
             </div>
+            ) : null}
           </div>
         </section>
       )}
 
-      {(apply.title || apply.steps.length > 0) && (
+      {showHowToApply && (apply.title || apply.steps.length > 0) && (
         <section className="relative isolate overflow-hidden bg-navy py-16 lg:py-24">
           <div
             className="pointer-events-none absolute -end-16 top-0 size-[360px] rounded-full bg-orange/20 blur-3xl"
@@ -237,7 +244,7 @@ function BecomeAMember() {
         </section>
       )}
 
-      {(form.title || form.kicker) && (
+      {showApplicationForm && (form.title || form.kicker) && (
         <section className="relative overflow-hidden bg-surface py-16 lg:py-24">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy/[0.04] to-transparent"

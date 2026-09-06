@@ -11,6 +11,7 @@ import type {
   AffiliateStatus,
 } from "@/content/affiliates";
 import { affiliatesQueryOptions } from "@/lib/queries/affiliates";
+import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/affiliates/")({
@@ -257,6 +258,7 @@ function RegionSection({ region, index }: { region: AffiliateRegion; index: numb
 
 function Affiliates() {
   const { data, isPending } = useQuery(affiliatesQueryOptions);
+  const showFaq = useSectionVisible("affiliates", "faq");
 
   if (isPending) {
     return (
@@ -364,6 +366,7 @@ function Affiliates() {
         <RegionSection key={r.slug} region={r} index={i} />
       ))}
 
+      {showFaq ? (
       <section className="border-t border-line bg-surface/40 py-14 lg:py-20">
         <div className="container-wbc">
           <div data-reveal>
@@ -395,6 +398,7 @@ function Affiliates() {
           </div>
         </div>
       </section>
+      ) : null}
 
       <section className="border-t border-line py-16 lg:py-24">
         <div data-reveal className="container-wbc text-center">

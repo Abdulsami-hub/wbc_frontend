@@ -17,6 +17,8 @@ import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities"
 import { JsonLd } from "@/components/seo/JsonLd";
 import { I18nProvider } from "@/i18n";
 import { footerCarouselQueryOptions } from "@/lib/queries/advertising-footer";
+import { isServiceUnavailableError } from "@/lib/api";
+import { sectionVisibilityQueryOptions, useSectionVisible } from "@/lib/queries/section-visibility";
 import { siteSettingsQueryOptions } from "@/lib/queries/site-settings";
 import { DEFAULT_DESCRIPTION, graphSchema, organizationSchema, websiteSchema } from "@/lib/seo";
 
@@ -84,20 +86,30 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const unavailable = isServiceUnavailableError(error);
 
   return (
     <>
-      <title>Something went wrong | World Business Council</title>
+      <title>
+        {unavailable
+          ? "Temporarily unavailable | World Business Council"
+          : "Something went wrong | World Business Council"}
+      </title>
       <meta name="robots" content="noindex, follow" />
-      <div className="flex min-h-screen items-center justify-center bg-background px-4">
-        <div className="max-w-md text-center">
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">
-            This page didn't load
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Something went wrong on our end. You can try refreshing or head back home.
+      <div className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-16">
+        <div className="max-w-lg text-center">
+          <p className="text-[12px] font-semibold tracking-[0.18em] text-muted-fg uppercase">
+            {unavailable ? "Service interruption" : "Error"}
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            {unavailable ? "We'll be back shortly" : "This page didn't load"}
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]">
+            {unavailable
+              ? "The World Business Council website is temporarily unavailable. This is usually a short interruption. Please try again in a few minutes."
+              : "Something went wrong on our end. You can try refreshing or head back home."}
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button
               type="button"
               onClick={() => {
@@ -171,6 +183,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     await Promise.all([
       queryClient.ensureQueryData(footerCarouselQueryOptions),
       queryClient.ensureQueryData(siteSettingsQueryOptions),
+      queryClient.ensureQueryData(sectionVisibilityQueryOptions),
     ]);
   },
   head: () => ({
@@ -202,9 +215,24 @@ function SiteWideJsonLd() {
   return <JsonLd data={schema} />;
 }
 
+function FooterAdvertisements() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const showFooterAds = useSectionVisible("home", "footer_advertisements");
+
+  if (
+    !showFooterAds ||
+    pathname === "/advertising" ||
+    pathname === "/contact" ||
+    pathname === "/become-a-member"
+  ) {
+    return null;
+  }
+
+  return <AdvertisingOpportunities />;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -221,11 +249,7 @@ function RootComponent() {
         <Header />
         <main id="main">
           <Outlet />
-          {pathname !== "/advertising" &&
-          pathname !== "/contact" &&
-          pathname !== "/become-a-member" ? (
-            <AdvertisingOpportunities />
-          ) : null}
+          <FooterAdvertisements />
         </main>
         <Footer />
       </I18nProvider>
