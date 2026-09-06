@@ -19,16 +19,21 @@ export function isSectionVisible(
 }
 
 export async function fetchSectionVisibility(): Promise<SectionVisibility> {
-  const { data, etag, status } = await apiFetch<SectionVisibilityResponse>(
-    "/api/section-visibility",
-    { etag: cachedEtag ?? undefined },
-  );
+  try {
+    const { data, etag, status } = await apiFetch<SectionVisibilityResponse>(
+      "/api/section-visibility",
+      { etag: cachedEtag ?? undefined },
+    );
 
-  if (status === 304) return cachedContent;
+    if (status === 304) return cachedContent;
 
-  cachedEtag = etag;
-  cachedContent = data.data ?? DEFAULTS;
-  return cachedContent;
+    cachedEtag = etag;
+    cachedContent = data.data ?? DEFAULTS;
+    return cachedContent;
+  } catch {
+    // Missing or failing endpoint should not take down the site — default to visible.
+    return cachedContent;
+  }
 }
 
 export const sectionVisibilityQueryKey = ["section-visibility"] as const;

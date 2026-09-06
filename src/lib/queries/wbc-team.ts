@@ -59,105 +59,6 @@ type WbcTeamResponse = { data: ApiPayload };
 
 const FALLBACK_IMAGES = [p1, p2, p3, p4, p5, p6, p7, p8] as const;
 
-const DEFAULT_MEMBERS: TeamMember[] = [
-  {
-    id: "1",
-    slug: "richard-bennett",
-    name: "Richard Bennett",
-    role: "President, Board of Directors",
-    image: p1,
-    bio: "Richard chairs strategic board sessions and guides long-term positioning, institutional risk controls, and cross-region governance decisions.",
-    email: "richard.bennett@wbcouncil.org",
-    phone: "+44 20 7093 81 36",
-    group: "board",
-    groupLabel: "Board of Directors",
-  },
-  {
-    id: "2",
-    slug: "mei-tanaka",
-    name: "Mei Tanaka",
-    role: "Director of Strategy and Policy",
-    image: p2,
-    bio: "Mei leads policy research and strategic planning, translating member priorities into practical programs across regions and sectors.",
-    email: "mei.tanaka@wbcouncil.org",
-    phone: "+44 20 7093 81 42",
-    group: "board",
-    groupLabel: "Board of Directors",
-  },
-  {
-    id: "3",
-    slug: "carlos-ibanez",
-    name: "Carlos Ibáñez",
-    role: "Director of Finance and Audit",
-    image: p3,
-    bio: "Carlos oversees financial planning, audit readiness, and the reporting standards that keep council operations transparent and accountable.",
-    email: "carlos.ibanez@wbcouncil.org",
-    phone: "+44 20 7093 81 55",
-    group: "board",
-    groupLabel: "Board of Directors",
-  },
-  {
-    id: "4",
-    slug: "amina-okonkwo",
-    name: "Amina Okonkwo",
-    role: "Director of Governance and Compliance",
-    image: p4,
-    bio: "Amina maintains governance frameworks and compliance policies, ensuring council decisions meet international institutional standards.",
-    email: "amina.okonkwo@wbcouncil.org",
-    phone: "+44 20 7093 81 61",
-    group: "board",
-    groupLabel: "Board of Directors",
-  },
-  {
-    id: "5",
-    slug: "noor-haddad",
-    name: "Noor Haddad",
-    role: "Secretary-General",
-    image: p5,
-    bio: "Noor directs the Secretariat, coordinating member services, institutional partnerships, and the delivery of the council's annual agenda.",
-    email: "noor.haddad@wbcouncil.org",
-    phone: "+44 20 7093 82 10",
-    group: "secretariat",
-    groupLabel: "Secretariat",
-  },
-  {
-    id: "6",
-    slug: "julien-moreau",
-    name: "Julien Moreau",
-    role: "Operations and Coordination Manager",
-    image: p6,
-    bio: "Julien runs day-to-day operations and cross-team coordination, keeping programs on schedule across time zones and partners.",
-    email: "julien.moreau@wbcouncil.org",
-    phone: "+44 20 7093 82 24",
-    group: "secretariat",
-    groupLabel: "Secretariat",
-  },
-  {
-    id: "7",
-    slug: "priya-nair",
-    name: "Priya Nair",
-    role: "Communications and Outreach Manager",
-    image: p7,
-    bio: "Priya leads communications and outreach, shaping how the council presents its work to members, institutions, and the wider public.",
-    email: "priya.nair@wbcouncil.org",
-    phone: "+44 20 7093 82 37",
-    group: "secretariat",
-    groupLabel: "Secretariat",
-  },
-  {
-    id: "8",
-    slug: "lucas-schneider",
-    name: "Lucas Schneider",
-    role: "Programs Delivery Manager",
-    image: p8,
-    bio: "Lucas manages program delivery end to end, from planning and logistics to follow-up with members and partner organizations.",
-    email: "lucas.schneider@wbcouncil.org",
-    phone: "+44 20 7093 82 49",
-    group: "secretariat",
-    groupLabel: "Secretariat",
-  },
-];
-
 const DEFAULTS: WbcTeamPageContent = {
   hero: {
     kicker: "WBC Team",
@@ -180,24 +81,8 @@ const DEFAULTS: WbcTeamPageContent = {
     secretariatDescription:
       "Daily management, operations, communications, and program delivery for members and partners.",
   },
-  members: DEFAULT_MEMBERS,
-  collaborations: [
-    {
-      id: "1",
-      title: "Coordinated Planning",
-      body: "We define priorities jointly, map responsibilities early, and keep every initiative connected to member and partner objectives.",
-    },
-    {
-      id: "2",
-      title: "Responsive Execution",
-      body: "Cross-team check-ins and practical escalation paths allow us to respond quickly while preserving consistency and quality.",
-    },
-    {
-      id: "3",
-      title: "Shared Accountability",
-      body: "We review outcomes together, apply lessons quickly, and keep long-term cooperation at the center of every engagement.",
-    },
-  ],
+  members: [],
+  collaborations: [],
 };
 
 let cachedEtag: string | null = null;
@@ -255,10 +140,6 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
     body: item.description?.trim() ?? "",
   }));
 
-  const resolvedMembers = members.length > 0 ? members : DEFAULTS.members;
-  const resolvedCollaborations =
-    collaborations.length > 0 ? collaborations : DEFAULTS.collaborations;
-
   return {
     hero: {
       kicker: payload.hero?.kicker?.trim() || DEFAULTS.hero.kicker,
@@ -281,8 +162,8 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
       secretariatDescription:
         payload.people?.secretariat_description?.trim() || DEFAULTS.people.secretariatDescription,
     },
-    members: resolvedMembers,
-    collaborations: resolvedCollaborations,
+    members,
+    collaborations,
   };
 }
 

@@ -221,6 +221,7 @@ function WbcTeam() {
   const heroImage = hero.image ?? heroImg;
   const board = members.filter((member) => member.group === "board");
   const secretariat = members.filter((member) => member.group === "secretariat");
+  const hasMemberCards = showMembers && (board.length > 0 || secretariat.length > 0);
 
   return (
     <>
@@ -276,7 +277,7 @@ function WbcTeam() {
         </div>
       </section>
 
-      {(showPeople || showMembers) ? (
+      {(showPeople || hasMemberCards) ? (
       <section className="py-14 lg:py-20">
         <div className="container-wbc">
           {showPeople ? (
@@ -293,7 +294,7 @@ function WbcTeam() {
           </div>
           ) : null}
 
-          {showPeople && showMembers ? <hr className="mt-12 border-line" /> : null}
+          {showPeople && hasMemberCards ? <hr className="mt-12 border-line" /> : null}
 
           {showMembers && board.length > 0 && (
             <>
@@ -340,7 +341,7 @@ function WbcTeam() {
       </section>
       ) : null}
 
-      {showCollaboration ? (
+      {showCollaboration && collaborations.length > 0 ? (
       <section className="relative overflow-hidden bg-surface py-14 lg:py-20">
         <span
           className="pointer-events-none absolute -left-24 -top-24 size-[380px] rounded-full border border-line"

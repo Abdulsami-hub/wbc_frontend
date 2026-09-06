@@ -36,7 +36,6 @@ type FooterCarouselResponse = {
 
 const FALLBACK_IMAGES = [eventsImg, forumImg] as const;
 const DEFAULT_BUTTON_LABEL = "Enquire about advertising";
-const DEFAULT_BUTTON_URL = "/advertising";
 
 function deriveKicker(title: string, kicker: string | null): string {
   if (kicker?.trim()) return kicker.trim();
@@ -57,7 +56,7 @@ export function mapFooterCarouselItem(
     image: item.image_url ?? FALLBACK_IMAGES[index % FALLBACK_IMAGES.length],
     alt: item.title,
     buttonLabel: item.button_label?.trim() || DEFAULT_BUTTON_LABEL,
-    buttonUrl: item.button_url?.trim() || DEFAULT_BUTTON_URL,
+    buttonUrl: item.button_url?.trim() ?? "",
   };
 }
 
