@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeroSlider } from "@/components/HeroSlider";
 import { LatestNews } from "@/components/LatestNews";
-// import { OurPartners } from "@/components/OurPartners";
+import { OurPartners } from "@/components/OurPartners";
 import { WhatIsWbcSection } from "@/components/home/WhatIsWbcSection";
 import { FeaturedServices } from "@/components/home/FeaturedServices";
 import { OurValuesSection } from "@/components/home/OurValuesSection";
 import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
+import { strategicPartnersQueryOptions } from "@/lib/queries/strategic-partners";
 import { whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
 import { seoHead } from "@/lib/seo";
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/")({
       queryClient.ensureQueryData(heroSlidesQueryOptions),
       queryClient.ensureQueryData(whoWeAreQueryOptions),
       queryClient.ensureQueryData(whatWeDoQueryOptions),
+      queryClient.ensureQueryData(strategicPartnersQueryOptions),
     ]);
     return heroSlides;
   },
@@ -42,7 +44,7 @@ function Home() {
       <FeaturedServices />
       <OurValuesSection />
       <LatestNews />
-      {/* <OurPartners /> */}
+      <OurPartners />
     </>
   );
 }
