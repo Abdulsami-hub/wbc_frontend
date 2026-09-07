@@ -181,12 +181,13 @@ export function PartnersDirectory({ categories }: { categories: StrategicPartner
 
       <div className="container-wbc relative">
         <div data-reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-[12px] font-bold tracking-[0.18em] text-orange uppercase">Partner Network</p>
+          <p className="text-[12px] font-bold tracking-[0.18em] text-orange uppercase">Current network</p>
           <h2 className="mt-3 text-[30px] font-extrabold leading-[1.08] tracking-tight text-foreground sm:text-[40px] lg:text-[44px]">
-            Our Partners and Sponsors
+            Partners and sponsors already with WBC
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-            A curated logo wall of institutions, media platforms, and enterprises supporting WBC programmes worldwide.
+            Organizations supporting WBC today. Sponsorship and strategic partnership options are explained in the
+            sections below.
           </p>
         </div>
 

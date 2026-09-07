@@ -16,10 +16,10 @@ export const Route = createFileRoute("/global-network/strategic-partners")({
     queryClient.ensureQueryData(strategicPartnersQueryOptions),
   head: ({ loaderData }) => {
     const heroImage = loaderData?.hero?.image;
-    const title = loaderData?.hero?.title ?? "Strategic Partners";
+    const title = loaderData?.hero?.title ?? "Partners and Sponsors";
     const description =
       loaderData?.hero?.description ??
-      "Strategic partners working with the World Business Council to create international business opportunities.";
+      "Support global business. Increase your visibility. Create opportunities.";
     return seoHead({
       title,
       description,
@@ -85,6 +85,7 @@ function StrategicPartners() {
     approach,
     whyPartner,
     sponsorCards,
+    cooperation,
     whoWePartner,
     outcomes,
     focusAreas,
@@ -97,24 +98,44 @@ function StrategicPartners() {
     ? resolveCta(hero.cta.url)
     : { ctaTo: "/contact", ctaHref: undefined as string | undefined };
 
+  const pageIntroParagraphs = approach.descriptionSecondary
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+  const hasPageIntro = showSponsorshipOverview && pageIntroParagraphs.length > 0;
   const hasApproach =
     showSponsorshipOverview &&
-    (approach.title.trim() || approach.description.trim() || approach.descriptionSecondary.trim());
-  const hasWhyPartner = showWhySponsor && (whyPartner.items.length > 0 || Boolean(whyPartner.cta));
+    (approach.kicker.trim() || approach.title.trim() || approach.description.trim());
+  const hasWhyPartner =
+    showWhySponsor &&
+    (whyPartner.kicker.trim() || whyPartner.title.trim() || whyPartner.items.length > 0 || Boolean(whyPartner.cta));
   const hasSponsorCards = showSponsorshipTypes && sponsorCards.length > 0;
+  const hasCooperation =
+    showCooperation &&
+    (cooperation.kicker.trim() ||
+      cooperation.title.trim() ||
+      cooperation.description.trim() ||
+      cooperation.items.length > 0);
   const hasWhoWePartner =
-    (showCooperation || showPartnerTypes) &&
+    showPartnerTypes &&
     (whoWePartner.title.trim() ||
       whoWePartner.description.trim() ||
       whoWePartner.pillars.length > 0);
   const hasOutcomes = showSupport && (outcomes.title.trim() || outcomes.items.length > 0);
+  const hasSponsorsBand = hasPageIntro || hasApproach || hasSponsorCards || hasWhyPartner || hasOutcomes;
+  const hasPartnersBand = hasCooperation || hasWhoWePartner;
   const hasFocusAreasVisible = showFocusAreas && (focusAreas.title.trim() || focusAreas.items.length > 0);
+  const lastOutcome = outcomes.items.at(-1);
+  const outcomeClosing =
+    lastOutcome && !lastOutcome.body && /[.!?]$/.test(lastOutcome.title.trim())
+      ? lastOutcome.title
+      : "";
+  const outcomeItems = outcomeClosing ? outcomes.items.slice(0, -1) : outcomes.items;
   const hasProcess = showProcess && (process.title.trim() || process.steps.length > 0);
   const hasClosingCta = showCta && (cta.title.trim() || cta.description.trim() || cta.buttons.length > 0);
 
-  const closingPrimary = cta.buttons[0];
-  const closingSecondary = cta.buttons[1];
-  const siteCta = closingPrimary ?? hero.cta;
+  const closingButtons = cta.buttons;
+  const siteCta = closingButtons[0] ?? hero.cta;
 
   return (
     <>
@@ -134,161 +155,293 @@ function StrategicPartners() {
 
       {showProfiles ? <PartnersDirectory categories={categories} /> : null}
 
-      {(hasApproach || hasWhyPartner || hasSponsorCards) && (
-        <section className="relative overflow-hidden py-14 lg:py-20">
+      {hasSponsorsBand ? (
+        <section className="relative overflow-hidden border-t border-line py-14 lg:py-20">
           <div
             className="pointer-events-none absolute -start-24 top-10 size-[380px] rounded-full bg-orange/10 blur-3xl"
             aria-hidden="true"
           />
-          <div className="container-wbc relative grid items-start gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
-            <div data-reveal>
-              {hasApproach ? (
-                <>
-                  {approach.kicker ? <p className="eyebrow">{approach.kicker}</p> : null}
-                  {approach.title ? (
-                    <h2 className="mt-3 max-w-2xl text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
-                      {approach.title}
-                    </h2>
-                  ) : null}
-                  <span className="accent-rule mt-6" />
-                  {approach.description ? (
-                    <p className="mt-8 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-                      {approach.description}
-                    </p>
-                  ) : null}
-                  {approach.descriptionSecondary ? (
-                    <p className="mt-5 max-w-2xl text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
-                      {approach.descriptionSecondary}
-                    </p>
-                  ) : null}
-                </>
-              ) : null}
+          <div className="container-wbc relative space-y-12">
+            <div data-reveal className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex rounded-full bg-orange px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
+                For sponsors
+              </span>
+              <p className="text-[14px] text-muted-fg">
+                Visibility, campaigns, and tailored sponsorship — not a long-term partnership.
+              </p>
+            </div>
 
-              {hasSponsorCards ? (
-                <div
-                  data-reveal
-                  data-reveal-group
-                  className="mt-8 grid max-w-2xl gap-4 sm:grid-cols-2"
-                >
-                  {sponsorCards.map((card) => (
-                    <article
-                      key={card.id}
-                      className="group relative overflow-hidden rounded-card border border-line bg-background p-5 transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card"
-                    >
+            {hasPageIntro ? (
+              <div data-reveal className="max-w-3xl space-y-5">
+                {pageIntroParagraphs.map((paragraph) => (
+                  <p key={paragraph} className="text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            ) : null}
+
+            {hasApproach ? (
+              <div data-reveal className="max-w-3xl">
+                {approach.kicker ? <p className="eyebrow">{approach.kicker}</p> : null}
+                {approach.title ? (
+                  <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
+                    {approach.title}
+                  </h2>
+                ) : null}
+                <span className="accent-rule mt-6" />
+                {approach.description ? (
+                  <p className="mt-8 text-[16px] leading-[1.85] text-muted-fg sm:text-[17px]">
+                    {approach.description}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+
+            {hasSponsorCards ? (
+              <ol data-reveal data-reveal-group className="grid gap-6 lg:grid-cols-3">
+                {sponsorCards.map((card, index) => (
+                  <li key={card.id}>
+                    <article className="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:shadow-card sm:p-7">
                       <span
-                        className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-500 group-hover:scale-x-100"
+                        className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-orange"
                         aria-hidden="true"
                       />
-                      <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
-                        {card.title}
-                      </p>
+                      <span className="inline-flex size-10 items-center justify-center bg-orange text-[13px] font-bold text-white tabular-nums">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="mt-5 text-[20px] font-bold text-foreground">{card.title}</h3>
+                      {card.subtitle ? (
+                        <p className="mt-2 text-[15px] font-semibold leading-snug text-navy">
+                          {card.subtitle}
+                        </p>
+                      ) : null}
                       {card.body ? (
-                        <p className="mt-2 text-[14px] leading-relaxed text-muted-fg">
-                          {card.body}
+                        <p className="mt-3 text-[15px] leading-relaxed text-muted-fg">{card.body}</p>
+                      ) : null}
+                      {card.items.length > 0 ? (
+                        <div className="mt-5">
+                          <p className="text-[12px] font-bold tracking-[0.14em] text-muted-fg uppercase">
+                            May include
+                          </p>
+                          <ul className="mt-3 space-y-2">
+                            {card.items.map((item) => (
+                              <li key={item} className="flex gap-2.5 text-[14px] leading-relaxed text-muted-fg">
+                                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orange" aria-hidden="true" />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                      {card.footerNote ? (
+                        <p className="mt-5 border-t border-line pt-4 text-[13px] leading-relaxed text-muted-fg">
+                          {card.footerNote}
                         </p>
                       ) : null}
                     </article>
-                  ))}
-                </div>
-              ) : null}
-            </div>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
 
             {hasWhyPartner ? (
-              <aside
+              <div
                 data-reveal
-                className="group guide-card rounded-card border border-line bg-surface p-7 sm:p-8"
+                className="relative overflow-hidden rounded-card border border-orange/20 bg-orange/[0.04] p-7 sm:p-9"
               >
-                <span
-                  className="guide-glow -end-10 -top-10 size-36 bg-orange/20"
-                  aria-hidden="true"
-                />
-                {whyPartner.kicker ? (
-                  <p className="relative text-[12px] font-bold tracking-[0.16em] text-muted-fg uppercase">
-                    {whyPartner.kicker}
-                  </p>
+                {whyPartner.kicker ? <p className="eyebrow">{whyPartner.kicker}</p> : null}
+                {whyPartner.title ? (
+                  <h2 className="mt-3 max-w-2xl text-[24px] font-bold leading-tight text-foreground sm:text-[30px]">
+                    {whyPartner.title}
+                  </h2>
                 ) : null}
                 {whyPartner.items.length > 0 ? (
-                  <ul className="relative mt-5 space-y-4">
-                    {whyPartner.items.map((item) => (
-                      <li
-                        key={item.id}
-                        className="border-b border-line pb-4 last:border-0 last:pb-0"
-                      >
-                        <p className="text-[16px] font-bold text-foreground">{item.title}</p>
-                        {item.body ? (
-                          <p className="mt-1.5 text-[14px] leading-relaxed text-muted-fg">
-                            {item.body}
+                  <ul data-reveal data-reveal-group className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {whyPartner.items.map((item, index) => (
+                      <li key={item.id}>
+                        <article className="group guide-card h-full overflow-hidden rounded-lg border border-line bg-background p-5">
+                          <span
+                            className="guide-glow -end-8 -top-8 size-24 bg-orange/25"
+                            aria-hidden="true"
+                          />
+                          <span
+                            className="pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-orange transition-transform duration-300 group-hover:scale-x-100"
+                            aria-hidden="true"
+                          />
+                          <span className="guide-num font-display text-[12px] font-bold tabular-nums text-orange/50">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p className="relative mt-2 text-[16px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
+                            {item.title}
                           </p>
-                        ) : null}
+                          {item.body ? (
+                            <p className="relative mt-1.5 text-[14px] leading-relaxed text-muted-fg">
+                              {item.body}
+                            </p>
+                          ) : null}
+                        </article>
                       </li>
                     ))}
                   </ul>
                 ) : null}
                 {whyPartner.cta ? (
-                  <CmsLink
-                    href={whyPartner.cta.url}
-                    fallback="/contact"
-                    className="btn-orange relative mt-7 inline-flex"
-                  >
+                  <CmsLink href={whyPartner.cta.url} fallback="/contact" className="btn-orange mt-8 inline-flex">
                     {whyPartner.cta.label}
                   </CmsLink>
                 ) : null}
-              </aside>
+              </div>
+            ) : null}
+
+            {hasOutcomes ? (
+              <div
+                data-reveal
+                className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9"
+              >
+                {outcomes.kicker ? <p className="eyebrow">{outcomes.kicker}</p> : null}
+                {outcomes.title ? (
+                  <h2 className="mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
+                    {outcomes.title}
+                  </h2>
+                ) : null}
+                {outcomeItems.length > 0 ? (
+                  <ul className="mt-8 space-y-3.5">
+                    {outcomeItems.map((item) => (
+                      <li key={item.id} className="flex gap-3 text-[15px] leading-relaxed text-muted-fg">
+                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orange" aria-hidden="true" />
+                        <div>
+                          <p className="text-[16px] font-semibold text-foreground">{item.title}</p>
+                          {item.body ? (
+                            <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">{item.body}</p>
+                          ) : null}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {outcomeClosing ? (
+                  <p className="mt-6 border-t border-line pt-5 text-[15px] leading-relaxed text-muted-fg">
+                    {outcomeClosing}
+                  </p>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </section>
-      )}
+      ) : null}
 
-      {hasWhoWePartner ? (
-        <section className="relative overflow-hidden border-t border-line bg-surface/50 py-14 lg:py-20">
+      {hasPartnersBand ? (
+        <section className="relative overflow-hidden border-t border-line bg-navy py-14 text-white lg:py-20">
           <div
-            className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-navy/8 blur-3xl"
+            className="pointer-events-none absolute -end-20 bottom-0 size-[320px] rounded-full bg-teal/20 blur-3xl"
             aria-hidden="true"
           />
-          <div className="container-wbc relative">
-            {showCooperation ? (
-            <div data-reveal className="max-w-2xl">
-              {whoWePartner.kicker ? <p className="eyebrow">{whoWePartner.kicker}</p> : null}
-              {whoWePartner.title ? (
-                <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
-                  {whoWePartner.title}
-                </h2>
-              ) : null}
-              {whoWePartner.description ? (
-                <p className="mt-4 text-[16px] leading-relaxed text-muted-fg">
-                  {whoWePartner.description}
-                </p>
-              ) : null}
-              <span className="accent-rule mt-6" />
+          <div className="container-wbc relative space-y-12">
+            <div data-reveal className="flex flex-wrap items-center gap-3">
+              <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
+                For strategic partners
+              </span>
+              <p className="text-[14px] text-white/70">
+                Structured, long-term cooperation — not sponsorship alone.
+              </p>
             </div>
+
+            {hasCooperation ? (
+              <div data-reveal className="max-w-3xl">
+                {cooperation.kicker ? (
+                  <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                    {cooperation.kicker}
+                  </p>
+                ) : null}
+                {cooperation.title ? (
+                  <h2 className="mt-3 text-[28px] font-bold leading-tight sm:text-[36px]">
+                    {cooperation.title}
+                  </h2>
+                ) : null}
+                {cooperation.description ? (
+                  <p className="mt-5 text-[16px] leading-relaxed text-white/75">{cooperation.description}</p>
+                ) : null}
+                {cooperation.items.length > 0 ? (
+                  <div className="mt-8">
+                    <p className="text-[12px] font-bold tracking-[0.14em] text-white/60 uppercase">
+                      Cooperation may include
+                    </p>
+                    <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {cooperation.items.map((item) => (
+                        <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-white/80">
+                          <svg
+                            className="mt-1 size-4 shrink-0 text-orange"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
             ) : null}
 
-            {showPartnerTypes && whoWePartner.pillars.length > 0 ? (
-              <ul
-                data-reveal
-                data-reveal-group
-                className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {whoWePartner.pillars.map((pillar, i) => (
-                  <li key={pillar.id}>
-                    <article className="group guide-card flex h-full flex-col border border-line bg-background p-6 sm:p-7">
-                      <span
-                        className="guide-glow -end-10 -top-10 size-28 bg-orange/20"
-                        aria-hidden="true"
-                      />
-                      <span className="guide-num relative font-display text-[13px] font-bold tabular-nums text-orange/60">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <h3 className="relative mt-4 text-[19px] font-bold text-foreground transition-colors duration-300 group-hover:text-navy">
+            {hasWhoWePartner ? (
+              <div data-reveal>
+                {whoWePartner.kicker ? (
+                  <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                    {whoWePartner.kicker}
+                  </p>
+                ) : null}
+                {whoWePartner.title ? (
+                  <h2 className="mt-3 text-[24px] font-bold leading-tight sm:text-[28px]">
+                    {whoWePartner.title}
+                  </h2>
+                ) : null}
+                {whoWePartner.description ? (
+                  <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/75">
+                    {whoWePartner.description}
+                  </p>
+                ) : null}
+                {whoWePartner.pillars.length > 0 ? (
+                  <ul className="mt-8 flex flex-wrap gap-3">
+                    {whoWePartner.pillars.map((pillar) => (
+                      <li
+                        key={pillar.id}
+                        className="rounded-full border border-white/20 bg-white/8 px-4 py-2 text-[14px] font-semibold text-white"
+                      >
                         {pillar.title}
-                      </h3>
-                      {pillar.body ? (
-                        <p className="relative mt-3 flex-1 text-[15px] leading-relaxed text-muted-fg">
-                          {pillar.body}
-                        </p>
-                      ) : null}
-                      <span className="guide-accent relative mt-6" aria-hidden="true" />
-                    </article>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {hasFocusAreasVisible ? (
+        <section className="border-t border-line py-14 lg:py-20">
+          <div className="container-wbc">
+            <div data-reveal className="max-w-3xl">
+              {focusAreas.kicker ? <p className="eyebrow">{focusAreas.kicker}</p> : null}
+              {focusAreas.title ? (
+                <h2 className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+                  {focusAreas.title}
+                </h2>
+              ) : null}
+            </div>
+            {focusAreas.items.length > 0 ? (
+              <ul data-reveal className="mt-8 flex flex-wrap gap-3">
+                {focusAreas.items.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-full border border-line bg-surface px-4 py-2 text-[14px] font-semibold text-foreground"
+                  >
+                    {item}
                   </li>
                 ))}
               </ul>
@@ -296,93 +449,6 @@ function StrategicPartners() {
           </div>
         </section>
       ) : null}
-
-      {(hasOutcomes || hasFocusAreasVisible) && (
-        <section className="border-t border-line py-14 lg:py-20">
-          <div className="container-wbc grid gap-8 lg:grid-cols-2 lg:gap-10">
-            {hasOutcomes ? (
-              <div
-                data-reveal
-                className="group guide-card rounded-card border border-line bg-background p-7 sm:p-9"
-              >
-                <span
-                  className="guide-glow -end-10 -top-10 size-36 bg-navy/15"
-                  aria-hidden="true"
-                />
-                {outcomes.kicker ? <p className="relative eyebrow">{outcomes.kicker}</p> : null}
-                {outcomes.title ? (
-                  <h2 className="relative mt-3 text-[24px] font-bold text-foreground sm:text-[28px]">
-                    {outcomes.title}
-                  </h2>
-                ) : null}
-                {outcomes.items.length > 0 ? (
-                  <ul className="relative mt-8 space-y-5">
-                    {outcomes.items.map((item, i) => (
-                      <li key={item.id} className="flex gap-4">
-                        <span className="font-display text-[13px] font-bold tabular-nums text-orange/55">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <div>
-                          <p className="text-[16px] font-bold text-foreground">{item.title}</p>
-                          {item.body ? (
-                            <p className="mt-1 text-[15px] leading-relaxed text-muted-fg">
-                              {item.body}
-                            </p>
-                          ) : null}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            ) : null}
-
-            {hasFocusAreasVisible ? (
-              <div
-                data-reveal
-                className="group relative overflow-hidden rounded-card bg-navy p-7 text-white transition-transform duration-300 hover:-translate-y-1 sm:p-9"
-              >
-                <span
-                  className="pointer-events-none absolute -end-10 -top-10 size-40 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"
-                  aria-hidden="true"
-                />
-                {focusAreas.kicker ? (
-                  <p className="relative text-[12px] font-bold tracking-[0.16em] text-white/60 uppercase">
-                    {focusAreas.kicker}
-                  </p>
-                ) : null}
-                {focusAreas.title ? (
-                  <h2 className="relative mt-3 text-[24px] font-bold leading-snug sm:text-[28px]">
-                    {focusAreas.title}
-                  </h2>
-                ) : null}
-                {focusAreas.items.length > 0 ? (
-                  <ul className="relative mt-8 space-y-3.5">
-                    {focusAreas.items.map((item) => (
-                      <li
-                        key={item}
-                        className="flex gap-3 text-[15px] leading-relaxed text-white/80"
-                      >
-                        <svg
-                          className="mt-1 size-4 shrink-0 text-orange"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.4"
-                          aria-hidden="true"
-                        >
-                          <path d="M5 13l4 4L19 7" />
-                        </svg>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
-        </section>
-      )}
 
       {hasProcess ? (
         <section className="relative isolate overflow-hidden border-t border-line bg-navy py-14 lg:py-20">
@@ -417,7 +483,7 @@ function StrategicPartners() {
               <ol
                 data-reveal
                 data-reveal-group
-                className="relative mt-12 grid gap-6 lg:grid-cols-3"
+                className={`relative mt-12 grid gap-6 ${process.steps.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}
               >
                 <span
                   className="guide-process-line pointer-events-none absolute top-8 start-[16%] end-[16%] hidden h-px bg-gradient-to-r from-transparent via-orange/70 to-transparent lg:block"
@@ -472,35 +538,39 @@ function StrategicPartners() {
                   {cta.description}
                 </p>
               ) : null}
-              {(closingPrimary || closingSecondary) && (
+              {closingButtons.length > 0 ? (
                 <div className="mt-8 flex flex-wrap gap-3">
-                  {closingPrimary ? (
-                    <CmsLink href={closingPrimary.url} fallback="/contact" className="btn-orange">
-                      {closingPrimary.label}
-                    </CmsLink>
-                  ) : null}
-                  {closingSecondary ? (
+                  {closingButtons.map((button, index) => (
                     <CmsLink
-                      href={closingSecondary.url}
-                      fallback="/global-network"
-                      className="btn-navy !rounded-md"
+                      key={`${button.label}-${button.url}`}
+                      href={button.url}
+                      fallback="/contact"
+                      className={
+                        index === 0
+                          ? "btn-orange"
+                          : index === 1
+                            ? "btn-navy !rounded-md"
+                            : "btn-orange-to-outline !rounded-md"
+                      }
                     >
-                      {closingSecondary.label}
+                      {button.label}
                     </CmsLink>
-                  ) : null}
+                  ))}
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </section>
       ) : null}
 
-      <CTASection
-        title={siteCta ? cta.title.trim() || hero.title : hero.title}
-        description={cta.description.trim() || hero.description}
-        ctaLabel={siteCta?.label ?? "Contact Us"}
-        to={siteCta ? (resolveCta(siteCta.url).ctaTo ?? "/contact") : "/contact"}
-      />
+      {hasClosingCta ? null : (
+        <CTASection
+          title={siteCta ? cta.title.trim() || hero.title : hero.title}
+          description={cta.description.trim() || hero.description}
+          ctaLabel={siteCta?.label ?? "Contact Us"}
+          to={siteCta ? (resolveCta(siteCta.url).ctaTo ?? "/contact") : "/contact"}
+        />
+      )}
     </>
   );
 }

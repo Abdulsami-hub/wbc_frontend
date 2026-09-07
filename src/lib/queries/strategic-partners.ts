@@ -48,8 +48,18 @@ type ApiPayload = {
   sponsor_cards: {
     id: number;
     title: string;
+    subtitle: string | null;
     description: string | null;
+    items?: string[] | null;
+    footer_note?: string | null;
   }[];
+  cooperation: {
+    id: number;
+    kicker: string | null;
+    title: string;
+    description: string | null;
+    items: string[];
+  } | null;
   who_we_partner: {
     kicker: string | null;
     title: string | null;
@@ -97,8 +107,7 @@ const DEFAULTS: StrategicPartnersPageContent = {
   hero: {
     kicker: "Global Network",
     title: "Partners and Sponsors",
-    description:
-      "Institutions, media platforms, and enterprises collaborating with WBC to strengthen international business cooperation and create opportunities worldwide.",
+    description: "Support global business. Increase your visibility. Create opportunities.",
     tags: [],
     cta: { label: "Contact WBC", url: "/contact" },
     image: partnersHero,
@@ -113,9 +122,16 @@ const DEFAULTS: StrategicPartnersPageContent = {
   },
   whyPartner: {
     kicker: "",
+    title: "",
     items: [],
   },
   sponsorCards: [],
+  cooperation: {
+    kicker: "",
+    title: "",
+    description: "",
+    items: [],
+  },
   whoWePartner: {
     kicker: "",
     title: "",
@@ -219,6 +235,7 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
     },
     whyPartner: {
       kicker: payload.why_partner?.kicker?.trim() ?? "",
+      title: payload.why_partner?.title?.trim() ?? "",
       items: mapTitledItems(payload.why_partner?.items, "why"),
       cta:
         whyCtaLabel && whyCtaUrl
@@ -230,8 +247,17 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
     sponsorCards: (payload.sponsor_cards ?? []).map((card) => ({
       id: String(card.id),
       title: card.title,
+      subtitle: card.subtitle?.trim() ?? "",
       body: card.description?.trim() ?? "",
+      items: (card.items ?? []).map((item) => item.trim()).filter(Boolean),
+      footerNote: card.footer_note?.trim() ?? "",
     })),
+    cooperation: {
+      kicker: payload.cooperation?.kicker?.trim() ?? "",
+      title: payload.cooperation?.title?.trim() ?? "",
+      description: payload.cooperation?.description?.trim() ?? "",
+      items: (payload.cooperation?.items ?? []).map((item) => item.trim()).filter(Boolean),
+    },
     whoWePartner: {
       kicker: payload.who_we_partner?.kicker?.trim() ?? "",
       title: payload.who_we_partner?.title?.trim() ?? "",

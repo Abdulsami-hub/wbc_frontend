@@ -41,10 +41,24 @@ export type StrategicPartnersPageContent = {
   };
   whyPartner: {
     kicker: string;
+    title: string;
     items: TitledItem[];
     cta?: { label: string; url: string };
   };
-  sponsorCards: TitledItem[];
+  sponsorCards: {
+    id: string;
+    title: string;
+    subtitle: string;
+    body: string;
+    items: string[];
+    footerNote: string;
+  }[];
+  cooperation: {
+    kicker: string;
+    title: string;
+    description: string;
+    items: string[];
+  };
   whoWePartner: {
     kicker: string;
     title: string;
