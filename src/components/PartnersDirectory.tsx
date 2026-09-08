@@ -167,7 +167,44 @@ export function PartnersDirectorySkeleton() {
   );
 }
 
+function isSponsorCategory(category: StrategicPartnerCategory) {
+  return /sponsor/i.test(category.kindLabel) || /sponsor/i.test(category.name);
+}
+
+function DirectoryGroup({
+  title,
+  description,
+  categories,
+  startIndex,
+}: {
+  title: string;
+  description: string;
+  categories: StrategicPartnerCategory[];
+  startIndex: number;
+}) {
+  if (categories.length === 0) return null;
+
+  return (
+    <div className="space-y-6">
+      <div data-reveal className="max-w-2xl">
+        <h2 className="text-[28px] font-extrabold leading-tight tracking-tight text-foreground sm:text-[36px]">
+          {title}
+        </h2>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">{description}</p>
+      </div>
+      <div className="space-y-8">
+        {categories.map((cat, i) => (
+          <CategorySection key={cat.id} cat={cat} index={startIndex + i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PartnersDirectory({ categories }: { categories: StrategicPartnerCategory[] }) {
+  const sponsors = categories.filter(isSponsorCategory);
+  const partners = categories.filter((category) => !isSponsorCategory(category));
+
   return (
     <section className="relative overflow-hidden border-b border-line bg-surface/30 py-14 lg:py-20">
       <div
@@ -192,10 +229,19 @@ export function PartnersDirectory({ categories }: { categories: StrategicPartner
         </div>
 
         {categories.length > 0 ? (
-          <div className="mt-12 space-y-8">
-            {categories.map((cat, i) => (
-              <CategorySection key={cat.id} cat={cat} index={i} />
-            ))}
+          <div className="mt-12 space-y-14">
+            <DirectoryGroup
+              title="Sponsors"
+              description="Media, corporate, and custom sponsors currently supporting WBC programmes and visibility."
+              categories={sponsors}
+              startIndex={0}
+            />
+            <DirectoryGroup
+              title="Partners"
+              description="Strategic and institutional partners in long-term cooperation with WBC."
+              categories={partners}
+              startIndex={sponsors.length}
+            />
           </div>
         ) : (
           <p className="mt-12 text-center text-[16px] text-muted-fg">

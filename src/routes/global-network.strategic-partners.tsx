@@ -162,11 +162,14 @@ function StrategicPartners() {
             aria-hidden="true"
           />
           <div className="container-wbc relative space-y-12">
-            <div data-reveal className="flex flex-wrap items-center gap-3">
+            <div data-reveal className="max-w-3xl">
               <span className="inline-flex rounded-full bg-orange px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
                 For sponsors
               </span>
-              <p className="text-[14px] text-muted-fg">
+              <h2 className="mt-4 text-[28px] font-extrabold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
+                Sponsors
+              </h2>
+              <p className="mt-3 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
                 Visibility, campaigns, and tailored sponsorship — not a long-term partnership.
               </p>
             </div>
@@ -337,11 +340,14 @@ function StrategicPartners() {
             aria-hidden="true"
           />
           <div className="container-wbc relative space-y-12">
-            <div data-reveal className="flex flex-wrap items-center gap-3">
+            <div data-reveal className="max-w-3xl">
               <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
                 For strategic partners
               </span>
-              <p className="text-[14px] text-white/70">
+              <h2 className="mt-4 text-[28px] font-extrabold leading-tight sm:text-[36px] lg:text-[40px]">
+                Partners
+              </h2>
+              <p className="mt-3 text-[16px] leading-relaxed text-white/75 sm:text-[17px]">
                 Structured, long-term cooperation — not sponsorship alone.
               </p>
             </div>
