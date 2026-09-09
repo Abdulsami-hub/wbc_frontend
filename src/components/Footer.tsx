@@ -81,9 +81,9 @@ const SOCIAL_META: Record<SocialIconKey, { label: string; path: string }> = {
 };
 
 export function Footer() {
-  const { t } = useI18n();
+  const { t, tx } = useI18n();
   const { data } = useQuery(siteSettingsQueryOptions);
-  const footerDescription = data?.footerDescription?.trim() || t("footer.tagline");
+  const footerDescription = tx(data?.footerDescription?.trim() || t("footer.tagline"));
   const socialLinks = data?.socialLinks ?? [];
 
   return (
@@ -144,17 +144,6 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-[14px] sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} World Business Council. {t("footer.rights")}
-          </p>
-          <p>
-            Developed by:{" "}
-            <a
-              href="https://ncp.af"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
-            >
-              Naikbeen control panel
-            </a>
           </p>
         </div>
       </div>

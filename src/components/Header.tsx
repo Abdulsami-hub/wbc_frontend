@@ -88,9 +88,8 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2 lg:gap-3">
-          {/* Hidden for now — keep mounted so it can be shown again later. */}
-          <LanguageSwitcher className="hidden" compact />
-          <LanguageSwitcher className="hidden" />
+          <LanguageSwitcher className="lg:hidden" compact />
+          <LanguageSwitcher className="hidden lg:block" />
           <Link
             to="/become-a-member"
             className="btn-orange-to-outline hidden !min-h-9 !rounded-md !px-4 !text-[12px] lg:inline-flex"

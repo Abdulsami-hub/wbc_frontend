@@ -19,3 +19,10 @@ export const LANGUAGES: Language[] = [
 
 export const DEFAULT_LANG: LangCode = "en";
 export const STORAGE_KEY = "wbc-lang";
+
+/** Only English is live; other UN languages stay listed for discovery. */
+export const AVAILABLE_LANGS: readonly LangCode[] = [DEFAULT_LANG];
+
+export function isLanguageAvailable(code: LangCode): boolean {
+  return AVAILABLE_LANGS.includes(code);
+}
