@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import heroImg from "@/assets/who-we-are-hero.png";
+import { PageHeroFrame } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WhoWeArePageContent, WhoWeAreValue } from "@/content/who-we-are";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
@@ -207,59 +208,43 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
 
   return (
     <>
-      <section className="relative flex flex-col">
-        <div
-          className="absolute inset-y-0 start-0 hidden w-1/2 bg-orange lg:block"
-          aria-hidden="true"
-        />
-        <div className="bg-orange lg:bg-transparent">
-          <div className="container-wbc py-16 lg:py-24">
-            <div className="w-full max-w-xl">
-              <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
-                <ol className="flex flex-wrap items-center gap-2">
-                  <li>
-                    <Link to="/" className="hover:text-white">
-                      Home
-                    </Link>
-                  </li>
-                  <li aria-hidden="true">/</li>
-                  <li className="font-semibold text-white">{hero.title}</li>
-                </ol>
-              </nav>
-              <p className="intro-1 mt-8 hero-kicker">{hero.kicker}</p>
-              <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
-                {hero.title}
-              </h1>
-              <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
-                {hero.description}
-              </p>
-              {hero.tags.length > 0 ? (
-                <ul className="intro-4 mt-9 flex flex-wrap gap-3">
-                  {hero.tags.map((t) => (
-                    <li
-                      key={t}
-                      className="border border-white/70 px-4 py-2 text-[13px] font-bold tracking-[0.14em] text-white uppercase"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </div>
-          </div>
-        </div>
-        <div className="hero-media-right bg-navy-deep">
-          <img
-            src={hero.image ?? heroImg}
-            alt={hero.imageAlt}
-            width={1600}
-            height={1000}
-            fetchPriority="high"
-            decoding="async"
-            className="intro-img absolute inset-0 size-full object-cover"
-          />
-        </div>
-      </section>
+      <PageHeroFrame
+        layout={hero.layout}
+        tone={hero.background}
+        image={hero.image ?? heroImg}
+        imageAlt={hero.imageAlt}
+      >
+        <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
+          <ol className="flex flex-wrap items-center gap-2">
+            <li>
+              <Link to="/" className="hover:text-white">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="font-semibold text-white">{hero.title}</li>
+          </ol>
+        </nav>
+        <p className="intro-1 mt-8 hero-kicker">{hero.kicker}</p>
+        <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
+          {hero.title}
+        </h1>
+        <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
+          {hero.description}
+        </p>
+        {hero.tags.length > 0 ? (
+          <ul className="intro-4 mt-9 flex flex-wrap gap-3">
+            {hero.tags.map((t) => (
+              <li
+                key={t}
+                className="border border-white/70 px-4 py-2 text-[13px] font-bold tracking-[0.14em] text-white uppercase"
+              >
+                {t}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </PageHeroFrame>
 
       {showAboutBlock ? (
       <section className="relative overflow-hidden bg-surface py-16 lg:py-24">

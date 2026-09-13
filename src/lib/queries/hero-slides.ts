@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 import type { HeroSlide } from "@/content/hero";
-import { HERO_BACKGROUND_STYLES, normalizeHeroBackground } from "@/content/hero";
+import { HERO_BACKGROUND_STYLES, normalizeHeroBackground, normalizeHeroLayout } from "@/content/hero";
 
 export type ApiHeroButton = {
   label: string;
@@ -16,6 +16,7 @@ export type ApiHeroSlide = {
   buttons: ApiHeroButton[];
   image_url: string | null;
   background_color?: string | null;
+  layout?: string | null;
   sort_order: number;
   updated_at: string | null;
 };
@@ -49,7 +50,7 @@ export function mapApiHeroSlide(slide: ApiHeroSlide): HeroSlide {
 
   return {
     id: String(slide.id),
-    layout: "half-color",
+    layout: normalizeHeroLayout(slide.layout),
     eyebrow: slide.kicker?.trim() || "World Business Council",
     title: titleLines.length > 0 ? titleLines : [slide.title],
     description: slide.description?.trim() ?? "",

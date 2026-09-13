@@ -1,6 +1,8 @@
+import type { PageHeroAppearance } from "@/content/hero";
 import { queryOptions } from "@tanstack/react-query";
 import contactHero from "@/assets/contact-hero.png";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 
 type ApiButton = { label: string; url: string };
 
@@ -12,6 +14,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   info: {
     section_title: string | null;
@@ -38,7 +42,7 @@ export type ContactPageContent = {
     cta?: { label: string; url: string };
     image: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   info: {
     sectionTitle: string;
     sectionDescription: string;
@@ -61,6 +65,8 @@ const DEFAULTS: ContactPageContent = {
     description: "Questions about membership, partnerships, or events? Our team is here to help.",
     image: contactHero,
     imageAlt: "World Business Council contact",
+    background: "orange",
+    layout: "current",
   },
   info: {
     sectionTitle: "Contact Information",
@@ -103,6 +109,7 @@ export function mapContactPayload(payload: ApiPayload): ContactPageContent {
       cta: firstCta(payload.hero?.buttons ?? []),
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "orange"),
     },
     info: {
       sectionTitle: info?.section_title?.trim() || DEFAULTS.info.sectionTitle,

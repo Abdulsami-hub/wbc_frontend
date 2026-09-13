@@ -87,25 +87,15 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
 
   if (slide.layout === "full") {
     return (
-      <div className={`relative flex h-full min-h-0 flex-col lg:min-h-[560px] ${slide.panelClass}`}>
+      <div className="relative flex h-full min-h-0 flex-col bg-navy lg:min-h-[560px]">
         <div className="absolute inset-0">
           <SlideMedia slide={slide} active={active} />
         </div>
-        <div className={`absolute inset-0 ${slide.overlayClass}`} aria-hidden="true" />
-        <div className="container-wbc relative flex min-h-0 flex-1 items-end lg:min-h-[560px]">
-          {copyPanel}
-        </div>
-      </div>
-    );
-  }
-
-  if (slide.layout === "media") {
-    return (
-      <div className={`relative flex h-full min-h-0 flex-col lg:min-h-[560px] ${slide.panelClass}`}>
-        <div className="container-wbc grid min-h-inherit flex-1 lg:grid-cols-[1.1fr_0.9fr] lg:min-h-[560px]">
-          <div className="relative min-h-[16rem] lg:min-h-0">
-            <SlideMedia slide={slide} active={active} />
-          </div>
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/15"
+          aria-hidden="true"
+        />
+        <div className="container-wbc relative flex min-h-0 flex-1 items-center lg:min-h-[560px]">
           {copyPanel}
         </div>
       </div>

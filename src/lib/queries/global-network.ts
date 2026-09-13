@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import networkBg from "@/assets/network-bg.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { GlobalNetworkPageContent, GlobalNetworkStructure } from "@/content/global-network";
 
 type ApiButton = { label: string; url: string };
@@ -13,6 +14,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   structures: {
     id: number;
@@ -75,6 +78,8 @@ const DEFAULTS: GlobalNetworkPageContent = {
     cta: { label: "Explore Affiliates", url: "/affiliates" },
     image: networkBg,
     imageAlt: "Illuminated world map representing the WBC global network",
+    background: "blue",
+    layout: "current",
   },
   structures: DEFAULT_STRUCTURES,
   stats: [
@@ -145,6 +150,7 @@ export function mapGlobalNetworkPayload(payload: ApiPayload): GlobalNetworkPageC
       cta: cta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     structures: structures.length > 0 ? structures : DEFAULTS.structures,
     stats: statsFromApi.length > 0 ? statsFromApi : DEFAULTS.stats,

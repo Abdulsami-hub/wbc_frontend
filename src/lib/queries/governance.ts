@@ -5,6 +5,7 @@ import heroImg from "@/assets/gov-hero.png";
 import honoraryImg from "@/assets/gov-honorary.png";
 import secretariatImg from "@/assets/gov-secretariat.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type {
   GovernanceGroup,
   GovernanceGroupIcon,
@@ -21,6 +22,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   structure: {
     id: number;
@@ -100,6 +103,8 @@ const DEFAULTS: GovernancePageContent = {
     cta: { label: "Contact the governance office", url: "/contact" },
     image: heroImg,
     imageAlt: "WBC boardroom prepared for a governance session",
+    background: "blue",
+    layout: "current",
   },
   structure: {
     title: "Institutional governance for transparent and accountable delivery",
@@ -204,6 +209,7 @@ export function mapGovernancePayload(payload: ApiPayload): GovernancePageContent
       cta: cta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     structure: {
       title: payload.structure?.title?.trim() || DEFAULTS.structure.title,

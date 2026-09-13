@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type MembershipTier = {
   id: string;
   title: string;
@@ -39,7 +40,7 @@ export type MembershipPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   typesHeader: {
     kicker: string;
     title: string;

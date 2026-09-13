@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import heroImg from "@/assets/affiliates-hero.png";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type {
   AffiliateCity,
   AffiliateCountry,
@@ -83,6 +84,8 @@ type ApiListPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   regions: ApiRegion[];
   faqs: { id: number; question: string; answer: string | null }[];
@@ -161,6 +164,8 @@ const DEFAULTS: AffiliatesPageContent = {
     cta: { label: "Fill the Application Form", url: "/contact" },
     image: heroImg,
     imageAlt: "WBC affiliate representatives meeting in front of a global network map",
+    background: "blue",
+    layout: "current",
   },
   regions: [],
   faqs: DEFAULT_FAQS,
@@ -237,6 +242,7 @@ export function mapAffiliatesListPayload(payload: ApiListPayload): AffiliatesPag
       cta: cta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     regions,
     faqs: faqs.length > 0 ? faqs : DEFAULTS.faqs,

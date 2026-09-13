@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import partnersHero from "@/assets/partners-hero.png";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { StrategicPartnersPageContent } from "@/content/strategic-partners";
 import { normalizePartnerAccent } from "@/content/strategic-partners";
 
@@ -16,6 +17,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   categories: {
     id: number;
@@ -114,6 +117,8 @@ const DEFAULTS: StrategicPartnersPageContent = {
     cta: { label: "Contact WBC", url: "/contact" },
     image: partnersHero,
     imageAlt: "Business partners shaking hands across a conference table",
+    background: "orange",
+    layout: "current",
   },
   categories: [],
   approach: {
@@ -233,6 +238,7 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
       cta: cta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "orange"),
     },
     categories,
     approach: {

@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import networkBg from "@/assets/network-bg.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { AffiliateGuidePageContent } from "@/content/affiliate-guide";
 import {
   eligibilityKindLabel,
@@ -17,6 +18,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   overview: {
     id: number;
@@ -87,6 +90,8 @@ const DEFAULTS: AffiliateGuidePageContent = {
     cta: { label: "Fill the Application Form", url: "/contact" },
     image: networkBg,
     imageAlt: "Global network map representing WBC affiliate development",
+    background: "blue",
+    layout: "current",
   },
   overview: {
     title: "",
@@ -189,6 +194,7 @@ export function mapAffiliateGuidePayload(payload: ApiPayload): AffiliateGuidePag
       cta: cta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     overview: {
       title: payload.overview?.title?.trim() ?? "",

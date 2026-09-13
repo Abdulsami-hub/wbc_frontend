@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type GovernanceGroupIcon = "user" | "lines" | "shield";
 
 export type GovernanceGroup = {
@@ -24,7 +25,7 @@ export type GovernancePageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   structure: {
     title: string;
     description: string;

@@ -155,7 +155,8 @@ function AffiliateGuide() {
         tags={hero.tags}
         image={heroImage}
         imageAlt={hero.imageAlt}
-        tone="blue"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta.ctaTo}
         ctaHref={heroCta.ctaHref}

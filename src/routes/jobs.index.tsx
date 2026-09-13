@@ -91,7 +91,8 @@ function JobsPage() {
         description={hero.description}
         image={hero.image || teamHero}
         imageAlt={hero.imageAlt}
-        tone="navy"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta?.ctaTo}
         ctaHref={heroCta?.ctaHref}

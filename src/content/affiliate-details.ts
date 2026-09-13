@@ -1,3 +1,5 @@
+import type { PageHeroAppearance } from "@/content/hero";
+
 export type AffiliateOfficer = {
   name: string;
   position: string;
@@ -49,7 +51,8 @@ export type AffiliatePageHero = {
   cta?: { label: string; url: string };
   image?: string;
   imageAlt: string;
-};
+} & PageHeroAppearance;
+
 
 export type AffiliateFaq = {
   id: string;

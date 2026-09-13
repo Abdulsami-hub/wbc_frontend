@@ -87,7 +87,8 @@ function GlobalNetwork() {
         tags={hero.tags}
         image={heroImage}
         imageAlt={hero.imageAlt}
-        tone="blue"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={ctaTo}
         ctaHref={ctaHref}

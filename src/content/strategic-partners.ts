@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type PartnerAccent = "orange" | "navy" | "teal" | "blue" | "violet";
 
 export type StrategicPartnerTile = {
@@ -33,7 +34,7 @@ export type StrategicPartnersPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   categories: StrategicPartnerCategory[];
   approach: {
     kicker: string;

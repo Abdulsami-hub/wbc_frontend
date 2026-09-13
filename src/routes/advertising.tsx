@@ -64,7 +64,8 @@ function AdvertisingPage() {
         tags={hero.tags}
         image={hero.image ?? eventsImg}
         imageAlt={hero.imageAlt}
-        tone="blue"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={showPdf ? pdf.buttonLabel : undefined}
         ctaHref={showPdf ? pdf.fileUrl : undefined}
         ctaDownload={showPdf ? pdf.fileName : undefined}

@@ -8,6 +8,7 @@ import innovationImg from "@/assets/wwd-innovation.jpg";
 import trainingImg from "@/assets/wwd-training.jpg";
 import membersImg from "@/assets/wwd-members.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { WhatWeDoPageContent, WhatWeDoService } from "@/content/what-we-do";
 
 type ApiButton = { label: string; url: string };
@@ -20,6 +21,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   services: {
     id: number;
@@ -161,6 +164,8 @@ const DEFAULTS: WhatWeDoPageContent = {
     tags: ["Networking", "Advisory", "Events"],
     image: heroImg,
     imageAlt: "WBC members presenting business insights in a boardroom",
+    background: "blue",
+    layout: "current",
   },
   services: DEFAULT_SERVICES,
 };
@@ -195,6 +200,7 @@ export function mapWhatWeDoPayload(payload: ApiPayload): WhatWeDoPageContent {
       tags: tags.length > 0 ? tags : DEFAULTS.hero.tags,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     services: resolvedServices,
   };

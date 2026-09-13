@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import newsHero from "@/assets/news-hero.png";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { NewsItem, NewsPageContent } from "@/content/news";
 
 type ApiButton = { label: string; url: string };
@@ -13,6 +14,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   articles: {
     id: number;
@@ -41,6 +44,8 @@ const DEFAULTS: NewsPageContent = {
     cta: { label: "Contact the Team", url: "/contact" },
     image: newsHero,
     imageAlt: "WBC colleagues reviewing reports and market insights",
+    background: "navy",
+    layout: "current",
   },
   articles: [],
 };
@@ -100,6 +105,7 @@ export function mapNewsPayload(payload: ApiPayload): NewsPageContent {
       cta: firstCta(payload.hero?.buttons ?? []) ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "navy"),
     },
     articles: (payload.articles ?? []).map(mapArticle),
   };

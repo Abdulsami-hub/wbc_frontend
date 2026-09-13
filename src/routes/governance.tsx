@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/gov-hero.png";
 import { CmsLink } from "@/components/CmsLink";
+import { PageHeroFrame } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GovernanceGroupIcon } from "@/content/governance";
 import { governanceQueryOptions } from "@/lib/queries/governance";
@@ -103,60 +104,44 @@ function Governance() {
 
   return (
     <>
-      <section className="relative flex flex-col">
-        <div
-          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
-          aria-hidden="true"
-        />
-        <div className="bg-teal lg:bg-transparent">
-          <div className="container-wbc py-16 lg:py-24">
-            <div className="max-w-xl">
-              <p className="intro-1 hero-kicker">{hero.kicker}</p>
-              <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
-                {hero.title}
-              </h1>
-              <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
-                {hero.description}
-              </p>
-              {hero.tags.length > 0 && (
-                <ul className="intro-4 mt-10 flex flex-wrap gap-3">
-                  {hero.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
-                    >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {hero.cta && (
-                <CmsLink
-                  href={hero.cta.url}
-                  fallback="/contact"
-                  className="intro-4 mt-8 inline-flex items-center gap-3 border-b border-white pb-1 text-[16px] font-bold text-white"
-                >
-                  {hero.cta.label}{" "}
-                  <span aria-hidden="true" className="rtl-mirror">
-                    →
-                  </span>
-                </CmsLink>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="hero-media-right bg-navy">
-          <img
-            src={heroImage}
-            alt={hero.imageAlt}
-            width={1200}
-            height={1000}
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover"
-          />
-        </div>
-      </section>
+      <PageHeroFrame
+        layout={hero.layout}
+        tone={hero.background}
+        image={heroImage}
+        imageAlt={hero.imageAlt}
+      >
+        <p className="intro-1 hero-kicker">{hero.kicker}</p>
+        <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
+          {hero.title}
+        </h1>
+        <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
+          {hero.description}
+        </p>
+        {hero.tags.length > 0 && (
+          <ul className="intro-4 mt-10 flex flex-wrap gap-3">
+            {hero.tags.map((tag) => (
+              <li
+                key={tag}
+                className="border border-white/60 px-4 py-2.5 text-[13px] font-semibold tracking-[0.14em] text-white uppercase"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )}
+        {hero.cta && (
+          <CmsLink
+            href={hero.cta.url}
+            fallback="/contact"
+            className="intro-4 mt-8 inline-flex items-center gap-3 border-b border-white pb-1 text-[16px] font-bold text-white"
+          >
+            {hero.cta.label}{" "}
+            <span aria-hidden="true" className="rtl-mirror">
+              →
+            </span>
+          </CmsLink>
+        )}
+      </PageHeroFrame>
 
       {(showStructure || showGroups) ? (
       <section className="py-14 lg:py-20">

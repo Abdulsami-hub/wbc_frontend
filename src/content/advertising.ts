@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type AdvertisingFormat = {
   id: string;
   title: string;
@@ -12,7 +13,7 @@ export type AdvertisingPageContent = {
     tags: string[];
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   overview: {
     kicker: string;
     title: string;

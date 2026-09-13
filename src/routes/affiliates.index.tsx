@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import heroImg from "@/assets/affiliates-hero.png";
 import { CmsLink } from "@/components/CmsLink";
+import { PageHeroFrame } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import type {
   AffiliateCity,
@@ -278,62 +279,39 @@ function Affiliates() {
 
   return (
     <>
-      <section className="relative">
-        <div
-          className="absolute inset-y-0 start-0 hidden w-1/2 bg-teal lg:block"
-          aria-hidden="true"
-        />
-        <div className="lg:grid lg:grid-cols-2">
-          <div className="relative z-[1] flex items-center bg-teal lg:absolute lg:inset-y-0 lg:start-0 lg:w-1/2 lg:bg-transparent">
-            <div className="w-full px-5 py-12 sm:px-6 lg:py-8 lg:ps-[max(2.5rem,calc((100vw-1280px)/2+2.5rem))] lg:pe-10">
-              <div className="max-w-xl">
-                <p className="intro-1 hero-kicker">{hero.kicker}</p>
-                <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
-                  {hero.title}
-                </h1>
-                <p className="intro-3 mt-5 max-w-lg text-[16px] leading-relaxed text-white/90">
-                  {hero.description}
-                </p>
-                {hero.tags.length > 0 && (
-                  <ul className="intro-4 mt-7 flex flex-wrap gap-3">
-                    {hero.tags.map((t) => (
-                      <li
-                        key={t}
-                        className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white"
-                      >
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {hero.cta && (
-                  <CmsLink
-                    href={hero.cta.url}
-                    fallback="/contact"
-                    className="intro-4 mt-6 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
-                  >
-                    {hero.cta.label}{" "}
-                    <span aria-hidden="true" className="rtl-mirror">
-                      →
-                    </span>
-                  </CmsLink>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="bg-white lg:col-start-2">
-            <img
-              src={image}
-              alt={hero.imageAlt}
-              width={1024}
-              height={662}
-              fetchPriority="high"
-              decoding="async"
-              className="block h-auto w-full"
-            />
-          </div>
-        </div>
-      </section>
+      <PageHeroFrame layout={hero.layout} tone={hero.background} image={image} imageAlt={hero.imageAlt}>
+        <p className="intro-1 hero-kicker">{hero.kicker}</p>
+        <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
+          {hero.title}
+        </h1>
+        <p className="intro-3 mt-5 max-w-lg text-[16px] leading-relaxed text-white/90">
+          {hero.description}
+        </p>
+        {hero.tags.length > 0 && (
+          <ul className="intro-4 mt-7 flex flex-wrap gap-3">
+            {hero.tags.map((t) => (
+              <li
+                key={t}
+                className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white"
+              >
+                {t}
+              </li>
+            ))}
+          </ul>
+        )}
+        {hero.cta && (
+          <CmsLink
+            href={hero.cta.url}
+            fallback="/contact"
+            className="intro-4 mt-6 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
+          >
+            {hero.cta.label}{" "}
+            <span aria-hidden="true" className="rtl-mirror">
+              →
+            </span>
+          </CmsLink>
+        )}
+      </PageHeroFrame>
 
       <section className="py-14 lg:py-20">
         <div className="container-wbc">

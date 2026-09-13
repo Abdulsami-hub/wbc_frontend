@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type GlobalNetworkStructure = {
   id: string;
   title: string;
@@ -19,7 +20,7 @@ export type GlobalNetworkPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   structures: GlobalNetworkStructure[];
   stats: GlobalNetworkStat[];
 };

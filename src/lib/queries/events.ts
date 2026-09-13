@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import eventsImg from "@/assets/events.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { EventMediaItem, EventRecord, EventsPageContent } from "@/content/events";
 
 type ApiButton = { label: string; url: string };
@@ -13,6 +14,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   categories: {
     id: number;
@@ -54,6 +57,8 @@ const DEFAULTS: EventsPageContent = {
     cta: { label: "Get Event Updates", url: "/contact" },
     image: eventsImg,
     imageAlt: "Delegates attending an international WBC business forum",
+    background: "orange",
+    layout: "current",
   },
   categories: [],
   events: [],
@@ -129,6 +134,7 @@ export function mapEventsPayload(payload: ApiPayload): EventsPageContent {
       cta: firstCta(payload.hero?.buttons ?? []) ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "orange"),
     },
     categories: (payload.categories ?? []).map((category) => ({
       id: category.slug,

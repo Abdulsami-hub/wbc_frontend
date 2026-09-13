@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import membershipImg from "@/assets/membership.jpg";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { BecomeAMemberPageContent } from "@/content/become-a-member";
 
 type ApiButton = { label: string; url: string };
@@ -13,6 +14,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   eligibility: {
     id: number;
@@ -58,6 +61,8 @@ const DEFAULTS: BecomeAMemberPageContent = {
     cta: { label: "View Benefits", url: "/membership" },
     image: membershipImg,
     imageAlt: "Business professionals shaking hands during a membership meeting",
+    background: "orange",
+    layout: "current",
   },
   eligibility: {
     kicker: "",
@@ -108,6 +113,7 @@ export function mapBecomeAMemberPayload(payload: ApiPayload): BecomeAMemberPageC
       cta: heroCta ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "orange"),
     },
     eligibility: {
       kicker: payload.eligibility?.kicker?.trim() ?? "",

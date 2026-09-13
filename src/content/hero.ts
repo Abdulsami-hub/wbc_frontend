@@ -2,7 +2,7 @@
  * Homepage hero slider types and timing constants.
  * Slide data is loaded from the backend API — see `@/lib/queries/hero-slides`.
  */
-export type HeroLayout = "split" | "full" | "half-color" | "media";
+export type HeroLayout = "half-color" | "full";
 
 export type HeroBackground = "navy" | "blue" | "orange";
 
@@ -40,5 +40,26 @@ export function normalizeHeroBackground(value: string | null | undefined): HeroB
   if (value === "blue" || value === "orange" || value === "navy") return value;
   return "navy";
 }
+
+export function normalizeHeroLayout(value: string | null | undefined): HeroLayout {
+  return value === "full" ? "full" : "half-color";
+}
+
+export type PageHeroLayout = "current" | "full";
+
+export type PageHeroAppearance = {
+  background: HeroBackground;
+  layout: PageHeroLayout;
+};
+
+export function normalizePageHeroLayout(value: string | null | undefined): PageHeroLayout {
+  return value === "full" ? "full" : "current";
+}
+
+export const PAGE_HERO_PANEL: Record<HeroBackground, string> = {
+  navy: "bg-navy",
+  blue: "bg-blue",
+  orange: "bg-orange",
+};
 
 export const HERO_INTERVAL_MS = 6000;

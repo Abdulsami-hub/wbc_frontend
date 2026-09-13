@@ -1,7 +1,9 @@
+import type { PageHeroAppearance } from "@/content/hero";
 import { queryOptions } from "@tanstack/react-query";
 import teamHero from "@/assets/team-hero.jpg";
 import type { JobRecord } from "@/content/jobs";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 
 type ApiButton = { label: string; url: string };
 
@@ -42,6 +44,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   listings_header: {
     kicker: string | null;
@@ -61,7 +65,7 @@ export type JobsPageContent = {
     cta?: { label: string; url: string };
     image: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   listingsHeader: {
     kicker: string;
     title: string;
@@ -79,6 +83,8 @@ const DEFAULTS: JobsPageContent = {
     cta: { label: "Contact Us", url: "/contact" },
     image: teamHero,
     imageAlt: "WBC team members collaborating on international business initiatives",
+    background: "navy",
+    layout: "current",
   },
   listingsHeader: {
     kicker: "",
@@ -148,6 +154,7 @@ export function mapJobsPayload(payload: ApiPayload): JobsPageContent {
       cta: firstCta(payload.hero?.buttons ?? []) ?? DEFAULTS.hero.cta,
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "navy"),
     },
     listingsHeader: {
       kicker: payload.listings_header?.kicker?.trim() || DEFAULTS.listingsHeader.kicker,

@@ -146,7 +146,8 @@ function StrategicPartners() {
         tags={hero.tags}
         image={heroImage}
         imageAlt={hero.imageAlt}
-        tone="orange"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta.ctaTo}
         ctaHref={heroCta.ctaHref}

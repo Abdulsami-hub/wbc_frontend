@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { WhoWeArePageContent, WhoWeAreValue } from "@/content/who-we-are";
 
 type ApiButton = { label: string; url: string };
@@ -12,6 +13,8 @@ type ApiPayload = {
     description: string | null;
     buttons: ApiButton[];
     image_url: string | null;
+    background_color?: string | null;
+    layout?: string | null;
   } | null;
   story: {
     id: number;
@@ -51,6 +54,8 @@ const DEFAULTS: WhoWeArePageContent = {
       "An international business support organization built on trust, connection, cooperation, and long-term growth for businesses, professionals, and institutions worldwide.",
     tags: ["Trust", "Connection", "Global Reach"],
     imageAlt: "WBC boardroom overlooking the Paris skyline at dusk",
+    background: "orange",
+    layout: "current",
   },
   story: {
     kicker: "Who We Are",
@@ -117,6 +122,7 @@ export function mapWhoWeArePayload(payload: ApiPayload): WhoWeArePageContent {
       tags: tags.length > 0 ? tags : DEFAULTS.hero.tags,
       image: payload.hero?.image_url ?? undefined,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "orange"),
     },
     story: {
       kicker: payload.story?.kicker?.trim() || DEFAULTS.story.kicker,

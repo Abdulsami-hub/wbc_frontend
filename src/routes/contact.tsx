@@ -101,7 +101,8 @@ function Contact() {
         description={hero.description}
         image={hero.image || contactHeroImg}
         imageAlt={hero.imageAlt}
-        tone="orange"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta?.ctaTo}
         ctaHref={heroCta?.ctaHref}

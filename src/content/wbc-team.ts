@@ -1,3 +1,4 @@
+import type { PageHeroAppearance } from "@/content/hero";
 export type TeamMemberGroup = {
   slug: string;
   title: string;
@@ -52,7 +53,7 @@ export type WbcTeamPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  };
+  } & PageHeroAppearance;
   people: {
     kicker: string;
     title: string;

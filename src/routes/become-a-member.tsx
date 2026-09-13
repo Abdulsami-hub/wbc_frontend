@@ -96,7 +96,8 @@ function BecomeAMember() {
         description={hero.description}
         image={hero.image ?? membershipImg}
         imageAlt={hero.imageAlt}
-        tone="orange"
+        tone={hero.background}
+        layout={hero.layout}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta?.ctaTo}
         ctaHref={heroCta?.ctaHref}

@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
+import { mapHeroAppearance } from "@/lib/hero-appearance";
 import type { AdvertisingFormat, AdvertisingPageContent } from "@/content/advertising";
 
 export type ApiAdvertisingButton = {
@@ -14,6 +15,8 @@ type ApiAdvertisingHero = {
   description: string | null;
   buttons: ApiAdvertisingButton[];
   image_url: string | null;
+  background_color?: string | null;
+  layout?: string | null;
   updated_at: string | null;
 };
 
@@ -63,6 +66,8 @@ const DEFAULTS: AdvertisingPageContent = {
       "The World Business Council (WBC) offers advertising opportunities through its website to help businesses, organizations and institutions increase their visibility and promote their products, services, events and initiatives to an international business audience.",
     tags: [],
     imageAlt: "Business audience at a WBC programme",
+    background: "blue",
+    layout: "current",
   },
   overview: {
     kicker: "Website advertising",
@@ -99,6 +104,7 @@ export function mapAdvertisingPayload(payload: ApiAdvertisingPayload): Advertisi
       tags: tags.length > 0 ? tags : DEFAULTS.hero.tags,
       image: payload.hero?.image_url ?? undefined,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
+      ...mapHeroAppearance(payload.hero, "blue"),
     },
     overview: {
       kicker: payload.overview?.kicker?.trim() || DEFAULTS.overview.kicker,
