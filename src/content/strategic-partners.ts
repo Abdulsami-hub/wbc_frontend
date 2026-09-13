@@ -5,6 +5,7 @@ export type StrategicPartnerTile = {
   name: string;
   logo?: string;
   href?: string;
+  sortOrder: number;
 };
 
 export type StrategicPartnerCategory = {
@@ -13,6 +14,7 @@ export type StrategicPartnerCategory = {
   desc: string;
   accent: PartnerAccent;
   kindLabel: string;
+  sortOrder: number;
   partners: StrategicPartnerTile[];
 };
 

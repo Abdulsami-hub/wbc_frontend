@@ -114,7 +114,7 @@ function MemberLogo({
   if (kind === "person") {
     return (
       <span
-        className={`relative flex size-[5.75rem] shrink-0 items-center justify-center overflow-hidden rounded-full border border-line sm:size-24 lg:size-28 ${accent.logoBg}`}
+        className={`relative mt-5 flex size-[5.75rem] shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-white sm:size-24 lg:size-28`}
       >
         {member.logo ? (
           <img src={member.logo} alt="" className="size-full object-cover object-top" />
@@ -129,10 +129,10 @@ function MemberLogo({
 
   return (
     <span
-      className={`relative flex h-[100px] w-full items-center justify-center overflow-hidden rounded-card border border-line px-4 sm:h-[112px] lg:h-[120px] ${accent.logoBg}`}
+      className="relative flex min-h-[108px] w-full flex-1 items-center justify-center overflow-hidden bg-white px-5 sm:min-h-[120px]"
     >
       {member.logo ? (
-        <img src={member.logo} alt="" className="max-h-[70%] max-w-[80%] object-contain" />
+        <img src={member.logo} alt="" className="max-h-[88%] max-w-[92%] object-contain" />
       ) : (
         <span className={`text-[20px] font-bold tracking-wide ${accent.logoText}`}>
           {initials(member.name)}
@@ -158,21 +158,25 @@ function MemberTileCard({
         aria-hidden="true"
       />
       <MemberLogo member={member} kind={kind} accent={accent} />
-      <span className="relative mt-4 flex min-w-0 w-full flex-col items-center gap-1.5">
-        <span className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground sm:text-[15px]">
-          {member.name}
+      {member.name.trim() || member.href ? (
+        <span className="relative mt-auto flex w-full min-w-0 shrink-0 flex-col items-center gap-1 border-t border-line/80 bg-surface/50 px-3 py-3">
+          {member.name.trim() ? (
+            <span className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground sm:text-[15px]">
+              {member.name}
+            </span>
+          ) : null}
+          {member.href ? (
+            <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-muted-fg transition-colors group-hover/tile:text-navy">
+              Visit site
+              <ArrowUpRight />
+            </span>
+          ) : null}
         </span>
-        {member.href ? (
-          <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-muted-fg transition-colors group-hover/tile:text-navy">
-            Visit site
-            <ArrowUpRight />
-          </span>
-        ) : null}
-      </span>
+      ) : null}
     </>
   );
 
-  const className = `group/tile relative flex h-full w-full flex-col items-center overflow-hidden rounded-card border border-line bg-background px-3 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring} sm:px-4 sm:py-6`;
+  const className = `group/tile relative flex h-full w-full flex-col items-center overflow-hidden rounded-card border border-line bg-white text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card ${accent.ring}`;
 
   if (member.href) {
     return (

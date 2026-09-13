@@ -19,25 +19,26 @@ function initials(name: string) {
 }
 
 function Card({ partner, kindLabel }: { partner: StrategicPartnerTile; kindLabel: string }) {
+  const label = partner.name.trim() || kindLabel || "Partner";
+  const hasName = Boolean(partner.name.trim());
   const className =
-    "group relative flex h-[112px] w-[188px] shrink-0 flex-col items-center justify-center gap-2 overflow-hidden rounded-card border border-line bg-background px-4 py-3 shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:h-[128px] sm:w-[220px] sm:gap-2.5 sm:px-5 lg:h-[140px] lg:w-[240px]";
+    "group relative flex h-[118px] w-[196px] shrink-0 flex-col overflow-hidden rounded-card border border-line bg-white shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-navy/25 hover:shadow-card sm:h-[132px] sm:w-[228px] lg:h-[140px] lg:w-[240px]";
 
   const content = (
     <>
-      {partner.logo ? (
-        <img src={partner.logo} alt="" className="h-8 max-w-[72%] object-contain sm:h-10" />
-      ) : (
-        <span className="flex size-9 items-center justify-center rounded-md bg-surface text-[12px] font-bold text-navy sm:size-10 sm:text-[13px]">
-          {initials(partner.name)}
-        </span>
-      )}
-      <p className="line-clamp-2 max-w-full text-center text-[11px] font-bold leading-snug text-navy sm:text-[12px]">
-        {partner.name}
-      </p>
-      {kindLabel ? (
-        <span className="rounded-full border border-navy/15 bg-surface px-2 py-0.5 text-[9px] font-bold tracking-[0.12em] text-navy/70 uppercase sm:text-[10px]">
-          {kindLabel}
-        </span>
+      <div className="flex min-h-0 flex-1 items-center justify-center bg-white px-4 py-3">
+        {partner.logo ? (
+          <img src={partner.logo} alt="" className="max-h-[78%] max-w-[86%] object-contain" />
+        ) : (
+          <span className="flex size-10 items-center justify-center rounded-md border border-line bg-surface text-[12px] font-bold text-navy sm:size-11 sm:text-[13px]">
+            {initials(partner.name)}
+          </span>
+        )}
+      </div>
+      {hasName ? (
+        <p className="line-clamp-1 shrink-0 border-t border-line/80 bg-surface/70 px-3 py-2 text-center text-[11px] font-semibold leading-snug text-navy sm:text-[12px]">
+          {partner.name}
+        </p>
       ) : null}
     </>
   );
@@ -49,8 +50,8 @@ function Card({ partner, kindLabel }: { partner: StrategicPartnerTile; kindLabel
         target="_blank"
         rel="noopener noreferrer"
         className={className}
-        aria-label={partner.name}
-        title={partner.name}
+        aria-label={label}
+        title={label}
       >
         {content}
       </a>
@@ -58,7 +59,7 @@ function Card({ partner, kindLabel }: { partner: StrategicPartnerTile; kindLabel
   }
 
   return (
-    <div className={className} title={partner.name}>
+    <div className={className} title={label}>
       {content}
     </div>
   );
@@ -134,7 +135,9 @@ export function OurPartners() {
   if (!showProfiles) return null;
   if (isPending) return <OurPartnersSkeleton />;
 
-  const categories = (data?.categories ?? []).filter((category) => category.partners.length > 0);
+  const categories = [...(data?.categories ?? [])]
+    .filter((category) => category.partners.length > 0)
+    .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id));
   if (categories.length === 0) return null;
 
   return (

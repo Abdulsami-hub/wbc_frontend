@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import heroImg from "@/assets/our-members-hero.png";
 import { apiFetch } from "@/lib/api";
 import type { OurMemberCategory, OurMembersPageContent } from "@/content/our-members";
-import { kindFromProfileType, normalizeAccent } from "@/content/our-members";
+import { kindFromCategoryType, normalizeAccent } from "@/content/our-members";
 
 type ApiButton = { label: string; url: string };
 
@@ -20,11 +20,11 @@ type ApiPayload = {
     title: string;
     description: string | null;
     accent: string;
+    type?: string;
     profiles: {
       id: number;
-      name: string;
+      name: string | null;
       logo_url: string | null;
-      type: string;
       website: string | null;
     }[];
   }[];
@@ -70,20 +70,17 @@ function splitHeroButtons(buttons: ApiButton[]): { tags: string[]; cta?: { label
 function mapCategory(category: ApiPayload["categories"][number]): OurMemberCategory {
   const members = (category.profiles ?? []).map((profile) => ({
     id: String(profile.id),
-    name: profile.name,
+    name: profile.name?.trim() ?? "",
     logo: profile.logo_url ?? undefined,
     href: profile.website?.trim() || undefined,
   }));
-
-  const personCount = (category.profiles ?? []).filter((p) => p.type === "member").length;
-  const kind = personCount > members.length / 2 ? "person" : kindFromProfileType(category.profiles?.[0]?.type);
 
   return {
     id: String(category.id),
     name: category.title,
     desc: category.description?.trim() ?? "",
     accent: normalizeAccent(category.accent),
-    kind,
+    kind: kindFromCategoryType(category.type),
     members,
   };
 }

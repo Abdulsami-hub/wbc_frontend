@@ -23,11 +23,13 @@ type ApiPayload = {
     description: string | null;
     kind_label: string | null;
     accent: string;
+    sort_order?: number;
     profiles: {
       id: number;
-      name: string;
+      name: string | null;
       logo_url: string | null;
       website: string | null;
+      sort_order?: number;
     }[];
   }[];
   approach: {
@@ -199,19 +201,25 @@ function mapTitledItems(
 export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartnersPageContent {
   const { tags, cta } = splitHeroButtons(payload.hero?.buttons ?? []);
 
-  const categories = (payload.categories ?? []).map((category) => ({
-    id: String(category.id),
-    name: category.title,
-    desc: category.description?.trim() ?? "",
-    accent: normalizePartnerAccent(category.accent),
-    kindLabel: category.kind_label?.trim() || "Partner",
-    partners: (category.profiles ?? []).map((profile) => ({
-      id: String(profile.id),
-      name: profile.name,
-      logo: profile.logo_url ?? undefined,
-      href: profile.website?.trim() || undefined,
-    })),
-  }));
+  const categories = (payload.categories ?? [])
+    .map((category, categoryIndex) => ({
+      id: String(category.id),
+      name: category.title,
+      desc: category.description?.trim() ?? "",
+      accent: normalizePartnerAccent(category.accent),
+      kindLabel: category.kind_label?.trim() || "Partner",
+      sortOrder: category.sort_order ?? categoryIndex,
+      partners: (category.profiles ?? [])
+        .map((profile, profileIndex) => ({
+          id: String(profile.id),
+          name: profile.name?.trim() ?? "",
+          logo: profile.logo_url ?? undefined,
+          href: profile.website?.trim() || undefined,
+          sortOrder: profile.sort_order ?? profileIndex,
+        }))
+        .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id)),
+    }))
+    .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id));
 
   const whyCtaLabel = payload.why_partner?.cta_label?.trim();
   const whyCtaUrl = payload.why_partner?.cta_url?.trim();

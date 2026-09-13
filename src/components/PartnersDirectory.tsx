@@ -60,32 +60,39 @@ function PartnerTileCard({
   partner: StrategicPartnerTile;
   accent: (typeof ACCENT)[PartnerAccent];
 }) {
+  const hasName = Boolean(partner.name.trim());
+  const label = partner.name.trim() || "Partner";
+
   const inner = (
     <>
-      <span
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-40 ${accent.band}`}
-        aria-hidden="true"
-      />
-      <div className="relative flex h-full flex-col items-center justify-center gap-3">
+      <div className="flex min-h-[92px] flex-1 items-center justify-center bg-white px-4 py-5 sm:min-h-[104px]">
         {partner.logo ? (
-          <img src={partner.logo} alt="" className="h-10 max-w-[70%] object-contain" />
+          <img
+            src={partner.logo}
+            alt=""
+            className="max-h-16 w-auto max-w-[86%] object-contain sm:max-h-[4.5rem]"
+          />
         ) : (
-          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-surface text-[13px] font-bold text-navy">
+          <span className="flex size-11 items-center justify-center rounded-md border border-line bg-surface text-[13px] font-bold text-navy">
             {initials(partner.name)}
           </span>
         )}
-        <span className="line-clamp-2 text-center text-[12px] font-semibold leading-snug text-foreground sm:text-[13px]">
-          {partner.name}
-        </span>
       </div>
+      {hasName ? (
+        <div className="shrink-0 border-t border-line/80 bg-surface/60 px-3 py-2.5">
+          <span className="line-clamp-2 text-center text-[12px] font-semibold leading-snug text-foreground sm:text-[13px]">
+            {partner.name}
+          </span>
+        </div>
+      ) : null}
     </>
   );
 
-  const className = `group relative min-h-[108px] overflow-hidden rounded-xl border px-3 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card sm:min-h-[116px] sm:px-4 ${accent.tile}`;
+  const className = `group flex h-full flex-col overflow-hidden rounded-xl border shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card ${accent.tile}`;
 
   if (partner.href) {
     return (
-      <a href={partner.href} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={partner.href} target="_blank" rel="noopener noreferrer" className={className} aria-label={label}>
         {inner}
       </a>
     );
@@ -106,8 +113,10 @@ function SponsorGrid({
   }
 
   return (
-    <ul className="sponsor-logo-grid grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-      {partners.map((partner) => (
+    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      {[...partners]
+        .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id))
+        .map((partner) => (
         <li key={partner.id} className="min-w-0">
           <PartnerTileCard partner={partner} accent={accent} />
         </li>
@@ -167,43 +176,10 @@ export function PartnersDirectorySkeleton() {
   );
 }
 
-function isSponsorCategory(category: StrategicPartnerCategory) {
-  return /sponsor/i.test(category.kindLabel) || /sponsor/i.test(category.name);
-}
-
-function DirectoryGroup({
-  title,
-  description,
-  categories,
-  startIndex,
-}: {
-  title: string;
-  description: string;
-  categories: StrategicPartnerCategory[];
-  startIndex: number;
-}) {
-  if (categories.length === 0) return null;
-
-  return (
-    <div className="space-y-6">
-      <div data-reveal className="max-w-2xl">
-        <h2 className="text-[28px] font-extrabold leading-tight tracking-tight text-foreground sm:text-[36px]">
-          {title}
-        </h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">{description}</p>
-      </div>
-      <div className="space-y-8">
-        {categories.map((cat, i) => (
-          <CategorySection key={cat.id} cat={cat} index={startIndex + i} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function PartnersDirectory({ categories }: { categories: StrategicPartnerCategory[] }) {
-  const sponsors = categories.filter(isSponsorCategory);
-  const partners = categories.filter((category) => !isSponsorCategory(category));
+  const orderedCategories = [...categories].sort(
+    (a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id),
+  );
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-surface/30 py-14 lg:py-20">
@@ -228,20 +204,11 @@ export function PartnersDirectory({ categories }: { categories: StrategicPartner
           </p>
         </div>
 
-        {categories.length > 0 ? (
-          <div className="mt-12 space-y-14">
-            <DirectoryGroup
-              title="Sponsors"
-              description="Media, corporate, and custom sponsors currently supporting WBC programmes and visibility."
-              categories={sponsors}
-              startIndex={0}
-            />
-            <DirectoryGroup
-              title="Partners"
-              description="Strategic and institutional partners in long-term cooperation with WBC."
-              categories={partners}
-              startIndex={sponsors.length}
-            />
+        {orderedCategories.length > 0 ? (
+          <div className="mt-12 space-y-8">
+            {orderedCategories.map((cat, i) => (
+              <CategorySection key={cat.id} cat={cat} index={i} />
+            ))}
           </div>
         ) : (
           <p className="mt-12 text-center text-[16px] text-muted-fg">

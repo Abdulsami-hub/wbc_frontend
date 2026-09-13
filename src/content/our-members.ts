@@ -46,6 +46,6 @@ export function normalizeAccent(value: string | null | undefined): OurMemberAcce
   return "navy";
 }
 
-export function kindFromProfileType(type: string | null | undefined): OurMemberKind {
+export function kindFromCategoryType(type: string | null | undefined): OurMemberKind {
   return type === "member" ? "person" : "org";
 }
