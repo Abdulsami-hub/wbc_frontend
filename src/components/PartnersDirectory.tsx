@@ -109,7 +109,11 @@ function SponsorGrid({
   accent: (typeof ACCENT)[PartnerAccent];
 }) {
   if (partners.length === 0) {
-    return <p className="text-[14px] text-muted-fg">No partners published in this category yet.</p>;
+    return (
+      <p className="text-[14px] leading-relaxed text-muted-fg">
+        Partners and sponsors in this category will appear here as they join the WBC network.
+      </p>
+    );
   }
 
   return (
@@ -176,10 +180,24 @@ export function PartnersDirectorySkeleton() {
   );
 }
 
-export function PartnersDirectory({ categories }: { categories: StrategicPartnerCategory[] }) {
-  const orderedCategories = [...categories].sort(
-    (a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id),
-  );
+export function PartnersDirectory({
+  categories,
+  kicker,
+  title,
+  description,
+}: {
+  categories: StrategicPartnerCategory[];
+  kicker?: string;
+  title?: string;
+  description?: string;
+}) {
+  const orderedCategories = [...categories]
+    .filter((category) => category.isActive)
+    .map((category) => ({
+      ...category,
+      partners: category.partners.filter((partner) => partner.isPage),
+    }))
+    .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id));
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-surface/30 py-14 lg:py-20">
@@ -194,14 +212,17 @@ export function PartnersDirectory({ categories }: { categories: StrategicPartner
 
       <div className="container-wbc relative">
         <div data-reveal className="mx-auto max-w-2xl text-center">
-          <p className="text-[12px] font-bold tracking-[0.18em] text-orange uppercase">Current network</p>
-          <h2 className="mt-3 text-[30px] font-extrabold leading-[1.08] tracking-tight text-foreground sm:text-[40px] lg:text-[44px]">
-            Partners and sponsors already with WBC
-          </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-            Organizations supporting WBC today. Sponsorship and strategic partnership options are explained in the
-            sections below.
-          </p>
+          {kicker ? (
+            <p className="text-[12px] font-bold tracking-[0.18em] text-orange uppercase">{kicker}</p>
+          ) : null}
+          {title ? (
+            <h2 className="mt-3 text-[30px] font-extrabold leading-[1.08] tracking-tight text-foreground sm:text-[40px] lg:text-[44px]">
+              {title}
+            </h2>
+          ) : null}
+          {description ? (
+            <p className="mt-4 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">{description}</p>
+          ) : null}
         </div>
 
         {orderedCategories.length > 0 ? (

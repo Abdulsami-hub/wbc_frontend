@@ -7,6 +7,8 @@ export type StrategicPartnerTile = {
   logo?: string;
   href?: string;
   sortOrder: number;
+  isPage: boolean;
+  isHome: boolean;
 };
 
 export type StrategicPartnerCategory = {
@@ -16,6 +18,7 @@ export type StrategicPartnerCategory = {
   accent: PartnerAccent;
   kindLabel: string;
   sortOrder: number;
+  isActive: boolean;
   partners: StrategicPartnerTile[];
 };
 
@@ -35,6 +38,11 @@ export type StrategicPartnersPageContent = {
     image?: string;
     imageAlt: string;
   } & PageHeroAppearance & PageHeroMedia;
+  directoryHeader: {
+    kicker: string;
+    title: string;
+    description: string;
+  };
   categories: StrategicPartnerCategory[];
   approach: {
     kicker: string;

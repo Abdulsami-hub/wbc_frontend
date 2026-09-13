@@ -234,7 +234,9 @@ function CategoryMembersList({
 
   if (members.length === 0) {
     return (
-      <p className="mt-8 text-[15px] text-muted-fg">No members published in this category yet.</p>
+      <p className="mt-8 text-[15px] leading-relaxed text-muted-fg">
+        Members in this category will appear here as they join the WBC network.
+      </p>
     );
   }
 

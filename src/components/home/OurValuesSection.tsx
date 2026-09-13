@@ -113,7 +113,7 @@ export function OurValuesSection() {
     <section className="relative py-20 lg:py-28">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-        style={{ backgroundImage: `url(${VALUES_BG})` }}
+        style={{ backgroundImage: `url(${data.coreValuesBackground || VALUES_BG})` }}
         aria-hidden="true"
       />
       <div className="absolute inset-0 bg-black/58" aria-hidden="true" />

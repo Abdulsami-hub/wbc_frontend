@@ -127,20 +127,8 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
           </div>
 
           <div className="relative flex flex-col justify-center border-line px-6 py-7 sm:px-10 lg:aspect-video lg:overflow-hidden lg:border-s lg:px-10 lg:py-6 xl:px-12">
-            <div className="mb-4 flex items-end justify-between gap-4 lg:mb-5">
-              <div>
-                <p className="text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">
-                  Advertising formats
-                </p>
-                <p className="mt-1.5 text-[14px] text-muted-fg sm:text-[15px]">
-                  <span className="font-bold text-foreground tabular-nums">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mx-2 text-line">/</span>
-                  <span className="tabular-nums">{String(items.length).padStart(2, "0")}</span>
-                </p>
-              </div>
-              {items.length > 1 ? (
+            {items.length > 1 ? (
+              <div className="mb-4 flex justify-end lg:mb-5">
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -179,8 +167,8 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
                     </svg>
                   </button>
                 </div>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
 
             <div ref={emblaRef} className="overflow-hidden">
               <div className="flex">
@@ -193,18 +181,19 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
                     aria-label={`${i + 1} of ${items.length}`}
                   >
                     <article className="pe-2">
-                      <span className="font-display text-[40px] leading-none font-bold text-blue/25 tabular-nums sm:text-[48px]">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <p className="mt-2 text-[12px] font-bold tracking-[0.18em] text-blue uppercase">
-                        {o.kicker}
-                      </p>
-                      <h3 className="mt-1.5 text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]">
+                      {o.kicker ? (
+                        <p className="text-[12px] font-bold tracking-[0.18em] text-blue uppercase">
+                          {o.kicker}
+                        </p>
+                      ) : null}
+                      <h3 className={`${o.kicker ? "mt-1.5" : ""} text-[20px] font-bold tracking-tight text-foreground sm:text-[24px]`}>
                         {o.title}
                       </h3>
-                      <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">
-                        {o.body}
-                      </p>
+                      {o.body ? (
+                        <p className="mt-2 max-w-lg text-[14px] leading-relaxed text-muted-fg sm:text-[15px]">
+                          {o.body}
+                        </p>
+                      ) : null}
                     </article>
                   </div>
                 ))}

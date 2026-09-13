@@ -136,6 +136,10 @@ export function OurPartners() {
   if (isPending) return <OurPartnersSkeleton />;
 
   const categories = [...(data?.categories ?? [])]
+    .map((category) => ({
+      ...category,
+      partners: category.partners.filter((partner) => partner.isHome),
+    }))
     .filter((category) => category.partners.length > 0)
     .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id));
   if (categories.length === 0) return null;
@@ -163,9 +167,6 @@ export function OurPartners() {
             >
               Our Partners and Sponsors
             </h2>
-            <p data-reveal className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-              Organizations supporting WBC today — the same partners and sponsors published from the admin panel.
-            </p>
           </div>
           <Link to="/global-network/strategic-partners" className="card-link shrink-0 text-[15px]">
             View all

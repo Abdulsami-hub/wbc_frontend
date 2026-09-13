@@ -7,9 +7,57 @@ export type EventCategory = {
 
 export type EventMediaItem = {
   type: string;
-  url: string;
+  url?: string;
   caption?: string;
   photos?: { url: string }[];
+  youtubeUrl?: string;
+  youtubeEmbedUrl?: string;
+  videoUrl?: string;
+};
+
+export type EventAgendaColumn = {
+  id: string;
+  label: string;
+};
+
+export type EventAgenda = {
+  columns: EventAgendaColumn[];
+  rows: Record<string, string>[];
+};
+
+export type EventExhibit = {
+  name: string;
+  booth?: string;
+  description?: string;
+  partner?: string;
+};
+
+export type EventSpeaker = {
+  name: string;
+  role: string;
+  image?: string;
+};
+
+export type EventBrand = {
+  name: string;
+  logo?: string;
+  href?: string;
+};
+
+export type EventGlanceItem = {
+  label: string;
+  value: string;
+};
+
+export type EventSocialLink = {
+  platform: string;
+  label: string;
+  url: string;
+};
+
+export type EventButton = {
+  label: string;
+  url: string;
 };
 
 export type EventRecord = {
@@ -24,8 +72,11 @@ export type EventRecord = {
   image: string;
   registrationUrl?: string;
   registrationFee?: string;
-  agenda?: { time: string; title: string }[];
-  speakers?: { name: string; role: string }[];
+  socialLinks?: EventSocialLink[];
+  agenda?: EventAgenda;
+  speakers?: EventSpeaker[];
+  partners?: EventBrand[];
+  sponsors?: EventBrand[];
   media?: EventMediaItem[];
 };
 
@@ -40,6 +91,15 @@ export type EventsPageContent = {
   } & PageHeroAppearance & PageHeroMedia;
   categories: EventCategory[];
   events: EventRecord[];
+  page: {
+    glance: EventGlanceItem[];
+    buttons: EventButton[];
+    pricing?: EventAgenda;
+    pricingCurrency?: string;
+    participants?: EventAgenda;
+    exhibits?: EventExhibit[];
+    logistics?: string;
+  };
 };
 
 export function getEvent(events: EventRecord[], slug: string) {

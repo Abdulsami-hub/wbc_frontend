@@ -33,14 +33,22 @@ type ApiPayload = {
     kind_label: string | null;
     accent: string;
     sort_order?: number;
+    is_active?: boolean;
     profiles: {
       id: number;
       name: string | null;
       logo_url: string | null;
       website: string | null;
       sort_order?: number;
+      is_active?: boolean;
+      is_home?: boolean;
     }[];
   }[];
+  directory_header?: {
+    kicker: string | null;
+    title: string | null;
+    description: string | null;
+  } | null;
   approach: {
     id: number;
     kicker: string | null;
@@ -125,6 +133,12 @@ const DEFAULTS: StrategicPartnersPageContent = {
     imageAlt: "Business partners shaking hands across a conference table",
     background: "orange",
     layout: "current",
+  },
+  directoryHeader: {
+    kicker: "Current network",
+    title: "Partners and sponsors already with WBC",
+    description:
+      "Organizations supporting WBC today. Sponsorship and strategic partnership options are explained in the sections below.",
   },
   categories: [],
   approach: {
@@ -220,6 +234,7 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
       accent: normalizePartnerAccent(category.accent),
       kindLabel: category.kind_label?.trim() || "Partner",
       sortOrder: category.sort_order ?? categoryIndex,
+      isActive: Boolean(category.is_active ?? true),
       partners: (category.profiles ?? [])
         .map((profile, profileIndex) => ({
           id: String(profile.id),
@@ -227,6 +242,8 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
           logo: profile.logo_url ?? undefined,
           href: profile.website?.trim() || undefined,
           sortOrder: profile.sort_order ?? profileIndex,
+          isPage: Boolean(profile.is_active ?? true),
+          isHome: Boolean(profile.is_home ?? true),
         }))
         .sort((a, b) => a.sortOrder - b.sortOrder || Number(a.id) - Number(b.id)),
     }))
@@ -246,6 +263,11 @@ export function mapStrategicPartnersPayload(payload: ApiPayload): StrategicPartn
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "orange"),
       ...mapHeroMedia(payload.hero),
+    },
+    directoryHeader: {
+      kicker: payload.directory_header?.kicker?.trim() || DEFAULTS.directoryHeader.kicker,
+      title: payload.directory_header?.title?.trim() || DEFAULTS.directoryHeader.title,
+      description: payload.directory_header?.description?.trim() || DEFAULTS.directoryHeader.description,
     },
     categories,
     approach: {

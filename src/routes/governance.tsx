@@ -235,7 +235,7 @@ function Governance() {
             </h2>
             <p className="mt-6 text-[17px] leading-relaxed text-muted-fg">
               Quick guidance on leadership structure, member participation, and how decisions are
-              made across the council.
+              made across WBC.
             </p>
           </div>
 

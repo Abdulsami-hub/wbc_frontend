@@ -47,8 +47,27 @@ export function NewsStoryModal({
       </div>
 
       <div className="p-5 sm:p-7 lg:p-8">
+        {item.detail ? (
+          <p className="text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">{item.detail}</p>
+        ) : null}
+
+        {item.bullets.length > 0 ? (
+          <>
+            <span className="accent-rule mt-6" />
+            <h3 className="mt-6 text-[15px] font-bold tracking-[0.08em] text-foreground uppercase">Key points</h3>
+            <ul className="mt-4 space-y-3">
+              {item.bullets.map((bullet) => (
+                <li key={bullet} className="flex gap-3 text-[15px] leading-relaxed text-foreground/90 sm:text-[16px]">
+                  <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
         {hasSource ? (
-          <div className="rounded-card border border-line bg-surface p-4 sm:p-5">
+          <div className={`${item.detail || item.bullets.length > 0 ? "mt-8" : ""} rounded-card border border-line bg-surface p-4 sm:p-5`}>
             {item.sourceLabel ? (
               <p className="text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
                 <span className="font-semibold text-foreground">Source: </span>
@@ -67,25 +86,6 @@ export function NewsStoryModal({
               </a>
             ) : null}
           </div>
-        ) : null}
-
-        {item.detail ? (
-          <p className="mt-6 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">{item.detail}</p>
-        ) : null}
-
-        {item.bullets.length > 0 ? (
-          <>
-            <span className="accent-rule mt-6" />
-            <h3 className="mt-6 text-[15px] font-bold tracking-[0.08em] text-foreground uppercase">Key points</h3>
-            <ul className="mt-4 space-y-3">
-              {item.bullets.map((bullet) => (
-                <li key={bullet} className="flex gap-3 text-[15px] leading-relaxed text-foreground/90 sm:text-[16px]">
-                  <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
-          </>
         ) : null}
       </div>
     </SimpleModal>

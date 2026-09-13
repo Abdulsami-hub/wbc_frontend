@@ -34,4 +34,6 @@ export type WhoWeArePageContent = {
     network: string;
   };
   coreValues: WhoWeAreValue[];
+  /** Homepage Our Values section background. */
+  coreValuesBackground?: string;
 };

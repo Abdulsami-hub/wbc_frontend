@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
+import type { ReactElement } from "react";
+import { EventDataTable } from "@/components/EventDataTable";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Skeleton } from "@/components/ui/skeleton";
 import { eventsQueryOptions } from "@/lib/queries/events";
 import { eventSchema, graphSchema, seoHead } from "@/lib/seo";
+import type { EventBrand } from "@/content/events";
 
 export const Route = createFileRoute("/events/$slug")({
   loader: async ({ context: { queryClient }, params }) => {
@@ -34,6 +37,93 @@ export const Route = createFileRoute("/events/$slug")({
   },
   component: EventDetailPage,
 });
+
+function EventBrandGrid({
+  kicker,
+  title,
+  items,
+  tone = "partners",
+}: {
+  kicker: string;
+  title: string;
+  items: EventBrand[];
+  tone?: "partners" | "sponsors";
+}) {
+  const brands = items.filter((item) => item.name.trim() || item.logo);
+  if (brands.length === 0) return null;
+
+  const panel =
+    tone === "sponsors"
+      ? "border-orange/20 bg-orange/[0.04]"
+      : "border-line bg-surface/70";
+
+  return (
+    <section className={`mt-12 overflow-hidden rounded-card border ${panel}`}>
+      <div className="relative px-5 py-6 sm:px-7 sm:py-8">
+        <span className="guide-glow -end-12 -top-12 size-40 bg-orange/15" aria-hidden="true" />
+        <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">{kicker}</p>
+        <h2 className="relative mt-2 text-[20px] font-bold text-foreground sm:text-[22px]">{title}</h2>
+        <ul className="relative mt-6 grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr))]">
+          {brands.map((item, index) => {
+            const label = item.name.trim() || title;
+            const className =
+              "group relative flex min-h-[148px] flex-col overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card";
+            const content = (
+              <>
+                <div className="flex min-h-[100px] flex-1 items-center justify-center px-5 py-5">
+                  {item.logo ? (
+                    <img
+                      src={item.logo}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-16 max-w-full object-contain sm:max-h-[4.5rem]"
+                    />
+                  ) : (
+                    <span className="flex size-12 items-center justify-center rounded-md border border-line bg-surface text-[14px] font-bold text-navy">
+                      {item.name
+                        .split(/\s+/)
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((part) => part[0]?.toUpperCase() ?? "")
+                        .join("") || "—"}
+                    </span>
+                  )}
+                </div>
+                {item.name ? (
+                  <p className="line-clamp-2 shrink-0 border-t border-line/80 bg-surface/80 px-3 py-2.5 text-center text-[13px] font-semibold leading-snug text-navy">
+                    {item.name}
+                  </p>
+                ) : null}
+              </>
+            );
+
+            return (
+              <li key={`${item.name}-${index}`}>
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={className}
+                    aria-label={label}
+                    title={label}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div className={className} title={label}>
+                    {content}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 function EventDetailSkeleton() {
   return (
@@ -126,6 +216,22 @@ function EventDetailPage() {
               />
             </div>
 
+            {event.socialLinks && event.socialLinks.length > 0 ? (
+              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[14px] font-semibold text-muted-fg">
+                {event.socialLinks.map((link) => (
+                  <a
+                    key={`${link.platform}-${link.url}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            ) : null}
+
             {event.registrationFee ? (
               <dl className="mt-8">
                 <div className="rounded-card border border-line bg-surface px-4 py-3">
@@ -148,72 +254,150 @@ function EventDetailPage() {
               </section>
             ) : null}
 
-            {event.agenda && event.agenda.length > 0 ? (
-              <section className="mt-10">
-                <h2 className="text-[20px] font-bold text-foreground">Agenda</h2>
-                <ul className="mt-4 space-y-3">
-                  {event.agenda.map((a) => (
-                    <li
-                      key={`${a.time}-${a.title}`}
-                      className="flex gap-4 border-b border-line pb-3 text-[14px]"
-                    >
-                      <span className="w-16 shrink-0 font-semibold text-foreground sm:w-20">
-                        {a.time}
-                      </span>
-                      <span className="text-muted-fg">{a.title}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
+            {event.agenda && event.agenda.rows.length > 0 ? (
+              <EventDataTable kicker="Programme" title="Programs / Agenda" table={event.agenda} />
             ) : null}
 
             {event.speakers && event.speakers.length > 0 ? (
               <section className="mt-10">
                 <h2 className="text-[20px] font-bold text-foreground">Speakers</h2>
-                <ul className="mt-4 space-y-3">
-                  {event.speakers.map((s) => (
-                    <li key={s.name}>
-                      <p className="font-semibold text-foreground">{s.name}</p>
-                      <p className="text-[13px] text-muted-fg">{s.role}</p>
-                    </li>
-                  ))}
+                <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {event.speakers.map((speaker, index) => {
+                    const initials = speaker.name
+                      .split(/\s+/)
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((part) => part[0]?.toUpperCase() ?? "")
+                      .join("");
+
+                    return (
+                      <li key={`${speaker.name}-${index}`}>
+                        <article className="group relative overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
+                          <span className="absolute start-0 top-0 h-full w-1 bg-orange" aria-hidden="true" />
+                          <span className="guide-glow -end-8 -top-8 size-28 bg-orange/20" aria-hidden="true" />
+                          <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+                            {speaker.image ? (
+                              <img
+                                src={speaker.image}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                                className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                              />
+                            ) : (
+                              <div className="flex size-full items-center justify-center bg-orange/10 text-[28px] font-bold tracking-wide text-orange">
+                                {initials || "—"}
+                              </div>
+                            )}
+                          </div>
+                          <div className="relative px-4 py-4">
+                            {speaker.name ? (
+                              <h3 className="text-[16px] font-bold leading-snug text-foreground">{speaker.name}</h3>
+                            ) : null}
+                            {speaker.role ? (
+                              <p className="mt-1 text-[13px] leading-relaxed text-muted-fg">{speaker.role}</p>
+                            ) : null}
+                          </div>
+                        </article>
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             ) : null}
+
+            <EventBrandGrid
+              kicker="Event partners"
+              title="Partners"
+              items={event.partners ?? []}
+              tone="partners"
+            />
+            <EventBrandGrid
+              kicker="Event sponsors"
+              title="Sponsors"
+              items={event.sponsors ?? []}
+              tone="sponsors"
+            />
 
             {event.media && event.media.length > 0 ? (
               <section className="mt-10">
                 <h2 className="text-[20px] font-bold text-foreground">Media</h2>
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {event.media.flatMap((m) => {
+                  {event.media.flatMap((m, mediaIndex) => {
+                    const items: ReactElement[] = [];
+                    if (m.youtubeEmbedUrl) {
+                      items.push(
+                        <li
+                          key={`${m.caption ?? "youtube"}-${mediaIndex}`}
+                          className="overflow-hidden rounded-card border border-line sm:col-span-2"
+                        >
+                          <div className="aspect-video w-full bg-navy">
+                            <iframe
+                              src={m.youtubeEmbedUrl}
+                              title={m.caption || event.title}
+                              className="size-full border-0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                          {m.caption ? (
+                            <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p>
+                          ) : null}
+                        </li>,
+                      );
+                    } else if (m.videoUrl) {
+                      items.push(
+                        <li
+                          key={`${m.caption ?? "video"}-${mediaIndex}`}
+                          className="overflow-hidden rounded-card border border-line sm:col-span-2"
+                        >
+                          <video
+                            className="aspect-video w-full bg-navy"
+                            src={m.videoUrl}
+                            controls
+                            playsInline
+                            preload="metadata"
+                          >
+                            <track kind="captions" />
+                          </video>
+                          {m.caption ? (
+                            <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p>
+                          ) : null}
+                        </li>,
+                      );
+                    }
                     const urls =
-                      m.photos && m.photos.length > 0 ? m.photos.map((p) => p.url) : [m.url];
-                    return urls.filter(Boolean).map((url, i) => (
-                      <li
-                        key={`${m.caption ?? "media"}-${url}-${i}`}
-                        className="overflow-hidden rounded-card border border-line"
-                      >
-                        <img
-                          src={url}
-                          alt={m.caption ?? ""}
-                          loading="lazy"
-                          decoding="async"
-                          className="aspect-[4/3] w-full object-cover"
-                        />
-                        {m.caption && i === 0 ? (
-                          <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p>
-                        ) : null}
-                      </li>
-                    ));
+                      m.photos && m.photos.length > 0
+                        ? m.photos.map((p) => p.url)
+                        : m.url
+                          ? [m.url]
+                          : [];
+                    urls.forEach((url, i) => {
+                      items.push(
+                        <li
+                          key={`${m.caption ?? "media"}-${url}-${i}`}
+                          className="overflow-hidden rounded-card border border-line"
+                        >
+                          <img
+                            src={url}
+                            alt={m.caption ?? ""}
+                            loading="lazy"
+                            decoding="async"
+                            className="aspect-[4/3] w-full object-cover"
+                          />
+                          {m.caption && i === 0 && !m.youtubeEmbedUrl && !m.videoUrl ? (
+                            <p className="p-2.5 text-[12px] text-muted-fg">{m.caption}</p>
+                          ) : null}
+                        </li>,
+                      );
+                    });
+                    return items;
                   })}
                 </ul>
               </section>
             ) : null}
 
             <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-8">
-              <Link to="/contact" className="btn-orange">
-                Register / Enquire
-              </Link>
               <Link
                 to="/events"
                 className="btn-base border border-line bg-background text-foreground hover:border-navy"

@@ -28,12 +28,7 @@ export function WhatIsWbcSection() {
   return (
     <section className="border-t border-line bg-surface/30 py-16 lg:py-24">
       <div className="container-wbc">
-        <SectionHeading
-          align="left"
-          eyebrow="About WBC"
-          title="What is WBC?"
-          description="An international business support organization connecting people, ideas, and ambition across borders."
-        />
+        <SectionHeading align="left" eyebrow="About WBC" title="What is WBC?" />
 
         <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
           <div data-reveal className="flex min-h-0 flex-col">

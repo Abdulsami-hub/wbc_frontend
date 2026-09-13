@@ -125,28 +125,6 @@ function NewsArticlePage() {
 
         <div className="container-wbc">
           <div className="mx-auto max-w-3xl py-8 sm:py-10">
-            {hasSource ? (
-              <div className="rounded-card border border-line bg-surface p-4 sm:p-5">
-                {article.sourceLabel ? (
-                  <p className="text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
-                    <span className="font-semibold text-foreground">Source: </span>
-                    {article.sourceLabel}
-                  </p>
-                ) : null}
-                {article.sourceUrl ? (
-                  <a
-                    href={article.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-2 text-[14px] font-semibold text-blue transition-colors hover:text-navy"
-                  >
-                    Original Article
-                    <ExternalLink className="size-3.5" aria-hidden="true" />
-                  </a>
-                ) : null}
-              </div>
-            ) : null}
-
             {article.detail ? (
               <p className="mt-6 text-[16px] leading-relaxed text-muted-fg text-justify sm:text-[17px]">
                 {article.detail}
@@ -174,6 +152,28 @@ function NewsArticlePage() {
                   ))}
                 </ul>
               </>
+            ) : null}
+
+            {hasSource ? (
+              <div className="mt-8 rounded-card border border-line bg-surface p-4 sm:p-5">
+                {article.sourceLabel ? (
+                  <p className="text-[13px] leading-relaxed text-muted-fg sm:text-[14px]">
+                    <span className="font-semibold text-foreground">Source: </span>
+                    {article.sourceLabel}
+                  </p>
+                ) : null}
+                {article.sourceUrl ? (
+                  <a
+                    href={article.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 text-[14px] font-semibold text-blue transition-colors hover:text-navy"
+                  >
+                    Original Article
+                    <ExternalLink className="size-3.5" aria-hidden="true" />
+                  </a>
+                ) : null}
+              </div>
             ) : null}
 
             <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-8">

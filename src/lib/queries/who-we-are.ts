@@ -46,6 +46,9 @@ type ApiPayload = {
     is_home: boolean;
     sort_order: number;
   }[];
+  core_values_background?: {
+    image_url: string | null;
+  } | null;
 };
 
 type WhoWeAreResponse = { data: ApiPayload };
@@ -150,6 +153,7 @@ export function mapWhoWeArePayload(payload: ApiPayload): WhoWeArePageContent {
       network: payload.stats?.network?.trim() || DEFAULTS.stats.network,
     },
     coreValues: resolvedCoreValues,
+    coreValuesBackground: payload.core_values_background?.image_url?.trim() || undefined,
   };
 }
 
