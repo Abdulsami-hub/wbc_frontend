@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 import type { HeroSlide } from "@/content/hero";
+import { HERO_BACKGROUND_STYLES, normalizeHeroBackground } from "@/content/hero";
 
 export type ApiHeroButton = {
   label: string;
@@ -14,6 +15,7 @@ export type ApiHeroSlide = {
   description: string | null;
   buttons: ApiHeroButton[];
   image_url: string | null;
+  background_color?: string | null;
   sort_order: number;
   updated_at: string | null;
 };
@@ -21,8 +23,6 @@ export type ApiHeroSlide = {
 type HeroSlidesResponse = {
   data: ApiHeroSlide[];
 };
-
-const PANEL_CLASSES = ["bg-navy", "bg-orange", "bg-teal"] as const;
 
 let cachedEtag: string | null = null;
 let cachedSlides: HeroSlide[] = [];
@@ -39,11 +39,13 @@ function mapButton(
   };
 }
 
-export function mapApiHeroSlide(slide: ApiHeroSlide, index: number): HeroSlide {
+export function mapApiHeroSlide(slide: ApiHeroSlide): HeroSlide {
   const buttons = slide.buttons ?? [];
   const titleLines = slide.title.includes("\n")
     ? slide.title.split("\n").map((line) => line.trim()).filter(Boolean)
     : [slide.title];
+  const background = normalizeHeroBackground(slide.background_color);
+  const styles = HERO_BACKGROUND_STYLES[background];
 
   return {
     id: String(slide.id),
@@ -51,7 +53,9 @@ export function mapApiHeroSlide(slide: ApiHeroSlide, index: number): HeroSlide {
     eyebrow: slide.kicker?.trim() || "World Business Council",
     title: titleLines.length > 0 ? titleLines : [slide.title],
     description: slide.description?.trim() ?? "",
-    panelClass: PANEL_CLASSES[index % PANEL_CLASSES.length],
+    background,
+    panelClass: styles.panelClass,
+    overlayClass: styles.overlayClass,
     image: slide.image_url ?? undefined,
     alt: slide.title,
     primary: mapButton(buttons[0], {

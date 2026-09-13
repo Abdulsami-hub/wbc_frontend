@@ -91,7 +91,7 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
         <div className="absolute inset-0">
           <SlideMedia slide={slide} active={active} />
         </div>
-        <div className="absolute inset-0 bg-navy/55" aria-hidden="true" />
+        <div className={`absolute inset-0 ${slide.overlayClass}`} aria-hidden="true" />
         <div className="container-wbc relative flex min-h-0 flex-1 items-end lg:min-h-[560px]">
           {copyPanel}
         </div>
