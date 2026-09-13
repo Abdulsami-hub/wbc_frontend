@@ -1,4 +1,8 @@
-export type TeamMemberGroup = "board" | "secretariat";
+export type TeamMemberGroup = {
+  slug: string;
+  title: string;
+  description?: string;
+};
 
 export type TeamMember = {
   id: string;
@@ -9,7 +13,7 @@ export type TeamMember = {
   bio: string;
   email: string;
   phone: string;
-  group: TeamMemberGroup;
+  group: string;
   groupLabel: string;
   linkedinUrl?: string;
   xUrl?: string;
@@ -35,11 +39,8 @@ export type WbcTeamPageContent = {
     kicker: string;
     title: string;
     description: string;
-    boardTitle: string;
-    boardDescription: string;
-    secretariatTitle: string;
-    secretariatDescription: string;
   };
+  memberGroups: TeamMemberGroup[];
   members: TeamMember[];
   collaborations: WbcTeamCollaboration[];
 };

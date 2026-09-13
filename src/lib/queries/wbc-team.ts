@@ -27,11 +27,14 @@ type ApiPayload = {
     kicker: string | null;
     title: string;
     description: string | null;
-    board_title: string | null;
-    board_description: string | null;
-    secretariat_title: string | null;
-    secretariat_description: string | null;
   } | null;
+  member_groups?: {
+    id: number;
+    slug: string;
+    title: string;
+    description: string | null;
+    sort_order: number;
+  }[];
   members: {
     id: number;
     slug: string;
@@ -74,13 +77,11 @@ const DEFAULTS: WbcTeamPageContent = {
     title: "Leadership and staff guiding international cooperation",
     description:
       "Meet the team behind the World Business Council. Our Board of Directors and Secretariat combine institutional experience with practical support to help organizations build trusted global connections.",
-    boardTitle: "Board of Directors (BoD)",
-    boardDescription:
-      "Strategic oversight for governance, finance, policy direction, and institutional accountability.",
-    secretariatTitle: "Secretariat",
-    secretariatDescription:
-      "Daily management, operations, communications, and program delivery for members and partners.",
   },
+  memberGroups: [
+    { slug: "board", title: "Board of Directors (BoD)" },
+    { slug: "secretariat", title: "Secretariat" },
+  ],
   members: [],
   collaborations: [],
 };
@@ -111,8 +112,32 @@ function splitHeroButtons(buttons: ApiButton[]): { tags: string[]; cta?: { label
   return { tags, cta };
 }
 
-function normalizeGroup(group: string): TeamMember["group"] {
-  return group === "secretariat" ? "secretariat" : "board";
+function mapMemberGroups(
+  payload: ApiPayload,
+  members: TeamMember[],
+): WbcTeamPageContent["memberGroups"] {
+  const fromApi = (payload.member_groups ?? [])
+    .map((group) => ({
+      slug: group.slug,
+      title: group.title.trim(),
+      description: group.description?.trim() || undefined,
+    }))
+    .filter((group) => group.title);
+
+  if (fromApi.length > 0) {
+    return fromApi;
+  }
+
+  const seen = new Set<string>();
+  const inferred: WbcTeamPageContent["memberGroups"] = [];
+
+  for (const member of members) {
+    if (!member.group || seen.has(member.group)) continue;
+    seen.add(member.group);
+    inferred.push({ slug: member.group, title: member.groupLabel || member.group });
+  }
+
+  return inferred.length > 0 ? inferred : DEFAULTS.memberGroups;
 }
 
 export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
@@ -128,7 +153,7 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
     bio: member.bio?.trim() ?? "",
     email: member.email?.trim() ?? "",
     phone: member.phone?.trim() ?? "",
-    group: normalizeGroup(member.group),
+    group: member.group,
     groupLabel: member.group_label,
     linkedinUrl: member.linkedin_url?.trim() || undefined,
     xUrl: member.x_url?.trim() || undefined,
@@ -154,14 +179,8 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
       kicker: payload.people?.kicker?.trim() || DEFAULTS.people.kicker,
       title: payload.people?.title?.trim() || DEFAULTS.people.title,
       description: payload.people?.description?.trim() || DEFAULTS.people.description,
-      boardTitle: payload.people?.board_title?.trim() || DEFAULTS.people.boardTitle,
-      boardDescription:
-        payload.people?.board_description?.trim() || DEFAULTS.people.boardDescription,
-      secretariatTitle:
-        payload.people?.secretariat_title?.trim() || DEFAULTS.people.secretariatTitle,
-      secretariatDescription:
-        payload.people?.secretariat_description?.trim() || DEFAULTS.people.secretariatDescription,
     },
+    memberGroups: mapMemberGroups(payload, members),
     members,
     collaborations,
   };

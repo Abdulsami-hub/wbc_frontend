@@ -217,11 +217,15 @@ function WbcTeam() {
 
   if (!data) return null;
 
-  const { hero, people, members, collaborations } = data;
+  const { hero, people, memberGroups, members, collaborations } = data;
   const heroImage = hero.image ?? heroImg;
-  const board = members.filter((member) => member.group === "board");
-  const secretariat = members.filter((member) => member.group === "secretariat");
-  const hasMemberCards = showMembers && (board.length > 0 || secretariat.length > 0);
+  const groupedMembers = memberGroups
+    .map((group) => ({
+      ...group,
+      members: members.filter((member) => member.group === group.slug),
+    }))
+    .filter((group) => group.members.length > 0);
+  const hasMemberCards = showMembers && groupedMembers.length > 0;
 
   return (
     <>
@@ -288,55 +292,42 @@ function WbcTeam() {
             <h2 className="mt-4 max-w-3xl text-[28px] leading-tight font-bold text-foreground sm:text-4xl lg:text-[44px]">
               {people.title}
             </h2>
+            {people.description ? (
             <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg">
               {people.description}
             </p>
+            ) : null}
           </div>
           ) : null}
 
           {showPeople && hasMemberCards ? <hr className="mt-12 border-line" /> : null}
 
-          {showMembers && board.length > 0 && (
-            <>
-              <div data-reveal className="mt-12 max-w-3xl border-s-4 border-orange ps-6">
+          {showMembers &&
+            groupedMembers.map((group, index) => (
+            <div key={group.slug}>
+              <div
+                data-reveal
+                className={`mt-12 max-w-3xl border-s-4 ps-6 ${index === 0 ? "border-orange" : index === 1 ? "border-teal" : "border-navy"} ${index > 0 ? "mt-16" : ""}`}
+              >
                 <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
-                  {people.boardTitle}
+                  {group.title}
                 </h3>
+                {group.description ? (
                 <p className="mt-3 text-start text-[15px] leading-relaxed text-muted-fg">
-                  {people.boardDescription}
+                  {group.description}
                 </p>
+                ) : null}
               </div>
               <ul
                 className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-                aria-label={people.boardTitle}
+                aria-label={group.title}
               >
-                {board.map((member) => (
+                {group.members.map((member) => (
                   <PersonCard key={member.slug} member={member} onOpen={setSelected} />
                 ))}
               </ul>
-            </>
-          )}
-
-          {showMembers && secretariat.length > 0 && (
-            <>
-              <div data-reveal className="mt-16 max-w-3xl border-s-4 border-teal ps-6">
-                <h3 className="text-start text-[22px] font-bold text-foreground sm:text-[26px]">
-                  {people.secretariatTitle}
-                </h3>
-                <p className="mt-3 text-start text-[15px] leading-relaxed text-muted-fg">
-                  {people.secretariatDescription}
-                </p>
-              </div>
-              <ul
-                className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-                aria-label={people.secretariatTitle}
-              >
-                {secretariat.map((member) => (
-                  <PersonCard key={member.slug} member={member} onOpen={setSelected} />
-                ))}
-              </ul>
-            </>
-          )}
+            </div>
+            ))}
         </div>
       </section>
       ) : null}
