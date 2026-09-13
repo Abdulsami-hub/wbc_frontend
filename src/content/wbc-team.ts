@@ -4,6 +4,25 @@ export type TeamMemberGroup = {
   description?: string;
 };
 
+export type TeamMemberSocialPlatform =
+  | "linkedin"
+  | "x"
+  | "facebook"
+  | "instagram"
+  | "bluesky"
+  | "youtube"
+  | "tiktok"
+  | "truth_social"
+  | "whatsapp"
+  | "telegram"
+  | "snapchat";
+
+export type TeamMemberSocialLink = {
+  platform: TeamMemberSocialPlatform;
+  label: string;
+  url: string;
+};
+
 export type TeamMember = {
   id: string;
   slug: string;
@@ -15,8 +34,7 @@ export type TeamMember = {
   phone: string;
   group: string;
   groupLabel: string;
-  linkedinUrl?: string;
-  xUrl?: string;
+  socialLinks: TeamMemberSocialLink[];
 };
 
 export type WbcTeamCollaboration = {

@@ -9,7 +9,7 @@ import p6 from "@/assets/team-6.jpg";
 import p7 from "@/assets/team-7.jpg";
 import p8 from "@/assets/team-8.jpg";
 import { apiFetch } from "@/lib/api";
-import type { TeamMember, WbcTeamPageContent } from "@/content/wbc-team";
+import type { TeamMember, TeamMemberSocialLink, TeamMemberSocialPlatform, WbcTeamPageContent } from "@/content/wbc-team";
 
 type ApiButton = { label: string; url: string };
 
@@ -46,8 +46,9 @@ type ApiPayload = {
     bio: string | null;
     email: string | null;
     phone: string | null;
-    linkedin_url: string | null;
-    x_url: string | null;
+    social_links?: Array<{ platform?: string; icon?: string; label?: string; url?: string | null }>;
+    linkedin_url?: string | null;
+    x_url?: string | null;
     sort_order: number;
   }[];
   collaborations: {
@@ -140,6 +141,52 @@ function mapMemberGroups(
   return inferred.length > 0 ? inferred : DEFAULTS.memberGroups;
 }
 
+const SOCIAL_LABELS: Record<TeamMemberSocialPlatform, string> = {
+  linkedin: "LinkedIn",
+  x: "X (Twitter)",
+  facebook: "Facebook",
+  instagram: "Instagram",
+  bluesky: "Bluesky",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  truth_social: "Truth Social",
+  whatsapp: "WhatsApp",
+  telegram: "Telegram",
+  snapchat: "Snapchat",
+};
+
+function isSocialPlatform(value: string): value is TeamMemberSocialPlatform {
+  return value in SOCIAL_LABELS;
+}
+
+function mapSocialLinks(member: ApiPayload["members"][number]): TeamMemberSocialLink[] {
+  const fromApi = (member.social_links ?? [])
+    .map((link) => {
+      const platform = (link.platform ?? link.icon ?? "").trim();
+      const url = link.url?.trim() ?? "";
+      if (!url || !isSocialPlatform(platform)) return null;
+      return {
+        platform,
+        label: link.label?.trim() || SOCIAL_LABELS[platform],
+        url,
+      };
+    })
+    .filter((link): link is TeamMemberSocialLink => link !== null);
+
+  if (fromApi.length > 0) {
+    return fromApi;
+  }
+
+  const fallback: TeamMemberSocialLink[] = [];
+  if (member.linkedin_url?.trim()) {
+    fallback.push({ platform: "linkedin", label: SOCIAL_LABELS.linkedin, url: member.linkedin_url.trim() });
+  }
+  if (member.x_url?.trim()) {
+    fallback.push({ platform: "x", label: SOCIAL_LABELS.x, url: member.x_url.trim() });
+  }
+  return fallback;
+}
+
 export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
   const heroButtons = payload.hero?.buttons ?? [];
   const { tags, cta } = splitHeroButtons(heroButtons);
@@ -155,8 +202,7 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
     phone: member.phone?.trim() ?? "",
     group: member.group,
     groupLabel: member.group_label,
-    linkedinUrl: member.linkedin_url?.trim() || undefined,
-    xUrl: member.x_url?.trim() || undefined,
+    socialLinks: mapSocialLinks(member),
   }));
 
   const collaborations = (payload.collaborations ?? []).map((item) => ({

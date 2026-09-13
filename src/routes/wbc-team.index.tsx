@@ -80,7 +80,7 @@ function TeamProfileModal({
       onOpenChange={onOpenChange}
       title={member.name}
       description={member.role}
-      className="flex max-h-[min(90vh,760px)] flex-col overflow-hidden p-0"
+      className={`flex max-h-[96vh] flex-col overflow-hidden p-0${member.bio.trim() ? " h-[min(96vh,1100px)]" : ""}`}
     >
       <div className="grid shrink-0 lg:grid-cols-[minmax(240px,0.85fr)_1.15fr]">
         <div className="relative aspect-[4/5] max-h-[280px] bg-navy-deep sm:max-h-[320px] lg:aspect-auto lg:max-h-none lg:min-h-[320px]">
@@ -130,28 +130,19 @@ function TeamProfileModal({
             </div>
           )}
 
-          {(member.linkedinUrl || member.xUrl) && (
+          {member.socialLinks.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
-              {member.linkedinUrl && (
+              {member.socialLinks.map((link) => (
                 <a
-                  href={member.linkedinUrl}
+                  key={`${link.platform}-${link.url}`}
+                  href={link.url}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-foreground"
                 >
-                  LinkedIn
+                  {link.label}
                 </a>
-              )}
-              {member.xUrl && (
-                <a
-                  href={member.xUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-foreground"
-                >
-                  X
-                </a>
-              )}
+              ))}
             </div>
           )}
 
@@ -164,10 +155,8 @@ function TeamProfileModal({
       </div>
 
       {member.bio.trim() && (
-        <div className="min-h-0 shrink border-t border-line bg-surface/30">
-          <div className="max-h-[min(28vh,200px)] overflow-y-auto px-6 py-5 sm:px-8 [-webkit-overflow-scrolling:touch]">
-            <p className="text-start text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
-          </div>
+        <div className="min-h-0 flex-1 overflow-y-auto border-t border-line bg-surface/30 px-6 py-6 sm:px-8 sm:py-8 [-webkit-overflow-scrolling:touch]">
+          <p className="text-start text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
         </div>
       )}
     </SimpleModal>
