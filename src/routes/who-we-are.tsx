@@ -213,6 +213,8 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
         tone={hero.background}
         image={hero.image ?? heroImg}
         imageAlt={hero.imageAlt}
+        videoUrl={hero.videoUrl}
+        youtubeEmbedUrl={hero.youtubeEmbedUrl}
       >
         <nav aria-label="Breadcrumb" className="intro-1 text-[13px] text-white/75">
           <ol className="flex flex-wrap items-center gap-2">

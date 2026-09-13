@@ -10,6 +10,7 @@ import p7 from "@/assets/team-7.jpg";
 import p8 from "@/assets/team-8.jpg";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type { TeamMember, TeamMemberSocialLink, TeamMemberSocialPlatform, WbcTeamPageContent } from "@/content/wbc-team";
 
 type ApiButton = { label: string; url: string };
@@ -24,6 +25,11 @@ type ApiPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   people: {
     id: number;
@@ -226,6 +232,7 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "orange"),
+      ...mapHeroMedia(payload.hero),
     },
     people: {
       kicker: payload.people?.kicker?.trim() || DEFAULTS.people.kicker,

@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 export type OurMemberAccent = "orange" | "navy" | "teal" | "blue" | "violet";
 
 export type OurMemberKind = "org" | "person";
@@ -28,7 +28,7 @@ export type OurMembersPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   categories: OurMemberCategory[];
 };
 

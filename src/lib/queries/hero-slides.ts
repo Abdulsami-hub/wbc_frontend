@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 import type { HeroSlide } from "@/content/hero";
 import { HERO_BACKGROUND_STYLES, normalizeHeroBackground, normalizeHeroLayout } from "@/content/hero";
+import { mapHeroMedia } from "@/lib/hero-media";
 
 export type ApiHeroButton = {
   label: string;
@@ -17,6 +18,11 @@ export type ApiHeroSlide = {
   image_url: string | null;
   background_color?: string | null;
   layout?: string | null;
+  media_type?: string | null;
+  video_source?: string | null;
+  video_url?: string | null;
+  youtube_url?: string | null;
+  youtube_embed_url?: string | null;
   sort_order: number;
   updated_at: string | null;
 };
@@ -58,6 +64,7 @@ export function mapApiHeroSlide(slide: ApiHeroSlide): HeroSlide {
     panelClass: styles.panelClass,
     overlayClass: styles.overlayClass,
     image: slide.image_url ?? undefined,
+    ...mapHeroMedia(slide),
     alt: slide.title,
     primary: mapButton(buttons[0], {
       label: "Who We Are",

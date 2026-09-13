@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 export type WhatWeDoService = {
   id: string;
   kicker: string;
@@ -16,6 +16,6 @@ export type WhatWeDoPageContent = {
     tags: string[];
     image?: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   services: WhatWeDoService[];
 };

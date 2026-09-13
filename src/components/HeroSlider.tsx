@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HERO_INTERVAL_MS, type HeroSlide } from "@/content/hero";
+import { HERO_INTERVAL_MS, youtubeBackgroundSrc, type HeroSlide } from "@/content/hero";
 import { useI18n } from "@/i18n";
 import { heroSlidesQueryOptions } from "@/lib/queries/hero-slides";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -52,7 +52,15 @@ function SlideCopy({ slide, active }: { slide: HeroSlide; active: boolean }) {
 function SlideMedia({ slide, active }: { slide: HeroSlide; active: boolean }) {
   return (
     <div className={`absolute inset-0 overflow-hidden ${active ? "intro-img" : ""}`}>
-      {slide.videoUrl ? (
+      {slide.youtubeEmbedUrl ? (
+        <iframe
+          src={youtubeBackgroundSrc(slide.youtubeEmbedUrl)}
+          title={slide.alt ?? ""}
+          className="pointer-events-none absolute top-1/2 left-1/2 aspect-video min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 scale-125 border-0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      ) : slide.videoUrl ? (
         <video
           className="absolute inset-0 size-full object-cover"
           src={slide.videoUrl}

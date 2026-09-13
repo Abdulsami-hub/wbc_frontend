@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 export type AffiliateGuideHero = {
   kicker: string;
   title: string;
@@ -7,7 +7,7 @@ export type AffiliateGuideHero = {
   cta?: { label: string; url: string };
   image?: string;
   imageAlt: string;
-} & PageHeroAppearance;
+} & PageHeroAppearance & PageHeroMedia;
 
 
 export type AffiliateGuideOverview = {

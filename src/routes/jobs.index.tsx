@@ -93,6 +93,8 @@ function JobsPage() {
         imageAlt={hero.imageAlt}
         tone={hero.background}
         layout={hero.layout}
+        videoUrl={hero.videoUrl}
+        youtubeEmbedUrl={hero.youtubeEmbedUrl}
         ctaLabel={hero.cta?.label}
         ctaTo={heroCta?.ctaTo}
         ctaHref={heroCta?.ctaHref}

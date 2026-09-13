@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 export type EventCategory = {
   id: string;
   title: string;
@@ -37,7 +37,7 @@ export type EventsPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   categories: EventCategory[];
   events: EventRecord[];
 };

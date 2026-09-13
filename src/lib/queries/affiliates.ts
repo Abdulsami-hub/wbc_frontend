@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import heroImg from "@/assets/affiliates-hero.png";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type {
   AffiliateCity,
   AffiliateCountry,
@@ -86,6 +87,11 @@ type ApiListPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   regions: ApiRegion[];
   faqs: { id: number; question: string; answer: string | null }[];
@@ -243,6 +249,7 @@ export function mapAffiliatesListPayload(payload: ApiListPayload): AffiliatesPag
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "blue"),
+      ...mapHeroMedia(payload.hero),
     },
     regions,
     faqs: faqs.length > 0 ? faqs : DEFAULTS.faqs,

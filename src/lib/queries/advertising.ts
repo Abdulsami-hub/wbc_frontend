@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type { AdvertisingFormat, AdvertisingPageContent } from "@/content/advertising";
 
 export type ApiAdvertisingButton = {
@@ -17,6 +18,11 @@ type ApiAdvertisingHero = {
   image_url: string | null;
   background_color?: string | null;
   layout?: string | null;
+  media_type?: string | null;
+  video_source?: string | null;
+  video_url?: string | null;
+  youtube_url?: string | null;
+  youtube_embed_url?: string | null;
   updated_at: string | null;
 };
 
@@ -105,6 +111,7 @@ export function mapAdvertisingPayload(payload: ApiAdvertisingPayload): Advertisi
       image: payload.hero?.image_url ?? undefined,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "blue"),
+      ...mapHeroMedia(payload.hero),
     },
     overview: {
       kicker: payload.overview?.kicker?.trim() || DEFAULTS.overview.kicker,

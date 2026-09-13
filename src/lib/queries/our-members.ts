@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import heroImg from "@/assets/our-members-hero.png";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type { OurMemberCategory, OurMembersPageContent } from "@/content/our-members";
 import { kindFromCategoryType, normalizeAccent } from "@/content/our-members";
 
@@ -17,6 +18,11 @@ type ApiPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   categories: {
     id: number;
@@ -104,6 +110,7 @@ export function mapOurMembersPayload(payload: ApiPayload): OurMembersPageContent
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "orange"),
+      ...mapHeroMedia(payload.hero),
     },
     categories,
   };

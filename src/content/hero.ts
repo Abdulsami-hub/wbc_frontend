@@ -25,6 +25,7 @@ export type HeroSlide = {
   background: HeroBackground;
   image?: string;
   videoUrl?: string;
+  youtubeEmbedUrl?: string;
   alt?: string;
   primary: HeroCta;
   secondary?: HeroCta;
@@ -51,6 +52,34 @@ export type PageHeroAppearance = {
   background: HeroBackground;
   layout: PageHeroLayout;
 };
+
+export type PageHeroMedia = {
+  videoUrl?: string;
+  youtubeEmbedUrl?: string;
+};
+
+export function youtubeEmbedUrlFromLink(url: string | null | undefined): string | undefined {
+  if (!url?.trim()) return undefined;
+  const match = url.trim().match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/,
+  );
+  return match?.[1] ? `https://www.youtube.com/embed/${match[1]}` : undefined;
+}
+
+export function youtubeBackgroundSrc(embedUrl: string): string {
+  const id = embedUrl.split("/embed/")[1]?.split(/[?&]/)[0];
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    loop: "1",
+    controls: "0",
+    playsinline: "1",
+    rel: "0",
+    modestbranding: "1",
+  });
+  if (id) params.set("playlist", id);
+  return `${embedUrl.split("?")[0]}?${params.toString()}`;
+}
 
 export function normalizePageHeroLayout(value: string | null | undefined): PageHeroLayout {
   return value === "full" ? "full" : "current";

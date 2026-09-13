@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 
 export type WhoWeAreValue = {
   id: string;
@@ -16,7 +16,7 @@ export type WhoWeArePageContent = {
     tags: string[];
     image?: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   story: {
     kicker: string;
     title: string;

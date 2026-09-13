@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import membershipImg from "@/assets/membership.jpg";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type { MembershipPageContent } from "@/content/membership";
 
 type ApiButton = { label: string; url: string };
@@ -16,6 +17,11 @@ type ApiPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   types_header: {
     id: number;
@@ -136,6 +142,7 @@ export function mapMembershipPayload(payload: ApiPayload): MembershipPageContent
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "navy"),
+      ...mapHeroMedia(payload.hero),
     },
     typesHeader: {
       kicker: payload.types_header?.kicker?.trim() ?? "",

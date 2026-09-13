@@ -81,6 +81,8 @@ function WhatWeDo() {
         imageAlt={hero.imageAlt}
         tone={hero.background}
         layout={hero.layout}
+        videoUrl={hero.videoUrl}
+        youtubeEmbedUrl={hero.youtubeEmbedUrl}
       />
 
       {showPortfolio ? (

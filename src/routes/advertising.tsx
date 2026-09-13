@@ -66,6 +66,8 @@ function AdvertisingPage() {
         imageAlt={hero.imageAlt}
         tone={hero.background}
         layout={hero.layout}
+        videoUrl={hero.videoUrl}
+        youtubeEmbedUrl={hero.youtubeEmbedUrl}
         ctaLabel={showPdf ? pdf.buttonLabel : undefined}
         ctaHref={showPdf ? pdf.fileUrl : undefined}
         ctaDownload={showPdf ? pdf.fileName : undefined}

@@ -2,6 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import eventsImg from "@/assets/events.jpg";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 import type { EventMediaItem, EventRecord, EventsPageContent } from "@/content/events";
 
 type ApiButton = { label: string; url: string };
@@ -16,6 +17,11 @@ type ApiPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   categories: {
     id: number;
@@ -135,6 +141,7 @@ export function mapEventsPayload(payload: ApiPayload): EventsPageContent {
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "orange"),
+      ...mapHeroMedia(payload.hero),
     },
     categories: (payload.categories ?? []).map((category) => ({
       id: category.slug,

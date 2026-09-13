@@ -279,7 +279,7 @@ function Affiliates() {
 
   return (
     <>
-      <PageHeroFrame layout={hero.layout} tone={hero.background} image={image} imageAlt={hero.imageAlt}>
+      <PageHeroFrame layout={hero.layout} tone={hero.background} image={image} imageAlt={hero.imageAlt} videoUrl={hero.videoUrl} youtubeEmbedUrl={hero.youtubeEmbedUrl}>
         <p className="intro-1 hero-kicker">{hero.kicker}</p>
         <h1 className="intro-2 mt-5 text-[34px] leading-[1.05] font-bold text-white sm:text-4xl lg:text-[48px]">
           {hero.title}

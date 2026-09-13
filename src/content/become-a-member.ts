@@ -1,4 +1,4 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 export type BecomeAMemberPageContent = {
   hero: {
     kicker: string;
@@ -7,7 +7,7 @@ export type BecomeAMemberPageContent = {
     cta?: { label: string; url: string };
     image?: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   eligibility: {
     kicker: string;
     title: string;

@@ -1,8 +1,9 @@
-import type { PageHeroAppearance } from "@/content/hero";
+import type { PageHeroAppearance, PageHeroMedia } from "@/content/hero";
 import { queryOptions } from "@tanstack/react-query";
 import contactHero from "@/assets/contact-hero.png";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
+import { mapHeroMedia } from "@/lib/hero-media";
 
 type ApiButton = { label: string; url: string };
 
@@ -16,6 +17,11 @@ type ApiPayload = {
     image_url: string | null;
     background_color?: string | null;
     layout?: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
   } | null;
   info: {
     section_title: string | null;
@@ -42,7 +48,7 @@ export type ContactPageContent = {
     cta?: { label: string; url: string };
     image: string;
     imageAlt: string;
-  } & PageHeroAppearance;
+  } & PageHeroAppearance & PageHeroMedia;
   info: {
     sectionTitle: string;
     sectionDescription: string;
@@ -110,6 +116,7 @@ export function mapContactPayload(payload: ApiPayload): ContactPageContent {
       image: payload.hero?.image_url ?? DEFAULTS.hero.image,
       imageAlt: payload.hero?.title?.trim() || DEFAULTS.hero.imageAlt,
       ...mapHeroAppearance(payload.hero, "orange"),
+      ...mapHeroMedia(payload.hero),
     },
     info: {
       sectionTitle: info?.section_title?.trim() || DEFAULTS.info.sectionTitle,
