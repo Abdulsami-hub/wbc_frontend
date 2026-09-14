@@ -5,9 +5,14 @@ export type SocialIconKey =
   | "linkedin"
   | "x"
   | "facebook"
-  | "youtube"
   | "instagram"
+  | "bluesky"
+  | "youtube"
   | "tiktok"
+  | "truth_social"
+  | "whatsapp"
+  | "telegram"
+  | "snapchat"
   | "website";
 
 export type SiteSocialLink = {
@@ -31,9 +36,14 @@ const SOCIAL_ICONS: SocialIconKey[] = [
   "linkedin",
   "x",
   "facebook",
-  "youtube",
   "instagram",
+  "bluesky",
+  "youtube",
   "tiktok",
+  "truth_social",
+  "whatsapp",
+  "telegram",
+  "snapchat",
   "website",
 ];
 
