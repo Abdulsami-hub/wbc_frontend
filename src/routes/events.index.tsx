@@ -211,8 +211,29 @@ function Events() {
 
           <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filtered.length === 0 ? (
-              <li className="col-span-full rounded-card border border-line bg-background px-6 py-12 text-center text-[15px] text-muted-fg">
-                No events in this category yet.
+              <li className="col-span-full rounded-card border border-dashed border-line bg-background px-6 py-12 text-center sm:px-10">
+                {active === "all" ? (
+                  <>
+                    <p className="text-[16px] font-semibold text-foreground">
+                      The programme listing is being prepared.
+                    </p>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted-fg">
+                      Confirmed WBC summits, forums, and network events will appear here as they are
+                      published. Check back soon, or contact us for the latest dates.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[16px] font-semibold text-foreground">
+                      Nothing scheduled in {categories.find((c) => c.id === active)?.title ?? "this category"} at
+                      the moment.
+                    </p>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted-fg">
+                      Choose All events to see the full programme, or pick another category. New dates
+                      are added as each gathering is confirmed.
+                    </p>
+                  </>
+                )}
               </li>
             ) : (
               filtered.map((event) => (
