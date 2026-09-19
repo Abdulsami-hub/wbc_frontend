@@ -30,6 +30,7 @@ export type EventExhibit = {
   booth?: string;
   description?: string;
   partner?: string;
+  logo?: string;
 };
 
 export type EventSpeaker = {
@@ -42,6 +43,7 @@ export type EventBrand = {
   name: string;
   logo?: string;
   href?: string;
+  group?: string;
 };
 
 export type EventGlanceItem = {
@@ -70,6 +72,8 @@ export type EventRecord = {
   dateLabel: string;
   location: string;
   image: string;
+  videoUrl?: string;
+  youtubeEmbedUrl?: string;
   registrationUrl?: string;
   registrationFee?: string;
   socialLinks?: EventSocialLink[];

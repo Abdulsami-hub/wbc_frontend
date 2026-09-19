@@ -3,7 +3,7 @@ import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/re
 import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
-import { CTASection } from "@/components/CTASection";
+import { EventCardMedia } from "@/components/EventCardMedia";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
@@ -244,14 +244,11 @@ function Events() {
                     className="group flex h-full w-full flex-col overflow-hidden rounded-card border border-line bg-background text-start transition-shadow duration-300 hover:shadow-card"
                   >
                     <div className="relative overflow-hidden">
-                      <img
-                        src={event.image}
-                        alt=""
-                        width={800}
-                        height={500}
-                        loading="lazy"
-                        decoding="async"
-                        className="card-zoom-img aspect-[16/10] w-full object-cover"
+                      <EventCardMedia
+                        title={event.title}
+                        image={event.image}
+                        videoUrl={event.videoUrl}
+                        youtubeEmbedUrl={event.youtubeEmbedUrl}
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6">

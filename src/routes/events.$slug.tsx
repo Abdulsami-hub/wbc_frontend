@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { ReactElement } from "react";
+import { EventCardMedia } from "@/components/EventCardMedia";
 import { EventDataTable, EventExhibitsList } from "@/components/EventDataTable";
 import { CmsLink } from "@/components/CmsLink";
 import { SocialLinks } from "@/components/SocialLinks";
@@ -41,6 +42,97 @@ export const Route = createFileRoute("/events/$slug")({
   component: EventDetailPage,
 });
 
+function groupEventBrands(items: EventBrand[], fallbackTitle: string): { title: string; items: EventBrand[] }[] {
+  const brands = items.filter((item) => item.name.trim() || item.logo);
+  if (brands.length === 0) return [];
+
+  const grouped = new Map<string, EventBrand[]>();
+  const ungrouped: EventBrand[] = [];
+
+  for (const item of brands) {
+    const key = item.group?.trim() ?? "";
+    if (!key) {
+      ungrouped.push(item);
+      continue;
+    }
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.push(item);
+    } else {
+      grouped.set(key, [item]);
+    }
+  }
+
+  const sections = [...grouped.entries()].map(([title, sectionItems]) => ({ title, items: sectionItems }));
+  if (ungrouped.length > 0) {
+    sections.push({ title: fallbackTitle, items: ungrouped });
+  }
+
+  return sections;
+}
+
+function EventBrandTiles({ items, fallbackLabel }: { items: EventBrand[]; fallbackLabel: string }) {
+  return (
+    <ul className="relative grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr))]">
+      {items.map((item, index) => {
+        const label = item.name.trim() || fallbackLabel;
+        const className =
+          "group relative flex min-h-[148px] flex-col overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card";
+        const content = (
+          <>
+            <div className="flex min-h-[100px] flex-1 items-center justify-center px-5 py-5">
+              {item.logo ? (
+                <img
+                  src={item.logo}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="max-h-16 max-w-full object-contain sm:max-h-[4.5rem]"
+                />
+              ) : (
+                <span className="flex size-12 items-center justify-center rounded-md border border-line bg-surface text-[14px] font-bold text-navy">
+                  {item.name
+                    .split(/\s+/)
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map((part) => part[0]?.toUpperCase() ?? "")
+                    .join("") || "—"}
+                </span>
+              )}
+            </div>
+            {item.name ? (
+              <p className="line-clamp-2 shrink-0 border-t border-line/80 bg-surface/80 px-3 py-2.5 text-center text-[13px] font-semibold leading-snug text-navy">
+                {item.name}
+              </p>
+            ) : null}
+          </>
+        );
+
+        return (
+          <li key={`${item.group ?? ""}-${item.name}-${index}`}>
+            {item.href ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={className}
+                aria-label={label}
+                title={label}
+              >
+                {content}
+              </a>
+            ) : (
+              <div className={className} title={label}>
+                {content}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function EventBrandGrid({
   kicker,
   title,
@@ -52,77 +144,39 @@ function EventBrandGrid({
   items: EventBrand[];
   tone?: "partners" | "sponsors";
 }) {
-  const brands = items.filter((item) => item.name.trim() || item.logo);
-  if (brands.length === 0) return null;
+  const sections = groupEventBrands(items, title);
+  if (sections.length === 0) return null;
 
   const panel =
     tone === "sponsors"
       ? "border-orange/20 bg-orange/[0.04]"
       : "border-line bg-surface/70";
+  const kindLabel = tone === "sponsors" ? "Sponsor" : "Partner";
+  const showGroupHeadings = sections.length > 1 || sections[0]?.title !== title;
 
   return (
     <section className={`mt-12 overflow-hidden rounded-card border ${panel}`}>
       <div className="relative px-5 py-6 sm:px-7 sm:py-8">
         <span className="guide-glow -end-12 -top-12 size-40 bg-orange/15" aria-hidden="true" />
         <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">{kicker}</p>
-        <h2 className="relative mt-2 text-[20px] font-bold text-foreground sm:text-[22px]">{title}</h2>
-        <ul className="relative mt-6 grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr))]">
-          {brands.map((item, index) => {
-            const label = item.name.trim() || title;
-            const className =
-              "group relative flex min-h-[148px] flex-col overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card";
-            const content = (
-              <>
-                <div className="flex min-h-[100px] flex-1 items-center justify-center px-5 py-5">
-                  {item.logo ? (
-                    <img
-                      src={item.logo}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      className="max-h-16 max-w-full object-contain sm:max-h-[4.5rem]"
-                    />
-                  ) : (
-                    <span className="flex size-12 items-center justify-center rounded-md border border-line bg-surface text-[14px] font-bold text-navy">
-                      {item.name
-                        .split(/\s+/)
-                        .filter(Boolean)
-                        .slice(0, 2)
-                        .map((part) => part[0]?.toUpperCase() ?? "")
-                        .join("") || "—"}
-                    </span>
-                  )}
+        {!showGroupHeadings ? (
+          <h2 className="relative mt-2 text-[20px] font-bold text-foreground sm:text-[22px]">{title}</h2>
+        ) : null}
+        <div className="relative mt-6 space-y-10">
+          {sections.map((section) => (
+            <div key={section.title}>
+              {showGroupHeadings ? (
+                <div className="mb-5">
+                  <span className="inline-flex rounded-full bg-navy px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-white uppercase">
+                    {kindLabel}
+                  </span>
+                  <h2 className="mt-3 text-[20px] font-bold text-foreground sm:text-[22px]">{section.title}</h2>
                 </div>
-                {item.name ? (
-                  <p className="line-clamp-2 shrink-0 border-t border-line/80 bg-surface/80 px-3 py-2.5 text-center text-[13px] font-semibold leading-snug text-navy">
-                    {item.name}
-                  </p>
-                ) : null}
-              </>
-            );
-
-            return (
-              <li key={`${item.name}-${index}`}>
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={className}
-                    aria-label={label}
-                    title={label}
-                  >
-                    {content}
-                  </a>
-                ) : (
-                  <div className={className} title={label}>
-                    {content}
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+              ) : null}
+              <EventBrandTiles items={section.items} fallbackLabel={section.title} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -209,30 +263,38 @@ function EventDetailPage() {
             ) : null}
 
             <div className="mt-8 overflow-hidden rounded-card border border-line">
-              <img
-                src={event.image}
-                alt=""
-                width={1200}
-                height={675}
-                fetchPriority="high"
-                decoding="async"
-                className="aspect-[16/9] w-full object-cover"
+              <EventCardMedia
+                title={event.title}
+                image={event.image}
+                videoUrl={event.videoUrl}
+                youtubeEmbedUrl={event.youtubeEmbedUrl}
+                className="aspect-video"
+                interactive
               />
             </div>
 
             <SocialLinks className="mt-6" links={event.socialLinks ?? []} />
 
-            {event.registrationFee ? (
-              <dl className="mt-8">
-                <div className="rounded-card border border-line bg-surface px-4 py-3">
-                  <dt className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
-                    Registration
-                  </dt>
-                  <dd className="mt-1 text-[15px] font-semibold text-foreground">
-                    {event.registrationFee}
-                  </dd>
+            {event.registrationFee || event.registrationUrl ? (
+              <div className="mt-8 overflow-hidden rounded-card border border-line bg-surface">
+                <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
+                      Registration
+                    </p>
+                    {event.registrationFee ? (
+                      <p className="mt-1 break-words text-[15px] font-semibold text-foreground [overflow-wrap:anywhere]">
+                        {event.registrationFee}
+                      </p>
+                    ) : null}
+                  </div>
+                  {event.registrationUrl ? (
+                    <CmsLink href={event.registrationUrl} className="btn-orange shrink-0 self-start sm:self-center">
+                      Register now
+                    </CmsLink>
+                  ) : null}
                 </div>
-              </dl>
+              </div>
             ) : null}
 
             {event.glance && event.glance.length > 0 ? (
@@ -451,6 +513,11 @@ function EventDetailPage() {
             ) : null}
 
             <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-8">
+              {event.registrationUrl ? (
+                <CmsLink href={event.registrationUrl} className="btn-orange">
+                  Register now
+                </CmsLink>
+              ) : null}
               {event.buttons && event.buttons.length > 0
                 ? event.buttons.map((button, index) => (
                     <CmsLink

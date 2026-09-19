@@ -48,6 +48,11 @@ type ApiPayload = {
     date_label: string | null;
     location: string | null;
     image_url: string | null;
+    media_type?: string | null;
+    video_source?: string | null;
+    video_url?: string | null;
+    youtube_url?: string | null;
+    youtube_embed_url?: string | null;
     registration_url: string | null;
     registration_fee: string | null;
     glance: { label?: string; value?: string }[] | null;
@@ -67,8 +72,8 @@ type ApiPayload = {
     } | null;
     pricing_currency: string | null;
     speakers: { name?: string; role?: string; image?: string | null; image_url?: string | null }[] | null;
-    partners: { name?: string; url?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
-    sponsors: { name?: string; url?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
+    partners: { name?: string; url?: string | null; group?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
+    sponsors: { name?: string; url?: string | null; group?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
     participants: {
       columns?: { id?: string; label?: string }[];
       rows?: Record<string, string>[];
@@ -78,6 +83,8 @@ type ApiPayload = {
       booth?: string;
       description?: string;
       partner?: string;
+      logo?: string | null;
+      logo_url?: string | null;
     }[] | null;
     media: {
       type?: string;
@@ -219,8 +226,9 @@ function mapExhibits(items: ApiPayload["events"][number]["exhibits"]): EventExhi
       booth: row.booth?.trim() || undefined,
       description: row.description?.trim() || undefined,
       partner: row.partner?.trim() || undefined,
+      logo: row.logo_url?.trim() || undefined,
     }))
-    .filter((row) => row.name || row.booth || row.description || row.partner);
+    .filter((row) => row.name || row.booth || row.description || row.partner || row.logo);
 }
 
 function mapBrands(
@@ -231,6 +239,7 @@ function mapBrands(
       name: row.name?.trim() ?? "",
       logo: row.logo_url?.trim() || undefined,
       href: row.url?.trim() || undefined,
+      group: row.group?.trim() || undefined,
     }))
     .filter((row) => row.name || row.logo);
 }
@@ -246,6 +255,7 @@ function mapEvent(item: ApiPayload["events"][number]): EventRecord {
     dateLabel: item.date_label?.trim() || "Date TBA",
     location: item.location?.trim() || "Location TBA",
     image: item.image_url ?? eventsImg,
+    ...mapHeroMedia(item),
     registrationUrl: item.registration_url?.trim() || undefined,
     registrationFee: item.registration_fee?.trim() || undefined,
     socialLinks: (item.social_links ?? [])
