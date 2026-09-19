@@ -87,22 +87,6 @@ function initials(name: string) {
   return (compact.slice(0, 2) || "WB").toUpperCase();
 }
 
-function ArrowUpRight() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      aria-hidden="true"
-    >
-      <path d="M7 17L17 7M9 7h8v8" />
-    </svg>
-  );
-}
-
 function MemberLogo({
   member,
   kind,
@@ -159,19 +143,11 @@ function MemberTileCard({
         aria-hidden="true"
       />
       <MemberLogo member={member} kind={kind} accent={accent} />
-      {member.name.trim() || member.href ? (
-        <span className="relative mt-auto flex w-full min-w-0 shrink-0 flex-col items-center gap-1 border-t border-line/80 bg-surface/50 px-3 py-3">
-          {member.name.trim() ? (
-            <span className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground sm:text-[15px]">
-              {member.name}
-            </span>
-          ) : null}
-          {member.href ? (
-            <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-muted-fg transition-colors group-hover/tile:text-navy">
-              Visit site
-              <ArrowUpRight />
-            </span>
-          ) : null}
+      {member.name.trim() ? (
+        <span className="relative mt-auto flex w-full min-w-0 shrink-0 flex-col items-center border-t border-line/80 bg-surface/50 px-3 py-3">
+          <span className="line-clamp-2 text-[14px] font-bold leading-snug text-foreground sm:text-[15px]">
+            {member.name}
+          </span>
         </span>
       ) : null}
     </>
