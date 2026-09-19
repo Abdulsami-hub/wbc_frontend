@@ -50,7 +50,10 @@ type ApiPayload = {
     image_url: string | null;
     registration_url: string | null;
     registration_fee: string | null;
+    glance: { label?: string; value?: string }[] | null;
     social_links: { platform?: string; label?: string; url?: string }[] | null;
+    buttons: { label?: string; url?: string }[] | null;
+    logistics: string | null;
     agenda:
       | {
           columns?: { id?: string; label?: string }[];
@@ -58,9 +61,24 @@ type ApiPayload = {
         }
       | { time?: string; title?: string; description?: string }[]
       | null;
+    pricing: {
+      columns?: { id?: string; label?: string }[];
+      rows?: Record<string, string>[];
+    } | null;
+    pricing_currency: string | null;
     speakers: { name?: string; role?: string; image?: string | null; image_url?: string | null }[] | null;
     partners: { name?: string; url?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
     sponsors: { name?: string; url?: string | null; logo?: string | null; logo_url?: string | null }[] | null;
+    participants: {
+      columns?: { id?: string; label?: string }[];
+      rows?: Record<string, string>[];
+    } | null;
+    exhibits: {
+      name?: string;
+      booth?: string;
+      description?: string;
+      partner?: string;
+    }[] | null;
     media: {
       type?: string;
       caption?: string | null;
@@ -72,26 +90,6 @@ type ApiPayload = {
       photos?: { url: string }[];
     }[] | null;
   }[];
-  page?: {
-    glance?: { label?: string; value?: string }[] | null;
-    buttons?: { label?: string; url?: string }[] | null;
-    pricing?: {
-      columns?: { id?: string; label?: string }[];
-      rows?: Record<string, string>[];
-    } | null;
-    pricing_currency?: string | null;
-    participants?: {
-      columns?: { id?: string; label?: string }[];
-      rows?: Record<string, string>[];
-    } | null;
-    exhibits?: {
-      name?: string;
-      booth?: string;
-      description?: string;
-      partner?: string;
-    }[] | null;
-    logistics?: string | null;
-  } | null;
 };
 
 type EventsResponse = { data: ApiPayload };
@@ -110,10 +108,6 @@ const DEFAULTS: EventsPageContent = {
   },
   categories: [],
   events: [],
-  page: {
-    glance: [],
-    buttons: [],
-  },
 };
 
 let cachedEtag: string | null = null;
@@ -261,7 +255,22 @@ function mapEvent(item: ApiPayload["events"][number]): EventRecord {
         url: link.url?.trim() ?? "",
       }))
       .filter((link) => link.url),
+    glance: (item.glance ?? [])
+      .map((row) => ({
+        label: row.label?.trim() ?? "",
+        value: row.value?.trim() ?? "",
+      }))
+      .filter((row) => row.label || row.value),
+    buttons: (item.buttons ?? [])
+      .map((button) => ({
+        label: button.label?.trim() ?? "",
+        url: button.url?.trim() ?? "",
+      }))
+      .filter((button) => button.label && button.url),
+    logistics: item.logistics?.trim() || undefined,
     agenda: mapAgenda(item.agenda),
+    pricing: mapTable(item.pricing),
+    pricingCurrency: item.pricing_currency?.trim() || undefined,
     speakers: (item.speakers ?? [])
       .map((row) => ({
         name: row.name?.trim() ?? "",
@@ -271,6 +280,8 @@ function mapEvent(item: ApiPayload["events"][number]): EventRecord {
       .filter((row) => row.name || row.role || row.image),
     partners: mapBrands(item.partners),
     sponsors: mapBrands(item.sponsors),
+    participants: mapTable(item.participants),
+    exhibits: mapExhibits(item.exhibits),
     media: mapMedia(item.media),
   };
 }
@@ -293,25 +304,6 @@ export function mapEventsPayload(payload: ApiPayload): EventsPageContent {
       desc: category.description?.trim() ?? "",
     })),
     events: (payload.events ?? []).map(mapEvent),
-    page: {
-      glance: (payload.page?.glance ?? [])
-        .map((row) => ({
-          label: row.label?.trim() ?? "",
-          value: row.value?.trim() ?? "",
-        }))
-        .filter((row) => row.label || row.value),
-      buttons: (payload.page?.buttons ?? [])
-        .map((button) => ({
-          label: button.label?.trim() ?? "",
-          url: button.url?.trim() ?? "",
-        }))
-        .filter((button) => button.label && button.url),
-      pricing: mapTable(payload.page?.pricing),
-      pricingCurrency: payload.page?.pricing_currency?.trim() || undefined,
-      participants: mapTable(payload.page?.participants),
-      exhibits: mapExhibits(payload.page?.exhibits),
-      logistics: payload.page?.logistics?.trim() || undefined,
-    },
   };
 }
 

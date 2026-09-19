@@ -73,10 +73,17 @@ export type EventRecord = {
   registrationUrl?: string;
   registrationFee?: string;
   socialLinks?: EventSocialLink[];
+  glance?: EventGlanceItem[];
+  buttons?: EventButton[];
+  logistics?: string;
   agenda?: EventAgenda;
+  pricing?: EventAgenda;
+  pricingCurrency?: string;
   speakers?: EventSpeaker[];
   partners?: EventBrand[];
   sponsors?: EventBrand[];
+  participants?: EventAgenda;
+  exhibits?: EventExhibit[];
   media?: EventMediaItem[];
 };
 
@@ -91,15 +98,6 @@ export type EventsPageContent = {
   } & PageHeroAppearance & PageHeroMedia;
   categories: EventCategory[];
   events: EventRecord[];
-  page: {
-    glance: EventGlanceItem[];
-    buttons: EventButton[];
-    pricing?: EventAgenda;
-    pricingCurrency?: string;
-    participants?: EventAgenda;
-    exhibits?: EventExhibit[];
-    logistics?: string;
-  };
 };
 
 export function getEvent(events: EventRecord[], slug: string) {

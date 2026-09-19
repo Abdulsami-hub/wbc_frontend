@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { ReactElement } from "react";
-import { EventDataTable } from "@/components/EventDataTable";
+import { EventDataTable, EventExhibitsList } from "@/components/EventDataTable";
+import { CmsLink } from "@/components/CmsLink";
 import { SocialLinks } from "@/components/SocialLinks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CTASection } from "@/components/CTASection";
@@ -234,6 +235,37 @@ function EventDetailPage() {
               </dl>
             ) : null}
 
+            {event.glance && event.glance.length > 0 ? (
+              <section className="mt-10 overflow-hidden rounded-card border border-line bg-surface/70">
+                <div className="relative px-5 py-6 sm:px-8 sm:py-8">
+                  <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
+                  <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">
+                    At a glance
+                  </p>
+                  <h2 className="relative mt-2 text-[24px] font-bold text-foreground sm:text-[28px]">
+                    Programme snapshot
+                  </h2>
+                  <dl className="relative mt-6 grid gap-3 sm:grid-cols-2">
+                    {event.glance.map((item, index) => (
+                      <div
+                        key={`${item.label}-${item.value}-${index}`}
+                        className="rounded-xl border border-line bg-background px-4 py-4"
+                      >
+                        {item.label ? (
+                          <dt className="text-[11px] font-bold tracking-[0.12em] text-muted-fg uppercase">
+                            {item.label}
+                          </dt>
+                        ) : null}
+                        <dd className={`text-[15px] font-semibold leading-snug text-foreground ${item.label ? "mt-1" : ""}`}>
+                          {item.value || item.label}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </section>
+            ) : null}
+
             {event.description ? (
               <section className="mt-10">
                 <h2 className="text-[20px] font-bold text-foreground">{t("events.about")}</h2>
@@ -245,6 +277,19 @@ function EventDetailPage() {
 
             {event.agenda && event.agenda.rows.length > 0 ? (
               <EventDataTable kicker="Programme" title="Programs / Agenda" table={event.agenda} />
+            ) : null}
+
+            {event.pricing ? (
+              <EventDataTable
+                kicker="Fees"
+                title="Participation pricing"
+                table={event.pricing}
+                currency={event.pricingCurrency}
+              />
+            ) : null}
+
+            {event.participants ? (
+              <EventDataTable kicker="Directory" title="Participants" table={event.participants} />
             ) : null}
 
             {event.speakers && event.speakers.length > 0 ? (
@@ -307,6 +352,25 @@ function EventDetailPage() {
               items={event.sponsors ?? []}
               tone="sponsors"
             />
+
+            {event.exhibits && event.exhibits.length > 0 ? (
+              <EventExhibitsList exhibits={event.exhibits} />
+            ) : null}
+
+            {event.logistics ? (
+              <section className="mt-10 overflow-hidden rounded-card border border-line bg-background">
+                <div className="relative px-5 py-6 sm:px-8 sm:py-8">
+                  <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
+                  <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">
+                    Practical information
+                  </p>
+                  <h2 className="relative mt-2 text-[24px] font-bold text-foreground sm:text-[28px]">Logistics</h2>
+                  <p className="relative mt-4 max-w-3xl whitespace-pre-line text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+                    {event.logistics}
+                  </p>
+                </div>
+              </section>
+            ) : null}
 
             {event.media && event.media.length > 0 ? (
               <section className="mt-10">
@@ -387,6 +451,21 @@ function EventDetailPage() {
             ) : null}
 
             <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-8">
+              {event.buttons && event.buttons.length > 0
+                ? event.buttons.map((button, index) => (
+                    <CmsLink
+                      key={`${button.label}-${button.url}-${index}`}
+                      href={button.url}
+                      className={
+                        index === 0
+                          ? "btn-orange"
+                          : "btn-base border border-line bg-background text-foreground hover:border-navy"
+                      }
+                    >
+                      {button.label}
+                    </CmsLink>
+                  ))
+                : null}
               <Link
                 to="/events"
                 className="btn-base border border-line bg-background text-foreground hover:border-navy"

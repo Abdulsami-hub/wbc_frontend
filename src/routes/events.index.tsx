@@ -3,8 +3,6 @@ import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/re
 import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
-import { CmsLink } from "@/components/CmsLink";
-import { EventDataTable, EventExhibitsList } from "@/components/EventDataTable";
 import { CTASection } from "@/components/CTASection";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -276,87 +274,6 @@ function Events() {
               ))
             )}
           </ul>
-
-          {data.page?.glance && data.page.glance.length > 0 ? (
-            <section className="mt-16 overflow-hidden rounded-card border border-line bg-surface/70">
-              <div className="relative px-5 py-6 sm:px-8 sm:py-8">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
-                <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">
-                  At a glance
-                </p>
-                <h2 className="relative mt-2 text-[24px] font-bold text-foreground sm:text-[28px]">
-                  Programme snapshot
-                </h2>
-                <dl className="relative mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {data.page.glance.map((item, index) => (
-                    <div
-                      key={`${item.label}-${item.value}-${index}`}
-                      className="rounded-xl border border-line bg-background px-4 py-4"
-                    >
-                      {item.label ? (
-                        <dt className="text-[11px] font-bold tracking-[0.12em] text-muted-fg uppercase">
-                          {item.label}
-                        </dt>
-                      ) : null}
-                      <dd className={`text-[15px] font-semibold leading-snug text-foreground ${item.label ? "mt-1" : ""}`}>
-                        {item.value || item.label}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </section>
-          ) : null}
-
-          {data.page?.logistics ? (
-            <section className="mt-8 overflow-hidden rounded-card border border-line bg-background">
-              <div className="relative px-5 py-6 sm:px-8 sm:py-8">
-                <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
-                <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">
-                  Practical information
-                </p>
-                <h2 className="relative mt-2 text-[24px] font-bold text-foreground sm:text-[28px]">Logistics</h2>
-                <p className="relative mt-4 max-w-3xl whitespace-pre-line text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
-                  {data.page.logistics}
-                </p>
-              </div>
-            </section>
-          ) : null}
-
-          {data.page?.pricing ? (
-            <EventDataTable
-              kicker="Fees"
-              title="Participation pricing"
-              table={data.page.pricing}
-              currency={data.page.pricingCurrency}
-            />
-          ) : null}
-
-          {data.page?.participants ? (
-            <EventDataTable kicker="Directory" title="Participants" table={data.page.participants} />
-          ) : null}
-
-          {data.page?.exhibits && data.page.exhibits.length > 0 ? (
-            <EventExhibitsList exhibits={data.page.exhibits} />
-          ) : null}
-
-          {data.page?.buttons && data.page.buttons.length > 0 ? (
-            <div className="mt-10 flex flex-wrap gap-3">
-              {data.page.buttons.map((button, index) => (
-                <CmsLink
-                  key={`${button.label}-${button.url}-${index}`}
-                  href={button.url}
-                  className={
-                    index === 0
-                      ? "btn-orange"
-                      : "btn-base border border-line bg-background text-foreground hover:border-navy"
-                  }
-                >
-                  {button.label}
-                </CmsLink>
-              ))}
-            </div>
-          ) : null}
         </div>
       </section>
       ) : null}
