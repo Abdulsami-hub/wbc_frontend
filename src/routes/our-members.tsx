@@ -281,9 +281,6 @@ function CategoryBlock({ cat, index }: { cat: OurMemberCategory; index: number }
             <h3 className="mt-3 text-[24px] leading-tight font-bold text-foreground sm:text-[28px]">
               {cat.name}
             </h3>
-            <p className="mt-2 text-[13px] font-semibold tracking-[0.06em] text-muted-fg uppercase">
-              {cat.members.length} {cat.members.length === 1 ? "profile" : "profiles"}
-            </p>
           </div>
           {cat.desc ? (
             <p className="max-w-3xl text-[16px] leading-relaxed text-muted-fg">{cat.desc}</p>

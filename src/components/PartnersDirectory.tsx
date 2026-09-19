@@ -65,15 +65,15 @@ function PartnerTileCard({
 
   const inner = (
     <>
-      <div className="flex min-h-[92px] flex-1 items-center justify-center bg-white px-4 py-5 sm:min-h-[104px]">
+      <div className="relative flex min-h-[108px] w-full flex-1 items-center justify-center overflow-hidden bg-white px-5 sm:min-h-[120px]">
         {partner.logo ? (
           <img
             src={partner.logo}
             alt=""
-            className="max-h-16 w-auto max-w-[86%] object-contain sm:max-h-[4.5rem]"
+            className="max-h-[88%] max-w-[92%] object-contain"
           />
         ) : (
-          <span className="flex size-11 items-center justify-center rounded-md border border-line bg-surface text-[13px] font-bold text-navy">
+          <span className="text-[20px] font-bold tracking-wide text-navy">
             {initials(partner.name)}
           </span>
         )}

@@ -176,16 +176,7 @@ function StrategicPartners() {
             aria-hidden="true"
           />
           <div className="container-wbc relative space-y-12">
-            <div className="space-y-6">
-              <div data-reveal>
-                <span className="inline-flex rounded-full bg-orange px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
-                  For sponsors
-                </span>
-                <h2 className="mt-4 text-[28px] font-extrabold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
-                  Sponsors
-                </h2>
-              </div>
-              {hasPageIntro ? (
+            {hasPageIntro ? (
                 <div data-reveal data-reveal-group className="grid gap-4 sm:grid-cols-2 lg:gap-6">
                   {pageIntroParagraphs.map((paragraph, index) => (
                     <article
@@ -207,7 +198,6 @@ function StrategicPartners() {
                   ))}
                 </div>
               ) : null}
-            </div>
 
             {hasApproach ? (
               <div data-reveal className="max-w-3xl">
@@ -401,23 +391,21 @@ function StrategicPartners() {
           />
           <div className="container-wbc relative space-y-14">
             {hasCooperation ? (
-              <div data-reveal className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-                <div>
-                  <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
-                    For strategic partners
-                  </span>
-                  <h2 className="mt-4 text-[28px] font-extrabold leading-tight sm:text-[40px] lg:text-[44px]">
-                    Partners
-                  </h2>
+              <div data-reveal className="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+                <div className="lg:py-7">
                   {cooperation.kicker ? (
-                    <p className="mt-8 font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
+                    <p className="font-display text-[12px] tracking-[0.22em] text-white/70 uppercase">
                       {cooperation.kicker}
                     </p>
                   ) : null}
                   {cooperation.title ? (
-                    <h3 className="mt-3 text-[26px] font-bold leading-tight sm:text-[34px]">
+                    <h2
+                      className={`text-[28px] font-bold leading-tight sm:text-[36px] lg:text-[40px] ${
+                        cooperation.kicker ? "mt-3" : ""
+                      }`}
+                    >
                       {cooperation.title}
-                    </h3>
+                    </h2>
                   ) : null}
                   {cooperation.description ? (
                     <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/75 sm:text-[17px]">
@@ -435,8 +423,15 @@ function StrategicPartners() {
                       Cooperation may include
                     </p>
                     <ul data-reveal-group className="relative mt-5 grid gap-3 sm:grid-cols-2">
-                      {cooperation.items.map((item) => (
-                        <li key={item}>
+                      {cooperation.items.map((item, index) => (
+                        <li
+                          key={item}
+                          className={
+                            cooperation.items.length % 2 === 1 && index === cooperation.items.length - 1
+                              ? "sm:col-span-2"
+                              : undefined
+                          }
+                        >
                           <article className="group flex h-full gap-3 overflow-hidden rounded-xl border border-white/10 bg-white/5 px-3.5 py-3 transition-all duration-300 hover:-translate-y-1 hover:border-orange/40 hover:bg-white/10">
                             <span
                               className="guide-glow -end-8 -top-8 size-20 bg-orange/40"
@@ -460,16 +455,7 @@ function StrategicPartners() {
                   </div>
                 ) : null}
               </div>
-            ) : (
-              <div data-reveal>
-                <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
-                  For strategic partners
-                </span>
-                <h2 className="mt-4 text-[28px] font-extrabold leading-tight sm:text-[40px] lg:text-[44px]">
-                  Partners
-                </h2>
-              </div>
-            )}
+            ) : null}
 
             {hasWhoWePartner ? (
               <div data-reveal>
