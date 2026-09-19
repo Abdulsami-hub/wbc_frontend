@@ -37,20 +37,21 @@ export function MembershipTypesSection({
       <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-end lg:gap-14">
         <div className="max-w-2xl">
           {header.kicker ? (
-            <p data-reveal className="eyebrow">
+            <p data-reveal className="eyebrow" data-dynamic>
               {header.kicker}
             </p>
           ) : null}
           {header.title ? (
             <h2
               data-reveal
+              data-dynamic
               className="mt-3 text-[28px] font-bold leading-tight text-foreground sm:text-[36px] lg:text-[42px]"
             >
               {header.title}
             </h2>
           ) : null}
           {header.description ? (
-            <p data-reveal className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
+            <p data-reveal data-dynamic className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
               {header.description}
             </p>
           ) : null}

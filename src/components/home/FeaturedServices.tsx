@@ -4,8 +4,10 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceCard } from "@/components/ServiceCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { homeServices, whatWeDoQueryOptions } from "@/lib/queries/what-we-do";
+import { useI18n } from "@/i18n";
 
 export function FeaturedServices() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(whatWeDoQueryOptions);
 
   if (isPending) {
@@ -34,9 +36,9 @@ export function FeaturedServices() {
       <div className="container-wbc">
         <SectionHeading
           align="left"
-          eyebrow="Featured Services"
-          title="What We Do"
-          description="Selected services from our full programme of activities supporting businesses worldwide."
+          eyebrow={t("home.featuredServices")}
+          title={t("link.whatWeDo")}
+          description={t("home.servicesDesc")}
         />
 
         <ul
@@ -58,7 +60,7 @@ export function FeaturedServices() {
 
         <div data-reveal className="mt-10 text-start">
           <Link to="/what-we-do" className="card-link">
-            View all services
+            {t("ui.viewAllServices")}
             <span aria-hidden="true" className="card-link-arrow rtl-mirror">
               →
             </span>

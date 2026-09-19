@@ -112,11 +112,16 @@ function Governance() {
         videoUrl={hero.videoUrl}
         youtubeEmbedUrl={hero.youtubeEmbedUrl}
       >
-        <p className="intro-1 hero-kicker">{hero.kicker}</p>
-        <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
+        <p className="intro-1 hero-kicker" data-dynamic>
+          {hero.kicker}
+        </p>
+        <h1
+          data-dynamic
+          className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]"
+        >
           {hero.title}
         </h1>
-        <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
+        <p data-dynamic className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
           {hero.description}
         </p>
         {hero.tags.length > 0 && (

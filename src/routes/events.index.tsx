@@ -12,6 +12,7 @@ import { resolveCmsUrl } from "@/lib/cms-url";
 import { eventsQueryOptions } from "@/lib/queries/events";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 function EventMetaRow({ dateLabel, location }: { dateLabel: string; location: string }) {
   return (
@@ -100,6 +101,7 @@ function resolveCta(url: string, fallback = "/contact") {
 }
 
 function Events() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(eventsQueryOptions);
   const showListings = useSectionVisible("events", "listings");
   const navigate = useNavigate();
@@ -187,7 +189,7 @@ function Events() {
                       : "border-line bg-background text-foreground hover:border-orange"
                   }`}
                 >
-                  All events
+                  {t("ui.allEvents")}
                 </button>
               </li>
               {categories.map((c) => (
@@ -196,6 +198,7 @@ function Events() {
                     type="button"
                     onClick={() => selectCategory(c.id)}
                     aria-pressed={active === c.id}
+                    data-dynamic
                     className={`rounded-none border px-4 py-2.5 text-[14px] font-semibold transition-colors ${
                       active === c.id
                         ? "border-orange bg-orange text-white"
@@ -215,29 +218,28 @@ function Events() {
                 {active === "all" ? (
                   <>
                     <p className="text-[16px] font-semibold text-foreground">
-                      The programme listing is being prepared.
+                      {t("events.emptyTitle")}
                     </p>
                     <p className="mt-2 text-[15px] leading-relaxed text-muted-fg">
-                      Confirmed WBC summits, forums, and network events will appear here as they are
-                      published. Check back soon, or contact us for the latest dates.
+                      {t("events.emptyBody")}
                     </p>
                   </>
                 ) : (
                   <>
                     <p className="text-[16px] font-semibold text-foreground">
-                      Nothing scheduled in {categories.find((c) => c.id === active)?.title ?? "this category"} at
-                      the moment.
+                      {t("events.emptyCategory", {
+                        name: categories.find((c) => c.id === active)?.title ?? t("menu.group.eventCategories"),
+                      })}
                     </p>
                     <p className="mt-2 text-[15px] leading-relaxed text-muted-fg">
-                      Choose All events to see the full programme, or pick another category. New dates
-                      are added as each gathering is confirmed.
+                      {t("events.emptyCategoryBody")}
                     </p>
                   </>
                 )}
               </li>
             ) : (
               filtered.map((event) => (
-                <li key={event.slug}>
+                <li key={event.slug} data-dynamic>
                   <Link
                     to="/events/$slug"
                     params={{ slug: event.slug }}
@@ -360,9 +362,9 @@ function Events() {
       ) : null}
 
       <CTASection
-        title="Join the WBC Community"
-        description="Be the first to know about upcoming conferences, forums, and global business events."
-        ctaLabel="Become a Member"
+        title={t("cta.joinCommunity")}
+        description={t("cta.joinCommunityEvents")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

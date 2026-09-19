@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
+import { useI18n } from "@/i18n";
 
 export function WhatIsWbcSection() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(whoWeAreQueryOptions);
 
   if (isPending) {
@@ -28,10 +30,10 @@ export function WhatIsWbcSection() {
   return (
     <section className="border-t border-line bg-surface/30 py-16 lg:py-24">
       <div className="container-wbc">
-        <SectionHeading align="left" eyebrow="About WBC" title="What is WBC?" />
+        <SectionHeading align="left" eyebrow={t("menu.group.aboutWbc")} title={t("home.whatIsWbc")} />
 
         <div className="mt-10 grid items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
-          <div data-reveal className="flex min-h-0 flex-col">
+        <div data-reveal className="flex min-h-0 flex-col" data-dynamic>
             <div className="relative flex-1 overflow-hidden rounded-card border border-line bg-background p-7 transition-shadow duration-300 hover:shadow-card sm:p-8">
               <span className="absolute start-0 top-0 h-full w-1 bg-orange" aria-hidden="true" />
               {story.paragraphs.map((paragraph) => (
@@ -45,7 +47,7 @@ export function WhatIsWbcSection() {
             </div>
           </div>
 
-          <div data-reveal data-reveal-group className="flex flex-col gap-5 sm:gap-6">
+          <div data-reveal data-reveal-group className="flex flex-col gap-5 sm:gap-6" data-dynamic>
             <article className="group relative flex flex-1 flex-col overflow-hidden rounded-card bg-navy p-7 transition-shadow duration-300 hover:shadow-card sm:p-8">
               <span
                 className="pointer-events-none absolute -end-12 -top-12 size-44 rounded-full bg-orange/20 transition-transform duration-500 group-hover:scale-150"

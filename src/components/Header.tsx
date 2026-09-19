@@ -102,7 +102,7 @@ export function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("ui.closeMenu") : t("ui.openMenu")}
             className="inline-flex size-10 items-center justify-center rounded-md text-foreground transition-colors hover:bg-foreground/5 hover:text-foreground lg:hidden"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

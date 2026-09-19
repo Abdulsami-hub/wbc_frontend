@@ -1,58 +1,54 @@
 import networkImage from "@/assets/network-menu.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
-
-const GROUPS = [
-  {
-    label: "Network Structure",
-    items: [
-      {
-        title: "WBC Headquarters",
-        desc: "Leadership, governance, and coordination in Paris",
-        to: "/who-we-are" as const,
-      },
-      {
-        title: "WBC Affiliates",
-        desc: "Official representatives in countries and cities",
-        to: "/affiliates" as const,
-      },
-    ],
-  },
-  {
-    label: "Members & Partners",
-    items: [
-      {
-        title: "Institutional Members",
-        desc: "Institutional, corporate, SME, and individual members",
-        to: "/our-members" as const,
-      },
-      {
-        title: "Partners and Sponsors",
-        desc: "Partnerships, sponsorships, joint initiatives, and cooperation",
-        to: "/global-network/strategic-partners" as const,
-      },
-    ],
-  },
-] as const;
+import { useI18n } from "@/i18n";
 
 export function MegaMenuNetwork({ onNavigate }: { onNavigate?: () => void }) {
+  const { t } = useI18n();
+
+  const groups = [
+    {
+      label: t("menu.group.structure"),
+      items: [
+        { title: t("link.hq"), desc: t("menu.desc.hq"), to: "/who-we-are" as const },
+        { title: t("link.affiliates"), desc: t("menu.desc.affiliates"), to: "/affiliates" as const },
+      ],
+    },
+    {
+      label: t("menu.group.membersPartners"),
+      items: [
+        {
+          title: t("link.institutional"),
+          desc: t("menu.desc.institutional"),
+          to: "/our-members" as const,
+        },
+        {
+          title: t("link.partners"),
+          desc: t("menu.desc.partners"),
+          to: "/global-network/strategic-partners" as const,
+        },
+      ],
+    },
+  ];
+
   return (
     <MegaMenuShell
-      title="Global Network"
-      description="Headquarters, affiliates, members, and partners working as one collaborative global network."
+      title={t("nav.network")}
+      description={t("menu.network.intro")}
       promo={{
         image: networkImage,
         alt: "Clasped hands with a digital world map and connected network nodes",
-        text: "Explore how WBC connects institutions and businesses across regions.",
-        cta: "View network",
+        text: t("menu.network.promo"),
+        cta: t("ui.viewNetwork"),
         to: "/global-network",
         ...(onNavigate ? { onNavigate } : {}),
       }}
     >
-      {GROUPS.map((g, i) => (
+      {groups.map((g, i) => (
         <MegaMenuGroup
           key={g.label}
           label={g.label}
-          items={[...g.items]}
+          translated
+          items={g.items}
           {...(onNavigate ? { onNavigate } : {})}
           delayMs={80 + i * 40}
         />

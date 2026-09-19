@@ -677,6 +677,7 @@ function StrategicPartners() {
           description={cta.description.trim() || hero.description}
           ctaLabel={siteCta?.label ?? "Contact Us"}
           to={siteCta ? (resolveCta(siteCta.url).ctaTo ?? "/contact") : "/contact"}
+          dynamic
         />
       )}
     </>

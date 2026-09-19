@@ -8,6 +8,7 @@ import { resolveCmsUrl } from "@/lib/cms-url";
 import { globalNetworkQueryOptions } from "@/lib/queries/global-network";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/global-network/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(globalNetworkQueryOptions),
@@ -57,6 +58,7 @@ function GlobalNetworkSkeleton() {
 }
 
 function GlobalNetwork() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(globalNetworkQueryOptions);
   const showStructure = useSectionVisible("global-network", "structure");
   const showHighlights = useSectionVisible("global-network", "highlights");
@@ -199,9 +201,9 @@ function GlobalNetwork() {
       ) : null}
 
       <CTASection
-        title="Ready to Join WBC?"
-        description="Become part of a network built on collaboration, innovation, and trust."
-        ctaLabel="Become a Member"
+        title={t("cta.readyJoin")}
+        description={t("cta.readyJoinBody")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

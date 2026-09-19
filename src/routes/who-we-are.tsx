@@ -227,11 +227,16 @@ function WhoWeArePage({ data }: { data: WhoWeArePageContent }) {
             <li className="font-semibold text-white">{hero.title}</li>
           </ol>
         </nav>
-        <p className="intro-1 mt-8 hero-kicker">{hero.kicker}</p>
-        <h1 className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]">
+        <p className="intro-1 mt-8 hero-kicker" data-dynamic>
+          {hero.kicker}
+        </p>
+        <h1
+          data-dynamic
+          className="intro-2 mt-5 text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[52px] lg:text-[60px]"
+        >
           {hero.title}
         </h1>
-        <p className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
+        <p data-dynamic className="intro-3 mt-7 max-w-lg text-[17px] leading-relaxed text-white/95 sm:text-[19px]">
           {hero.description}
         </p>
         {hero.tags.length > 0 ? (

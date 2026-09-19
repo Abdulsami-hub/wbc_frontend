@@ -49,7 +49,7 @@ export function EventDataTable({
           {title}
         </h2>
 
-        <div className="relative mt-5 hidden overflow-hidden rounded-xl border border-line bg-background md:block">
+        <div data-dynamic className="relative mt-5 hidden overflow-hidden rounded-xl border border-line bg-background md:block">
           <table className="w-full table-fixed border-collapse">
             <colgroup>
               {table.columns.map((column) => (
@@ -92,7 +92,7 @@ export function EventDataTable({
           </table>
         </div>
 
-        <ol className="relative mt-5 space-y-3 md:hidden">
+        <ol data-dynamic className="relative mt-5 space-y-3 md:hidden">
           {table.rows.map((row, index) => (
             <li key={`${title}-card-${index}`}>
               <article className="overflow-hidden rounded-xl border border-line bg-background px-4 py-4">

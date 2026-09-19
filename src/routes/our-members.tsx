@@ -16,6 +16,7 @@ import { resolveCmsUrl } from "@/lib/cms-url";
 import { ourMembersQueryOptions } from "@/lib/queries/our-members";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 const MEMBERS_GRID_LIMIT = 20;
 
@@ -363,6 +364,7 @@ function resolveHeroCta(url: string) {
 }
 
 function OurMembers() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(ourMembersQueryOptions);
   const showProfiles = useSectionVisible("our-members", "profiles");
 
@@ -436,9 +438,9 @@ function OurMembers() {
       ) : null}
 
       <CTASection
-        title="Become Part of the Network"
-        description="Join WBC to appear in the members directory and connect with organizations across the globe."
-        ctaLabel="Become a Member"
+        title={t("cta.becomeNetwork")}
+        description={t("cta.becomeNetworkBody")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

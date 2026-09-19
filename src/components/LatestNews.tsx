@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { newsQueryOptions } from "@/lib/queries/news";
+import { useI18n } from "@/i18n";
 
 export function LatestNews() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(newsQueryOptions);
   const articles = (data?.articles ?? []).slice(0, 3);
 
@@ -15,23 +17,22 @@ export function LatestNews() {
           className="flex items-center justify-between gap-6 border-b border-line pb-4"
         >
           <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-muted-fg sm:text-[13px]">
-            Latest News
+            {t("home.latestNews")}
           </p>
           <Link to="/news" className="card-link text-[15px] sm:text-[16px]">
-            View all updates
+            {t("ui.viewAllUpdates")}
           </Link>
         </div>
 
         <div data-reveal className="mt-10">
           <p className="text-[17px] font-semibold text-muted-fg sm:text-[18px]">
-            Institutional Activities and Business News
+            {t("home.newsKicker")}
           </p>
           <h2 className="mt-4 max-w-3xl text-[32px] leading-[1.08] font-bold tracking-tight text-foreground sm:text-[42px] lg:text-[50px]">
-            Current Momentum Across the WBC Network and in the World
+            {t("home.newsTitle")}
           </h2>
           <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-fg text-justify sm:text-[18px]">
-            Follow recent updates that improve your understanding about WBC activities, and get
-            updates about business news in the world.
+            {t("home.newsIntro")}
           </p>
         </div>
 
@@ -52,7 +53,7 @@ export function LatestNews() {
             data-reveal
             className="mt-12 rounded-card border border-line bg-background px-6 py-10 text-center text-[15px] text-muted-fg"
           >
-            No news articles published yet.
+            {t("home.noNews")}
           </p>
         ) : (
           <ul
@@ -61,7 +62,7 @@ export function LatestNews() {
             className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {articles.map((item) => (
-              <li key={item.id}>
+            <li key={item.id} data-dynamic>
                 <Link
                   to="/news/$slug"
                   params={{ slug: item.slug }}

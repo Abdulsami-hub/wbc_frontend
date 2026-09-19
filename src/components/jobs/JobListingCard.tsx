@@ -18,7 +18,7 @@ export function JobListingCard({ job }: { job: JobRecord }) {
   const deadline = formatJobDateShort(job.applicationDeadline);
 
   return (
-    <li>
+    <li data-dynamic>
       <Link
         to="/jobs/$slug"
         params={{ slug: job.slug }}

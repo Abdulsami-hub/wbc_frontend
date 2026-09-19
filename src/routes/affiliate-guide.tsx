@@ -580,6 +580,7 @@ function AffiliateGuide() {
         description={nextStep.description.trim() || hero.description}
         ctaLabel={hero.cta?.label ?? "Contact Us"}
         to={heroCta.ctaTo ?? "/contact"}
+        dynamic
       />
     </>
   );

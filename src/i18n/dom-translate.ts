@@ -80,6 +80,7 @@ export function translateTree(root: Node, map: TMap | null) {
       !SKIP_TAGS.has(parent.tagName) &&
       !parent.closest("svg") &&
       !parent.closest("[data-no-translate]") &&
+      !parent.closest("[data-dynamic]") &&
       !parent.closest("[role='dialog']")
     ) {
       translateTextNode(root as Text, map);
@@ -94,6 +95,7 @@ export function translateTree(root: Node, map: TMap | null) {
       SKIP_TAGS.has(el.tagName) ||
       el.closest("svg") ||
       el.closest("[data-no-translate]") ||
+      el.closest("[data-dynamic]") ||
       el.closest("[role='dialog']")
     ) {
       return;
@@ -103,6 +105,7 @@ export function translateTree(root: Node, map: TMap | null) {
       if (
         !child.closest("svg") &&
         !child.closest("[data-no-translate]") &&
+        !child.closest("[data-dynamic]") &&
         !child.closest("[role='dialog']")
       ) {
         translateAttributes(child, map);
@@ -120,6 +123,7 @@ export function translateTree(root: Node, map: TMap | null) {
       SKIP_TAGS.has(parent.tagName) ||
       parent.closest("svg") ||
       parent.closest("[data-no-translate]") ||
+      parent.closest("[data-dynamic]") ||
       parent.closest("[role='dialog']")
     ) {
       continue;

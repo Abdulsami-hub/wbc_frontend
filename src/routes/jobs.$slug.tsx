@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Skeleton } from "@/components/ui/skeleton";
 import { jobsQueryOptions } from "@/lib/queries/jobs";
 import { graphSchema, jobPostingSchema, seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/jobs/$slug")({
   loader: async ({ context: { queryClient }, params }) => {
@@ -68,6 +69,7 @@ function JobDetailSkeleton() {
 }
 
 function JobDetailPage() {
+  const { t } = useI18n();
   const { slug } = Route.useParams();
   const { data, isPending } = useQuery(jobsQueryOptions);
 
@@ -112,16 +114,16 @@ function JobDetailPage() {
       {schema ? <JsonLd data={graphSchema([schema])} /> : null}
       <Breadcrumbs
         items={[
-          { name: "Home", path: "/" },
-          { name: "Opportunities", path: "/jobs" },
+          { name: t("ui.home"), path: "/" },
+          { name: t("nav.jobs"), path: "/jobs" },
           { name: job.title, path },
         ]}
       />
       <JobDetailView job={job} />
       <CTASection
-        title="Explore More Opportunities"
-        description="Discover more job and internship opportunities across the WBC network and find the right fit for your skills and interests."
-        ctaLabel="View All Internships"
+        title={t("cta.exploreJobs")}
+        description={t("cta.exploreJobsBody")}
+        ctaLabel={t("cta.viewInternships")}
         to="/jobs"
       />
     </>

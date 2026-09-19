@@ -166,15 +166,26 @@ export function SplitHero({
       videoUrl={videoUrl}
       youtubeEmbedUrl={youtubeEmbedUrl}
     >
-      <p className="intro-1 hero-kicker">{eyebrow}</p>
-      <h1 className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]">
+      <p data-dynamic className="intro-1 hero-kicker">
+        {eyebrow}
+      </p>
+      <h1
+        data-dynamic
+        className="intro-2 mt-6 text-[34px] leading-[1.05] font-bold text-white sm:text-5xl lg:text-[56px]"
+      >
         {title}
       </h1>
-      <p className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">{description}</p>
+      <p data-dynamic className="intro-3 mt-6 max-w-lg text-[16px] leading-relaxed text-white/90">
+        {description}
+      </p>
       {tags && tags.length > 0 && (
         <ul className="intro-4 mt-9 flex flex-wrap gap-3">
           {tags.map((t) => (
-            <li key={t} className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white">
+            <li
+              key={t}
+              data-dynamic
+              className="border border-white/60 px-4 py-2.5 text-[14px] font-semibold text-white"
+            >
               {t}
             </li>
           ))}
@@ -185,6 +196,7 @@ export function SplitHero({
           <a
             href={ctaHref}
             download={ctaDownload ?? true}
+            data-dynamic
             className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
           >
             {ctaLabel}{" "}
@@ -196,6 +208,7 @@ export function SplitHero({
           <Link
             to={ctaTo!}
             {...(ctaHash ? { hash: ctaHash } : {})}
+            data-dynamic
             className="intro-4 mt-8 inline-flex items-center gap-2 border-b-2 border-white pb-1 text-[16px] font-bold text-white"
           >
             {ctaLabel}{" "}

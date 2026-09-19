@@ -17,9 +17,8 @@ import {
   type LangCode,
   type Language,
 } from "./languages";
-import { DICTIONARIES, type TranslationKey } from "./dictionary";
+import { DICTIONARIES, interpolate, type TranslationKey } from "./dictionary";
 import { loadMap } from "./dom-translate";
-import { translateValue } from "./translate-content";
 
 function persistLang(code: LangCode) {
   try {
@@ -35,8 +34,8 @@ type I18nValue = {
   lang: LangCode;
   dir: "ltr" | "rtl";
   setLang: (code: LangCode) => void;
-  t: (key: TranslationKey) => string;
-  /** Translate API / hardcoded English using generated maps. */
+  t: (key: TranslationKey, vars?: Record<string, string>) => string;
+  /** Translate hardcoded English UI strings. Do not pass CMS/API text. */
   tx: (text: string) => string;
   map: TMap | null;
 };
@@ -71,7 +70,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       return;
     }
     loadMap(lang).then((next) => {
-      if (!cancelled) setMap(next);
+      if (cancelled) return;
+      const fromDictionary: TMap = {};
+      const english = DICTIONARIES.en;
+      const localized = DICTIONARIES[lang];
+      (Object.keys(english) as TranslationKey[]).forEach((key) => {
+        fromDictionary[english[key].trim()] = localized[key];
+      });
+      setMap({ ...(next ?? {}), ...fromDictionary });
     });
     return () => {
       cancelled = true;
@@ -99,7 +105,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   );
 
   const t = useCallback(
-    (key: TranslationKey) => DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key,
+    (key: TranslationKey, vars?: Record<string, string>) => {
+      const value = DICTIONARIES[lang][key] ?? DICTIONARIES.en[key] ?? key;
+      return vars ? interpolate(value, vars) : value;
+    },
     [lang],
   );
 
@@ -129,14 +138,9 @@ export function useI18n() {
   return ctx;
 }
 
+/** Dynamic CMS/API payloads stay in their original language. */
 export function useTranslatedContent<T>(value: T): T {
-  const ctx = useContext(I18nContext);
-  const lang = ctx?.lang ?? "en";
-  const map = ctx?.map ?? null;
-  return useMemo(() => {
-    if (lang === "en" || !map) return value;
-    return translateValue(value, map);
-  }, [lang, map, value]);
+  return value;
 }
 
 export function useTranslatedQuery<TData>(

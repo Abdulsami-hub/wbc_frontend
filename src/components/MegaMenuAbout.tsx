@@ -2,66 +2,47 @@ import aboutMenuImage from "@/assets/about-menu.png";
 import { MegaMenuGroup, MegaMenuShell } from "./MegaMenuShell";
 import { useI18n } from "@/i18n";
 
-const GROUPS = [
-  {
-    label: "About WBC",
-    items: [
-      {
-        titleKey: "link.whoWeAre" as const,
-        desc: "Our mission, vision, and values",
-        to: "/who-we-are" as const,
-      },
-      {
-        titleKey: "link.whatWeDo" as const,
-        desc: "Programs and global initiatives",
-        to: "/what-we-do" as const,
-      },
-    ],
-  },
-  {
-    label: "Leadership",
-    items: [
-      {
-        titleKey: "link.governance" as const,
-        desc: "Leadership structure and policies",
-        to: "/governance" as const,
-      },
-      {
-        titleKey: "link.team" as const,
-        desc: "Meet the WBC team",
-        to: "/wbc-team" as const,
-      },
-    ],
-  },
-] as const;
-
 export function MegaMenuAbout({ onNavigate }: { onNavigate?: () => void }) {
   const { t } = useI18n();
+
+  const groups = [
+    {
+      label: t("menu.group.aboutWbc"),
+      items: [
+        { title: t("link.whoWeAre"), desc: t("menu.desc.whoWeAre"), to: "/who-we-are" as const },
+        { title: t("link.whatWeDo"), desc: t("menu.desc.whatWeDo"), to: "/what-we-do" as const },
+      ],
+    },
+    {
+      label: t("menu.group.leadership"),
+      items: [
+        { title: t("link.governance"), desc: t("menu.desc.governance"), to: "/governance" as const },
+        { title: t("link.team"), desc: t("menu.desc.team"), to: "/wbc-team" as const },
+      ],
+    },
+  ];
 
   return (
     <MegaMenuShell
       title={t("nav.about")}
-      description="Learn about the World Business Council — our mission, vision, values, and global initiatives that empower businesses worldwide."
+      description={t("menu.about.intro")}
       promo={{
         image: aboutMenuImage,
         alt: "Modern glass skyscrapers at dusk",
-        text: "Explore the full story of WBC and how we connect businesses across the globe.",
-        cta: "View all",
+        text: t("menu.about.promo"),
+        cta: t("ui.viewAll"),
         to: "/who-we-are",
         ...(onNavigate ? { onNavigate } : {}),
       }}
     >
-      {GROUPS.map((g, i) => (
+      {groups.map((g, i) => (
         <MegaMenuGroup
           key={g.label}
           label={g.label}
+          translated
           {...(onNavigate ? { onNavigate } : {})}
           delayMs={80 + i * 40}
-          items={g.items.map((it) => ({
-            title: t(it.titleKey),
-            desc: it.desc,
-            to: it.to,
-          }))}
+          items={g.items}
         />
       ))}
     </MegaMenuShell>

@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Skeleton } from "@/components/ui/skeleton";
 import { newsQueryOptions } from "@/lib/queries/news";
 import { graphSchema, newsArticleSchema, seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/news/$slug")({
   loader: async ({ context: { queryClient }, params }) => {
@@ -57,6 +58,7 @@ function NewsArticleSkeleton() {
 }
 
 function NewsArticlePage() {
+  const { t } = useI18n();
   const { slug } = Route.useParams();
   const { data, isPending } = useQuery(newsQueryOptions);
 
@@ -87,8 +89,8 @@ function NewsArticlePage() {
 
       <Breadcrumbs
         items={[
-          { name: "Home", path: "/" },
-          { name: "News", path: "/news" },
+          { name: t("ui.home"), path: "/" },
+          { name: t("nav.news"), path: "/news" },
           { name: article.title, path },
         ]}
       />
@@ -111,11 +113,11 @@ function NewsArticlePage() {
                 aria-hidden="true"
               />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8">
-                <p className="text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">
+                <p data-dynamic className="text-[12px] font-semibold tracking-[0.18em] text-white/80 uppercase">
                   {article.category}
                   {article.dateLabel ? ` · ${article.dateLabel}` : ""}
                 </p>
-                <h1 className="mt-2 max-w-3xl text-[26px] font-bold leading-tight text-white sm:text-[36px]">
+                <h1 data-dynamic className="mt-2 max-w-3xl text-[26px] font-bold leading-tight text-white sm:text-[36px]">
                   {article.title}
                 </h1>
               </div>
@@ -247,9 +249,9 @@ function NewsArticlePage() {
       ) : null}
 
       <CTASection
-        title="Stay Connected"
-        description="Join WBC to receive programme updates and participate in the global network."
-        ctaLabel="Become a Member"
+        title={t("cta.stayConnected")}
+        description={t("cta.stayConnectedBody")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

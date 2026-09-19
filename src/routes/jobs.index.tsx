@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { resolveCmsUrl } from "@/lib/cms-url";
 import { jobsQueryOptions } from "@/lib/queries/jobs";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/jobs/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(jobsQueryOptions),
@@ -75,6 +76,7 @@ function resolveCta(url: string, fallback = "/contact") {
 }
 
 function JobsPage() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(jobsQueryOptions);
 
   if (isPending) return <JobsSkeleton />;
@@ -197,9 +199,9 @@ function JobsPage() {
 
       {listings.length > 0 && (
         <CTASection
-          title="Explore More Opportunities"
-          description="Discover more job and internship opportunities across the WBC network and find the right fit for your skills and interests."
-          ctaLabel="View All Internships"
+          title={t("cta.exploreJobs")}
+          description={t("cta.exploreJobsBody")}
+          ctaLabel={t("cta.viewInternships")}
           to="/jobs"
           hash="open-roles"
         />

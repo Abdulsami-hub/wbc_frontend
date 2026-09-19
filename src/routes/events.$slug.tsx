@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { eventsQueryOptions } from "@/lib/queries/events";
 import { eventSchema, graphSchema, seoHead } from "@/lib/seo";
 import type { EventBrand } from "@/content/events";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/events/$slug")({
   loader: async ({ context: { queryClient }, params }) => {
@@ -138,6 +139,7 @@ function EventDetailSkeleton() {
 }
 
 function EventDetailPage() {
+  const { t } = useI18n();
   const { slug } = Route.useParams();
   const { data, isPending } = useQuery(eventsQueryOptions);
 
@@ -164,8 +166,8 @@ function EventDetailPage() {
 
       <Breadcrumbs
         items={[
-          { name: "Home", path: "/" },
-          { name: "Events", path: "/events" },
+          { name: t("ui.home"), path: "/" },
+          { name: t("nav.events"), path: "/events" },
           { name: event.title, path },
         ]}
       />
@@ -196,11 +198,11 @@ function EventDetailPage() {
               ) : null}
             </div>
 
-            <h1 className="mt-4 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
+            <h1 data-dynamic className="mt-4 text-[28px] font-bold leading-tight text-foreground sm:text-[36px]">
               {event.title}
             </h1>
             {event.summary ? (
-              <p className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
+              <p data-dynamic className="mt-4 text-[16px] leading-relaxed text-muted-fg sm:text-[17px]">
                 {event.summary}
               </p>
             ) : null}
@@ -234,8 +236,8 @@ function EventDetailPage() {
 
             {event.description ? (
               <section className="mt-10">
-                <h2 className="text-[20px] font-bold text-foreground">About this event</h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
+                <h2 className="text-[20px] font-bold text-foreground">{t("events.about")}</h2>
+                <p data-dynamic className="mt-3 text-[15px] leading-relaxed text-muted-fg sm:text-[16px]">
                   {event.description}
                 </p>
               </section>
@@ -389,13 +391,13 @@ function EventDetailPage() {
                 to="/events"
                 className="btn-base border border-line bg-background text-foreground hover:border-navy"
               >
-                All events
+                {t("ui.allEvents")}
               </Link>
               <Link
                 to="/become-a-member"
                 className="btn-base border border-line bg-background text-foreground hover:border-navy"
               >
-                Become a Member
+                {t("link.become")}
               </Link>
             </div>
           </div>
@@ -403,9 +405,9 @@ function EventDetailPage() {
       </article>
 
       <CTASection
-        title="Join the WBC Community"
-        description="Become a member to access events, programmes, and international business connections."
-        ctaLabel="Become a Member"
+        title={t("cta.joinCommunity")}
+        description={t("cta.joinCommunityEvent")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

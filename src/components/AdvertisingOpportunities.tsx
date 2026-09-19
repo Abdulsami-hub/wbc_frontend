@@ -180,7 +180,7 @@ function FooterCarousel({ items }: { items: FooterCarouselItem[] }) {
                     aria-roledescription="slide"
                     aria-label={`${i + 1} of ${items.length}`}
                   >
-                    <article className="pe-2">
+                    <article className="pe-2" data-dynamic>
                       {o.kicker ? (
                         <p className="text-[12px] font-bold tracking-[0.18em] text-blue uppercase">
                           {o.kicker}

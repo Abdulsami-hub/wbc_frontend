@@ -36,7 +36,10 @@ function Card({ partner, kindLabel }: { partner: StrategicPartnerTile; kindLabel
         )}
       </div>
       {hasName ? (
-        <p className="line-clamp-1 shrink-0 border-t border-line/80 bg-surface/70 px-3 py-2 text-center text-[11px] font-semibold leading-snug text-navy sm:text-[12px]">
+        <p
+          data-dynamic
+          className="line-clamp-1 shrink-0 border-t border-line/80 bg-surface/70 px-3 py-2 text-center text-[11px] font-semibold leading-snug text-navy sm:text-[12px]"
+        >
           {partner.name}
         </p>
       ) : null}

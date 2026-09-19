@@ -1,12 +1,13 @@
+import { useI18n } from "@/i18n";
 import networkBg from "@/assets/network-bg.jpg";
 
-const STATS = [
-  { value: "2026", label: "Founded" },
-  { value: "Paris", label: "Headquarters" },
-  { value: "Global", label: "Countries Engaged" },
-] as const;
-
 export function Glance() {
+  const { t } = useI18n();
+  const stats = [
+    { value: "2026", label: t("home.founded") },
+    { value: "Paris", label: t("home.headquarters") },
+    { value: "Global", label: t("home.countries") },
+  ] as const;
   return (
     <section className="relative isolate bg-navy-deep">
       <img
@@ -19,9 +20,11 @@ export function Glance() {
         className="absolute inset-0 size-full object-cover opacity-60"
       />
       <div className="container-wbc relative py-14 lg:py-16">
-        <h2 data-reveal className="text-center text-xl font-bold text-white lg:text-2xl">WBC at a Glance</h2>
+        <h2 data-reveal className="text-center text-xl font-bold text-white lg:text-2xl">
+          {t("home.glance")}
+        </h2>
         <ul data-reveal data-reveal-group className="mt-8 grid gap-4 sm:grid-cols-3">
-          {STATS.map((s) => (
+          {stats.map((s) => (
             <li key={s.label} className="rounded-card bg-white/95 px-6 py-6 text-center shadow-card">
               <p className="text-2xl font-bold text-foreground lg:text-[28px]">{s.value}</p>
               <p className="mt-1 text-[14px] text-muted-fg">{s.label}</p>

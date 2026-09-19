@@ -3,6 +3,7 @@ import VALUES_BG from "@/assets/our-values-bg.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { WhoWeAreValue } from "@/content/who-we-are";
 import { homeCoreValues, whoWeAreQueryOptions } from "@/lib/queries/who-we-are";
+import { useI18n } from "@/i18n";
 
 function ValueIcon({ name }: { name: string }) {
   const common = {
@@ -70,7 +71,7 @@ function ValuesGrid({ values }: { values: WhoWeAreValue[] }) {
     <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
       {values.map((v) => (
         <li key={v.id}>
-          <article className="values-glass-card flex min-h-[240px] flex-col items-center justify-center rounded-none px-7 py-10 text-center sm:min-h-[260px] sm:px-8 sm:py-12 lg:min-h-[280px]">
+          <article data-dynamic className="values-glass-card flex min-h-[240px] flex-col items-center justify-center rounded-none px-7 py-10 text-center sm:min-h-[260px] sm:px-8 sm:py-12 lg:min-h-[280px]">
             <span className="text-white" aria-hidden="true">
               <ValueIcon name={v.icon} />
             </span>
@@ -86,6 +87,7 @@ function ValuesGrid({ values }: { values: WhoWeAreValue[] }) {
 }
 
 export function OurValuesSection() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(whoWeAreQueryOptions);
 
   if (isPending) {
@@ -120,17 +122,16 @@ export function OurValuesSection() {
 
       <div className="container-wbc relative">
         <p data-reveal className="font-display text-[12px] tracking-[0.24em] text-white/80 uppercase">
-          Our Values
+          {t("home.ourValues")}
         </p>
         <h2
           data-reveal
           className="mt-4 max-w-3xl text-[38px] font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-sm sm:text-[52px] lg:text-[64px]"
         >
-          Principles of WBC.
+          {t("home.valuesTitle")}
         </h2>
         <p data-reveal className="mt-6 max-w-2xl text-[18px] leading-relaxed text-white/90 drop-shadow-sm">
-          These values shape how we convene institutions, support members and partners, and turn international
-          connections into practical cooperation.
+          {t("home.valuesIntro")}
         </p>
 
         <ValuesGrid values={values} />

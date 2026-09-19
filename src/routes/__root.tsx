@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useIsFetching, useQuery } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -8,14 +8,15 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useEffect, useMemo } from "react";
 
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { AdvertisingOpportunities } from "@/components/AdvertisingOpportunities";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { I18nProvider } from "@/i18n";
+import { I18nProvider, useI18n } from "@/i18n";
+import { applyDocumentTranslation } from "@/i18n/dom-translate";
 import { footerCarouselQueryOptions } from "@/lib/queries/advertising-footer";
 import { isServiceUnavailableError } from "@/lib/api";
 import { sectionVisibilityQueryOptions, useSectionVisible } from "@/lib/queries/section-visibility";
@@ -231,12 +232,33 @@ function FooterAdvertisements() {
   return <AdvertisingOpportunities />;
 }
 
+function SkipToContentLabel() {
+  const { t } = useI18n();
+  return t("ui.skipToContent");
+}
+
+function DocumentI18n() {
+  const { lang, map } = useI18n();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const fetching = useIsFetching();
+
+  useEffect(() => {
+    const apply = () => applyDocumentTranslation(lang === "en" ? null : map);
+    apply();
+    const frame = window.requestAnimationFrame(apply);
+    return () => window.cancelAnimationFrame(frame);
+  }, [lang, map, pathname, fetching]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider>
+        <DocumentI18n />
         {/* React 19 hoists these into document.head in the SPA mount */}
         <HeadContent />
         <SiteWideJsonLd />
@@ -244,7 +266,7 @@ function RootComponent() {
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-[60] focus:rounded focus:bg-navy focus:px-4 focus:py-2 focus:text-white"
         >
-          Skip to content
+          <SkipToContentLabel />
         </a>
         <Header />
         <main id="main">

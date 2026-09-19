@@ -8,6 +8,7 @@ import { resolveCmsUrl } from "@/lib/cms-url";
 import { newsQueryOptions } from "@/lib/queries/news";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/news/")({
   loader: ({ context: { queryClient } }) => queryClient.ensureQueryData(newsQueryOptions),
@@ -73,6 +74,7 @@ function resolveCta(url: string, fallback = "/contact") {
 }
 
 function NewsPage() {
+  const { t } = useI18n();
   const { data, isPending } = useQuery(newsQueryOptions);
   const showArticles = useSectionVisible("news", "articles");
 
@@ -108,12 +110,12 @@ function NewsPage() {
               data-reveal
               className="rounded-card border border-line bg-background px-6 py-12 text-center text-[15px] text-muted-fg"
             >
-              No news articles published yet.
+              {t("news.empty")}
             </p>
           ) : (
             <ul data-reveal data-reveal-group className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {articles.map((item) => (
-                <li key={item.id}>
+                <li key={item.id} data-dynamic>
                   <Link
                     to="/news/$slug"
                     params={{ slug: item.slug }}
@@ -156,9 +158,9 @@ function NewsPage() {
       ) : null}
 
       <CTASection
-        title="Stay Connected"
-        description="Join WBC to receive programme updates and participate in the global network."
-        ctaLabel="Become a Member"
+        title={t("cta.stayConnected")}
+        description={t("cta.stayConnectedBody")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>

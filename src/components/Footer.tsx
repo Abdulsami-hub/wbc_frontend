@@ -51,9 +51,10 @@ const COLUMNS: { title: TranslationKey; links: FooterLink[] }[] = [
 ];
 
 export function Footer() {
-  const { t, tx } = useI18n();
+  const { t } = useI18n();
   const { data } = useQuery(siteSettingsQueryOptions);
-  const footerDescription = tx(data?.footerDescription?.trim() || t("footer.tagline"));
+  const cmsDescription = data?.footerDescription?.trim();
+  const footerDescription = cmsDescription || t("footer.tagline");
   const socialLinks = data?.socialLinks ?? [];
 
   return (
@@ -62,7 +63,12 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(4,1fr)] lg:gap-8">
           <div className="max-w-xs">
             <Logo variant="footer" size="lg" />
-            <p className="mt-5 text-[15px] leading-relaxed">{footerDescription}</p>
+            <p
+              className="mt-5 text-[15px] leading-relaxed"
+              {...(cmsDescription ? { "data-dynamic": "" } : {})}
+            >
+              {footerDescription}
+            </p>
             <SocialLinks className="mt-4" variant="onDark" links={socialLinks} />
           </div>
 

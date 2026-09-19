@@ -27,7 +27,7 @@ function Cta({
 
 function SlideCopy({ slide, active }: { slide: HeroSlide; active: boolean }) {
   return (
-    <div className="max-w-[560px]">
+    <div className="max-w-[560px]" data-dynamic>
       <p className={`${active ? "intro-1" : ""} hero-kicker`}>{slide.eyebrow}</p>
       <h1
         className={`${active ? "intro-2" : ""} mt-3 text-[30px] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[42px]`}

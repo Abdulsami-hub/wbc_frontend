@@ -8,6 +8,7 @@ import { SimpleModal } from "@/components/SimpleModal";
 import { SocialLinks } from "@/components/SocialLinks";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TeamMember } from "@/content/wbc-team";
+import { useI18n } from "@/i18n";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
 import { wbcTeamQueryOptions } from "@/lib/queries/wbc-team";
 import { seoHead } from "@/lib/seo";
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/wbc-team/")({
 });
 
 function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMember) => void }) {
+  const { t } = useI18n();
   return (
     <li className="group overflow-hidden rounded-card border border-line bg-background">
       <button
@@ -57,7 +59,7 @@ function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMe
             {member.role}
           </p>
           <span className="mt-5 block text-[13px] font-semibold tracking-[0.14em] text-muted-fg uppercase">
-            View full profile
+            {t("ui.viewFullProfile")}
           </span>
         </div>
       </button>
@@ -74,6 +76,7 @@ function TeamProfileModal({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useI18n();
   if (!member) return null;
 
   return (
@@ -100,13 +103,13 @@ function TeamProfileModal({
         </div>
 
         <div className="flex flex-col p-6 sm:p-8 lg:py-10 lg:pe-10">
-          <p className="text-start text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase">
+          <p className="text-start text-[12px] font-bold tracking-[0.18em] text-muted-fg uppercase" data-dynamic>
             {member.groupLabel}
           </p>
-          <h2 className="mt-3 text-start text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">
+          <h2 data-dynamic className="mt-3 text-start text-[26px] font-bold leading-tight text-foreground sm:text-[32px]">
             {member.name}
           </h2>
-          <p className="mt-2 text-start text-[14px] font-bold tracking-[0.12em] text-navy uppercase">
+          <p data-dynamic className="mt-2 text-start text-[14px] font-bold tracking-[0.12em] text-navy uppercase">
             {member.role}
           </p>
           <span className="accent-rule mt-5" />
@@ -115,7 +118,7 @@ function TeamProfileModal({
             <div className="mt-6 space-y-3 border-t border-line pt-6 text-[15px]">
               {member.email && (
                 <p className="text-muted-fg">
-                  Email:{" "}
+                  {t("ui.email")}{" "}
                   <a
                     href={`mailto:${member.email}`}
                     className="font-semibold text-foreground underline decoration-line underline-offset-4"
@@ -126,7 +129,8 @@ function TeamProfileModal({
               )}
               {member.phone && (
                 <p className="text-muted-fg">
-                  Phone: <span className="font-semibold text-foreground">{member.phone}</span>
+                  {t("ui.phone")}{" "}
+                  <span className="font-semibold text-foreground">{member.phone}</span>
                 </p>
               )}
             </div>
@@ -136,7 +140,7 @@ function TeamProfileModal({
 
           <div className="mt-6">
             <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>
-              Contact WBC Team
+              {t("ui.contactTeam")}
             </Link>
           </div>
         </div>
@@ -144,7 +148,9 @@ function TeamProfileModal({
 
       {member.bio.trim() && (
         <div className="min-h-0 flex-1 overflow-y-auto border-t border-line bg-surface/30 px-6 py-6 sm:px-8 sm:py-8 [-webkit-overflow-scrolling:touch]">
-          <p className="text-start text-[16px] leading-relaxed text-muted-fg">{member.bio}</p>
+          <p data-dynamic className="text-start text-[16px] leading-relaxed text-muted-fg">
+            {member.bio}
+          </p>
         </div>
       )}
     </SimpleModal>

@@ -15,7 +15,7 @@ export function ServiceCard({
 }) {
   return (
     <li className={`overflow-visible ${className}`}>
-      <article className="group service-card-motion flex h-full flex-col rounded-none border border-line bg-background p-5 sm:p-7">
+      <article data-dynamic className="group service-card-motion flex h-full flex-col rounded-none border border-line bg-background p-5 sm:p-7">
         <div className="flex flex-1 gap-5 sm:gap-7">
           <div className="relative size-24 shrink-0 overflow-hidden rounded-none sm:size-32">
             <img

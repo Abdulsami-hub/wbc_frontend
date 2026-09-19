@@ -7,6 +7,7 @@ import type { AffiliateProfile } from "@/content/affiliates";
 import { emptyAffiliateDetails } from "@/content/affiliate-details";
 import { affiliateDetailQueryOptions } from "@/lib/queries/affiliates";
 import { seoHead } from "@/lib/seo";
+import { useI18n } from "@/i18n";
 
 export const Route = createFileRoute("/affiliates/$slug")({
   loader: async ({ context: { queryClient }, params }) => {
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/affiliates/$slug")({
 });
 
 function AffiliateProfilePage() {
+  const { t } = useI18n();
   const { slug } = Route.useParams();
   const { data, isPending, isError } = useQuery(affiliateDetailQueryOptions(slug));
 
@@ -88,9 +90,9 @@ function AffiliateProfilePage() {
       </section>
 
       <CTASection
-        title="Join the WBC Network"
-        description="Become a member and connect with affiliates, institutions, and partners worldwide."
-        ctaLabel="Become a Member"
+        title={t("cta.joinAffiliate")}
+        description={t("cta.joinAffiliateBody")}
+        ctaLabel={t("link.become")}
         to="/become-a-member"
       />
     </>
