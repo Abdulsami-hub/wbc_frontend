@@ -5,6 +5,7 @@ import heroImg from "@/assets/team-hero.jpg";
 import { CmsLink } from "@/components/CmsLink";
 import { PageHeroFrame } from "@/components/SplitHero";
 import { SimpleModal } from "@/components/SimpleModal";
+import { SocialLinks } from "@/components/SocialLinks";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TeamMember } from "@/content/wbc-team";
 import { useSectionVisible } from "@/lib/queries/section-visibility";
@@ -131,21 +132,7 @@ function TeamProfileModal({
             </div>
           )}
 
-          {member.socialLinks.length > 0 && (
-            <div className="mt-4 flex flex-wrap gap-6 text-[14px] font-semibold text-muted-fg">
-              {member.socialLinks.map((link) => (
-                <a
-                  key={`${link.platform}-${link.url}`}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-foreground"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          )}
+          <SocialLinks className="mt-4" links={member.socialLinks} />
 
           <div className="mt-6">
             <Link to="/contact" className="btn-orange" onClick={() => onOpenChange(false)}>

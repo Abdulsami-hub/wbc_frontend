@@ -3,6 +3,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { ReactElement } from "react";
 import { EventDataTable } from "@/components/EventDataTable";
+import { SocialLinks } from "@/components/SocialLinks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CTASection } from "@/components/CTASection";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -216,21 +217,7 @@ function EventDetailPage() {
               />
             </div>
 
-            {event.socialLinks && event.socialLinks.length > 0 ? (
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[14px] font-semibold text-muted-fg">
-                {event.socialLinks.map((link) => (
-                  <a
-                    key={`${link.platform}-${link.url}`}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            ) : null}
+            <SocialLinks className="mt-6" links={event.socialLinks ?? []} />
 
             {event.registrationFee ? (
               <dl className="mt-8">
