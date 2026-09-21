@@ -87,18 +87,14 @@ function TeamProfileModal({
       description={member.role}
       className={`flex max-h-[96vh] flex-col overflow-hidden p-0${member.bio.trim() ? " h-[min(96vh,1100px)]" : ""}`}
     >
-      <div className="grid shrink-0 lg:grid-cols-[minmax(240px,0.85fr)_1.15fr]">
-        <div className="relative aspect-[4/5] max-h-[280px] bg-navy-deep sm:max-h-[320px] lg:aspect-auto lg:max-h-none lg:min-h-[320px]">
+      <div className="grid shrink-0 lg:grid-cols-[minmax(260px,22rem)_minmax(0,1fr)]">
+        <div className="relative overflow-hidden bg-navy-deep">
           <img
             src={member.image}
             alt={`${member.name}, ${member.role} at the World Business Council`}
             width={800}
             height={1000}
-            className="absolute inset-0 size-full object-cover object-top"
-          />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy-deep/20"
-            aria-hidden="true"
+            className="aspect-[4/5] w-full object-cover object-top"
           />
         </div>
 
