@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate, useRouterState } from "@tanstack/re
 import { CalendarDays, MapPin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import eventsImg from "@/assets/events.jpg";
+import { CTASection } from "@/components/CTASection";
 import { EventCardMedia } from "@/components/EventCardMedia";
 import { SplitHero } from "@/components/SplitHero";
 import { Skeleton } from "@/components/ui/skeleton";

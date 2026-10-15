@@ -80,6 +80,9 @@ export type EventRecord = {
   glance?: EventGlanceItem[];
   buttons?: EventButton[];
   logistics?: string;
+  contactPerson?: string;
+  contactEmail?: string;
+  contactPhones?: string[];
   agenda?: EventAgenda;
   pricing?: EventAgenda;
   pricingCurrency?: string;

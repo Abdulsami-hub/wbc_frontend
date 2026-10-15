@@ -59,6 +59,9 @@ type ApiPayload = {
     social_links: { platform?: string; label?: string; url?: string }[] | null;
     buttons: { label?: string; url?: string }[] | null;
     logistics: string | null;
+    contact_person?: string | null;
+    contact_email?: string | null;
+    contact_phone?: string | null;
     agenda:
       | {
           columns?: { id?: string; label?: string }[];
@@ -278,6 +281,12 @@ function mapEvent(item: ApiPayload["events"][number]): EventRecord {
       }))
       .filter((button) => button.label && button.url),
     logistics: item.logistics?.trim() || undefined,
+    contactPerson: item.contact_person?.trim() || undefined,
+    contactEmail: item.contact_email?.trim() || undefined,
+    contactPhones: (item.contact_phone ?? "")
+      .split(/[\n,;]+/)
+      .map((phone) => phone.trim())
+      .filter(Boolean),
     agenda: mapAgenda(item.agenda),
     pricing: mapTable(item.pricing),
     pricingCurrency: item.pricing_currency?.trim() || undefined,

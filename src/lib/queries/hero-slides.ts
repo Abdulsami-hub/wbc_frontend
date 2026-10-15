@@ -36,7 +36,7 @@ let cachedSlides: HeroSlide[] = [];
 
 function mapButton(
   button: ApiHeroButton | undefined,
-  fallback: HeroSlide["primary"],
+  fallback: NonNullable<HeroSlide["primary"]>,
 ): HeroSlide["primary"] | undefined {
   if (!button?.label?.trim()) return undefined;
   return {
@@ -70,7 +70,7 @@ export function mapApiHeroSlide(slide: ApiHeroSlide): HeroSlide {
       label: "Who We Are",
       to: "/who-we-are",
       variant: "outline",
-    })!,
+    }),
     secondary: mapButton(buttons[1], {
       label: "What We Do",
       to: "/what-we-do",

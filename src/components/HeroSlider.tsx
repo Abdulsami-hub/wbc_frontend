@@ -41,10 +41,12 @@ function SlideCopy({ slide, active }: { slide: HeroSlide; active: boolean }) {
       <p className={`${active ? "intro-3" : ""} mt-5 max-w-md text-[15px] leading-relaxed text-white/85`}>
         {slide.description}
       </p>
-      <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
-        <Cta cta={slide.primary} />
-        {slide.secondary ? <Cta cta={slide.secondary} /> : null}
-      </div>
+      {(slide.primary || slide.secondary) ? (
+        <div className={`${active ? "intro-4" : ""} mt-8 flex flex-wrap gap-3`}>
+          {slide.primary ? <Cta cta={slide.primary} /> : null}
+          {slide.secondary ? <Cta cta={slide.secondary} /> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

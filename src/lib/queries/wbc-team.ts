@@ -1,13 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
 import heroImg from "@/assets/team-hero.jpg";
-import p1 from "@/assets/team-1.jpg";
-import p2 from "@/assets/team-2.jpg";
-import p3 from "@/assets/team-3.jpg";
-import p4 from "@/assets/team-4.jpg";
-import p5 from "@/assets/team-5.jpg";
-import p6 from "@/assets/team-6.jpg";
-import p7 from "@/assets/team-7.jpg";
-import p8 from "@/assets/team-8.jpg";
 import { apiFetch } from "@/lib/api";
 import { mapHeroAppearance } from "@/lib/hero-appearance";
 import { mapHeroMedia } from "@/lib/hero-media";
@@ -70,8 +62,6 @@ type ApiPayload = {
 
 type WbcTeamResponse = { data: ApiPayload };
 
-const FALLBACK_IMAGES = [p1, p2, p3, p4, p5, p6, p7, p8] as const;
-
 const DEFAULTS: WbcTeamPageContent = {
   hero: {
     kicker: "WBC Team",
@@ -100,10 +90,6 @@ const DEFAULTS: WbcTeamPageContent = {
 
 let cachedEtag: string | null = null;
 let cachedContent: WbcTeamPageContent = DEFAULTS;
-
-function fallbackImage(index: number): string {
-  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
-}
 
 function splitHeroButtons(buttons: ApiButton[]): { tags: string[]; cta?: { label: string; url: string } } {
   const tags: string[] = [];
@@ -202,12 +188,12 @@ export function mapWbcTeamPayload(payload: ApiPayload): WbcTeamPageContent {
   const heroButtons = payload.hero?.buttons ?? [];
   const { tags, cta } = splitHeroButtons(heroButtons);
 
-  const members: TeamMember[] = (payload.members ?? []).map((member, index) => ({
+  const members: TeamMember[] = (payload.members ?? []).map((member) => ({
     id: String(member.id),
     slug: member.slug,
     name: member.name,
     role: member.role,
-    image: member.image_url ?? fallbackImage(index),
+    image: member.image_url?.trim() ?? "",
     bio: member.bio?.trim() ?? "",
     email: member.email?.trim() ?? "",
     phone: member.phone?.trim() ?? "",

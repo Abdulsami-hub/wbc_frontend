@@ -42,6 +42,7 @@ import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as WbcTeamIndexRouteImport } from './routes/wbc-team.index'
 import { Route as WbcTeamSlugRouteImport } from './routes/wbc-team.$slug'
+import { Route as EventsSlugRegisterRouteImport } from './routes/events.$slug.register'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -211,6 +212,11 @@ const WbcTeamSlugRoute = WbcTeamSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => WbcTeamRoute,
 } as any)
+const EventsSlugRegisterRoute = EventsSlugRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => EventsSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -231,7 +237,7 @@ export interface FileRoutesByFullPath {
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
   '/affiliates/$slug': typeof AffiliatesSlugRoute
-  '/events/$slug': typeof EventsSlugRoute
+  '/events/$slug': typeof EventsSlugRouteWithChildren
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
@@ -246,6 +252,7 @@ export interface FileRoutesByFullPath {
   '/membership/': typeof MembershipIndexRoute
   '/news/': typeof NewsIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
+  '/events/$slug/register': typeof EventsSlugRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -259,7 +266,7 @@ export interface FileRoutesByTo {
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
   '/affiliates/$slug': typeof AffiliatesSlugRoute
-  '/events/$slug': typeof EventsSlugRoute
+  '/events/$slug': typeof EventsSlugRouteWithChildren
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/membership': typeof MembershipIndexRoute
   '/news': typeof NewsIndexRoute
   '/wbc-team': typeof WbcTeamIndexRoute
+  '/events/$slug/register': typeof EventsSlugRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -295,7 +303,7 @@ export interface FileRoutesById {
   '/what-we-do': typeof WhatWeDoRoute
   '/who-we-are': typeof WhoWeAreRoute
   '/affiliates/$slug': typeof AffiliatesSlugRoute
-  '/events/$slug': typeof EventsSlugRoute
+  '/events/$slug': typeof EventsSlugRouteWithChildren
   '/global-network/headquarters': typeof GlobalNetworkHeadquartersRoute
   '/global-network/institutional-members': typeof GlobalNetworkInstitutionalMembersRoute
   '/global-network/strategic-partners': typeof GlobalNetworkStrategicPartnersRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/membership/': typeof MembershipIndexRoute
   '/news/': typeof NewsIndexRoute
   '/wbc-team/': typeof WbcTeamIndexRoute
+  '/events/$slug/register': typeof EventsSlugRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -347,6 +356,7 @@ export interface FileRouteTypes {
     | '/membership/'
     | '/news/'
     | '/wbc-team/'
+    | '/events/$slug/register'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/news'
     | '/wbc-team'
+    | '/events/$slug/register'
   id:
     | '__root__'
     | '/'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/membership/'
     | '/news/'
     | '/wbc-team/'
+    | '/events/$slug/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -665,6 +677,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WbcTeamSlugRouteImport
       parentRoute: typeof WbcTeamRoute
     }
+    '/events/$slug/register': {
+      id: '/events/$slug/register'
+      path: '/register'
+      fullPath: '/events/$slug/register'
+      preLoaderRoute: typeof EventsSlugRegisterRouteImport
+      parentRoute: typeof EventsSlugRoute
+    }
   }
 }
 
@@ -682,13 +701,25 @@ const AffiliatesRouteWithChildren = AffiliatesRoute._addFileChildren(
   AffiliatesRouteChildren,
 )
 
+interface EventsSlugRouteChildren {
+  EventsSlugRegisterRoute: typeof EventsSlugRegisterRoute
+}
+
+const EventsSlugRouteChildren: EventsSlugRouteChildren = {
+  EventsSlugRegisterRoute: EventsSlugRegisterRoute,
+}
+
+const EventsSlugRouteWithChildren = EventsSlugRoute._addFileChildren(
+  EventsSlugRouteChildren,
+)
+
 interface EventsRouteChildren {
-  EventsSlugRoute: typeof EventsSlugRoute
+  EventsSlugRoute: typeof EventsSlugRouteWithChildren
   EventsIndexRoute: typeof EventsIndexRoute
 }
 
 const EventsRouteChildren: EventsRouteChildren = {
-  EventsSlugRoute: EventsSlugRoute,
+  EventsSlugRoute: EventsSlugRouteWithChildren,
   EventsIndexRoute: EventsIndexRoute,
 }
 

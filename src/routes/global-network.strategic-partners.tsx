@@ -176,6 +176,14 @@ function StrategicPartners() {
             aria-hidden="true"
           />
           <div className="container-wbc relative space-y-12">
+            <div data-reveal>
+              <span className="inline-flex rounded-full bg-orange px-3 py-1 text-[11px] font-bold tracking-[0.16em] text-white uppercase">
+                For sponsors
+              </span>
+              <h2 className="mt-4 text-[28px] font-extrabold leading-tight text-foreground sm:text-[36px] lg:text-[40px]">
+                Sponsors
+              </h2>
+            </div>
             {hasPageIntro ? (
                 <div data-reveal data-reveal-group className="grid gap-4 sm:grid-cols-2 lg:gap-6">
                   {pageIntroParagraphs.map((paragraph, index) => (

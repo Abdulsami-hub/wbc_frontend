@@ -115,9 +115,6 @@ export function MobileNavSubmenuPanel({
     <div className="border-t border-line/80 bg-surface/50 px-4 py-3">
       {groups.map((group) => (
         <div key={group.label} className="py-1">
-          <p className="px-2 pb-1 text-[11px] font-bold tracking-[0.16em] text-muted-fg uppercase">
-            {group.label}
-          </p>
           <ul className="space-y-1">
             {group.items.map((item) => (
               <li key={`${item.to}-${item.hash ?? item.title}`}>

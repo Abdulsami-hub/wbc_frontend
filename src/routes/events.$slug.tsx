@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { CalendarDays, MapPin } from "lucide-react";
+import { createFileRoute, Link, notFound, Outlet, useRouterState } from "@tanstack/react-router";
+import { CalendarDays, Mail, MapPin, Phone, UserRound } from "lucide-react";
 import type { ReactElement } from "react";
 import { EventCardMedia } from "@/components/EventCardMedia";
 import { EventDataTable, EventExhibitsList } from "@/components/EventDataTable";
@@ -73,43 +73,45 @@ function groupEventBrands(items: EventBrand[], fallbackTitle: string): { title: 
 
 function EventBrandTiles({ items, fallbackLabel }: { items: EventBrand[]; fallbackLabel: string }) {
   return (
-    <ul className="relative grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr))]">
+    <ul className="relative grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
       {items.map((item, index) => {
         const label = item.name.trim() || fallbackLabel;
         const className =
-          "group relative flex min-h-[148px] flex-col overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card";
+          "group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-orange/35 hover:shadow-card";
         const content = (
           <>
-            <div className="flex min-h-[100px] flex-1 items-center justify-center px-5 py-5">
+            <div className="relative flex min-h-[108px] w-full flex-1 items-center justify-center overflow-hidden bg-white px-5 sm:min-h-[120px]">
               {item.logo ? (
                 <img
                   src={item.logo}
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className="max-h-16 max-w-full object-contain sm:max-h-[4.5rem]"
+                  className="max-h-[88%] max-w-[92%] object-contain"
                 />
               ) : (
-                <span className="flex size-12 items-center justify-center rounded-md border border-line bg-surface text-[14px] font-bold text-navy">
+                <span className="text-[20px] font-bold tracking-wide text-navy">
                   {item.name
                     .split(/\s+/)
                     .filter(Boolean)
                     .slice(0, 2)
                     .map((part) => part[0]?.toUpperCase() ?? "")
-                    .join("") || "—"}
+                    .join("") || "WB"}
                 </span>
               )}
             </div>
             {item.name ? (
-              <p className="line-clamp-2 shrink-0 border-t border-line/80 bg-surface/80 px-3 py-2.5 text-center text-[13px] font-semibold leading-snug text-navy">
-                {item.name}
-              </p>
+              <div className="shrink-0 border-t border-line/80 bg-surface/60 px-3 py-2.5">
+                <p className="line-clamp-2 text-center text-[12px] font-semibold leading-snug text-foreground sm:text-[13px]">
+                  {item.name}
+                </p>
+              </div>
             ) : null}
           </>
         );
 
         return (
-          <li key={`${item.group ?? ""}-${item.name}-${index}`}>
+          <li key={`${item.group ?? ""}-${item.name}-${index}`} className="min-w-0">
             {item.href ? (
               <a
                 href={item.href}
@@ -197,6 +199,11 @@ function EventDetailPage() {
   const { t } = useI18n();
   const { slug } = Route.useParams();
   const { data, isPending } = useQuery(eventsQueryOptions);
+  const isRegister = useRouterState({
+    select: (state) => state.location.pathname.replace(/\/$/, "") === `/events/${slug}/register`,
+  });
+
+  if (isRegister) return <Outlet />;
 
   if (isPending) return <EventDetailSkeleton />;
 
@@ -212,7 +219,7 @@ function EventDetailPage() {
     image: event.image,
     startDate: event.dateLabel,
     locationName: event.location,
-    registrationUrl: event.registrationUrl,
+    registrationUrl: `/events/${event.slug}/register`,
   });
 
   return (
@@ -275,28 +282,6 @@ function EventDetailPage() {
 
             <SocialLinks className="mt-6" links={event.socialLinks ?? []} />
 
-            {event.registrationFee || event.registrationUrl ? (
-              <div className="mt-8 overflow-hidden rounded-card border border-line bg-surface">
-                <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-                  <div className="min-w-0">
-                    <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
-                      Registration
-                    </p>
-                    {event.registrationFee ? (
-                      <p className="mt-1 break-words text-[15px] font-semibold text-foreground [overflow-wrap:anywhere]">
-                        {event.registrationFee}
-                      </p>
-                    ) : null}
-                  </div>
-                  {event.registrationUrl ? (
-                    <CmsLink href={event.registrationUrl} className="btn-orange shrink-0 self-start sm:self-center">
-                      Register now
-                    </CmsLink>
-                  ) : null}
-                </div>
-              </div>
-            ) : null}
-
             {event.glance && event.glance.length > 0 ? (
               <section className="mt-10 overflow-hidden rounded-card border border-line bg-surface/70">
                 <div className="relative px-5 py-6 sm:px-8 sm:py-8">
@@ -339,15 +324,6 @@ function EventDetailPage() {
 
             {event.agenda && event.agenda.rows.length > 0 ? (
               <EventDataTable kicker="Programme" title="Programs / Agenda" table={event.agenda} />
-            ) : null}
-
-            {event.pricing ? (
-              <EventDataTable
-                kicker="Fees"
-                title="Participation pricing"
-                table={event.pricing}
-                currency={event.pricingCurrency}
-              />
             ) : null}
 
             {event.participants ? (
@@ -419,6 +395,15 @@ function EventDetailPage() {
               <EventExhibitsList exhibits={event.exhibits} />
             ) : null}
 
+            {event.pricing ? (
+              <EventDataTable
+                kicker="Fees"
+                title="Participation pricing"
+                table={event.pricing}
+                currency={event.pricingCurrency}
+              />
+            ) : null}
+
             {event.logistics ? (
               <section className="mt-10 overflow-hidden rounded-card border border-line bg-background">
                 <div className="relative px-5 py-6 sm:px-8 sm:py-8">
@@ -433,6 +418,36 @@ function EventDetailPage() {
                 </div>
               </section>
             ) : null}
+
+            <div className="mt-8 overflow-hidden rounded-card border border-line bg-surface">
+              <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold tracking-[0.14em] text-muted-fg uppercase">
+                    Registration
+                  </p>
+                  <p className="mt-1 break-words text-[15px] font-semibold text-foreground [overflow-wrap:anywhere]">
+                    {event.registrationFee || "Register to attend this event."}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-2 self-start sm:self-center">
+                  <Link
+                    to="/events/$slug/register"
+                    params={{ slug: event.slug }}
+                    className="btn-orange"
+                  >
+                    Register now
+                  </Link>
+                  {event.registrationUrl ? (
+                    <CmsLink
+                      href={event.registrationUrl}
+                      className="btn-base border border-line bg-background text-foreground hover:border-navy"
+                    >
+                      External registration
+                    </CmsLink>
+                  ) : null}
+                </div>
+              </div>
+            </div>
 
             {event.media && event.media.length > 0 ? (
               <section className="mt-10">
@@ -512,12 +527,67 @@ function EventDetailPage() {
               </section>
             ) : null}
 
+            {event.contactPerson || event.contactEmail || (event.contactPhones && event.contactPhones.length > 0) ? (
+              <section className="mt-10 overflow-hidden rounded-card border border-line bg-surface/70">
+                <div className="relative px-5 py-6 sm:px-8 sm:py-8">
+                  <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
+                  <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">Get in touch</p>
+                  <h2 className="relative mt-2 text-[24px] font-bold text-foreground sm:text-[28px]">Contacts</h2>
+                  <dl className="relative mt-6 grid gap-3 sm:grid-cols-2">
+                    {event.contactPerson ? (
+                      <div className="rounded-xl border border-line bg-background px-4 py-4">
+                        <dt className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] text-muted-fg uppercase">
+                          <UserRound className="size-3.5" aria-hidden="true" />
+                          Contact person
+                        </dt>
+                        <dd className="mt-1 text-[15px] font-semibold leading-snug text-foreground">{event.contactPerson}</dd>
+                      </div>
+                    ) : null}
+                    {event.contactEmail ? (
+                      <div className="rounded-xl border border-line bg-background px-4 py-4">
+                        <dt className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] text-muted-fg uppercase">
+                          <Mail className="size-3.5" aria-hidden="true" />
+                          Email
+                        </dt>
+                        <dd className="mt-1 text-[15px] font-semibold leading-snug text-foreground">
+                          <a href={`mailto:${event.contactEmail}`} className="underline decoration-line underline-offset-4 hover:text-navy">
+                            {event.contactEmail}
+                          </a>
+                        </dd>
+                      </div>
+                    ) : null}
+                    {event.contactPhones && event.contactPhones.length > 0 ? (
+                      <div className="rounded-xl border border-line bg-background px-4 py-4 sm:col-span-2">
+                        <dt className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] text-muted-fg uppercase">
+                          <Phone className="size-3.5" aria-hidden="true" />
+                          Phone
+                        </dt>
+                        <dd className="mt-1 space-y-1 text-[15px] font-semibold leading-snug text-foreground">
+                          {event.contactPhones.map((phone) => (
+                            <a
+                              key={phone}
+                              href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                              className="block underline decoration-line underline-offset-4 hover:text-navy"
+                            >
+                              {phone}
+                            </a>
+                          ))}
+                        </dd>
+                      </div>
+                    ) : null}
+                  </dl>
+                </div>
+              </section>
+            ) : null}
+
             <div className="mt-10 flex flex-wrap gap-3 border-t border-line pt-8">
-              {event.registrationUrl ? (
-                <CmsLink href={event.registrationUrl} className="btn-orange">
-                  Register now
-                </CmsLink>
-              ) : null}
+              <Link
+                to="/events/$slug/register"
+                params={{ slug: event.slug }}
+                className="btn-orange"
+              >
+                Register now
+              </Link>
               {event.buttons && event.buttons.length > 0
                 ? event.buttons.map((button, index) => (
                     <CmsLink

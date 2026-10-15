@@ -27,7 +27,7 @@ export type HeroSlide = {
   videoUrl?: string;
   youtubeEmbedUrl?: string;
   alt?: string;
-  primary: HeroCta;
+  primary?: HeroCta;
   secondary?: HeroCta;
 };
 

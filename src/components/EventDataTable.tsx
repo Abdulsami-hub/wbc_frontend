@@ -144,19 +144,18 @@ export function EventExhibitsList({ exhibits }: { exhibits: EventExhibit[] }) {
     <section className="mt-10 overflow-hidden rounded-card border border-line bg-surface/70">
       <div className="relative px-5 py-6 sm:px-8 sm:py-8">
         <span className="guide-glow -end-10 -top-10 size-36 bg-orange/15" aria-hidden="true" />
-        <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">Programme</p>
-        <h2 className="relative mt-2 text-[20px] font-bold text-foreground sm:text-[24px]">Exhibits</h2>
-        <ul className="relative mt-5 grid gap-4 sm:grid-cols-2">
+        <p className="relative text-[11px] font-bold tracking-[0.16em] text-orange uppercase">Event</p>
+        <h2 className="relative mt-2 text-[20px] font-bold text-foreground sm:text-[24px]">Exhibitors</h2>
+        <ul className="relative mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
           {exhibits.map((exhibit, index) => {
             const initials = exhibitInitials(exhibit.name);
 
             return (
               <li key={`${exhibit.name}-${index}`} className="min-w-0">
-                <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-card border border-line bg-background transition-all duration-300 hover:-translate-y-1 hover:border-orange/35 hover:shadow-card">
-                  <div className="relative flex min-h-[148px] items-center justify-center overflow-hidden bg-white px-6 py-6 sm:min-h-[168px]">
-                    <span className="guide-glow -end-10 -top-10 size-32 bg-orange/20" aria-hidden="true" />
+                <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-line bg-white shadow-[0_1px_0_oklch(0.28_0.02_255_/_0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-orange/35 hover:shadow-card">
+                  <div className="relative flex h-[108px] w-full shrink-0 items-center justify-center overflow-hidden bg-white px-5 sm:h-[120px]">
                     {exhibit.booth ? (
-                      <span className="absolute start-4 top-4 max-w-[calc(100%-2rem)] truncate rounded-full bg-orange px-2.5 py-1 text-[10px] font-bold tracking-[0.14em] text-white uppercase">
+                      <span className="absolute start-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-orange px-2 py-0.5 text-[9px] font-bold tracking-[0.12em] text-white uppercase">
                         {exhibit.booth}
                       </span>
                     ) : null}
@@ -166,35 +165,35 @@ export function EventExhibitsList({ exhibits }: { exhibits: EventExhibit[] }) {
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="relative max-h-[88%] max-w-[92%] object-contain"
+                        className="max-h-[88%] max-w-[92%] object-contain"
                       />
                     ) : (
-                      <span className="relative flex size-16 items-center justify-center rounded-2xl border border-line bg-orange/8 text-[18px] font-bold tracking-wide text-orange">
-                        {initials || "—"}
+                      <span className="text-[20px] font-bold tracking-wide text-navy">
+                        {initials || "WB"}
                       </span>
                     )}
                   </div>
                   {exhibit.name || exhibit.partner || exhibit.description ? (
-                    <div className="relative flex min-w-0 flex-1 flex-col border-t border-line/80 bg-surface/70 px-5 py-4">
+                    <div className="relative flex min-w-0 shrink-0 flex-col border-t border-line/80 bg-surface/60 px-3 py-2.5">
                       {exhibit.name ? (
-                        <h3 className="line-clamp-1 break-words text-[16px] font-bold leading-snug text-foreground [overflow-wrap:anywhere]">
+                        <h3 className="line-clamp-2 text-center text-[12px] font-semibold leading-snug text-foreground sm:text-[13px]">
                           {exhibit.name}
                         </h3>
                       ) : null}
                       {exhibit.partner ? (
-                        <p className="mt-1 line-clamp-1 break-words text-[13px] font-semibold text-navy [overflow-wrap:anywhere]">
+                        <p className="mt-0.5 line-clamp-1 text-center text-[11px] font-semibold text-navy">
                           {exhibit.partner}
                         </p>
                       ) : null}
                       {exhibit.description ? (
                         <>
-                          <p className="mt-2 min-w-0 truncate text-[14px] leading-relaxed text-muted-fg">
+                          <p className="mt-1 min-w-0 truncate text-center text-[12px] leading-relaxed text-muted-fg">
                             {exhibit.description}
                           </p>
                           <button
                             type="button"
                             onClick={() => setActiveIndex(index)}
-                            className="mt-3 inline-flex items-center gap-1.5 self-start text-[13px] font-bold text-orange transition-colors hover:text-navy"
+                            className="mt-1.5 inline-flex items-center gap-1 self-center text-[12px] font-bold text-orange transition-colors hover:text-navy"
                           >
                             View details
                             <span aria-hidden="true" className="rtl-mirror">
@@ -217,7 +216,7 @@ export function EventExhibitsList({ exhibits }: { exhibits: EventExhibit[] }) {
         onOpenChange={(open) => {
           if (!open) setActiveIndex(null);
         }}
-        title={active?.name || active?.partner || "Exhibit"}
+        title={active?.name || active?.partner || "Exhibitor"}
         className="max-w-[min(640px,calc(100vw-1.5rem))] overflow-hidden p-0"
       >
         {active ? (

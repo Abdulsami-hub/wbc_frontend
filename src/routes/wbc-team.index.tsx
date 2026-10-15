@@ -33,6 +33,43 @@ export const Route = createFileRoute("/wbc-team/")({
   component: WbcTeam,
 });
 
+function personInitials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function PersonPhoto({
+  member,
+  className,
+}: {
+  member: TeamMember;
+  className?: string;
+}) {
+  if (member.image) {
+    return (
+      <img
+        src={member.image}
+        alt={`${member.name}, ${member.role} at the World Business Council`}
+        width={800}
+        height={1000}
+        loading="lazy"
+        decoding="async"
+        className={className}
+      />
+    );
+  }
+
+  return (
+    <div className={`flex items-center justify-center bg-orange/10 text-[28px] font-bold tracking-wide text-orange ${className ?? ""}`}>
+      {personInitials(member.name) || "—"}
+    </div>
+  );
+}
+
 function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMember) => void }) {
   const { t } = useI18n();
   return (
@@ -43,15 +80,7 @@ function PersonCard({ member, onOpen }: { member: TeamMember; onOpen: (m: TeamMe
         className="block w-full cursor-pointer text-start"
       >
         <div className="relative overflow-hidden">
-          <img
-            src={member.image}
-            alt={`${member.name}, ${member.role} at the World Business Council`}
-            width={800}
-            height={1000}
-            loading="lazy"
-            decoding="async"
-            className="card-zoom-img aspect-[4/5] w-full object-cover object-top"
-          />
+          <PersonPhoto member={member} className="card-zoom-img aspect-[4/5] w-full object-cover object-top" />
         </div>
         <div className="border-t border-line p-5 sm:p-6">
           <h4 className="text-[19px] leading-snug font-bold text-foreground">{member.name}</h4>
@@ -89,13 +118,7 @@ function TeamProfileModal({
     >
       <div className="grid shrink-0 lg:grid-cols-[minmax(260px,22rem)_minmax(0,1fr)]">
         <div className="relative overflow-hidden bg-navy-deep">
-          <img
-            src={member.image}
-            alt={`${member.name}, ${member.role} at the World Business Council`}
-            width={800}
-            height={1000}
-            className="aspect-[4/5] w-full object-cover object-top"
-          />
+          <PersonPhoto member={member} className="aspect-[4/5] w-full object-cover object-top" />
         </div>
 
         <div className="flex flex-col p-6 sm:p-8 lg:py-10 lg:pe-10">
